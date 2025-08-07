@@ -1,0 +1,22 @@
+This is a Value added service for the Medical Treanscription Quality Assurance (QA) team.
+
+The transcription software works in two steps:
+1. Transcription: The audio is transcribed into text called the ASR drafts. Done by an ASR model.
+2. Post-Processing: The ASR draft is post-processed to correct errors and improve quality. Done by Medical Transcription Specialists (MTS).
+3. QA: The post-processed text is reviewed by QA team and errors are corrected.
+
+We have to plan for implementing the following use cases.
+Steps:
+1. QA noticing a specific error for a specific speaker in the ASR Draft.
+2. QA selects and submits that error for better handling, target is to correct that error from next draft onwards.
+3. QA submits the error and corresponding corrections into vector db along with relevant metadata for more targeted search.
+4. From next draft onwards for that specific speaker the same error should be rectified.
+5. QA should be provided a way to verify that the error is rectified in the next draft. 
+    We have to pull the jobs for the same spekers from InstaNote Database and appy RAG based correction to the drafts.
+
+Contraints:
+1. The MTSs and QAs cannot copy and paste any part of the drafts.
+
+Advantages:
+Saves Time: Current feed-back loop is too long which can be much shorter. QA guys submits an error and wait for days to actually validate that the reported problem is resolved or not.
+Better QA Coverage: QA Team can focus on more important errors and less on repetitive errors.

@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ASR_Error_Reporting_PRD.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="product-requirements-document-prd">Product Requirements Document (PRD)</h1>
+<h2 id="asr-error-reporting-and-correction-system">ASR Error Reporting and Correction System</h2>
+<p><strong>Document Version:</strong> 1.0
+<strong>Date:</strong> August 5, 2025
+<strong>Author:</strong> Product Team
+<strong>Stakeholders:</strong> QA Team, MTS Team, Engineering Team</p>
+<hr>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<p>The ASR Error Reporting and Correction System is a value-added service designed to enhance the Medical Transcription Quality Assurance (QA) workflow by enabling systematic error reporting, correction learning, and automated improvement of ASR (Automatic Speech Recognition) drafts for specific speakers.</p>
+<h3 id="11-key-benefits">1.1 Key Benefits</h3>
+<ul>
+<li><strong>Reduced Feedback Loop:</strong> From days to real-time error correction validation</li>
+<li><strong>Improved QA Efficiency:</strong> Focus on critical errors rather than repetitive issues</li>
+<li><strong>Enhanced Accuracy:</strong> Speaker-specific error learning and correction</li>
+<li><strong>Time Savings:</strong> Automated correction of known speaker-specific errors</li>
+</ul>
+<hr>
+<h2 id="2-problem-statement">2. Problem Statement</h2>
+<h3 id="21-current-state">2.1 Current State</h3>
+<p>The existing medical transcription workflow involves a lengthy feedback loop where:</p>
+<ol>
+<li>QA identifies errors in ASR drafts</li>
+<li>Errors are manually corrected by MTS</li>
+<li>QA waits days to validate if reported problems are resolved</li>
+<li>Repetitive speaker-specific errors continue to occur without systematic learning</li>
+</ol>
+<h3 id="22-pain-points">2.2 Pain Points</h3>
+<ul>
+<li><strong>Long Feedback Cycles:</strong> Days-long validation cycles for error corrections</li>
+<li><strong>Repetitive Error Handling:</strong> Same speaker-specific errors recurring across multiple jobs</li>
+<li><strong>Limited QA Coverage:</strong> QA resources spent on repetitive rather than critical errors</li>
+<li><strong>No Learning Mechanism:</strong> ASR system doesn't learn from identified speaker-specific patterns</li>
+</ul>
+<hr>
+<h2 id="3-solution-overview">3. Solution Overview</h2>
+<h3 id="31-vision">3.1 Vision</h3>
+<p>Create an intelligent error reporting and correction system that enables QA personnel to report speaker-specific ASR errors, automatically learns from these reports, and proactively corrects similar errors in future transcriptions for the same speakers.</p>
+<h3 id="32-core-components">3.2 Core Components</h3>
+<ol>
+<li><strong>Error Reporting Interface:</strong> Web-based UI for error identification and submission</li>
+<li><strong>RAG Database Integration:</strong> Vector database for storing error patterns and corrections</li>
+<li><strong>Automated Correction Engine:</strong> Real-time application of learned corrections</li>
+<li><strong>Verification Dashboard:</strong> Tools for validating error correction effectiveness</li>
+</ol>
+<h3 id="33-technology-stack">3.3 Technology Stack</h3>
+<p>The system will be implemented using the following technology stack:</p>
+<ul>
+<li><strong>Backend Framework:</strong> Python with FastAPI for high-performance API development</li>
+<li><strong>Database Systems:</strong>
+<ul>
+<li>PostgreSQL for relational data (metadata, audit trails, user management)</li>
+<li>Vector Database (Pinecone/Weaviate/Qdrant) for 1536-dimensional embeddings</li>
+<li>Redis for caching and session management</li>
+</ul>
+</li>
+<li><strong>Message Queue:</strong> Apache Kafka for event-driven communication between services</li>
+<li><strong>Frontend:</strong> React 18+ with TypeScript for user interfaces</li>
+<li><strong>Infrastructure:</strong> Kubernetes with Docker containers for scalable deployment</li>
+<li><strong>Monitoring:</strong> Prometheus, Grafana, and distributed tracing for observability</li>
+</ul>
+<h3 id="34-system-architecture-overview">3.4 System Architecture Overview</h3>
+<p>The following diagram illustrates the high-level architecture and data flow of the ASR Error Reporting and Correction System:</p>
+<pre><code class="language-mermaid"><div class="mermaid">graph TB
+    subgraph "Frontend Layer"
+        UI[Error Reporting UI]
+        VD[Verification Dashboard]
+        API_GW[API Gateway]
+    end
+
+    subgraph "Microservices Layer"
+        ERS[Error Reporting Service]
+        RIS[RAG Integration Service]
+        CES[Correction Engine Service]
+        VS[Verification Service]
+        UMS[User Management Service]
+    end
+
+    subgraph "Data Layer"
+        VDB[(Vector Database<br/>1536-dim Embeddings<br/>Similarity Search)]
+        RDB[(Relational Database<br/>Metadata & Audit)]
+        CACHE[(Redis Cache<br/>Speaker Patterns)]
+        INSTANOTE[(InstaNote Database)]
+    end
+
+    subgraph "External Systems"
+        ASR[ASR Processing Pipeline]
+        AUTH[Authentication System]
+    end
+
+    %% Frontend connections
+    UI --> API_GW
+    VD --> API_GW
+
+    %% API Gateway routing
+    API_GW --> ERS
+    API_GW --> RIS
+    API_GW --> CES
+    API_GW --> VS
+    API_GW --> UMS
+
+    %% Service interconnections
+    ERS --> RIS
+    RIS --> VDB
+    RIS --> RDB
+    CES --> VDB
+    CES --> CACHE
+    VS --> RDB
+    VS --> INSTANOTE
+    UMS --> AUTH
+
+    %% External integrations
+    CES --> ASR
+    VS --> INSTANOTE
+
+    %% Data flow
+    ERS -.->|Store Error Patterns| VDB
+    CES -.->|Retrieve Corrections| VDB
+    ASR -.->|Apply Corrections| CES
+
+    style UI fill:#e1f5fe
+    style VD fill:#e1f5fe
+    style VDB fill:#fff3e0
+    style RDB fill:#fff3e0
+    style ASR fill:#f3e5f5
+</div></code></pre>
+<hr>
+<h2 id="4-user-personas">4. User Personas</h2>
+<h3 id="41-primary-users">4.1 Primary Users</h3>
+<h4 id="411-quality-assurance-qa-personnel">4.1.1 Quality Assurance (QA) Personnel</h4>
+<ul>
+<li><strong>Role:</strong> Review and validate transcription quality</li>
+<li><strong>Goals:</strong> Efficiently identify and report errors, verify corrections</li>
+<li><strong>Pain Points:</strong> Long feedback loops, repetitive error handling</li>
+</ul>
+<h4 id="412-medical-transcription-specialists-mts">4.1.2 Medical Transcription Specialists (MTS)</h4>
+<ul>
+<li><strong>Role:</strong> Post-process ASR drafts to improve quality</li>
+<li><strong>Goals:</strong> Focus on complex corrections rather than repetitive errors</li>
+<li><strong>Pain Points:</strong> Handling same speaker errors repeatedly</li>
+</ul>
+<h3 id="42-secondary-users">4.2 Secondary Users</h3>
+<h4 id="421-system-administrators">4.2.1 System Administrators</h4>
+<ul>
+<li><strong>Role:</strong> Maintain and monitor system performance</li>
+<li><strong>Goals:</strong> Ensure system reliability and data integrity</li>
+</ul>
+<h2 id="5-user-workflows">5. User Workflows</h2>
+<h3 id="51-error-reporting-workflow">5.1 Error Reporting Workflow</h3>
+<p>The following diagram shows the complete workflow for QA personnel reporting errors:</p>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart TD
+    A[QA Reviews ASR Draft] --> B{Error Identified?}
+    B -->|No| C[Continue Review]
+    B -->|Yes| D[Select Error Text]
+    D --> E[Identify Speaker]
+    E --> F[Categorize Error Type]
+    F --> G[Provide Correction]
+    G --> H[Add Context/Metadata]
+    H --> I[Submit Error Report]
+    I --> J[System Validates Input]
+    J --> K{Validation Passed?}
+    K -->|No| L[Display Error Message]
+    L --> F
+    K -->|Yes| M[Store in RAG Database]
+    M --> N[Generate Confirmation]
+    N --> O[Update Error Tracking]
+    O --> P[Notify Relevant Teams]
+    P --> Q[End Process]
+    C --> R{More Content?}
+    R -->|Yes| A
+    R -->|No| Q
+
+    style A fill:#e3f2fd
+    style D fill:#fff3e0
+    style I fill:#e8f5e8
+    style M fill:#fce4ec
+    style Q fill:#f3e5f5
+</div></code></pre>
+<h3 id="52-error-verification-workflow">5.2 Error Verification Workflow</h3>
+<p>The following diagram shows the verification process for applied corrections:</p>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart TD
+    A[QA Accesses Verification Dashboard] --> B[Filter by Speaker/Date Range]
+    B --> C[View Recent Corrections Applied]
+    C --> D[Select Correction to Verify]
+    D --> E[Compare Original vs Corrected Text]
+    E --> F{Correction Accurate?}
+    F -->|Yes| G[Mark as Verified/Approved]
+    F -->|No| H[Mark as Incorrect]
+    H --> I[Provide Feedback]
+    I --> J[Update Learning Model]
+    G --> K[Update Success Metrics]
+    J --> L[Retrain Correction Pattern]
+    K --> M{More Corrections?}
+    L --> M
+    M -->|Yes| C
+    M -->|No| N[Generate Verification Report]
+    N --> O[End Session]
+
+    style A fill:#e3f2fd
+    style E fill:#fff3e0
+    style G fill:#e8f5e8
+    style H fill:#ffebee
+    style J fill:#fce4ec
+</div></code></pre>
+<hr>
+<h2 id="6-user-stories">6. User Stories</h2>
+<h3 id="61-epic-1-error-reporting-and-submission">6.1 Epic 1: Error Reporting and Submission</h3>
+<h4 id="611-us-11-error-text-selection">6.1.1 US-1.1: Error Text Selection</h4>
+<p><strong>As a QA personnel</strong>, I want to select specific text segments in ASR drafts that contain errors so that I can precisely identify problematic content for correction.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox0"><label for="checkbox0">I can click and drag to select text in the ASR draft interface</label></li>
+<li><input type="checkbox" id="checkbox1"><label for="checkbox1">Selected text is highlighted with a distinct color</label></li>
+<li><input type="checkbox" id="checkbox2"><label for="checkbox2">I can select multiple non-contiguous text segments</label></li>
+<li><input type="checkbox" id="checkbox3"><label for="checkbox3">The system captures the exact position and timestamp of selected text</label></li>
+<li><input type="checkbox" id="checkbox4"><label for="checkbox4">I can deselect text by clicking outside the selection</label></li>
+</ul>
+<p><strong>Story Points:</strong> 5
+<strong>Priority:</strong> High</p>
+<h4 id="612-us-12-speaker-association">6.1.2 US-1.2: Speaker Association</h4>
+<p><strong>As a QA personnel</strong>, I want to associate reported errors with specific speakers so that the system can learn speaker-specific error patterns.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox5"><label for="checkbox5">I can identify the speaker from a dropdown list of available speakers</label></li>
+<li><input type="checkbox" id="checkbox6"><label for="checkbox6">The system auto-suggests the speaker based on the current job context</label></li>
+<li><input type="checkbox" id="checkbox7"><label for="checkbox7">I can search for speakers by name or ID</label></li>
+<li><input type="checkbox" id="checkbox8"><label for="checkbox8">Speaker information is mandatory for error submission</label></li>
+<li><input type="checkbox" id="checkbox9"><label for="checkbox9">The system validates speaker existence before submission</label></li>
+</ul>
+<p><strong>Story Points:</strong> 3
+<strong>Priority:</strong> High</p>
+<h4 id="613-us-13-error-categorization">6.1.3 US-1.3: Error Categorization</h4>
+<p><strong>As a QA personnel</strong>, I want to categorize errors by type so that the system can apply appropriate correction strategies.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox10"><label for="checkbox10">I can select from predefined error categories (pronunciation, medical terminology, grammar, etc.)</label></li>
+<li><input type="checkbox" id="checkbox11"><label for="checkbox11">I can select multiple categories for a single error</label></li>
+<li><input type="checkbox" id="checkbox12"><label for="checkbox12">I can add custom categories with proper justification</label></li>
+<li><input type="checkbox" id="checkbox13"><label for="checkbox13">Category selection is mandatory for error submission</label></li>
+<li><input type="checkbox" id="checkbox14"><label for="checkbox14">The system provides category descriptions and examples</label></li>
+</ul>
+<p><strong>Story Points:</strong> 5
+<strong>Priority:</strong> Medium</p>
+<h4 id="614-us-14-correction-provision">6.1.4 US-1.4: Correction Provision</h4>
+<p><strong>As a QA personnel</strong>, I want to provide the correct text for identified errors so that the system can learn the appropriate corrections.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox15"><label for="checkbox15">I can enter corrected text in a dedicated input field</label></li>
+<li><input type="checkbox" id="checkbox16"><label for="checkbox16">The system validates that correction text is different from original</label></li>
+<li><input type="checkbox" id="checkbox17"><label for="checkbox17">I can preview the correction before submission</label></li>
+<li><input type="checkbox" id="checkbox18"><label for="checkbox18">Character limits are enforced and displayed</label></li>
+<li><input type="checkbox" id="checkbox19"><label for="checkbox19">The system prevents submission of empty corrections</label></li>
+</ul>
+<p><strong>Story Points:</strong> 3
+<strong>Priority:</strong> High</p>
+<h4 id="615-us-15-contextual-metadata">6.1.5 US-1.5: Contextual Metadata</h4>
+<p><strong>As a QA personnel</strong>, I want to provide contextual information about errors so that corrections can be applied more accurately.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox20"><label for="checkbox20">I can add notes about the error context</label></li>
+<li><input type="checkbox" id="checkbox21"><label for="checkbox21">I can specify error severity level (low, medium, high, critical)</label></li>
+<li><input type="checkbox" id="checkbox22"><label for="checkbox22">I can indicate if the error affects medical accuracy</label></li>
+<li><input type="checkbox" id="checkbox23"><label for="checkbox23">Audio quality indicators are automatically captured</label></li>
+<li><input type="checkbox" id="checkbox24"><label for="checkbox24">I can add tags for better searchability</label></li>
+</ul>
+<p><strong>Story Points:</strong> 5
+<strong>Priority:</strong> Medium</p>
+<h4 id="616-us-16-vector-similarity-analysis">6.1.6 US-1.6: Vector Similarity Analysis</h4>
+<p><strong>As a QA personnel</strong>, I want the system to automatically find similar error patterns using vector similarity so that I can identify recurring issues across different speakers and contexts.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox25"><label for="checkbox25">The system generates vector embeddings for all error and correction text</label></li>
+<li><input type="checkbox" id="checkbox26"><label for="checkbox26">I can view similarity scores for related error patterns</label></li>
+<li><input type="checkbox" id="checkbox27"><label for="checkbox27">The system suggests similar errors from other speakers with configurable similarity thresholds</label></li>
+<li><input type="checkbox" id="checkbox28"><label for="checkbox28">I can filter similarity results by ASR engine, note type, and error classification</label></li>
+<li><input type="checkbox" id="checkbox29"><label for="checkbox29">Quality metrics (WER, SER, edit percentages) are displayed for similar patterns</label></li>
+</ul>
+<p><strong>Story Points:</strong> 8
+<strong>Priority:</strong> High</p>
+<h3 id="62-epic-2-error-verification-and-validation">6.2 Epic 2: Error Verification and Validation</h3>
+<h4 id="621-us-21-verification-dashboard-access">6.2.1 US-2.1: Verification Dashboard Access</h4>
+<p><strong>As a QA personnel</strong>, I want to access a verification dashboard so that I can review and validate applied corrections.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox30"><label for="checkbox30">I can access the dashboard through the main navigation</label></li>
+<li><input type="checkbox" id="checkbox31"><label for="checkbox31">The dashboard loads within 3 seconds</label></li>
+<li><input type="checkbox" id="checkbox32"><label for="checkbox32">I can see a summary of recent corrections applied</label></li>
+<li><input type="checkbox" id="checkbox33"><label for="checkbox33">The interface is responsive and works on tablets</label></li>
+<li><input type="checkbox" id="checkbox34"><label for="checkbox34">I can bookmark specific dashboard views</label></li>
+</ul>
+<p><strong>Story Points:</strong> 3
+<strong>Priority:</strong> High</p>
+<h4 id="622-us-22-correction-filtering-and-search">6.2.2 US-2.2: Correction Filtering and Search</h4>
+<p><strong>As a QA personnel</strong>, I want to filter and search corrections so that I can efficiently find specific items to verify.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox35"><label for="checkbox35">I can filter by speaker, date range, error type, and correction status</label></li>
+<li><input type="checkbox" id="checkbox36"><label for="checkbox36">I can search by keywords in original or corrected text</label></li>
+<li><input type="checkbox" id="checkbox37"><label for="checkbox37">I can sort results by date, speaker, or correction confidence</label></li>
+<li><input type="checkbox" id="checkbox38"><label for="checkbox38">Filter combinations work correctly together</label></li>
+<li><input type="checkbox" id="checkbox39"><label for="checkbox39">Search results are highlighted and paginated</label></li>
+</ul>
+<p><strong>Story Points:</strong> 8
+<strong>Priority:</strong> Medium</p>
+<h4 id="623-us-23-beforeafter-comparison">6.2.3 US-2.3: Before/After Comparison</h4>
+<p><strong>As a QA personnel</strong>, I want to see before and after text comparison so that I can evaluate correction accuracy.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox40"><label for="checkbox40">I can view original and corrected text side by side</label></li>
+<li><input type="checkbox" id="checkbox41"><label for="checkbox41">Differences are highlighted with color coding</label></li>
+<li><input type="checkbox" id="checkbox42"><label for="checkbox42">I can see the confidence score for each correction</label></li>
+<li><input type="checkbox" id="checkbox43"><label for="checkbox43">Context around the correction is provided</label></li>
+<li><input type="checkbox" id="checkbox44"><label for="checkbox44">I can expand/collapse the comparison view</label></li>
+</ul>
+<p><strong>Story Points:</strong> 5
+<strong>Priority:</strong> High</p>
+<h4 id="624-us-24-correction-approvalrejection">6.2.4 US-2.4: Correction Approval/Rejection</h4>
+<p><strong>As a QA personnel</strong>, I want to approve or reject applied corrections so that the system can improve its learning accuracy.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox45"><label for="checkbox45">I can mark corrections as approved or rejected with one click</label></li>
+<li><input type="checkbox" id="checkbox46"><label for="checkbox46">I can provide feedback comments for rejected corrections</label></li>
+<li><input type="checkbox" id="checkbox47"><label for="checkbox47">Bulk approval/rejection is available for multiple items</label></li>
+<li><input type="checkbox" id="checkbox48"><label for="checkbox48">My decisions are immediately reflected in the system</label></li>
+<li><input type="checkbox" id="checkbox49"><label for="checkbox49">I can undo recent approval/rejection actions</label></li>
+</ul>
+<p><strong>Story Points:</strong> 5
+<strong>Priority:</strong> High</p>
+<h3 id="63-epic-3-system-administration-and-monitoring">6.3 Epic 3: System Administration and Monitoring</h3>
+<h4 id="631-us-31-system-performance-monitoring">6.3.1 US-3.1: System Performance Monitoring</h4>
+<p><strong>As a System Administrator</strong>, I want to monitor system performance so that I can ensure optimal operation and identify issues early.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox50"><label for="checkbox50">I can view real-time system metrics (response times, error rates, throughput)</label></li>
+<li><input type="checkbox" id="checkbox51"><label for="checkbox51">I can set up alerts for performance thresholds</label></li>
+<li><input type="checkbox" id="checkbox52"><label for="checkbox52">Historical performance data is available for analysis</label></li>
+<li><input type="checkbox" id="checkbox53"><label for="checkbox53">I can drill down into specific service performance</label></li>
+<li><input type="checkbox" id="checkbox54"><label for="checkbox54">Dashboard auto-refreshes with configurable intervals</label></li>
+</ul>
+<p><strong>Story Points:</strong> 8
+<strong>Priority:</strong> Medium</p>
+<h4 id="632-us-32-user-activity-monitoring">6.3.2 US-3.2: User Activity Monitoring</h4>
+<p><strong>As a System Administrator</strong>, I want to monitor user activity so that I can track system adoption and identify training needs.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox55"><label for="checkbox55">I can view user login patterns and session durations</label></li>
+<li><input type="checkbox" id="checkbox56"><label for="checkbox56">I can see error reporting and verification activity by user</label></li>
+<li><input type="checkbox" id="checkbox57"><label for="checkbox57">Usage statistics are available in exportable formats</label></li>
+<li><input type="checkbox" id="checkbox58"><label for="checkbox58">I can identify inactive users and high-volume users</label></li>
+<li><input type="checkbox" id="checkbox59"><label for="checkbox59">Privacy controls ensure compliance with data protection policies</label></li>
+</ul>
+<p><strong>Story Points:</strong> 5
+<strong>Priority:</strong> Low</p>
+<h3 id="64-epic-4-mts-integration-and-workflow">6.4 Epic 4: MTS Integration and Workflow</h3>
+<h4 id="641-us-41-automated-correction-notifications">6.4.1 US-4.1: Automated Correction Notifications</h4>
+<p><strong>As an MTS</strong>, I want to be notified when automated corrections are applied to my assigned jobs so that I can focus on remaining issues.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox60"><label for="checkbox60">I receive notifications for jobs with applied corrections</label></li>
+<li><input type="checkbox" id="checkbox61"><label for="checkbox61">Notifications include summary of corrections made</label></li>
+<li><input type="checkbox" id="checkbox62"><label for="checkbox62">I can configure notification preferences (email, in-app, etc.)</label></li>
+<li><input type="checkbox" id="checkbox63"><label for="checkbox63">Notifications are grouped by job to avoid spam</label></li>
+<li><input type="checkbox" id="checkbox64"><label for="checkbox64">I can mark notifications as read/unread</label></li>
+</ul>
+<p><strong>Story Points:</strong> 5
+<strong>Priority:</strong> Medium</p>
+<h4 id="642-us-42-correction-review-interface">6.4.2 US-4.2: Correction Review Interface</h4>
+<p><strong>As an MTS</strong>, I want to review automated corrections in my workflow so that I can validate them before final submission.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox65"><label for="checkbox65">Automated corrections are clearly marked in the draft</label></li>
+<li><input type="checkbox" id="checkbox66"><label for="checkbox66">I can see the confidence score for each correction</label></li>
+<li><input type="checkbox" id="checkbox67"><label for="checkbox67">I can accept, modify, or reject individual corrections</label></li>
+<li><input type="checkbox" id="checkbox68"><label for="checkbox68">My decisions feed back into the learning system</label></li>
+<li><input type="checkbox" id="checkbox69"><label for="checkbox69">The interface integrates seamlessly with existing MTS tools</label></li>
+</ul>
+<p><strong>Story Points:</strong> 8
+<strong>Priority:</strong> Medium</p>
+<h3 id="65-epic-5-error-handling-and-edge-cases">6.5 Epic 5: Error Handling and Edge Cases</h3>
+<h4 id="651-us-51-network-connectivity-issues">6.5.1 US-5.1: Network Connectivity Issues</h4>
+<p><strong>As a QA personnel</strong>, I want the system to handle network issues gracefully so that I don't lose my work during error reporting.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox70"><label for="checkbox70">The system saves draft error reports locally during network issues</label></li>
+<li><input type="checkbox" id="checkbox71"><label for="checkbox71">I receive clear notifications about connectivity status</label></li>
+<li><input type="checkbox" id="checkbox72"><label for="checkbox72">Saved drafts are automatically submitted when connectivity is restored</label></li>
+<li><input type="checkbox" id="checkbox73"><label for="checkbox73">I can continue working offline with limited functionality</label></li>
+<li><input type="checkbox" id="checkbox74"><label for="checkbox74">No data is lost during network interruptions</label></li>
+</ul>
+<p><strong>Story Points:</strong> 8
+<strong>Priority:</strong> Medium</p>
+<h4 id="652-us-52-invalid-data-handling">6.5.2 US-5.2: Invalid Data Handling</h4>
+<p><strong>As a QA personnel</strong>, I want clear error messages when I submit invalid data so that I can correct issues quickly.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox75"><label for="checkbox75">Error messages are specific and actionable</label></li>
+<li><input type="checkbox" id="checkbox76"><label for="checkbox76">Invalid fields are clearly highlighted</label></li>
+<li><input type="checkbox" id="checkbox77"><label for="checkbox77">I can see all validation errors at once</label></li>
+<li><input type="checkbox" id="checkbox78"><label for="checkbox78">The system suggests corrections for common mistakes</label></li>
+<li><input type="checkbox" id="checkbox79"><label for="checkbox79">Form data is preserved when validation fails</label></li>
+</ul>
+<p><strong>Story Points:</strong> 5
+<strong>Priority:</strong> Medium</p>
+<h4 id="653-us-53-system-overload-management">6.5.3 US-5.3: System Overload Management</h4>
+<p><strong>As any user</strong>, I want the system to remain responsive during high load periods so that my productivity is not impacted.</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox80"><label for="checkbox80">The system provides graceful degradation during high load</label></li>
+<li><input type="checkbox" id="checkbox81"><label for="checkbox81">Users receive notifications about system status</label></li>
+<li><input type="checkbox" id="checkbox82"><label for="checkbox82">Critical functions remain available even under load</label></li>
+<li><input type="checkbox" id="checkbox83"><label for="checkbox83">Queue management prevents system crashes</label></li>
+<li><input type="checkbox" id="checkbox84"><label for="checkbox84">Load balancing distributes traffic effectively</label></li>
+</ul>
+<p><strong>Story Points:</strong> 13
+<strong>Priority:</strong> High</p>
+<hr>
+<h2 id="7-functional-requirements">7. Functional Requirements</h2>
+<h3 id="71-fr-1-error-reporting-interface">7.1 FR-1: Error Reporting Interface</h3>
+<h4 id="711-fr-11-error-identification">7.1.1 FR-1.1: Error Identification</h4>
+<ul>
+<li><strong>Requirement:</strong> QA users must be able to select specific text segments in ASR drafts that contain errors</li>
+<li><strong>Acceptance Criteria:</strong>
+<ul>
+<li>Text selection interface with highlighting capability</li>
+<li>Error location tracking (timestamp, position)</li>
+<li>Speaker identification for the error</li>
+</ul>
+</li>
+</ul>
+<h4 id="712-fr-12-error-categorization">7.1.2 FR-1.2: Error Categorization</h4>
+<ul>
+<li><strong>Requirement:</strong> System must provide error classification options</li>
+<li><strong>Categories:</strong>
+<ul>
+<li>Pronunciation errors</li>
+<li>Medical terminology errors</li>
+<li>Grammar/syntax errors</li>
+<li>Speaker-specific patterns</li>
+<li>Context-specific errors</li>
+</ul>
+</li>
+<li><strong>Acceptance Criteria:</strong>
+<ul>
+<li>Dropdown/checkbox interface for category selection</li>
+<li>Ability to select multiple categories per error</li>
+<li>Custom category creation capability</li>
+</ul>
+</li>
+</ul>
+<h4 id="713-fr-13-correction-submission">7.1.3 FR-1.3: Correction Submission</h4>
+<ul>
+<li><strong>Requirement:</strong> QA users must provide correct text for identified errors</li>
+<li><strong>Acceptance Criteria:</strong>
+<ul>
+<li>Text input field for correction</li>
+<li>Character limit validation</li>
+<li>Correction preview functionality</li>
+<li>Mandatory correction field validation</li>
+</ul>
+</li>
+</ul>
+<h4 id="714-fr-14-metadata-capture">7.1.4 FR-1.4: Metadata Capture</h4>
+<ul>
+<li><strong>Requirement:</strong> System must capture relevant metadata for targeted search and correction</li>
+<li><strong>Metadata Fields:</strong>
+<ul>
+<li>Speaker ID</li>
+<li>Job ID</li>
+<li>Timestamp</li>
+<li>Audio quality indicators</li>
+<li>Context information</li>
+<li>Error severity level</li>
+</ul>
+</li>
+<li><strong>Acceptance Criteria:</strong>
+<ul>
+<li>Automatic metadata population where possible</li>
+<li>Manual metadata entry interface</li>
+<li>Metadata validation rules</li>
+</ul>
+</li>
+</ul>
+<h3 id="72-fr-2-rag-database-integration">7.2 FR-2: RAG Database Integration</h3>
+<h4 id="721-fr-21-error-registration-api">7.2.1 FR-2.1: Error Registration API</h4>
+<ul>
+<li><strong>Requirement:</strong> System must provide API endpoints for registering errors in the RAG database</li>
+<li><strong>Endpoints:</strong>
+<ul>
+<li><code>POST /api/errors/register</code> - Register new error</li>
+<li><code>GET /api/errors/speaker/{speakerId}</code> - Retrieve speaker-specific errors</li>
+<li><code>PUT /api/errors/{errorId}</code> - Update error information</li>
+<li><code>DELETE /api/errors/{errorId}</code> - Remove error entry</li>
+</ul>
+</li>
+<li><strong>Acceptance Criteria:</strong>
+<ul>
+<li>RESTful API design</li>
+<li>JSON request/response format</li>
+<li>Authentication and authorization</li>
+<li>Rate limiting implementation</li>
+</ul>
+</li>
+</ul>
+<h4 id="722-fr-22-vector-database-storage">7.2.2 FR-2.2: Vector Database Storage</h4>
+<ul>
+<li><strong>Requirement:</strong> Errors and corrections must be stored in vector format for similarity search</li>
+<li><strong>Acceptance Criteria:</strong>
+<ul>
+<li>Text embedding generation for error sentences and corrected sentences using 1536-dimensional vectors</li>
+<li>Speaker-specific vector clustering with hash indexing on speaker_id</li>
+<li>Efficient similarity search capability with cosine similarity scoring</li>
+<li>Metadata indexing for fast retrieval including:
+<ul>
+<li>ASR engine categorization (gemini_2.5_pro, gemini_2.5_flash, pivo)</li>
+<li>Note type classification with inverted indexing</li>
+<li>Error type classification with inverted indexing</li>
+<li>B-tree indexing on timestamps</li>
+<li>Hash indexing on source_document_id</li>
+</ul>
+</li>
+<li>Quality metrics storage including WER, SER, and edit operation percentages</li>
+<li>Similarity score tracking (0.0-1.0 range)</li>
+</ul>
+</li>
+</ul>
+<h4 id="723-fr-23-vector-similarity-search">7.2.3 FR-2.3: Vector Similarity Search</h4>
+<ul>
+<li><strong>Requirement:</strong> System must provide efficient similarity search capabilities for error patterns</li>
+<li><strong>Acceptance Criteria:</strong>
+<ul>
+<li>Cosine similarity search with configurable thresholds</li>
+<li>Speaker-specific pattern filtering</li>
+<li>Multi-dimensional filtering by ASR engine, note type, and error classification</li>
+<li>Real-time similarity scoring and ranking</li>
+<li>Support for batch similarity operations</li>
+</ul>
+</li>
+</ul>
+<h4 id="724-fr-24-error-pattern-learning">7.2.4 FR-2.4: Error Pattern Learning</h4>
+<ul>
+<li><strong>Requirement:</strong> System must identify and learn from error patterns for specific speakers</li>
+<li><strong>Acceptance Criteria:</strong>
+<ul>
+<li>Pattern recognition algorithms using vector embeddings</li>
+<li>Speaker-specific error profiling with quality metrics</li>
+<li>Confidence scoring for corrections based on similarity scores</li>
+<li>Continuous learning capability with feedback integration</li>
+<li>Quality metrics tracking (WER, SER, edit operation percentages)</li>
+</ul>
+</li>
+</ul>
+<h3 id="73-api-interaction-sequences">7.3 API Interaction Sequences</h3>
+<h4 id="731-error-reporting-api-sequence">7.3.1 Error Reporting API Sequence</h4>
+<p>The following sequence diagram shows the API interactions during error reporting:</p>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant QA as QA User
+    participant UI as Error Reporting UI
+    participant API as API Gateway
+    participant ERS as Error Reporting Service
+    participant RIS as RAG Integration Service
+    participant VDB as Vector Database
+    participant RDB as Relational Database
+    participant CACHE as Redis Cache
+
+    QA->>UI: Select error text and provide correction
+    UI->>UI: Validate input data
+    UI->>API: POST /api/errors/report
+
+    API->>API: Authenticate user
+    API->>API: Validate request payload
+    API->>ERS: Forward error report
+
+    ERS->>RDB: Validate speaker and job IDs
+    RDB-->>ERS: Return validation results
+
+    alt Validation successful
+        ERS->>RIS: Process error for RAG storage
+        RIS->>RIS: Generate text embeddings
+        RIS->>VDB: Store error pattern vectors
+        VDB-->>RIS: Confirm storage
+
+        RIS->>RDB: Store metadata and audit trail
+        RDB-->>RIS: Confirm metadata storage
+
+        RIS->>CACHE: Cache speaker error patterns
+        CACHE-->>RIS: Confirm caching
+
+        RIS-->>ERS: Return success response
+        ERS-->>API: Return success with error ID
+        API-->>UI: Return 201 Created
+        UI-->>QA: Display success confirmation
+
+    else Validation failed
+        ERS-->>API: Return validation error
+        API-->>UI: Return 400 Bad Request
+        UI-->>QA: Display error message
+    end
+
+    Note over QA,CACHE: Error successfully stored and ready for pattern learning
+</div></code></pre>
+<h4 id="732-automated-correction-api-sequence">7.3.2 Automated Correction API Sequence</h4>
+<p>The following sequence diagram shows the API interactions during automated correction:</p>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant ASR as ASR Pipeline
+    participant CES as Correction Engine Service
+    participant VDB as Vector Database
+    participant CACHE as Redis Cache
+    participant RDB as Relational Database
+    participant MTS as MTS Interface
+
+    ASR->>CES: New ASR draft with speaker ID
+    CES->>CACHE: Check cached patterns for speaker
+
+    alt Patterns found in cache
+        CACHE-->>CES: Return cached error patterns
+    else No cache hit
+        CES->>VDB: Query speaker-specific patterns
+        VDB-->>CES: Return matching patterns
+        CES->>CACHE: Cache patterns for future use
+    end
+
+    CES->>CES: Analyze draft for pattern matches
+    CES->>CES: Calculate confidence scores
+
+    loop For each potential correction
+        CES->>CES: Apply confidence threshold
+        alt Confidence above threshold
+            CES->>CES: Apply correction to draft
+            CES->>RDB: Log correction applied
+        else Low confidence
+            CES->>CES: Flag for manual review
+        end
+    end
+
+    CES->>RDB: Store correction session metadata
+    CES-->>ASR: Return corrected draft
+    ASR->>MTS: Present draft with corrections highlighted
+
+    Note over ASR,MTS: Corrections applied automatically based on learned patterns
+</div></code></pre>
+<h3 id="74-fr-3-automated-correction-engine">7.4 FR-3: Automated Correction Engine</h3>
+<h4 id="741-fr-31-real-time-correction-application">7.4.1 FR-3.1: Real-time Correction Application</h4>
+<ul>
+<li><strong>Requirement:</strong> System must automatically apply learned corrections to new ASR drafts for known speakers</li>
+<li><strong>Acceptance Criteria:</strong>
+<ul>
+<li>Integration with ASR draft processing pipeline</li>
+<li>Speaker identification and matching</li>
+<li>Confidence-based correction application</li>
+<li>Correction logging and tracking</li>
+</ul>
+</li>
+</ul>
+<h4 id="742-fr-32-correction-confidence-scoring">7.4.2 FR-3.2: Correction Confidence Scoring</h4>
+<ul>
+<li><strong>Requirement:</strong> System must provide confidence scores for applied corrections</li>
+<li><strong>Acceptance Criteria:</strong>
+<ul>
+<li>Confidence threshold configuration</li>
+<li>Score-based correction filtering</li>
+<li>Manual review flagging for low-confidence corrections</li>
+</ul>
+</li>
+</ul>
+<h3 id="75-fr-4-verification-system">7.5 FR-4: Verification System</h3>
+<h4 id="751-fr-41-verification-dashboard">7.5.1 FR-4.1: Verification Dashboard</h4>
+<ul>
+<li><strong>Requirement:</strong> QA users must have access to a dashboard for verifying error corrections</li>
+<li><strong>Features:</strong>
+<ul>
+<li>List of recent corrections applied</li>
+<li>Before/after comparison view</li>
+<li>Correction effectiveness metrics</li>
+<li>Speaker-specific correction history</li>
+</ul>
+</li>
+<li><strong>Acceptance Criteria:</strong>
+<ul>
+<li>Intuitive dashboard interface</li>
+<li>Real-time data updates</li>
+<li>Export functionality for reports</li>
+<li>Filter and search capabilities</li>
+</ul>
+</li>
+</ul>
+<h4 id="752-fr-42-correction-validation">7.5.2 FR-4.2: Correction Validation</h4>
+<ul>
+<li><strong>Requirement:</strong> QA users must be able to validate the effectiveness of applied corrections</li>
+<li><strong>Acceptance Criteria:</strong>
+<ul>
+<li>Approve/reject correction interface</li>
+<li>Feedback submission for incorrect corrections</li>
+<li>Correction quality scoring</li>
+<li>Learning system feedback loop</li>
+</ul>
+</li>
+</ul>
+<h3 id="76-error-correction-pipeline">7.6 Error Correction Pipeline</h3>
+<p>The following flowchart illustrates the complete error correction pipeline from pattern learning to application:</p>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart TD
+    A[New ASR Draft Generated] --> B[Extract Speaker ID]
+    B --> C{Speaker Has Error Patterns?}
+
+    C -->|No| D[Process Draft Normally]
+    C -->|Yes| E[Retrieve Speaker Patterns from Vector DB]
+
+    E --> F[Analyze Draft Text for Pattern Matches]
+    F --> G{Patterns Found?}
+
+    G -->|No| D
+    G -->|Yes| H[Calculate Confidence Scores]
+
+    H --> I{Confidence > Threshold?}
+    I -->|No| J[Flag for Manual Review]
+    I -->|Yes| K[Apply Automatic Correction]
+
+    K --> L[Log Correction Applied]
+    L --> M[Update Draft with Corrections]
+    M --> N[Highlight Corrections for MTS]
+
+    J --> O[Add to Manual Review Queue]
+    O --> P[MTS Reviews Flagged Items]
+    P --> Q{MTS Accepts Suggestion?}
+
+    Q -->|Yes| R[Apply Manual Correction]
+    Q -->|No| S[Keep Original Text]
+
+    R --> T[Update Pattern Confidence]
+    S --> U[Decrease Pattern Confidence]
+
+    T --> V[Continue MTS Workflow]
+    U --> V
+    N --> V
+    D --> V
+
+    V --> W[QA Reviews Final Draft]
+    W --> X{New Errors Found?}
+
+    X -->|Yes| Y[Report New Errors]
+    X -->|No| Z[Complete Job]
+
+    Y --> AA[Update Vector DB with New Patterns]
+    AA --> BB[Retrain Correction Models]
+    BB --> Z
+
+    style A fill:#e3f2fd
+    style K fill:#e8f5e8
+    style Y fill:#fff3e0
+    style AA fill:#fce4ec
+    style Z fill:#f3e5f5
+</div></code></pre>
+<hr>
+<h2 id="8-technical-requirements">8. Technical Requirements</h2>
+<h3 id="81-tr-1-system-architecture">8.1 TR-1: System Architecture</h3>
+<h4 id="811-tr-11-microservices-architecture">8.1.1 TR-1.1: Microservices Architecture</h4>
+<ul>
+<li><strong>Requirement:</strong> System must be built using microservices architecture for scalability</li>
+<li><strong>Backend Technology:</strong> Python with FastAPI framework for high-performance API development</li>
+<li><strong>Components:</strong>
+<ul>
+<li>Error Reporting Service (Python/FastAPI)</li>
+<li>RAG Integration Service (Python/FastAPI)</li>
+<li>Correction Engine Service (Python/FastAPI)</li>
+<li>Verification Service (Python/FastAPI)</li>
+<li>User Management Service (Python/FastAPI)</li>
+</ul>
+</li>
+</ul>
+<h4 id="812-tr-12-database-requirements">8.1.2 TR-1.2: Database Requirements</h4>
+<ul>
+<li><strong>Vector Database:</strong> For storing 1536-dimensional embeddings and similarity search operations
+<ul>
+<li>Support for cosine similarity search</li>
+<li>Hash indexing on speaker_id and source_document_id</li>
+<li>Inverted indexing on categorical fields (note_type, error_type_classification)</li>
+<li>B-tree indexing on timestamp fields</li>
+<li>Storage for quality metrics (WER, SER, edit percentages)</li>
+</ul>
+</li>
+<li><strong>Relational Database:</strong> For metadata, user management, and audit trails</li>
+<li><strong>Cache Layer:</strong> Redis for performance optimization and speaker pattern caching</li>
+</ul>
+<h4 id="813-tr-13-integration-points">8.1.3 TR-1.3: Integration Points</h4>
+<ul>
+<li><strong>InstaNote Database:</strong> For retrieving speaker-specific jobs</li>
+<li><strong>ASR Processing Pipeline:</strong> For real-time correction application</li>
+<li><strong>Authentication System:</strong> SSO integration with existing systems</li>
+<li><strong>Vector Database Engine:</strong> Integration with vector similarity search engine supporting:
+<ul>
+<li>1536-dimensional embeddings (compatible with OpenAI text-embedding-3-large)</li>
+<li>Cosine similarity calculations</li>
+<li>Filtered search by metadata attributes</li>
+<li>Real-time indexing and updates</li>
+</ul>
+</li>
+</ul>
+<h4 id="814-tr-14-vector-database-specifications">8.1.4 TR-1.4: Vector Database Specifications</h4>
+<ul>
+<li><strong>Embedding Model:</strong> Support for 1536-dimensional float32 vectors</li>
+<li><strong>Similarity Metrics:</strong> Cosine similarity with configurable thresholds</li>
+<li><strong>Indexing Strategy:</strong>
+<ul>
+<li>Hash indexes on speaker_id and source_document_id for O(1) lookups</li>
+<li>Inverted indexes on categorical fields (note_type, error_type_classification)</li>
+<li>B-tree indexes on timestamp fields for range queries</li>
+</ul>
+</li>
+<li><strong>Metadata Storage:</strong> Co-located metadata with vector embeddings for efficient filtering</li>
+<li><strong>Quality Metrics Integration:</strong> Built-in support for WER, SER, and edit operation percentages</li>
+</ul>
+<h3 id="82-database-schema-design">8.2 Database Schema Design</h3>
+<p>The following Entity Relationship Diagram shows the core data model for the system:</p>
+<pre><code class="language-mermaid"><div class="mermaid">erDiagram
+    USERS {
+        uuid user_id PK
+        string username
+        string email
+        string role
+        timestamp created_at
+        timestamp last_login
+        boolean is_active
+    }
+
+    SPEAKERS {
+        uuid speaker_id PK
+        string speaker_name
+        string speaker_code
+        json metadata
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    JOBS {
+        uuid job_id PK
+        uuid speaker_id FK
+        string job_reference
+        text asr_draft
+        text processed_text
+        string status
+        timestamp created_at
+        timestamp completed_at
+    }
+
+    ERROR_REPORTS {
+        uuid error_id PK
+        uuid job_id FK
+        uuid speaker_id FK
+        uuid reported_by FK
+        text original_text
+        text corrected_text
+        json error_categories
+        text context_notes
+        string severity_level
+        integer start_position
+        integer end_position
+        timestamp error_timestamp
+        timestamp reported_at
+        string status
+    }
+
+    ERROR_SENTENCES {
+        uuid id PK
+        text text
+        uuid error_report_id FK
+    }
+
+    CORRECTED_SENTENCES {
+        uuid id PK
+        text text
+        uuid error_report_id FK
+    }
+
+    VECTOR_EMBEDDINGS {
+        uuid id PK
+        float32 vector[1536]
+        uuid error_sentence_id FK
+        uuid corrected_sentence_id FK
+    }
+
+    VECTOR_METADATA {
+        uuid id PK
+        string asr_engine "Hash index"
+        uuid speaker_id "Hash index"
+        string note_type "Inverted index"
+        float similarity_score "Range 0.0-1.0"
+        float wer_score
+        float ser_score
+        float insert_percent "Range 0.0-100.0"
+        float delete_percent "Range 0.0-100.0"
+        float move_percent "Range 0.0-100.0"
+        float edit_percent "Range 0.0-100.0"
+        timestamp timestamp "B-tree index"
+        uuid source_document_id "Hash index"
+        string error_type_classification "Inverted index"
+        uuid error_sentence_id FK
+        uuid corrected_sentence_id FK
+    }
+
+    ERROR_PATTERNS {
+        uuid pattern_id PK
+        uuid speaker_id FK
+        text pattern_text
+        text correction_text
+        string pattern_type
+        float confidence_score
+        integer occurrence_count
+        timestamp first_seen
+        timestamp last_updated
+        boolean is_active
+    }
+
+    CORRECTIONS_APPLIED {
+        uuid correction_id PK
+        uuid job_id FK
+        uuid pattern_id FK
+        uuid applied_by FK
+        text original_text
+        text corrected_text
+        float confidence_score
+        integer start_position
+        integer end_position
+        timestamp applied_at
+        string verification_status
+        uuid verified_by FK
+        timestamp verified_at
+        text verification_notes
+    }
+
+    VERIFICATION_SESSIONS {
+        uuid session_id PK
+        uuid user_id FK
+        timestamp session_start
+        timestamp session_end
+        integer corrections_reviewed
+        integer corrections_approved
+        integer corrections_rejected
+        json session_metadata
+    }
+
+    AUDIT_LOGS {
+        uuid log_id PK
+        uuid user_id FK
+        string action_type
+        string entity_type
+        uuid entity_id
+        json old_values
+        json new_values
+        timestamp action_timestamp
+        string ip_address
+        string user_agent
+    }
+
+    %% Relationships
+    USERS ||--o{ ERROR_REPORTS : "reports"
+    USERS ||--o{ CORRECTIONS_APPLIED : "applies"
+    USERS ||--o{ VERIFICATION_SESSIONS : "conducts"
+    USERS ||--o{ AUDIT_LOGS : "performs"
+
+    SPEAKERS ||--o{ JOBS : "has"
+    SPEAKERS ||--o{ ERROR_REPORTS : "associated_with"
+    SPEAKERS ||--o{ ERROR_PATTERNS : "has_patterns"
+
+    JOBS ||--o{ ERROR_REPORTS : "contains"
+    JOBS ||--o{ CORRECTIONS_APPLIED : "receives"
+
+    ERROR_REPORTS ||--o{ ERROR_PATTERNS : "generates"
+    ERROR_REPORTS ||--o{ ERROR_SENTENCES : "contains"
+    ERROR_REPORTS ||--o{ CORRECTED_SENTENCES : "contains"
+
+    ERROR_SENTENCES ||--o{ VECTOR_EMBEDDINGS : "has"
+    CORRECTED_SENTENCES ||--o{ VECTOR_EMBEDDINGS : "has"
+    ERROR_SENTENCES ||--o{ VECTOR_METADATA : "has"
+    CORRECTED_SENTENCES ||--o{ VECTOR_METADATA : "has"
+    ERROR_SENTENCES }o--|| CORRECTED_SENTENCES : "corrects"
+
+    ERROR_PATTERNS ||--o{ CORRECTIONS_APPLIED : "used_for"
+
+    CORRECTIONS_APPLIED }o--|| USERS : "verified_by"
+</div></code></pre>
+<h3 id="83-tr-2-performance-requirements">8.3 TR-2: Performance Requirements</h3>
+<h4 id="831-tr-21-response-time">8.3.1 TR-2.1: Response Time</h4>
+<ul>
+<li><strong>Error Submission:</strong> &lt; 2 seconds</li>
+<li><strong>Correction Application:</strong> &lt; 5 seconds</li>
+<li><strong>Dashboard Loading:</strong> &lt; 3 seconds</li>
+<li><strong>Search Operations:</strong> &lt; 1 second</li>
+<li><strong>Vector Embedding Generation:</strong> &lt; 500ms per text segment</li>
+<li><strong>Vector Similarity Search:</strong> &lt; 200ms for top-10 results</li>
+<li><strong>Batch Vector Operations:</strong> &lt; 5 seconds for 100 embeddings</li>
+</ul>
+<h4 id="832-tr-22-scalability">8.3.2 TR-2.2: Scalability</h4>
+<ul>
+<li><strong>Concurrent Users:</strong> Support 100+ concurrent QA users</li>
+<li><strong>Data Volume:</strong> Handle 10,000+ errors per day</li>
+<li><strong>Vector Storage:</strong> Scalable vector database supporting millions of 1536-dimensional embeddings</li>
+<li><strong>Similarity Search:</strong> Support 1000+ concurrent similarity queries</li>
+<li><strong>Index Performance:</strong> Maintain sub-200ms search times with 10M+ vectors</li>
+</ul>
+<h3 id="84-tr-3-security-requirements">8.4 TR-3: Security Requirements</h3>
+<h4 id="841-tr-31-data-protection">8.4.1 TR-3.1: Data Protection</h4>
+<ul>
+<li><strong>Encryption:</strong> All data encrypted at rest and in transit</li>
+<li><strong>Access Control:</strong> Role-based access control (RBAC)</li>
+<li><strong>Audit Logging:</strong> Complete audit trail for all operations</li>
+<li><strong>Data Privacy:</strong> Compliance with healthcare data regulations</li>
+</ul>
+<h4 id="842-tr-32-authentication">8.4.2 TR-3.2: Authentication</h4>
+<ul>
+<li><strong>SSO Integration:</strong> Single sign-on with existing systems</li>
+<li><strong>Session Management:</strong> Secure session handling</li>
+<li><strong>API Security:</strong> Token-based authentication for APIs</li>
+</ul>
+<hr>
+<h2 id="9-non-functional-requirements">9. Non-Functional Requirements</h2>
+<h3 id="91-nfr-1-usability">9.1 NFR-1: Usability</h3>
+<ul>
+<li><strong>Intuitive Interface:</strong> Minimal training required for QA users</li>
+<li><strong>Accessibility:</strong> WCAG 2.1 AA compliance</li>
+<li><strong>Mobile Responsive:</strong> Support for tablet and mobile devices</li>
+</ul>
+<h3 id="92-nfr-2-reliability">9.2 NFR-2: Reliability</h3>
+<ul>
+<li><strong>Uptime:</strong> 99.9% system availability</li>
+<li><strong>Data Integrity:</strong> Zero data loss tolerance</li>
+<li><strong>Backup:</strong> Automated daily backups with point-in-time recovery</li>
+</ul>
+<h3 id="93-nfr-3-compliance">9.3 NFR-3: Compliance</h3>
+<ul>
+<li><strong>HIPAA Compliance:</strong> Full compliance with healthcare data regulations</li>
+<li><strong>SOC 2:</strong> Security and availability compliance</li>
+<li><strong>Data Retention:</strong> Configurable data retention policies</li>
+</ul>
+<hr>
+<h2 id="10-success-metrics">10. Success Metrics</h2>
+<h3 id="101-primary-kpis">10.1 Primary KPIs</h3>
+<ol>
+<li><strong>Error Reduction Rate:</strong> 30% reduction in repetitive speaker-specific errors within 3 months</li>
+<li><strong>QA Efficiency:</strong> 25% reduction in time spent on repetitive error correction</li>
+<li><strong>Feedback Loop Time:</strong> Reduction from days to hours for error validation</li>
+<li><strong>System Adoption:</strong> 90% of QA personnel actively using the system within 6 months</li>
+</ol>
+<h3 id="102-secondary-metrics">10.2 Secondary Metrics</h3>
+<ol>
+<li><strong>Correction Accuracy:</strong> 95% accuracy rate for automated corrections</li>
+<li><strong>User Satisfaction:</strong> 4.5/5 average user satisfaction score</li>
+<li><strong>System Performance:</strong> 99.9% uptime with &lt; 3 second response times</li>
+<li><strong>Error Pattern Learning:</strong> 80% of reported errors successfully learned and applied</li>
+</ol>
+<hr>
+<h2 id="11-implementation-timeline">11. Implementation Timeline</h2>
+<h3 id="111-phase-1-foundation-months-1-2">11.1 Phase 1: Foundation (Months 1-2)</h3>
+<ul>
+<li><input type="checkbox" id="checkbox85"><label for="checkbox85">System architecture design and setup</label></li>
+<li><input type="checkbox" id="checkbox86"><label for="checkbox86">Basic error reporting interface</label></li>
+<li><input type="checkbox" id="checkbox87"><label for="checkbox87">RAG database integration</label></li>
+<li><input type="checkbox" id="checkbox88"><label for="checkbox88">Core API development</label></li>
+</ul>
+<h3 id="112-phase-2-core-functionality-months-3-4">11.2 Phase 2: Core Functionality (Months 3-4)</h3>
+<ul>
+<li><input type="checkbox" id="checkbox89"><label for="checkbox89">Error categorization and submission</label></li>
+<li><input type="checkbox" id="checkbox90"><label for="checkbox90">Automated correction engine</label></li>
+<li><input type="checkbox" id="checkbox91"><label for="checkbox91">Speaker-specific error learning</label></li>
+<li><input type="checkbox" id="checkbox92"><label for="checkbox92">Basic verification dashboard</label></li>
+</ul>
+<h3 id="113-phase-3-enhancement-months-5-6">11.3 Phase 3: Enhancement (Months 5-6)</h3>
+<ul>
+<li><input type="checkbox" id="checkbox93"><label for="checkbox93">Advanced verification features</label></li>
+<li><input type="checkbox" id="checkbox94"><label for="checkbox94">Performance optimization</label></li>
+<li><input type="checkbox" id="checkbox95"><label for="checkbox95">Comprehensive testing</label></li>
+<li><input type="checkbox" id="checkbox96"><label for="checkbox96">User training and documentation</label></li>
+</ul>
+<h3 id="114-phase-4-deployment-month-7">11.4 Phase 4: Deployment (Month 7)</h3>
+<ul>
+<li><input type="checkbox" id="checkbox97"><label for="checkbox97">Production deployment</label></li>
+<li><input type="checkbox" id="checkbox98"><label for="checkbox98">User onboarding</label></li>
+<li><input type="checkbox" id="checkbox99"><label for="checkbox99">Monitoring and support setup</label></li>
+<li><input type="checkbox" id="checkbox100"><label for="checkbox100">Success metrics tracking</label></li>
+</ul>
+<hr>
+<h2 id="12-constraints-and-assumptions">12. Constraints and Assumptions</h2>
+<h3 id="121-constraints">12.1 Constraints</h3>
+<ol>
+<li><strong>Copy-Paste Restriction:</strong> MTSs and QAs cannot copy and paste any part of the drafts</li>
+<li><strong>Integration Dependency:</strong> Must integrate with existing InstaNote Database</li>
+<li><strong>Compliance Requirements:</strong> Must maintain HIPAA compliance throughout</li>
+<li><strong>Performance Standards:</strong> Must not impact existing transcription workflow performance</li>
+</ol>
+<h3 id="122-assumptions">12.2 Assumptions</h3>
+<ol>
+<li><strong>Speaker Identification:</strong> Reliable speaker identification is available in ASR system</li>
+<li><strong>Data Quality:</strong> ASR drafts contain sufficient quality for error pattern learning</li>
+<li><strong>User Adoption:</strong> QA and MTS teams will actively participate in error reporting</li>
+<li><strong>Infrastructure:</strong> Adequate infrastructure available for vector database and processing</li>
+</ol>
+<hr>
+<h2 id="13-risk-assessment">13. Risk Assessment</h2>
+<h3 id="131-high-risk-items">13.1 High-Risk Items</h3>
+<ol>
+<li><strong>Integration Complexity:</strong> Complex integration with existing systems</li>
+<li><strong>Data Privacy:</strong> Handling sensitive medical transcription data</li>
+<li><strong>User Adoption:</strong> Resistance to workflow changes</li>
+</ol>
+<h3 id="132-mitigation-strategies">13.2 Mitigation Strategies</h3>
+<ol>
+<li><strong>Phased Implementation:</strong> Gradual rollout with pilot groups</li>
+<li><strong>Comprehensive Testing:</strong> Extensive testing in staging environment</li>
+<li><strong>User Training:</strong> Comprehensive training and support programs</li>
+<li><strong>Security Review:</strong> Regular security audits and compliance checks</li>
+</ol>
+<hr>
+<h2 id="14-appendices">14. Appendices</h2>
+<h3 id="141-appendix-a-api-specifications">14.1 Appendix A: API Specifications</h3>
+<h4 id="1411-core-api-endpoints">14.1.1 Core API Endpoints</h4>
+<h5 id="14111-error-reporting-apis">14.1.1.1 Error Reporting APIs</h5>
+<p><strong>POST /api/v1/errors/report</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"job_id"</span>: <span class="hljs-string">"uuid"</span>,
+  <span class="hljs-attr">"speaker_id"</span>: <span class="hljs-string">"uuid"</span>,
+  <span class="hljs-attr">"original_text"</span>: <span class="hljs-string">"string"</span>,
+  <span class="hljs-attr">"corrected_text"</span>: <span class="hljs-string">"string"</span>,
+  <span class="hljs-attr">"error_categories"</span>: [<span class="hljs-string">"pronunciation"</span>, <span class="hljs-string">"medical_terminology"</span>],
+  <span class="hljs-attr">"severity_level"</span>: <span class="hljs-string">"high|medium|low|critical"</span>,
+  <span class="hljs-attr">"start_position"</span>: <span class="hljs-number">150</span>,
+  <span class="hljs-attr">"end_position"</span>: <span class="hljs-number">165</span>,
+  <span class="hljs-attr">"context_notes"</span>: <span class="hljs-string">"string"</span>,
+  <span class="hljs-attr">"metadata"</span>: {
+    <span class="hljs-attr">"audio_quality"</span>: <span class="hljs-string">"good|fair|poor"</span>,
+    <span class="hljs-attr">"background_noise"</span>: <span class="hljs-string">"low|medium|high"</span>
+  }
+}
+</div></code></pre>
+<p><strong>GET /api/v1/errors/speaker/{speakerId}</strong></p>
+<ul>
+<li>Query Parameters: <code>page</code>, <code>limit</code>, <code>category</code>, <code>severity</code>, <code>date_from</code>, <code>date_to</code></li>
+<li>Returns: Paginated list of errors for specific speaker</li>
+</ul>
+<p><strong>PUT /api/v1/errors/{errorId}</strong></p>
+<ul>
+<li>Updates existing error report</li>
+<li>Requires appropriate permissions</li>
+</ul>
+<p><strong>DELETE /api/v1/errors/{errorId}</strong></p>
+<ul>
+<li>Soft delete with audit trail</li>
+<li>Admin permissions required</li>
+</ul>
+<h5 id="14112-correction-engine-apis">14.1.1.2 Correction Engine APIs</h5>
+<p><strong>POST /api/v1/corrections/apply</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"job_id"</span>: <span class="hljs-string">"uuid"</span>,
+  <span class="hljs-attr">"speaker_id"</span>: <span class="hljs-string">"uuid"</span>,
+  <span class="hljs-attr">"draft_text"</span>: <span class="hljs-string">"string"</span>,
+  <span class="hljs-attr">"confidence_threshold"</span>: <span class="hljs-number">0.8</span>
+}
+</div></code></pre>
+<p><strong>GET /api/v1/corrections/patterns/{speakerId}</strong></p>
+<ul>
+<li>Returns learned patterns for speaker</li>
+<li>Includes confidence scores and usage statistics</li>
+</ul>
+<p><strong>POST /api/v1/corrections/verify</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"correction_id"</span>: <span class="hljs-string">"uuid"</span>,
+  <span class="hljs-attr">"verification_status"</span>: <span class="hljs-string">"approved|rejected"</span>,
+  <span class="hljs-attr">"feedback_notes"</span>: <span class="hljs-string">"string"</span>
+}
+</div></code></pre>
+<h5 id="14113-vector-database-apis">14.1.1.3 Vector Database APIs</h5>
+<p><strong>POST /api/v1/vectors/embeddings/generate</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"text"</span>: <span class="hljs-string">"string"</span>,
+  <span class="hljs-attr">"type"</span>: <span class="hljs-string">"error_sentence|corrected_sentence"</span>
+}
+</div></code></pre>
+<p><strong>POST /api/v1/vectors/similarity/search</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"query_vector"</span>: [<span class="hljs-number">1536</span> float values],
+  <span class="hljs-attr">"speaker_id"</span>: <span class="hljs-string">"uuid"</span>,
+  <span class="hljs-attr">"similarity_threshold"</span>: <span class="hljs-number">0.8</span>,
+  <span class="hljs-attr">"limit"</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">"filters"</span>: {
+    <span class="hljs-attr">"asr_engine"</span>: <span class="hljs-string">"gemini_2.5_pro"</span>,
+    <span class="hljs-attr">"note_type"</span>: <span class="hljs-string">"string"</span>,
+    <span class="hljs-attr">"error_type_classification"</span>: <span class="hljs-string">"string"</span>
+  }
+}
+</div></code></pre>
+<p><strong>GET /api/v1/vectors/metadata/{vectorId}</strong></p>
+<ul>
+<li>Returns: Complete metadata for a specific vector embedding</li>
+<li>Includes: WER, SER, edit percentages, similarity scores</li>
+</ul>
+<p><strong>POST /api/v1/vectors/metadata/update</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"vector_id"</span>: <span class="hljs-string">"uuid"</span>,
+  <span class="hljs-attr">"metadata"</span>: {
+    <span class="hljs-attr">"wer_score"</span>: <span class="hljs-number">0.15</span>,
+    <span class="hljs-attr">"ser_score"</span>: <span class="hljs-number">0.08</span>,
+    <span class="hljs-attr">"insert_percent"</span>: <span class="hljs-number">5.2</span>,
+    <span class="hljs-attr">"delete_percent"</span>: <span class="hljs-number">3.1</span>,
+    <span class="hljs-attr">"move_percent"</span>: <span class="hljs-number">2.7</span>,
+    <span class="hljs-attr">"edit_percent"</span>: <span class="hljs-number">4.0</span>,
+    <span class="hljs-attr">"similarity_score"</span>: <span class="hljs-number">0.92</span>
+  }
+}
+</div></code></pre>
+<h5 id="14114-verification-apis">14.1.1.4 Verification APIs</h5>
+<p><strong>GET /api/v1/verification/dashboard</strong></p>
+<ul>
+<li>Query Parameters: <code>speaker_id</code>, <code>date_range</code>, <code>status</code>, <code>page</code>, <code>limit</code></li>
+<li>Returns: Dashboard data with corrections to verify</li>
+</ul>
+<p><strong>GET /api/v1/verification/sessions</strong></p>
+<ul>
+<li>Returns: User's verification session history</li>
+</ul>
+<p><strong>POST /api/v1/verification/session/start</strong></p>
+<ul>
+<li>Initiates new verification session</li>
+<li>Returns session ID for tracking</li>
+</ul>
+<h5 id="14115-analytics-apis">14.1.1.5 Analytics APIs</h5>
+<p><strong>GET /api/v1/analytics/error-trends</strong></p>
+<ul>
+<li>Query Parameters: <code>speaker_id</code>, <code>time_period</code>, <code>category</code></li>
+<li>Returns: Error trend analysis</li>
+</ul>
+<p><strong>GET /api/v1/analytics/correction-effectiveness</strong></p>
+<ul>
+<li>Returns: Metrics on correction accuracy and adoption</li>
+</ul>
+<h4 id="1412-api-response-formats">14.1.2 API Response Formats</h4>
+<p><strong>Success Response (200/201)</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"data"</span>: {},
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Operation completed successfully"</span>,
+  <span class="hljs-attr">"timestamp"</span>: <span class="hljs-string">"2025-08-05T10:30:00Z"</span>
+}
+</div></code></pre>
+<p><strong>Error Response (400/401/403/404/500)</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"error"</span>: {
+    <span class="hljs-attr">"code"</span>: <span class="hljs-string">"VALIDATION_ERROR"</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Invalid input data"</span>,
+    <span class="hljs-attr">"details"</span>: [
+      {
+        <span class="hljs-attr">"field"</span>: <span class="hljs-string">"speaker_id"</span>,
+        <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Speaker ID is required"</span>
+      }
+    ]
+  },
+  <span class="hljs-attr">"timestamp"</span>: <span class="hljs-string">"2025-08-05T10:30:00Z"</span>
+}
+</div></code></pre>
+<h3 id="142-appendix-b-data-models">14.2 Appendix B: Data Models</h3>
+<h4 id="1421-core-data-structures">14.2.1 Core Data Structures</h4>
+<p><strong>ErrorReport Model</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> BaseModel
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> List, Optional, Dict, Any
+<span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime
+<span class="hljs-keyword">from</span> enum <span class="hljs-keyword">import</span> Enum
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SeverityLevel</span><span class="hljs-params">(str, Enum)</span>:</span>
+    LOW = <span class="hljs-string">"low"</span>
+    MEDIUM = <span class="hljs-string">"medium"</span>
+    HIGH = <span class="hljs-string">"high"</span>
+    CRITICAL = <span class="hljs-string">"critical"</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorStatus</span><span class="hljs-params">(str, Enum)</span>:</span>
+    PENDING = <span class="hljs-string">"pending"</span>
+    PROCESSED = <span class="hljs-string">"processed"</span>
+    ARCHIVED = <span class="hljs-string">"archived"</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AudioQuality</span><span class="hljs-params">(str, Enum)</span>:</span>
+    GOOD = <span class="hljs-string">"good"</span>
+    FAIR = <span class="hljs-string">"fair"</span>
+    POOR = <span class="hljs-string">"poor"</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NoiseLevel</span><span class="hljs-params">(str, Enum)</span>:</span>
+    LOW = <span class="hljs-string">"low"</span>
+    MEDIUM = <span class="hljs-string">"medium"</span>
+    HIGH = <span class="hljs-string">"high"</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorMetadata</span><span class="hljs-params">(BaseModel)</span>:</span>
+    audio_quality: AudioQuality
+    background_noise: NoiseLevel
+    additional_data: Optional[Dict[str, Any]] = <span class="hljs-literal">None</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorReport</span><span class="hljs-params">(BaseModel)</span>:</span>
+    error_id: str
+    job_id: str
+    speaker_id: str
+    reported_by: str
+    original_text: str
+    corrected_text: str
+    error_categories: List[str]
+    severity_level: SeverityLevel
+    start_position: int
+    end_position: int
+    context_notes: Optional[str] = <span class="hljs-literal">None</span>
+    error_timestamp: datetime
+    reported_at: datetime
+    status: ErrorStatus
+    metadata: ErrorMetadata
+</div></code></pre>
+<p><strong>ErrorSentence Model</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorSentence</span><span class="hljs-params">(BaseModel)</span>:</span>
+    id: str  <span class="hljs-comment"># UUID</span>
+    text: str
+    error_report_id: str  <span class="hljs-comment"># FK to ERROR_REPORTS</span>
+</div></code></pre>
+<p><strong>CorrectedSentence Model</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectedSentence</span><span class="hljs-params">(BaseModel)</span>:</span>
+    id: str  <span class="hljs-comment"># UUID</span>
+    text: str
+    error_report_id: str  <span class="hljs-comment"># FK to ERROR_REPORTS</span>
+</div></code></pre>
+<p><strong>VectorEmbedding Model</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> List
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VectorEmbedding</span><span class="hljs-params">(BaseModel)</span>:</span>
+    id: str  <span class="hljs-comment"># UUID</span>
+    vector: List[float]  <span class="hljs-comment"># 1536-dimensional float32 array</span>
+    error_sentence_id: Optional[str] = <span class="hljs-literal">None</span>  <span class="hljs-comment"># FK to ERROR_SENTENCES</span>
+    corrected_sentence_id: Optional[str] = <span class="hljs-literal">None</span>  <span class="hljs-comment"># FK to CORRECTED_SENTENCES</span>
+</div></code></pre>
+<p><strong>VectorMetadata Model</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ASREngine</span><span class="hljs-params">(str, Enum)</span>:</span>
+    GEMINI_2_5_PRO = <span class="hljs-string">"gemini_2.5_pro"</span>
+    GEMINI_2_5_FLASH = <span class="hljs-string">"gemini_2.5_flash"</span>
+    PIVO = <span class="hljs-string">"pivo"</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VectorMetadata</span><span class="hljs-params">(BaseModel)</span>:</span>
+    id: str  <span class="hljs-comment"># UUID</span>
+    asr_engine: ASREngine  <span class="hljs-comment"># Categorical with hash index</span>
+    speaker_id: str  <span class="hljs-comment"># UUID with hash index</span>
+    note_type: str  <span class="hljs-comment"># Categorical with inverted index</span>
+    similarity_score: float  <span class="hljs-comment"># Range 0.0-1.0</span>
+    wer_score: float  <span class="hljs-comment"># Word Error Rate</span>
+    ser_score: float  <span class="hljs-comment"># Sentence Error Rate</span>
+    insert_percent: float  <span class="hljs-comment"># Range 0.0-100.0</span>
+    delete_percent: float  <span class="hljs-comment"># Range 0.0-100.0</span>
+    move_percent: float  <span class="hljs-comment"># Range 0.0-100.0</span>
+    edit_percent: float  <span class="hljs-comment"># Range 0.0-100.0</span>
+    timestamp: datetime  <span class="hljs-comment"># B-tree index</span>
+    source_document_id: str  <span class="hljs-comment"># UUID with hash index</span>
+    error_type_classification: str  <span class="hljs-comment"># Categorical with inverted index</span>
+    error_sentence_id: Optional[str] = <span class="hljs-literal">None</span>  <span class="hljs-comment"># FK to ERROR_SENTENCES</span>
+    corrected_sentence_id: Optional[str] = <span class="hljs-literal">None</span>  <span class="hljs-comment"># FK to CORRECTED_SENTENCES</span>
+</div></code></pre>
+<p><strong>ErrorPattern Model</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PatternType</span><span class="hljs-params">(str, Enum)</span>:</span>
+    PRONUNCIATION = <span class="hljs-string">"pronunciation"</span>
+    MEDICAL_TERMINOLOGY = <span class="hljs-string">"medical_terminology"</span>
+    GRAMMAR = <span class="hljs-string">"grammar"</span>
+    CONTEXT = <span class="hljs-string">"context"</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorPattern</span><span class="hljs-params">(BaseModel)</span>:</span>
+    pattern_id: str
+    speaker_id: str
+    pattern_text: str
+    correction_text: str
+    pattern_type: PatternType
+    confidence_score: float
+    occurrence_count: int
+    first_seen: datetime
+    last_updated: datetime
+    is_active: bool
+    vector_embedding_id: Optional[str] = <span class="hljs-literal">None</span>  <span class="hljs-comment"># FK to VECTOR_EMBEDDINGS</span>
+</div></code></pre>
+<p><strong>CorrectionApplied Model</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VerificationStatus</span><span class="hljs-params">(str, Enum)</span>:</span>
+    PENDING = <span class="hljs-string">"pending"</span>
+    APPROVED = <span class="hljs-string">"approved"</span>
+    REJECTED = <span class="hljs-string">"rejected"</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionApplied</span><span class="hljs-params">(BaseModel)</span>:</span>
+    correction_id: str
+    job_id: str
+    pattern_id: str
+    applied_by: str
+    original_text: str
+    corrected_text: str
+    confidence_score: float
+    start_position: int
+    end_position: int
+    applied_at: datetime
+    verification_status: VerificationStatus
+    verified_by: Optional[str] = <span class="hljs-literal">None</span>
+    verified_at: Optional[datetime] = <span class="hljs-literal">None</span>
+    verification_notes: Optional[str] = <span class="hljs-literal">None</span>
+</div></code></pre>
+<h3 id="143-appendix-c-user-interface-specifications">14.3 Appendix C: User Interface Specifications</h3>
+<h4 id="1431-error-reporting-interface-components">14.3.1 Error Reporting Interface Components</h4>
+<p><strong>Text Selection Component</strong></p>
+<ul>
+<li>Drag-to-select functionality with visual feedback</li>
+<li>Multi-selection support for non-contiguous text</li>
+<li>Position tracking and highlighting</li>
+<li>Context preservation around selected text</li>
+</ul>
+<p><strong>Error Categorization Component</strong></p>
+<ul>
+<li>Multi-select dropdown with search functionality</li>
+<li>Category descriptions and examples</li>
+<li>Custom category creation with approval workflow</li>
+<li>Visual indicators for mandatory vs optional categories</li>
+</ul>
+<p><strong>Correction Input Component</strong></p>
+<ul>
+<li>Rich text editor with spell-check</li>
+<li>Character count and validation</li>
+<li>Preview mode showing before/after comparison</li>
+<li>Auto-save functionality for draft corrections</li>
+</ul>
+<h4 id="1432-verification-dashboard-components">14.3.2 Verification Dashboard Components</h4>
+<p><strong>Correction Review Grid</strong></p>
+<ul>
+<li>Sortable and filterable data table</li>
+<li>Inline editing for quick approvals/rejections</li>
+<li>Bulk action support for multiple corrections</li>
+<li>Export functionality for reporting</li>
+</ul>
+<p><strong>Before/After Comparison View</strong></p>
+<ul>
+<li>Side-by-side text comparison</li>
+<li>Diff highlighting with color coding</li>
+<li>Confidence score visualization</li>
+<li>Context expansion controls</li>
+</ul>
+<h3 id="144-appendix-d-security-architecture">14.4 Appendix D: Security Architecture</h3>
+<h4 id="1441-authentication-and-authorization">14.4.1 Authentication and Authorization</h4>
+<p><strong>Role-Based Access Control (RBAC)</strong></p>
+<ul>
+<li>QA Personnel: Error reporting, verification, dashboard access</li>
+<li>MTS: Correction review, limited verification access</li>
+<li>System Admin: Full system access, user management</li>
+<li>Read-Only: Analytics and reporting access only</li>
+</ul>
+<p><strong>API Security</strong></p>
+<ul>
+<li>JWT-based authentication with refresh tokens</li>
+<li>Rate limiting: 1000 requests/hour per user</li>
+<li>Request signing for sensitive operations</li>
+<li>IP whitelisting for admin functions</li>
+</ul>
+<h4 id="1442-data-protection">14.4.2 Data Protection</h4>
+<p><strong>Encryption Standards</strong></p>
+<ul>
+<li>AES-256 encryption for data at rest</li>
+<li>TLS 1.3 for data in transit</li>
+<li>Field-level encryption for sensitive medical data</li>
+<li>Key rotation every 90 days</li>
+</ul>
+<h4 id="1443-audit-and-compliance">14.4.3 Audit and Compliance</h4>
+<ul>
+<li>Complete audit trail for all operations</li>
+<li>HIPAA compliance validation</li>
+<li>SOC 2 Type II certification</li>
+<li>Regular security assessments and penetration testing</li>
+</ul>
+<h4 id="1444-privacy-controls">14.4.4 Privacy Controls</h4>
+<p><strong>Data Minimization</strong></p>
+<ul>
+<li>Only collect necessary data for functionality</li>
+<li>Automatic data anonymization after retention period</li>
+<li>User consent management for optional data collection</li>
+<li>Right to deletion compliance (GDPR/CCPA)</li>
+</ul>
+<h4 id="1445-access-logging">14.4.5 Access Logging</h4>
+<ul>
+<li>All data access logged with user identification</li>
+<li>Suspicious activity detection and alerting</li>
+<li>Regular access pattern analysis</li>
+<li>Automated compliance reporting</li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ASR_System_Architecture_Design.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="asr-error-reporting-system---comprehensive-architecture-design">ASR Error Reporting System - Comprehensive Architecture Design</h1>
+<p><strong>Document Version:</strong> 1.0<br>
+<strong>Date:</strong> August 6, 2025<br>
+<strong>Author:</strong> Architecture Team<br>
+<strong>Based on:</strong> ASR Error Reporting PRD - TR-1 Technical Requirements</p>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#executive-summary">Executive Summary</a></li>
+<li><a href="#hexagonal-microservice-architecture">Hexagonal Microservice Architecture</a></li>
+<li><a href="#module-breakdown-and-team-boundaries">Module Breakdown and Team Boundaries</a></li>
+<li><a href="#interface-contracts-and-api-specifications">Interface Contracts and API Specifications</a></li>
+<li><a href="#development-and-deployment-recommendations">Development and Deployment Recommendations</a></li>
+<li><a href="#implementation-roadmap">Implementation Roadmap</a></li>
+<li><a href="#appendices">Appendices</a></li>
+</ol>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<h3 id="architecture-overview">Architecture Overview</h3>
+<p>The ASR Error Reporting System implements a <strong>Hexagonal Microservice Architecture</strong> (Ports and Adapters pattern) designed to enable independent team development, testing in isolation, and clear separation between business logic and external dependencies. The system is built around five core microservices, each implementing the hexagonal architecture pattern for maximum testability and maintainability.</p>
+<h3 id="key-architecture-principles">Key Architecture Principles</h3>
+<ol>
+<li><strong>Microservice Independence</strong>: Each service can be developed, deployed, and scaled independently</li>
+<li><strong>Hexagonal Architecture</strong>: Clear separation between business logic (core), interfaces (ports), and external adapters</li>
+<li><strong>Event-Driven Communication</strong>: Loose coupling through asynchronous event messaging</li>
+<li><strong>Domain-Driven Design</strong>: Business logic organized around domain concepts</li>
+<li><strong>API-First Development</strong>: Well-defined contracts enable parallel development</li>
+</ol>
+<h3 id="core-services">Core Services</h3>
+<ul>
+<li><strong>Error Reporting Service (ERS)</strong>: Handles error submission, validation, and categorization</li>
+<li><strong>RAG Integration Service (RIS)</strong>: Manages vector embeddings, similarity search, and pattern recognition</li>
+<li><strong>Correction Engine Service (CES)</strong>: Applies real-time corrections based on learned patterns</li>
+<li><strong>Verification Service (VS)</strong>: Manages correction verification and analytics</li>
+<li><strong>User Management Service (UMS)</strong>: Handles authentication, authorization, and user management</li>
+</ul>
+<h3 id="technology-stack">Technology Stack</h3>
+<ul>
+<li><strong>Backend</strong>: Python with FastAPI framework</li>
+<li><strong>Databases</strong>: PostgreSQL (relational), Vector Database (Pinecone/Weaviate), Redis (cache)</li>
+<li><strong>Message Queue</strong>: Apache Kafka for event-driven communication</li>
+<li><strong>Frontend</strong>: React 18+ with TypeScript</li>
+<li><strong>Infrastructure</strong>: Kubernetes with Istio service mesh</li>
+<li><strong>Monitoring</strong>: Prometheus, Grafana, Jaeger for observability</li>
+</ul>
+<hr>
+<h2 id="hexagonal-microservice-architecture">Hexagonal Microservice Architecture</h2>
+<h3 id="system-architecture-diagram">System Architecture Diagram</h3>
+<pre><code class="language-mermaid"><div class="mermaid">graph TB
+    %% External Actors and Systems
+    subgraph "External Actors"
+        QA[QA Personnel]
+        MTS[MTS Personnel]
+        ADMIN[System Admin]
+    end
+
+    subgraph "External Systems"
+        ASR_SYS[ASR Processing Pipeline]
+        AUTH_SYS[Authentication System]
+        INSTANOTE_SYS[InstaNote Database]
+        NOTIFICATION_SYS[Notification System]
+    end
+
+    %% API Gateway and Load Balancer
+    subgraph "Infrastructure Layer"
+        LB[Load Balancer]
+        API_GW[API Gateway<br/>Rate Limiting<br/>Authentication<br/>Request Routing]
+    end
+
+    %% Error Reporting Service - Hexagonal Architecture
+    subgraph "Error Reporting Service"
+        subgraph "ERS_PORTS [Ports]"
+            ERS_HTTP_PORT[HTTP API Port]
+            ERS_EVENT_PORT[Event Publishing Port]
+            ERS_VALIDATION_PORT[Validation Port]
+        end
+        
+        subgraph "ERS_CORE [Business Logic Core]"
+            ERS_DOMAIN[Error Report Domain<br/>• Error Validation<br/>• Business Rules<br/>• Error Categorization]
+            ERS_USE_CASES[Use Cases<br/>• Submit Error Report<br/>• Validate Error Data<br/>• Process Error Context]
+        end
+        
+        subgraph "ERS_ADAPTERS [Adapters]"
+            ERS_REST_ADAPTER[REST API Adapter]
+            ERS_EVENT_ADAPTER[Event Bus Adapter]
+            ERS_DB_ADAPTER[Database Adapter]
+        end
+    end
+
+    %% RAG Integration Service - Hexagonal Architecture
+    subgraph "RAG Integration Service"
+        subgraph "RIS_PORTS [Ports]"
+            RIS_EMBEDDING_PORT[Embedding Generation Port]
+            RIS_VECTOR_PORT[Vector Storage Port]
+            RIS_SIMILARITY_PORT[Similarity Search Port]
+        end
+        
+        subgraph "RIS_CORE [Business Logic Core]"
+            RIS_DOMAIN[Vector Processing Domain<br/>• Embedding Generation<br/>• Similarity Calculation<br/>• Pattern Recognition]
+            RIS_USE_CASES[Use Cases<br/>• Generate Embeddings<br/>• Store Vector Data<br/>• Search Similar Patterns<br/>• Update Quality Metrics]
+        end
+        
+        subgraph "RIS_ADAPTERS [Adapters]"
+            RIS_VECTOR_ADAPTER[Vector DB Adapter]
+            RIS_EMBEDDING_ADAPTER[Embedding Service Adapter]
+            RIS_CACHE_ADAPTER[Cache Adapter]
+        end
+    end
+
+    %% Correction Engine Service - Hexagonal Architecture
+    subgraph "Correction Engine Service"
+        subgraph "CES_PORTS [Ports]"
+            CES_CORRECTION_PORT[Correction Application Port]
+            CES_PATTERN_PORT[Pattern Matching Port]
+            CES_CONFIDENCE_PORT[Confidence Scoring Port]
+        end
+        
+        subgraph "CES_CORE [Business Logic Core]"
+            CES_DOMAIN[Correction Domain<br/>• Pattern Matching<br/>• Confidence Scoring<br/>• Correction Logic]
+            CES_USE_CASES[Use Cases<br/>• Apply Corrections<br/>• Calculate Confidence<br/>• Pattern Learning<br/>• Quality Assessment]
+        end
+        
+        subgraph "CES_ADAPTERS [Adapters]"
+            CES_ASR_ADAPTER[ASR Pipeline Adapter]
+            CES_VECTOR_ADAPTER[Vector DB Adapter]
+            CES_CACHE_ADAPTER[Cache Adapter]
+        end
+    end
+
+    %% Verification Service - Hexagonal Architecture
+    subgraph "Verification Service"
+        subgraph "VS_PORTS [Ports]"
+            VS_DASHBOARD_PORT[Dashboard Data Port]
+            VS_VERIFICATION_PORT[Verification Process Port]
+            VS_ANALYTICS_PORT[Analytics Port]
+        end
+        
+        subgraph "VS_CORE [Business Logic Core]"
+            VS_DOMAIN[Verification Domain<br/>• Correction Validation<br/>• Quality Assessment<br/>• Feedback Processing]
+            VS_USE_CASES[Use Cases<br/>• Verify Corrections<br/>• Generate Analytics<br/>• Process Feedback<br/>• Update Patterns]
+        end
+        
+        subgraph "VS_ADAPTERS [Adapters]"
+            VS_DB_ADAPTER[Database Adapter]
+            VS_INSTANOTE_ADAPTER[InstaNote Adapter]
+            VS_ANALYTICS_ADAPTER[Analytics Adapter]
+        end
+    end
+
+    %% User Management Service - Hexagonal Architecture
+    subgraph "User Management Service"
+        subgraph "UMS_PORTS [Ports]"
+            UMS_AUTH_PORT[Authentication Port]
+            UMS_AUTHZ_PORT[Authorization Port]
+            UMS_USER_PORT[User Management Port]
+        end
+        
+        subgraph "UMS_CORE [Business Logic Core]"
+            UMS_DOMAIN[User Domain<br/>• User Management<br/>• Role Management<br/>• Permission Control]
+            UMS_USE_CASES[Use Cases<br/>• Authenticate Users<br/>• Authorize Actions<br/>• Manage Roles<br/>• Audit Access]
+        end
+        
+        subgraph "UMS_ADAPTERS [Adapters]"
+            UMS_AUTH_ADAPTER[Auth System Adapter]
+            UMS_DB_ADAPTER[Database Adapter]
+            UMS_AUDIT_ADAPTER[Audit Log Adapter]
+        end
+    end
+
+    %% Data Layer with Specialized Databases
+    subgraph "Data Layer"
+        subgraph "Vector Database Cluster"
+            VDB_PRIMARY[(Vector Database Primary<br/>1536-dim Embeddings<br/>Cosine Similarity)]
+            VDB_REPLICA[(Vector Database Replica<br/>Read Scaling)]
+        end
+        
+        subgraph "Relational Database Cluster"
+            RDB_PRIMARY[(PostgreSQL Primary<br/>Metadata & Audit<br/>ACID Transactions)]
+            RDB_REPLICA[(PostgreSQL Replica<br/>Read Scaling)]
+        end
+        
+        subgraph "Cache Layer"
+            REDIS_CLUSTER[(Redis Cluster<br/>Speaker Patterns<br/>Session Data<br/>Query Cache)]
+        end
+        
+        subgraph "Message Queue"
+            EVENT_BUS[(Event Bus<br/>Async Processing<br/>Service Communication)]
+        end
+    end
+
+    %% Frontend Applications
+    subgraph "Frontend Layer"
+        ERROR_UI[Error Reporting UI<br/>React/TypeScript<br/>Text Selection<br/>Error Categorization]
+        VERIFY_UI[Verification Dashboard<br/>React/TypeScript<br/>Correction Review<br/>Analytics]
+        ADMIN_UI[Admin Dashboard<br/>React/TypeScript<br/>System Monitoring<br/>User Management]
+    end
+
+    %% External Connections
+    QA --> ERROR_UI
+    MTS --> VERIFY_UI
+    ADMIN --> ADMIN_UI
+    
+    ERROR_UI --> LB
+    VERIFY_UI --> LB
+    ADMIN_UI --> LB
+    
+    LB --> API_GW
+
+    %% API Gateway to Services
+    API_GW --> ERS_HTTP_PORT
+    API_GW --> RIS_EMBEDDING_PORT
+    API_GW --> CES_CORRECTION_PORT
+    API_GW --> VS_DASHBOARD_PORT
+    API_GW --> UMS_AUTH_PORT
+
+    %% Port to Core connections
+    ERS_HTTP_PORT --> ERS_USE_CASES
+    ERS_EVENT_PORT --> ERS_USE_CASES
+    ERS_VALIDATION_PORT --> ERS_USE_CASES
+    ERS_USE_CASES --> ERS_DOMAIN
+
+    RIS_EMBEDDING_PORT --> RIS_USE_CASES
+    RIS_VECTOR_PORT --> RIS_USE_CASES
+    RIS_SIMILARITY_PORT --> RIS_USE_CASES
+    RIS_USE_CASES --> RIS_DOMAIN
+
+    CES_CORRECTION_PORT --> CES_USE_CASES
+    CES_PATTERN_PORT --> CES_USE_CASES
+    CES_CONFIDENCE_PORT --> CES_USE_CASES
+    CES_USE_CASES --> CES_DOMAIN
+
+    VS_DASHBOARD_PORT --> VS_USE_CASES
+    VS_VERIFICATION_PORT --> VS_USE_CASES
+    VS_ANALYTICS_PORT --> VS_USE_CASES
+    VS_USE_CASES --> VS_DOMAIN
+
+    UMS_AUTH_PORT --> UMS_USE_CASES
+    UMS_AUTHZ_PORT --> UMS_USE_CASES
+    UMS_USER_PORT --> UMS_USE_CASES
+    UMS_USE_CASES --> UMS_DOMAIN
+
+    %% Core to Adapter connections
+    ERS_DOMAIN --> ERS_REST_ADAPTER
+    ERS_DOMAIN --> ERS_EVENT_ADAPTER
+    ERS_DOMAIN --> ERS_DB_ADAPTER
+
+    RIS_DOMAIN --> RIS_VECTOR_ADAPTER
+    RIS_DOMAIN --> RIS_EMBEDDING_ADAPTER
+    RIS_DOMAIN --> RIS_CACHE_ADAPTER
+
+    CES_DOMAIN --> CES_ASR_ADAPTER
+    CES_DOMAIN --> CES_VECTOR_ADAPTER
+    CES_DOMAIN --> CES_CACHE_ADAPTER
+
+    VS_DOMAIN --> VS_DB_ADAPTER
+    VS_DOMAIN --> VS_INSTANOTE_ADAPTER
+    VS_DOMAIN --> VS_ANALYTICS_ADAPTER
+
+    UMS_DOMAIN --> UMS_AUTH_ADAPTER
+    UMS_DOMAIN --> UMS_DB_ADAPTER
+    UMS_DOMAIN --> UMS_AUDIT_ADAPTER
+
+    %% Adapter to External System connections
+    ERS_DB_ADAPTER --> RDB_PRIMARY
+    ERS_EVENT_ADAPTER --> EVENT_BUS
+
+    RIS_VECTOR_ADAPTER --> VDB_PRIMARY
+    RIS_CACHE_ADAPTER --> REDIS_CLUSTER
+
+    CES_ASR_ADAPTER --> ASR_SYS
+    CES_VECTOR_ADAPTER --> VDB_PRIMARY
+    CES_CACHE_ADAPTER --> REDIS_CLUSTER
+
+    VS_DB_ADAPTER --> RDB_PRIMARY
+    VS_INSTANOTE_ADAPTER --> INSTANOTE_SYS
+
+    UMS_AUTH_ADAPTER --> AUTH_SYS
+    UMS_DB_ADAPTER --> RDB_PRIMARY
+
+    %% Inter-service communication through Event Bus
+    ERS_EVENT_ADAPTER -.->|Error Reported Event| EVENT_BUS
+    EVENT_BUS -.->|Process Error Event| RIS_EMBEDDING_PORT
+    EVENT_BUS -.->|Pattern Updated Event| CES_PATTERN_PORT
+    EVENT_BUS -.->|Correction Applied Event| VS_VERIFICATION_PORT
+
+    %% Database replication
+    RDB_PRIMARY -.->|Replication| RDB_REPLICA
+    VDB_PRIMARY -.->|Replication| VDB_REPLICA
+
+    %% Styling
+    classDef coreLogic fill:#e8f5e8,stroke:#4caf50,stroke-width:2px
+    classDef ports fill:#e3f2fd,stroke:#2196f3,stroke-width:2px
+    classDef adapters fill:#fff3e0,stroke:#ff9800,stroke-width:2px
+    classDef database fill:#fce4ec,stroke:#e91e63,stroke-width:2px
+    classDef external fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px
+    classDef frontend fill:#e0f2f1,stroke:#009688,stroke-width:2px
+
+    class ERS_CORE,RIS_CORE,CES_CORE,VS_CORE,UMS_CORE coreLogic
+    class ERS_PORTS,RIS_PORTS,CES_PORTS,VS_PORTS,UMS_PORTS ports
+    class ERS_ADAPTERS,RIS_ADAPTERS,CES_ADAPTERS,VS_ADAPTERS,UMS_ADAPTERS adapters
+    class VDB_PRIMARY,VDB_REPLICA,RDB_PRIMARY,RDB_REPLICA,REDIS_CLUSTER,EVENT_BUS database
+    class ASR_SYS,AUTH_SYS,INSTANOTE_SYS,NOTIFICATION_SYS external
+    class ERROR_UI,VERIFY_UI,ADMIN_UI frontend
+</div></code></pre>
+<h3 id="architecture-benefits">Architecture Benefits</h3>
+<ol>
+<li><strong>Independent Development</strong>: Teams can work in parallel with minimal dependencies</li>
+<li><strong>Testability</strong>: Business logic is isolated and easily testable</li>
+<li><strong>Scalability</strong>: Each service can be scaled independently based on load</li>
+<li><strong>Maintainability</strong>: Clear separation of concerns and well-defined boundaries</li>
+<li><strong>Flexibility</strong>: Easy to swap out external dependencies without affecting business logic</li>
+</ol>
+<hr>
+<h2 id="module-breakdown-and-team-boundaries">Module Breakdown and Team Boundaries</h2>
+<h3 id="team-structure-overview">Team Structure Overview</h3>
+<table>
+<thead>
+<tr>
+<th>Team</th>
+<th>Service</th>
+<th>Team Size</th>
+<th>Timeline</th>
+<th>Primary Focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Team 1</td>
+<td>Error Reporting Service</td>
+<td>3-4 developers</td>
+<td>6-8 weeks</td>
+<td>Error processing and validation</td>
+</tr>
+<tr>
+<td>Team 2</td>
+<td>RAG Integration Service</td>
+<td>4-5 developers</td>
+<td>8-10 weeks</td>
+<td>Vector processing and ML</td>
+</tr>
+<tr>
+<td>Team 3</td>
+<td>Correction Engine Service</td>
+<td>4-5 developers</td>
+<td>8-10 weeks</td>
+<td>Real-time corrections</td>
+</tr>
+<tr>
+<td>Team 4</td>
+<td>Verification Service</td>
+<td>3-4 developers</td>
+<td>6-8 weeks</td>
+<td>Analytics and verification</td>
+</tr>
+<tr>
+<td>Team 5</td>
+<td>User Management + Infrastructure</td>
+<td>3-4 developers</td>
+<td>4-6 weeks</td>
+<td>Platform and security</td>
+</tr>
+<tr>
+<td>Team 6</td>
+<td>Frontend Development</td>
+<td>4-5 developers</td>
+<td>8-10 weeks</td>
+<td>User interfaces</td>
+</tr>
+</tbody>
+</table>
+<h3 id="detailed-team-breakdown">Detailed Team Breakdown</h3>
+<h4 id="team-1-error-reporting-team">Team 1: Error Reporting Team</h4>
+<p><strong>Service</strong>: Error Reporting Service (ERS)
+<strong>Estimated Team Size</strong>: 3-4 developers
+<strong>Development Time</strong>: 6-8 weeks</p>
+<p><strong>Key Modules</strong>:</p>
+<ol>
+<li>
+<p><strong>Error Report Domain Module</strong> (2 weeks)</p>
+<ul>
+<li>Error validation rules and business logic</li>
+<li>Error categorization and severity assessment</li>
+<li>Context processing and metadata handling</li>
+</ul>
+</li>
+<li>
+<p><strong>HTTP API Port Module</strong> (1 week)</p>
+<ul>
+<li>REST API interface definitions</li>
+<li>Request/response models and validation</li>
+<li>API versioning strategy</li>
+</ul>
+</li>
+<li>
+<p><strong>Database Adapter Module</strong> (1 week)</p>
+<ul>
+<li>Error persistence logic and transaction management</li>
+<li>Data consistency rules and audit trails</li>
+</ul>
+</li>
+<li>
+<p><strong>Event Publishing Adapter</strong> (1 week)</p>
+<ul>
+<li>Event schema definition and async publishing</li>
+<li>Event ordering and reliability mechanisms</li>
+</ul>
+</li>
+</ol>
+<p><strong>Low-level Design Considerations</strong>:</p>
+<ul>
+<li>Implement Command Query Responsibility Segregation (CQRS) using Python async patterns</li>
+<li>Use Domain-Driven Design (DDD) for error categorization with Pydantic models</li>
+<li>Design for eventual consistency with other services using FastAPI background tasks</li>
+</ul>
+<h4 id="team-2-vector-processing-team">Team 2: Vector Processing Team</h4>
+<p><strong>Service</strong>: RAG Integration Service (RIS)
+<strong>Estimated Team Size</strong>: 4-5 developers (ML/AI expertise required)
+<strong>Development Time</strong>: 8-10 weeks</p>
+<p><strong>Key Modules</strong>:</p>
+<ol>
+<li>
+<p><strong>Vector Processing Domain Module</strong> (3 weeks)</p>
+<ul>
+<li>Embedding generation algorithms and similarity calculation</li>
+<li>Pattern recognition and quality metrics computation (WER, SER, edit percentages)</li>
+</ul>
+</li>
+<li>
+<p><strong>Embedding Generation Port</strong> (2 weeks)</p>
+<ul>
+<li>Text preprocessing pipeline and embedding model integration</li>
+<li>Batch processing capabilities for high throughput</li>
+</ul>
+</li>
+<li>
+<p><strong>Vector Database Adapter</strong> (2 weeks)</p>
+<ul>
+<li>Vector storage optimization and similarity search implementation</li>
+<li>Index management and metadata co-location</li>
+</ul>
+</li>
+<li>
+<p><strong>Cache Adapter Module</strong> (1 week)</p>
+<ul>
+<li>Speaker pattern caching and cache invalidation strategies</li>
+<li>Performance optimization for frequent queries</li>
+</ul>
+</li>
+</ol>
+<p><strong>Low-level Design Considerations</strong>:</p>
+<ul>
+<li>Implement vector quantization for storage efficiency</li>
+<li>Design for horizontal scaling of embedding generation</li>
+<li>Optimize for sub-200ms similarity search performance</li>
+</ul>
+<h4 id="team-3-correction-engine-team">Team 3: Correction Engine Team</h4>
+<p><strong>Service</strong>: Correction Engine Service (CES)
+<strong>Estimated Team Size</strong>: 4-5 developers
+<strong>Development Time</strong>: 8-10 weeks</p>
+<p><strong>Key Modules</strong>:</p>
+<ol>
+<li>
+<p><strong>Correction Domain Module</strong> (3 weeks)</p>
+<ul>
+<li>Pattern matching algorithms and confidence scoring logic</li>
+<li>Correction application rules and quality assessment metrics</li>
+</ul>
+</li>
+<li>
+<p><strong>Pattern Matching Port</strong> (2 weeks)</p>
+<ul>
+<li>Real-time pattern detection and context-aware matching</li>
+<li>Performance optimization for sub-5-second response times</li>
+</ul>
+</li>
+<li>
+<p><strong>ASR Pipeline Adapter</strong> (2 weeks)</p>
+<ul>
+<li>Real-time ASR integration and draft text processing</li>
+<li>Correction highlighting and performance monitoring</li>
+</ul>
+</li>
+<li>
+<p><strong>Confidence Scoring Module</strong> (1 week)</p>
+<ul>
+<li>Machine learning model integration and threshold management</li>
+<li>Feedback loop implementation for continuous learning</li>
+</ul>
+</li>
+</ol>
+<p><strong>Low-level Design Considerations</strong>:</p>
+<ul>
+<li>Implement streaming processing for real-time corrections</li>
+<li>Use machine learning models for confidence scoring</li>
+<li>Implement A/B testing framework for correction algorithms</li>
+</ul>
+<h4 id="team-4-verification-and-analytics-team">Team 4: Verification and Analytics Team</h4>
+<p><strong>Service</strong>: Verification Service (VS)
+<strong>Estimated Team Size</strong>: 3-4 developers
+<strong>Development Time</strong>: 6-8 weeks</p>
+<p><strong>Key Modules</strong>:</p>
+<ol>
+<li>
+<p><strong>Verification Domain Module</strong> (2 weeks)</p>
+<ul>
+<li>Verification workflow logic and quality assessment algorithms</li>
+<li>Feedback processing rules and analytics computation</li>
+</ul>
+</li>
+<li>
+<p><strong>Dashboard Data Port</strong> (2 weeks)</p>
+<ul>
+<li>Real-time dashboard APIs and data aggregation logic</li>
+<li>Performance metrics and KPI calculations</li>
+</ul>
+</li>
+<li>
+<p><strong>Analytics Adapter</strong> (2 weeks)</p>
+<ul>
+<li>Reporting engine integration and data visualization support</li>
+<li>Export functionality for various formats</li>
+</ul>
+</li>
+<li>
+<p><strong>InstaNote Integration Adapter</strong> (1 week)</p>
+<ul>
+<li>External system integration and data synchronization</li>
+<li>Error handling and retry mechanisms</li>
+</ul>
+</li>
+</ol>
+<p><strong>Low-level Design Considerations</strong>:</p>
+<ul>
+<li>Implement real-time analytics with stream processing</li>
+<li>Design for high-volume data aggregation</li>
+<li>Use materialized views for performance optimization</li>
+</ul>
+<h4 id="team-5-platform-and-infrastructure-team">Team 5: Platform and Infrastructure Team</h4>
+<p><strong>Services</strong>: User Management Service (UMS) + Infrastructure
+<strong>Estimated Team Size</strong>: 3-4 developers
+<strong>Development Time</strong>: 4-6 weeks</p>
+<p><strong>Key Modules</strong>:</p>
+<ol>
+<li>
+<p><strong>User Domain Module</strong> (2 weeks)</p>
+<ul>
+<li>Role-based access control and user lifecycle management</li>
+<li>Permission management and audit logging</li>
+</ul>
+</li>
+<li>
+<p><strong>Authentication Adapter</strong> (1 week)</p>
+<ul>
+<li>SSO integration and token management</li>
+<li>Session handling and security protocols</li>
+</ul>
+</li>
+<li>
+<p><strong>Infrastructure Setup</strong> (2-3 weeks)</p>
+<ul>
+<li>Kubernetes deployment and database configuration</li>
+<li>Monitoring, alerting, and CI/CD pipelines</li>
+</ul>
+</li>
+</ol>
+<p><strong>Low-level Design Considerations</strong>:</p>
+<ul>
+<li>Implement OAuth 2.0/OIDC for authentication</li>
+<li>Design for multi-tenant architecture</li>
+<li>Use Infrastructure as Code (IaC) principles</li>
+</ul>
+<h4 id="team-6-frontend-development-team">Team 6: Frontend Development Team</h4>
+<p><strong>Applications</strong>: All Frontend Applications
+<strong>Estimated Team Size</strong>: 4-5 developers
+<strong>Development Time</strong>: 8-10 weeks</p>
+<p><strong>Key Modules</strong>:</p>
+<ol>
+<li>
+<p><strong>Error Reporting UI</strong> (3 weeks)</p>
+<ul>
+<li>Text selection components and error categorization interface</li>
+<li>Real-time validation and offline capability</li>
+</ul>
+</li>
+<li>
+<p><strong>Verification Dashboard</strong> (3 weeks)</p>
+<ul>
+<li>Correction review interface and analytics visualization</li>
+<li>Bulk operations and export functionality</li>
+</ul>
+</li>
+<li>
+<p><strong>Admin Dashboard</strong> (2 weeks)</p>
+<ul>
+<li>System monitoring and user management</li>
+<li>Configuration management interface</li>
+</ul>
+</li>
+<li>
+<p><strong>Shared Components Library</strong> (2 weeks)</p>
+<ul>
+<li>Reusable UI components and design system implementation</li>
+<li>Accessibility compliance (WCAG 2.1 AA)</li>
+</ul>
+</li>
+</ol>
+<p><strong>Low-level Design Considerations</strong>:</p>
+<ul>
+<li>Implement Progressive Web App (PWA) features</li>
+<li>Use micro-frontend architecture for independent deployment</li>
+<li>Design for offline-first capability</li>
+</ul>
+<hr>
+<h2 id="interface-contracts-and-api-specifications">Interface Contracts and API Specifications</h2>
+<h3 id="port-interface-definitions">Port Interface Definitions</h3>
+<p>Each service exposes well-defined ports that act as contracts between the business logic and external systems.</p>
+<h4 id="error-reporting-service-ers-ports">Error Reporting Service (ERS) Ports</h4>
+<p><strong>HTTP API Port Interface</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> abc <span class="hljs-keyword">import</span> ABC, abstractmethod
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> List, Optional
+<span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> BaseModel
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorReportingPort</span><span class="hljs-params">(ABC)</span>:</span>
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">submit_error_report</span><span class="hljs-params">(self, request: ErrorReportRequest)</span> -&gt; ErrorReportResponse:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_error_report</span><span class="hljs-params">(self, error_id: str)</span> -&gt; ErrorReport:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_error_report</span><span class="hljs-params">(self, error_id: str, updates: dict)</span> -&gt; ErrorReport:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">delete_error_report</span><span class="hljs-params">(self, error_id: str)</span> -&gt; <span class="hljs-keyword">None</span>:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_errors_by_job</span><span class="hljs-params">(self, job_id: str, filters: Optional[ErrorFilters] = None)</span> -&gt; PaginatedErrorReports:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_errors_by_speaker</span><span class="hljs-params">(self, speaker_id: str, filters: Optional[ErrorFilters] = None)</span> -&gt; PaginatedErrorReports:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">search_errors</span><span class="hljs-params">(self, query: ErrorSearchQuery)</span> -&gt; PaginatedErrorReports:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorReportRequest</span><span class="hljs-params">(BaseModel)</span>:</span>
+    job_id: str
+    speaker_id: str
+    original_text: str
+    corrected_text: str
+    error_categories: List[str]
+    severity_level: SeverityLevel
+    start_position: int
+    end_position: int
+    context_notes: Optional[str] = <span class="hljs-literal">None</span>
+    metadata: ErrorMetadata
+</div></code></pre>
+<p><strong>Event Publishing Port Interface</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">EventPublishingPort</span><span class="hljs-params">(ABC)</span>:</span>
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish_error_reported</span><span class="hljs-params">(self, event: ErrorReportedEvent)</span> -&gt; <span class="hljs-keyword">None</span>:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish_error_updated</span><span class="hljs-params">(self, event: ErrorUpdatedEvent)</span> -&gt; <span class="hljs-keyword">None</span>:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish_error_deleted</span><span class="hljs-params">(self, event: ErrorDeletedEvent)</span> -&gt; <span class="hljs-keyword">None</span>:</span>
+        <span class="hljs-keyword">pass</span>
+</div></code></pre>
+<h4 id="rag-integration-service-ris-ports">RAG Integration Service (RIS) Ports</h4>
+<p><strong>Embedding Generation Port Interface</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> enum <span class="hljs-keyword">import</span> Enum
+<span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">EmbeddingType</span><span class="hljs-params">(str, Enum)</span>:</span>
+    ERROR = <span class="hljs-string">"error"</span>
+    CORRECTION = <span class="hljs-string">"correction"</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">EmbeddingGenerationPort</span><span class="hljs-params">(ABC)</span>:</span>
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_embedding</span><span class="hljs-params">(self, text: str, embedding_type: EmbeddingType)</span> -&gt; VectorEmbedding:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_batch_embeddings</span><span class="hljs-params">(self, texts: List[TextBatch])</span> -&gt; List[VectorEmbedding]:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_embedding</span><span class="hljs-params">(self, embedding: VectorEmbedding)</span> -&gt; ValidationResult:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VectorEmbedding</span><span class="hljs-params">(BaseModel)</span>:</span>
+    id: str
+    vector: List[float]  <span class="hljs-comment"># 1536-dimensional array</span>
+    text_hash: str
+    generated_at: datetime
+    model_version: str
+    metadata: EmbeddingMetadata
+</div></code></pre>
+<p><strong>Similarity Search Port Interface</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SimilaritySearchPort</span><span class="hljs-params">(ABC)</span>:</span>
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_similar_patterns</span><span class="hljs-params">(
+        self,
+        query_vector: List[float],
+        filters: SimilarityFilters,
+        options: SearchOptions
+    )</span> -&gt; List[SimilarityResult]:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_similar_by_speaker</span><span class="hljs-params">(
+        self,
+        speaker_id: str,
+        query_vector: List[float],
+        threshold: float
+    )</span> -&gt; List[SimilarityResult]:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SimilarityResult</span><span class="hljs-params">(BaseModel)</span>:</span>
+    embedding_id: str
+    similarity_score: float
+    metadata: VectorMetadata
+    original_text: str
+    corrected_text: str
+</div></code></pre>
+<h4 id="correction-engine-service-ces-ports">Correction Engine Service (CES) Ports</h4>
+<p><strong>Correction Application Port Interface</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionApplicationPort</span><span class="hljs-params">(ABC)</span>:</span>
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply_corrections</span><span class="hljs-params">(
+        self,
+        draft_text: str,
+        speaker_id: str,
+        options: CorrectionOptions
+    )</span> -&gt; CorrectionResult:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">preview_corrections</span><span class="hljs-params">(
+        self,
+        draft_text: str,
+        speaker_id: str
+    )</span> -&gt; List[CorrectionPreview]:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionResult</span><span class="hljs-params">(BaseModel)</span>:</span>
+    corrected_text: str
+    applied_corrections: List[AppliedCorrection]
+    skipped_corrections: List[SkippedCorrection]
+    processing_time: float
+    quality_score: float
+</div></code></pre>
+<h4 id="verification-service-vs-ports">Verification Service (VS) Ports</h4>
+<p><strong>Dashboard Data Port Interface</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DashboardDataPort</span><span class="hljs-params">(ABC)</span>:</span>
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_dashboard_summary</span><span class="hljs-params">(
+        self,
+        user_id: str,
+        filters: DashboardFilters
+    )</span> -&gt; DashboardSummary:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_corrections_to_verify</span><span class="hljs-params">(
+        self,
+        user_id: str,
+        pagination: PaginationOptions
+    )</span> -&gt; PaginatedCorrections:</span>
+        <span class="hljs-keyword">pass</span>
+</div></code></pre>
+<h4 id="user-management-service-ums-ports">User Management Service (UMS) Ports</h4>
+<p><strong>Authentication Port Interface</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AuthenticationPort</span><span class="hljs-params">(ABC)</span>:</span>
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authenticate_user</span><span class="hljs-params">(self, credentials: UserCredentials)</span> -&gt; AuthenticationResult:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_token</span><span class="hljs-params">(self, token: str)</span> -&gt; TokenValidationResult:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">refresh_token</span><span class="hljs-params">(self, refresh_token: str)</span> -&gt; TokenRefreshResult:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">logout</span><span class="hljs-params">(self, user_id: str, token: str)</span> -&gt; <span class="hljs-keyword">None</span>:</span>
+        <span class="hljs-keyword">pass</span>
+</div></code></pre>
+<h3 id="event-schema-definitions">Event Schema Definitions</h3>
+<p><strong>Base Event Interface</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> Dict, Any, Optional
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseEvent</span><span class="hljs-params">(BaseModel)</span>:</span>
+    event_id: str
+    event_type: str
+    timestamp: datetime
+    version: str
+    source: str
+    correlation_id: Optional[str] = <span class="hljs-literal">None</span>
+    metadata: Dict[str, Any]
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorReportedEventData</span><span class="hljs-params">(BaseModel)</span>:</span>
+    error_id: str
+    speaker_id: str
+    job_id: str
+    original_text: str
+    corrected_text: str
+    categories: List[str]
+    severity: str
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorReportedEvent</span><span class="hljs-params">(BaseEvent)</span>:</span>
+    event_type: str = <span class="hljs-string">'error.reported'</span>
+    data: ErrorReportedEventData
+</div></code></pre>
+<h3 id="api-response-standards">API Response Standards</h3>
+<p><strong>Success Response Format</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> TypeVar, Generic
+
+T = TypeVar(<span class="hljs-string">'T'</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SuccessResponse</span><span class="hljs-params">(BaseModel, Generic[T])</span>:</span>
+    success: bool = <span class="hljs-literal">True</span>
+    data: T
+    message: Optional[str] = <span class="hljs-literal">None</span>
+    timestamp: datetime
+    request_id: str
+    version: str
+</div></code></pre>
+<p><strong>Error Response Format</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorDetail</span><span class="hljs-params">(BaseModel)</span>:</span>
+    field: str
+    message: str
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorInfo</span><span class="hljs-params">(BaseModel)</span>:</span>
+    code: str
+    message: str
+    details: Optional[List[ErrorDetail]] = <span class="hljs-literal">None</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorResponse</span><span class="hljs-params">(BaseModel)</span>:</span>
+    success: bool = <span class="hljs-literal">False</span>
+    error: ErrorInfo
+    timestamp: datetime
+    request_id: str
+    version: str
+</div></code></pre>
+<hr>
+<h2 id="development-and-deployment-recommendations">Development and Deployment Recommendations</h2>
+<h3 id="technology-stack">Technology Stack</h3>
+<h4 id="backend-services">Backend Services</h4>
+<ul>
+<li><strong>Language</strong>: Python 3.11+ for rapid development, extensive ML libraries, and type safety</li>
+<li><strong>Framework</strong>: FastAPI (supports dependency injection, automatic API documentation, and async operations)</li>
+<li><strong>Database</strong>:
+<ul>
+<li>Vector Database: Pinecone, Weaviate, or Qdrant for 1536-dimensional embeddings</li>
+<li>Relational Database: PostgreSQL 15+ with JSONB support</li>
+<li>Cache: Redis 7+ with clustering for high availability</li>
+</ul>
+</li>
+<li><strong>Message Queue</strong>: Apache Kafka for event-driven communication</li>
+<li><strong>API Documentation</strong>: Automatic OpenAPI 3.0 generation with FastAPI's built-in Swagger UI</li>
+</ul>
+<h4 id="frontend-applications">Frontend Applications</h4>
+<ul>
+<li><strong>Framework</strong>: React 18+ with TypeScript for type safety</li>
+<li><strong>State Management</strong>: Redux Toolkit or Zustand for predictable state updates</li>
+<li><strong>UI Library</strong>: Material-UI or Ant Design for consistent design</li>
+<li><strong>Build Tool</strong>: Vite for fast development and hot module replacement</li>
+<li><strong>Testing</strong>: Jest + React Testing Library for comprehensive testing</li>
+</ul>
+<h4 id="infrastructure">Infrastructure</h4>
+<ul>
+<li><strong>Container Orchestration</strong>: Kubernetes 1.25+ for scalable deployments</li>
+<li><strong>Service Mesh</strong>: Istio for advanced traffic management and security</li>
+<li><strong>Monitoring</strong>: Prometheus + Grafana + Jaeger for observability</li>
+<li><strong>CI/CD</strong>: GitLab CI or GitHub Actions for automated deployments</li>
+<li><strong>Infrastructure as Code</strong>: Terraform + Helm charts for reproducible infrastructure</li>
+</ul>
+<h4 id="python-dependencies-and-libraries">Python Dependencies and Libraries</h4>
+<ul>
+<li><strong>Core Framework</strong>: FastAPI 0.104+ for high-performance async API development</li>
+<li><strong>Data Validation</strong>: Pydantic 2.0+ for data modeling and validation</li>
+<li><strong>Database ORM</strong>: SQLAlchemy 2.0+ with async support</li>
+<li><strong>Database Migrations</strong>: Alembic for database schema management</li>
+<li><strong>HTTP Client</strong>: httpx for async HTTP requests</li>
+<li><strong>Message Queue</strong>: aiokafka for async Kafka integration</li>
+<li><strong>Vector Database</strong>: pinecone-client, weaviate-client, or qdrant-client</li>
+<li><strong>Machine Learning</strong>: scikit-learn, numpy, pandas for data processing</li>
+<li><strong>Monitoring</strong>: prometheus-client, opentelemetry-api for observability</li>
+<li><strong>Testing</strong>: pytest, pytest-asyncio, httpx for comprehensive testing</li>
+<li><strong>Security</strong>: python-jose for JWT handling, passlib for password hashing</li>
+</ul>
+<h3 id="code-organization-hexagonal-architecture">Code Organization (Hexagonal Architecture)</h3>
+<pre class="hljs"><code><div>src/
+├── domain/           # Business logic (pure, no dependencies)
+│   ├── entities/     # Pydantic models and domain entities
+│   ├── value_objects/
+│   ├── repositories/ # Abstract base classes (interfaces)
+│   └── services/     # Domain services
+├── application/      # Use cases and application services
+│   ├── use_cases/    # Business use cases
+│   ├── dto/          # Pydantic request/response models
+│   └── ports/        # Port interfaces (Abstract base classes)
+├── infrastructure/   # Adapters and external concerns
+│   ├── adapters/
+│   │   ├── database/ # SQLAlchemy models and repositories
+│   │   ├── http/     # FastAPI routers and controllers
+│   │   ├── messaging/# Kafka producers/consumers
+│   │   └── external/ # External service clients
+│   ├── config/       # Settings and configuration
+│   └── migrations/   # Alembic database migrations
+└── main.py          # FastAPI app setup and dependency injection
+</div></code></pre>
+<h3 id="testing-strategy">Testing Strategy</h3>
+<h4 id="unit-testing-70-coverage-target">Unit Testing (70% coverage target)</h4>
+<ul>
+<li><strong>Framework</strong>: pytest with pytest-asyncio for async testing</li>
+<li><strong>Mocking</strong>: pytest-mock and unittest.mock for dependency isolation</li>
+<li>Test business logic in isolation using mocks for dependencies</li>
+<li>Focus on domain services and use cases</li>
+<li>Use FastAPI's dependency injection for easy mocking</li>
+</ul>
+<h4 id="integration-testing-20-coverage-target">Integration Testing (20% coverage target)</h4>
+<ul>
+<li><strong>Framework</strong>: pytest with httpx for API testing</li>
+<li><strong>Database</strong>: pytest-postgresql and testcontainers for database isolation</li>
+<li>Test FastAPI endpoints with real database connections</li>
+<li>Verify service interactions and data persistence</li>
+<li>Use test containers for database isolation</li>
+</ul>
+<h4 id="contract-testing-10-coverage-target">Contract Testing (10% coverage target)</h4>
+<ul>
+<li><strong>Framework</strong>: Pact Python for consumer-driven contract testing</li>
+<li>Ensure API compatibility between services</li>
+<li>Prevent breaking changes in service interfaces</li>
+</ul>
+<h3 id="scalability-recommendations">Scalability Recommendations</h3>
+<h4 id="horizontal-scaling-strategy">Horizontal Scaling Strategy</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># Kubernetes HPA configuration</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">autoscaling/v2</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">HorizontalPodAutoscaler</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">error-reporting-service-hpa</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">scaleTargetRef:</span>
+    <span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+    <span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">error-reporting-service</span>
+  <span class="hljs-attr">minReplicas:</span> <span class="hljs-number">2</span>
+  <span class="hljs-attr">maxReplicas:</span> <span class="hljs-number">10</span>
+  <span class="hljs-attr">metrics:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">Resource</span>
+    <span class="hljs-attr">resource:</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">cpu</span>
+      <span class="hljs-attr">target:</span>
+        <span class="hljs-attr">type:</span> <span class="hljs-string">Utilization</span>
+        <span class="hljs-attr">averageUtilization:</span> <span class="hljs-number">70</span>
+</div></code></pre>
+<h4 id="database-scaling">Database Scaling</h4>
+<ul>
+<li><strong>PostgreSQL</strong>: Implement read replicas and connection pooling</li>
+<li><strong>Vector Database</strong>: Use sharding by speaker_id for even distribution</li>
+<li><strong>Redis</strong>: Implement clustering for high availability and performance</li>
+</ul>
+<h4 id="caching-strategy">Caching Strategy</h4>
+<ul>
+<li><strong>L1 Cache</strong>: In-memory caching for frequently accessed data</li>
+<li><strong>L2 Cache</strong>: Redis for shared caching across service instances</li>
+<li><strong>L3 Cache</strong>: Database query result caching</li>
+</ul>
+<h3 id="security-recommendations">Security Recommendations</h3>
+<h4 id="api-security">API Security</h4>
+<ul>
+<li>Rate limiting: 1000 requests/hour per user</li>
+<li>JWT-based authentication with refresh tokens</li>
+<li>Request signing for sensitive operations</li>
+<li>IP whitelisting for admin functions</li>
+</ul>
+<h4 id="data-protection">Data Protection</h4>
+<ul>
+<li>AES-256 encryption for data at rest</li>
+<li>TLS 1.3 for data in transit</li>
+<li>Field-level encryption for sensitive medical data</li>
+<li>Key rotation every 90 days</li>
+</ul>
+<h4 id="compliance">Compliance</h4>
+<ul>
+<li>HIPAA compliance for healthcare data</li>
+<li>SOC 2 Type II certification</li>
+<li>Regular security assessments and penetration testing</li>
+<li>Complete audit trail for all operations</li>
+</ul>
+<h3 id="deployment-strategy">Deployment Strategy</h3>
+<h4 id="blue-green-deployment">Blue-Green Deployment</h4>
+<ul>
+<li>Deploy to green environment while blue serves traffic</li>
+<li>Run comprehensive health checks on green environment</li>
+<li>Switch traffic to green after validation</li>
+<li>Keep blue environment for quick rollback if needed</li>
+</ul>
+<h4 id="database-migration-strategy">Database Migration Strategy</h4>
+<ul>
+<li><strong>Migration Tool</strong>: Alembic for SQLAlchemy-based database migrations</li>
+<li>Zero-downtime migrations using dual-write approach</li>
+<li>Create new table structure alongside existing</li>
+<li>Backfill data from old to new table</li>
+<li>Switch reads to new table gradually</li>
+<li>Clean up old structure after verification period</li>
+</ul>
+<h4 id="python-specific-deployment-considerations">Python-Specific Deployment Considerations</h4>
+<ul>
+<li><strong>Container Base Image</strong>: Python 3.11-slim for optimal size and security</li>
+<li><strong>Dependency Management</strong>: Poetry for reproducible builds and dependency resolution</li>
+<li><strong>ASGI Server</strong>: Uvicorn with Gunicorn for production deployment</li>
+<li><strong>Environment Management</strong>: Pydantic Settings for configuration management</li>
+<li><strong>Health Checks</strong>: FastAPI built-in health check endpoints</li>
+<li><strong>Graceful Shutdown</strong>: Proper signal handling for container orchestration</li>
+</ul>
+<h3 id="monitoring-and-observability">Monitoring and Observability</h3>
+<h4 id="application-metrics">Application Metrics</h4>
+<ul>
+<li>Custom business metrics (error submission rates, correction accuracy)</li>
+<li>Performance metrics (response times, throughput)</li>
+<li>Error rates and success rates by service</li>
+</ul>
+<h4 id="distributed-tracing">Distributed Tracing</h4>
+<ul>
+<li>OpenTelemetry for distributed tracing</li>
+<li>Jaeger for trace visualization and analysis</li>
+<li>Correlation IDs for request tracking across services</li>
+</ul>
+<h4 id="alerting">Alerting</h4>
+<ul>
+<li>Prometheus alerting rules for critical metrics</li>
+<li>PagerDuty integration for incident management</li>
+<li>Slack notifications for non-critical alerts</li>
+</ul>
+<hr>
+<h2 id="implementation-roadmap">Implementation Roadmap</h2>
+<h3 id="phase-1-foundation-weeks-1-4">Phase 1: Foundation (Weeks 1-4)</h3>
+<p><strong>Objective</strong>: Establish development infrastructure and core frameworks</p>
+<p><strong>Deliverables</strong>:</p>
+<ul>
+<li><input type="checkbox" id="checkbox0"><label for="checkbox0">Development environment setup for all teams</label></li>
+<li><input type="checkbox" id="checkbox1"><label for="checkbox1">CI/CD pipeline configuration</label></li>
+<li><input type="checkbox" id="checkbox2"><label for="checkbox2">Database schema design and initial setup</label></li>
+<li><input type="checkbox" id="checkbox3"><label for="checkbox3">API contract definitions and documentation</label></li>
+<li><input type="checkbox" id="checkbox4"><label for="checkbox4">Shared libraries for common DTOs and interfaces</label></li>
+</ul>
+<p><strong>Critical Success Factors</strong>:</p>
+<ul>
+<li>All teams have working development environments</li>
+<li>API contracts are agreed upon and documented</li>
+<li>Database schemas are reviewed and approved</li>
+<li>CI/CD pipelines are functional and tested</li>
+</ul>
+<h3 id="phase-2-core-service-development-weeks-5-12">Phase 2: Core Service Development (Weeks 5-12)</h3>
+<p><strong>Objective</strong>: Develop core business logic for each service</p>
+<p><strong>Parallel Development Tracks</strong>:</p>
+<p><strong>Track A: Error Processing (Teams 1 &amp; 2)</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox5"><label for="checkbox5">Error Reporting Service core functionality</label></li>
+<li><input type="checkbox" id="checkbox6"><label for="checkbox6">RAG Integration Service embedding generation</label></li>
+<li><input type="checkbox" id="checkbox7"><label for="checkbox7">Vector database integration and optimization</label></li>
+<li><input type="checkbox" id="checkbox8"><label for="checkbox8">Event-driven communication between services</label></li>
+</ul>
+<p><strong>Track B: Correction Engine (Team 3)</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox9"><label for="checkbox9">Pattern matching algorithms implementation</label></li>
+<li><input type="checkbox" id="checkbox10"><label for="checkbox10">Confidence scoring system</label></li>
+<li><input type="checkbox" id="checkbox11"><label for="checkbox11">Real-time correction application</label></li>
+<li><input type="checkbox" id="checkbox12"><label for="checkbox12">ASR pipeline integration</label></li>
+</ul>
+<p><strong>Track C: Verification &amp; Platform (Teams 4 &amp; 5)</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox13"><label for="checkbox13">Verification Service dashboard APIs</label></li>
+<li><input type="checkbox" id="checkbox14"><label for="checkbox14">User Management Service authentication</label></li>
+<li><input type="checkbox" id="checkbox15"><label for="checkbox15">Infrastructure monitoring setup</label></li>
+<li><input type="checkbox" id="checkbox16"><label for="checkbox16">Security implementation</label></li>
+</ul>
+<p><strong>Track D: Frontend Development (Team 6)</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox17"><label for="checkbox17">Error Reporting UI components</label></li>
+<li><input type="checkbox" id="checkbox18"><label for="checkbox18">Verification Dashboard interface</label></li>
+<li><input type="checkbox" id="checkbox19"><label for="checkbox19">Admin Dashboard functionality</label></li>
+<li><input type="checkbox" id="checkbox20"><label for="checkbox20">Responsive design and accessibility</label></li>
+</ul>
+<h3 id="phase-3-integration-and-testing-weeks-13-16">Phase 3: Integration and Testing (Weeks 13-16)</h3>
+<p><strong>Objective</strong>: Integrate all services and conduct comprehensive testing</p>
+<p><strong>Deliverables</strong>:</p>
+<ul>
+<li><input type="checkbox" id="checkbox21"><label for="checkbox21">End-to-end integration testing</label></li>
+<li><input type="checkbox" id="checkbox22"><label for="checkbox22">Performance testing and optimization</label></li>
+<li><input type="checkbox" id="checkbox23"><label for="checkbox23">Security testing and vulnerability assessment</label></li>
+<li><input type="checkbox" id="checkbox24"><label for="checkbox24">User acceptance testing with QA and MTS teams</label></li>
+<li><input type="checkbox" id="checkbox25"><label for="checkbox25">Load testing and scalability validation</label></li>
+</ul>
+<p><strong>Critical Success Factors</strong>:</p>
+<ul>
+<li>All services communicate correctly through defined APIs</li>
+<li>Performance requirements are met (&lt; 5 seconds for corrections)</li>
+<li>Security requirements are validated</li>
+<li>User feedback is incorporated</li>
+</ul>
+<h3 id="phase-4-production-deployment-weeks-17-20">Phase 4: Production Deployment (Weeks 17-20)</h3>
+<p><strong>Objective</strong>: Deploy to production and establish operational procedures</p>
+<p><strong>Deliverables</strong>:</p>
+<ul>
+<li><input type="checkbox" id="checkbox26"><label for="checkbox26">Production environment setup</label></li>
+<li><input type="checkbox" id="checkbox27"><label for="checkbox27">Blue-green deployment implementation</label></li>
+<li><input type="checkbox" id="checkbox28"><label for="checkbox28">Monitoring and alerting configuration</label></li>
+<li><input type="checkbox" id="checkbox29"><label for="checkbox29">Disaster recovery procedures</label></li>
+<li><input type="checkbox" id="checkbox30"><label for="checkbox30">User training and documentation</label></li>
+<li><input type="checkbox" id="checkbox31"><label for="checkbox31">Go-live support and monitoring</label></li>
+</ul>
+<p><strong>Critical Success Factors</strong>:</p>
+<ul>
+<li>Zero-downtime deployment achieved</li>
+<li>All monitoring and alerting systems operational</li>
+<li>Support team trained and ready</li>
+<li>Rollback procedures tested and documented</li>
+</ul>
+<h3 id="success-metrics">Success Metrics</h3>
+<h4 id="technical-metrics">Technical Metrics</h4>
+<ul>
+<li><strong>System Performance</strong>: &lt; 5 seconds for correction application</li>
+<li><strong>Availability</strong>: 99.9% uptime</li>
+<li><strong>Scalability</strong>: Support 100+ concurrent users</li>
+<li><strong>Test Coverage</strong>: 70% unit test coverage, 20% integration test coverage</li>
+</ul>
+<h4 id="business-metrics">Business Metrics</h4>
+<ul>
+<li><strong>Error Reduction</strong>: 30% reduction in repetitive speaker-specific errors</li>
+<li><strong>QA Efficiency</strong>: 25% reduction in time spent on repetitive error correction</li>
+<li><strong>User Adoption</strong>: 90% of QA personnel actively using the system</li>
+<li><strong>Correction Accuracy</strong>: 95% accuracy rate for automated corrections</li>
+</ul>
+<h3 id="risk-mitigation">Risk Mitigation</h3>
+<h4 id="technical-risks">Technical Risks</h4>
+<ul>
+<li><strong>Integration Complexity</strong>: Mitigate with contract testing and API mocking</li>
+<li><strong>Performance Issues</strong>: Address with comprehensive load testing and optimization</li>
+<li><strong>Data Consistency</strong>: Implement saga patterns for distributed transactions</li>
+<li><strong>Security Vulnerabilities</strong>: Regular security audits and penetration testing</li>
+</ul>
+<h4 id="organizational-risks">Organizational Risks</h4>
+<ul>
+<li><strong>Team Coordination</strong>: Weekly cross-team sync meetings and shared documentation</li>
+<li><strong>Scope Creep</strong>: Strict change control process and regular stakeholder reviews</li>
+<li><strong>Resource Constraints</strong>: Buffer time in estimates and cross-training team members</li>
+<li><strong>User Adoption</strong>: Early user involvement and comprehensive training programs</li>
+</ul>
+<h3 id="next-immediate-steps">Next Immediate Steps</h3>
+<ol>
+<li><strong>Week 1</strong>: Set up development environments and establish team communication channels</li>
+<li><strong>Week 1</strong>: Finalize API contracts and create shared interface libraries</li>
+<li><strong>Week 2</strong>: Begin parallel development of core services</li>
+<li><strong>Week 2</strong>: Set up CI/CD pipelines and automated testing</li>
+<li><strong>Week 3</strong>: Implement basic service skeletons with health checks</li>
+<li><strong>Week 4</strong>: Establish monitoring and logging infrastructure</li>
+</ol>
+<hr>
+<h2 id="appendices">Appendices</h2>
+<h3 id="appendix-a-detailed-api-specifications">Appendix A: Detailed API Specifications</h3>
+<p><em>[Reference to complete API documentation with OpenAPI specifications]</em></p>
+<h3 id="appendix-b-database-schema-details">Appendix B: Database Schema Details</h3>
+<p><em>[Reference to complete database schema with migration scripts]</em></p>
+<h3 id="appendix-c-security-architecture">Appendix C: Security Architecture</h3>
+<p><em>[Reference to detailed security implementation guide]</em></p>
+<h3 id="appendix-d-performance-benchmarks">Appendix D: Performance Benchmarks</h3>
+<p><em>[Reference to performance testing results and optimization guidelines]</em></p>
+<h3 id="appendix-e-deployment-scripts">Appendix E: Deployment Scripts</h3>
+<p><em>[Reference to Kubernetes manifests, Helm charts, and deployment automation]</em></p>
+<hr>
+<p><strong>Document Status</strong>: ✅ Complete
+<strong>Next Review Date</strong>: August 20, 2025
+<strong>Approval Required</strong>: Architecture Review Board, Technical Leads, Product Owner</p>
+
+</body>
+</html>
