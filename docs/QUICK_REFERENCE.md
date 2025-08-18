@@ -21,6 +21,18 @@ python test_ers.py
 python health_check.py
 ```
 
+## 🐘 PostgreSQL Local Development
+
+- Full guide: see docs/postgres-local-dev.md
+- Handy Makefile targets:
+```bash
+make db-up        # Start/launch local Postgres (Podman)
+make db-init      # Create tables via app adapter
+make db-health    # App-level DB health check
+make db-crud-test # CRUD smoke test through adapter
+make db-down      # Stop Postgres container
+```
+
 ## 📋 Essential Commands
 
 ### Health & Status
@@ -143,10 +155,10 @@ Include these files with your support request.
 
 ## 🎯 Success Criteria
 
-✅ Health check shows all components healthy  
-✅ Test script completes without errors  
-✅ Performance under 100ms per error  
-✅ Can submit and query error reports  
-✅ Database and event bus adapters working  
+✅ Health check shows all components healthy
+✅ Test script completes without errors
+✅ Performance under 100ms per error
+✅ Can submit and query error reports
+✅ Database and event bus adapters working
 
 **Time to complete setup: < 30 minutes**

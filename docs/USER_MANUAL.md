@@ -61,16 +61,16 @@ cd /path/to/rag-interface
 
 **Step 2**: Create a virtual environment (recommended)
 ```bash
-python -m venv ers_env
+python -m venv .ers_env
 ```
 
 **Step 3**: Activate the virtual environment
 ```bash
 # Windows
-ers_env\Scripts\activate
+.ers_env\Scripts\activate
 
 # macOS/Linux
-source ers_env/bin/activate
+source .ers_env/bin/activate
 ```
 
 **Step 4**: Install required dependencies
@@ -85,6 +85,23 @@ pip install -r requirements.txt
 ## 2. Database Setup
 
 ### 2.1 Option A: PostgreSQL Setup (Recommended)
+
+You can install PostgreSQL locally or run it via Podman. For the quickest, reproducible setup we recommend the Podman route documented here:
+
+- See: [Local PostgreSQL Setup & Integration Guide](postgres-local-dev.md)
+
+Common Makefile shortcuts (run from project root):
+```bash
+make db-up        # Start local Postgres (Podman)
+make db-init      # Create tables via the adapter
+make db-health    # Check DB health via the adapter
+make db-crud-test # CRUD smoke test
+make db-down      # Stop container
+```
+
+If you prefer installing PostgreSQL natively, follow the steps below.
+
+**Native install:**
 
 **Step 1**: Install PostgreSQL
 - **Windows**: Download from [postgresql.org](https://postgresql.org/download)

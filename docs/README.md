@@ -10,6 +10,7 @@ Welcome to the Error Reporting Service (ERS) documentation. This service is desi
 
 ### For Technical Users
 - **[Implementation Summary](../IMPLEMENTATION_SUMMARY.md)** - Technical architecture and implementation details
+- **[Local PostgreSQL Setup](postgres-local-dev.md)** - Podman-based local Postgres, app integration, CRUD tests
 - **[API Documentation](API_REFERENCE.md)** - REST API endpoints and usage (coming soon)
 
 ## 🚀 Quick Start (5 Minutes)
@@ -45,6 +46,29 @@ python validate_setup.py
 🎉 ALL VALIDATIONS PASSED!
 ✅ ERS is properly installed and configured
 ✅ Ready for production use
+
+## 🐘 Local PostgreSQL & Makefile Shortcuts
+
+- Full local Postgres guide: see [docs/postgres-local-dev.md](postgres-local-dev.md)
+- Common Makefile targets (run from repo root):
+  - `make db-up`        — Start local PostgreSQL (Podman) with persistent volume
+  - `make db-init`      — Create tables via the app’s PostgreSQL adapter
+  - `make db-health`    — App-level DB health check
+  - `make db-crud-test` — CRUD smoke test through the adapter
+  - `make db-logs`      — Tail database container logs
+  - `make db-down`      — Stop and remove the container (data persists)
+  - `make db-net`       — Create a Podman network for container-to-container workflows
+
+- Override defaults (e.g., port) when launching:
+```bash
+DB_PORT=55432 make db-up
+```
+
+- Quick sequence to be ready for development:
+```bash
+make db-up && make db-init && make db-health
+```
+
 ```
 
 ## 🏗️ Architecture Overview

@@ -1,0 +1,29 @@
+### Environments ###
+.ers_env/
+.venv/
+.env
+venv/
+ENV/
+
+### Python ###
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+### Build/Distribution ###
+build/
+dist/
+*.egg-info/
+
+### Tools ###
+.deepeval/
+.git
+
+### Documentation ###
+documents/*.html
+
+### IDEs/Editors ###
+.vscode/
+.idea/
