@@ -7,6 +7,7 @@ These DTOs define the structure of responses from use cases.
 from dataclasses import dataclass
 from typing import List, Optional, Dict, Any
 from datetime import datetime
+from src.error_reporting_service.domain.entities.error_report import ErrorReport
 
 
 @dataclass(frozen=True)
@@ -77,3 +78,75 @@ class UpdateErrorReportResponse:
     status: str
     message: str
     updated_fields: List[str]
+
+
+@dataclass(frozen=True)
+class GetErrorReportResponse:
+    """
+    Response DTO for error report retrieval.
+
+    Contains the retrieved error report and status information.
+    """
+
+    error_report: ErrorReport
+    status: str
+
+
+@dataclass(frozen=True)
+class PaginatedErrorReports:
+    """
+    Paginated collection of error reports.
+    """
+
+    items: List[ErrorReport]
+    total: int
+    page: int
+    size: int
+    pages: int
+
+    def __post_init__(self):
+        """Calculate total pages"""
+        if self.size > 0:
+            calculated_pages = (self.total + self.size - 1) // self.size
+            object.__setattr__(self, 'pages', calculated_pages)
+        else:
+            object.__setattr__(self, 'pages', 0)
+
+
+@dataclass(frozen=True)
+class SearchErrorsResponse:
+    """
+    Response DTO for error report search.
+
+    Contains search results and pagination information.
+    """
+
+    results: PaginatedErrorReports
+    status: str
+
+
+@dataclass(frozen=True)
+class DeleteErrorReportResponse:
+    """
+    Response DTO for error report deletion.
+
+    Contains the status of the deletion operation.
+    """
+
+    status: str
+    message: str
+
+
+@dataclass(frozen=True)
+class ErrorResponse:
+    """
+    Response DTO for error cases.
+
+    Contains error information and details.
+    """
+
+    success: bool
+    error: Dict[str, Any]
+    timestamp: str
+    request_id: str
+    version: str

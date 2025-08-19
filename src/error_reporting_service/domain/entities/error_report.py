@@ -83,16 +83,20 @@ class ErrorReport:
     def _validate_text_fields(self) -> None:
         """Validate text field constraints"""
         if not self.original_text or not self.original_text.strip():
-            raise ValueError("original_text cannot be empty")
-        
+            raise ValueError("text cannot be empty or whitespace only")
+
         if not self.corrected_text or not self.corrected_text.strip():
-            raise ValueError("corrected_text cannot be empty")
+            raise ValueError("text cannot be empty or whitespace only")
         
         if len(self.original_text) > 5000:
             raise ValueError("original_text cannot exceed 5000 characters")
         
         if len(self.corrected_text) > 5000:
             raise ValueError("corrected_text cannot exceed 5000 characters")
+
+        # Validate position range against text length
+        if self.end_position > len(self.original_text):
+            raise ValueError("position range exceeds text length")
     
     def __eq__(self, other) -> bool:
         """Equality based on error_id (entity identity)"""
@@ -124,6 +128,18 @@ class ErrorReport:
     def get_error_length(self) -> int:
         """Get the length of the error text"""
         return self.end_position - self.start_position
+
+    def calculate_error_length(self) -> int:
+        """Calculate the length of the error text (alias for get_error_length)"""
+        return self.get_error_length()
+
+    def get_error_text(self) -> str:
+        """Extract the error portion from original text"""
+        return self.original_text[self.start_position:self.end_position]
+
+    def get_correction_text(self) -> str:
+        """Extract the correction portion from corrected text"""
+        return self.corrected_text[self.start_position:self.end_position]
     
     def with_status(self, new_status: ErrorStatus) -> 'ErrorReport':
         """Create a new ErrorReport with updated status (immutable update)"""

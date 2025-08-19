@@ -1,9 +1,10 @@
 # ASR Error Reporting System - Comprehensive Architecture Design
 
-**Document Version:** 1.0  
-**Date:** August 6, 2025  
-**Author:** Architecture Team  
-**Based on:** ASR Error Reporting PRD - TR-1 Technical Requirements  
+**Document Version:** 1.1
+**Date:** August 19, 2025
+**Author:** Architecture Team
+**Based on:** ASR Error Reporting PRD - TR-1 Technical Requirements
+**Design Principles:** SOLID Principles + Hexagonal Architecture
 
 ---
 
@@ -27,13 +28,26 @@ The ASR Error Reporting System implements a **Hexagonal Microservice Architectur
 
 ### 1.2 Key Architecture Principles
 
-1. **Microservice Independence**: Each service can be developed, deployed, and scaled independently
-2. **Hexagonal Architecture**: Clear separation between business logic (core), interfaces (ports), and external adapters
-3. **Event-Driven Communication**: Loose coupling through asynchronous event messaging
-4. **Domain-Driven Design**: Business logic organized around domain concepts
-5. **API-First Development**: Well-defined contracts enable parallel development
+1. **SOLID Principles**: Every module follows Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion principles
+2. **Microservice Independence**: Each service can be developed, deployed, and scaled independently
+3. **Hexagonal Architecture**: Clear separation between business logic (core), interfaces (ports), and external adapters
+4. **Event-Driven Communication**: Loose coupling through asynchronous event messaging
+5. **Domain-Driven Design**: Business logic organized around domain concepts
+6. **API-First Development**: Well-defined contracts enable parallel development
 
-### 1.3 Core Services
+### 1.3 SOLID Principles Integration
+
+The system architecture is built on **SOLID principles** as the foundation for maintainable, extensible, and testable code:
+
+- **Single Responsibility Principle (SRP)**: Each service, class, and method has one reason to change
+- **Open/Closed Principle (OCP)**: Software entities are open for extension, closed for modification
+- **Liskov Substitution Principle (LSP)**: Objects of a superclass are replaceable with objects of subclasses
+- **Interface Segregation Principle (ISP)**: No client depends on methods it doesn't use
+- **Dependency Inversion Principle (DIP)**: Depend on abstractions, not concretions
+
+These principles are seamlessly integrated with the Hexagonal Architecture pattern to create a robust, maintainable system.
+
+### 1.4 Core Services (SOLID-Compliant)
 
 - **Error Reporting Service (ERS)**: Handles error submission, validation, and categorization
 - **RAG Integration Service (RIS)**: Manages vector embeddings, similarity search, and pattern recognition
@@ -41,10 +55,10 @@ The ASR Error Reporting System implements a **Hexagonal Microservice Architectur
 - **Verification Service (VS)**: Manages correction verification and analytics
 - **User Management Service (UMS)**: Handles authentication, authorization, and user management
 
-### 1.4 Technology Stack
+### 1.5 Technology Stack (SOLID-Enabled)
 
 - **Backend**: Python with FastAPI framework
-- **Databases**: PostgreSQL (relational), Vector Database (Pinecone/Weaviate), Redis (cache)
+- **Databases**: PostgreSQL/MongoDB/SQL Server (relational), Vector Database (Pinecone/Weaviate/Qdrant), Redis (cache)
 - **Message Queue**: Apache Kafka for event-driven communication
 - **Frontend**: React 18+ with TypeScript
 - **Infrastructure**: Kubernetes with Istio service mesh
@@ -479,7 +493,8 @@ graph TB
 
 **Key Modules**:
 1. **Error Reporting UI** (3 weeks)
-   - Text selection components and error categorization interface
+   - Advanced text selection components with non-contiguous selection support
+   - Error categorization interface with custom category management
    - Real-time validation and offline capability
 
 2. **Verification Dashboard** (3 weeks)
@@ -498,6 +513,108 @@ graph TB
 - Implement Progressive Web App (PWA) features
 - Use micro-frontend architecture for independent deployment
 - Design for offline-first capability
+
+#### 3.2.6.1 Non-Contiguous Text Selection Architecture
+
+The Error Reporting UI implements advanced text selection capabilities that allow users to select multiple non-contiguous text segments for a single error report. This feature is critical for handling complex ASR errors that span multiple parts of a transcript.
+
+**Core Features:**
+- Multiple text segment selection within a single error report
+- Visual indicators showing relationships between selected segments
+- Position coordinate tracking for each segment
+- Validation ensuring all segments belong to the same speaker context
+- Undo/redo functionality for selection operations
+
+**Technical Implementation:**
+
+```typescript
+interface TextSegment {
+  id: string;
+  startPosition: number;
+  endPosition: number;
+  text: string;
+  speakerId: string;
+  timestamp: number;
+  coordinates: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+}
+
+interface NonContiguousSelection {
+  selectionId: string;
+  segments: TextSegment[];
+  speakerId: string;
+  createdAt: Date;
+  lastModified: Date;
+  isValid: boolean;
+}
+
+class TextSelectionManager {
+  private selections: Map<string, NonContiguousSelection> = new Map();
+  private activeSelection: string | null = null;
+
+  // Add a new text segment to the current selection
+  addSegment(segment: TextSegment): void {
+    // Implementation for adding segments with validation
+  }
+
+  // Remove a specific segment from the selection
+  removeSegment(segmentId: string): void {
+    // Implementation for removing segments
+  }
+
+  // Validate that all segments belong to the same speaker
+  validateSelection(selection: NonContiguousSelection): boolean {
+    // Implementation for speaker context validation
+  }
+
+  // Get visual indicators for segment relationships
+  getSegmentRelationships(selectionId: string): SegmentRelationship[] {
+    // Implementation for visual relationship mapping
+  }
+}
+```
+
+**UI Components:**
+
+1. **TextSelectionCanvas**: Main component for text display and selection
+   - Handles mouse/touch events for text selection
+   - Renders visual highlights for selected segments
+   - Manages selection state and coordinates
+
+2. **SegmentIndicator**: Visual component for individual text segments
+   - Displays segment boundaries and metadata
+   - Provides controls for segment manipulation
+   - Shows relationship lines between segments
+
+3. **SelectionToolbar**: Control panel for selection operations
+   - Undo/redo functionality
+   - Clear all selections
+   - Segment validation status
+   - Selection summary information
+
+**Data Flow:**
+1. User initiates text selection on transcript
+2. TextSelectionManager captures selection coordinates
+3. System validates speaker context consistency
+4. Visual indicators update to show selected segments
+5. Selection data is prepared for error report submission
+
+**Validation Rules:**
+- All segments must belong to the same speaker
+- Segments cannot overlap with each other
+- Minimum segment length of 1 character
+- Maximum of 10 segments per error report
+- Total selected text cannot exceed 1000 characters
+
+**Accessibility Features:**
+- Keyboard navigation support for text selection
+- Screen reader compatibility with ARIA labels
+- High contrast mode for visual indicators
+- Voice commands for selection operations
 
 ---
 
@@ -785,7 +902,8 @@ class ErrorResponse(BaseModel):
 - **Framework**: FastAPI (supports dependency injection, automatic API documentation, and async operations)
 - **Database**:
   - Vector Database: Pinecone, Weaviate, or Qdrant for 1536-dimensional embeddings
-  - Relational Database: PostgreSQL 15+ with JSONB support
+  - Relational Database: PostgreSQL 15+ with JSONB support (primary)
+  - Alternative Databases: MongoDB 4.4+ for document storage, SQL Server for enterprise environments
   - Cache: Redis 7+ with clustering for high availability
 - **Message Queue**: Apache Kafka for event-driven communication
 - **API Documentation**: Automatic OpenAPI 3.0 generation with FastAPI's built-in Swagger UI
@@ -796,6 +914,126 @@ class ErrorResponse(BaseModel):
 - **UI Library**: Material-UI or Ant Design for consistent design
 - **Build Tool**: Vite for fast development and hot module replacement
 - **Testing**: Jest + React Testing Library for comprehensive testing
+- **Offline Support**: Service Workers with IndexedDB for offline functionality
+
+#### 5.1.2.1 Offline Support Architecture
+
+The system implements comprehensive offline support to ensure data integrity and user productivity during network interruptions. This is critical for QA personnel working in environments with unreliable connectivity.
+
+**Core Offline Capabilities:**
+- Draft error report creation and editing
+- Local validation and data integrity checks
+- Automatic synchronization when connectivity is restored
+- Conflict resolution for concurrent edits across devices
+- Offline mode indicators and user feedback
+
+**Technical Implementation:**
+
+```typescript
+interface OfflineDraft {
+  draftId: string;
+  errorReport: Partial<ErrorReport>;
+  lastModified: Date;
+  syncStatus: 'pending' | 'syncing' | 'synced' | 'conflict';
+  version: number;
+  deviceId: string;
+}
+
+class OfflineManager {
+  private db: IDBDatabase;
+  private syncQueue: OfflineDraft[] = [];
+  private isOnline: boolean = navigator.onLine;
+
+  // Store draft error report locally
+  async saveDraft(draft: OfflineDraft): Promise<void> {
+    // Implementation for IndexedDB storage
+  }
+
+  // Retrieve all pending drafts
+  async getPendingDrafts(): Promise<OfflineDraft[]> {
+    // Implementation for retrieving unsynchronized drafts
+  }
+
+  // Synchronize drafts when online
+  async syncDrafts(): Promise<SyncResult[]> {
+    // Implementation for background synchronization
+  }
+
+  // Handle conflict resolution
+  async resolveConflicts(conflicts: ConflictData[]): Promise<void> {
+    // Implementation for conflict resolution UI
+  }
+}
+```
+
+**Storage Strategy:**
+- **IndexedDB**: Primary storage for draft error reports (up to 100 drafts)
+- **LocalStorage**: User preferences and application state
+- **Cache API**: Static assets and API response caching
+- **Service Worker**: Background sync and offline functionality
+
+**Synchronization Process:**
+1. **Draft Creation**: Error reports saved locally with timestamp
+2. **Connectivity Detection**: Monitor online/offline status
+3. **Background Sync**: Automatic upload when connection restored
+4. **Conflict Detection**: Compare timestamps and versions
+5. **Conflict Resolution**: User-guided merge process
+6. **Data Cleanup**: Remove synchronized drafts after confirmation
+
+**Data Persistence Schema:**
+```sql
+-- IndexedDB Object Stores
+CREATE OBJECT_STORE drafts (
+  keyPath: 'draftId',
+  indexes: [
+    { name: 'lastModified', keyPath: 'lastModified' },
+    { name: 'syncStatus', keyPath: 'syncStatus' },
+    { name: 'deviceId', keyPath: 'deviceId' }
+  ]
+);
+
+CREATE OBJECT_STORE syncQueue (
+  keyPath: 'queueId',
+  indexes: [
+    { name: 'priority', keyPath: 'priority' },
+    { name: 'createdAt', keyPath: 'createdAt' }
+  ]
+);
+```
+
+**Service Worker Implementation:**
+```javascript
+// Background sync for draft submission
+self.addEventListener('sync', event => {
+  if (event.tag === 'draft-sync') {
+    event.waitUntil(syncDrafts());
+  }
+});
+
+// Offline fallback for API requests
+self.addEventListener('fetch', event => {
+  if (event.request.url.includes('/api/')) {
+    event.respondWith(
+      fetch(event.request)
+        .catch(() => handleOfflineRequest(event.request))
+    );
+  }
+});
+```
+
+**User Experience Features:**
+- **Offline Indicator**: Clear visual status of connectivity
+- **Draft Counter**: Number of pending drafts awaiting sync
+- **Sync Progress**: Real-time sync status and progress bars
+- **Conflict Resolution UI**: Guided merge interface for conflicts
+- **Data Recovery**: Automatic recovery of unsaved work
+
+**Performance Considerations:**
+- Maximum 100 draft error reports in local storage
+- Automatic cleanup of drafts older than 30 days
+- Compression of draft data to minimize storage usage
+- Lazy loading of draft content for performance
+- Background sync throttling to prevent network congestion
 
 #### 5.1.3 Infrastructure
 - **Container Orchestration**: Kubernetes 1.25+ for scalable deployments

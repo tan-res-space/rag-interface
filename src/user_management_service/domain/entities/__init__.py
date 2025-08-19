@@ -1,0 +1,16 @@
+"""
+Domain Entities
+
+This module contains domain entities that represent core business concepts
+in the user management domain.
+"""
+
+from .user import User, UserRole, UserStatus, Permission, UserProfile
+
+__all__ = [
+    "User",
+    "UserRole", 
+    "UserStatus",
+    "Permission",
+    "UserProfile"
+]

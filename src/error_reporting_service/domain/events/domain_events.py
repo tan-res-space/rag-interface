@@ -71,27 +71,51 @@ class ErrorReportedEvent(BaseEvent):
 class ErrorUpdatedEvent(BaseEvent):
     """
     Event published when an error report is updated.
-    
+
     This event notifies other services that an error report has been modified.
     """
-    
+
     # Event metadata
     event_type: str = "error.updated"
     version: str = "1.0"
-    
+
     # Event payload
     error_id: str = ""
-    updated_fields: Dict[str, Any] = None
+    changes: Dict[str, Any] = None
     updated_by: str = ""
     previous_values: Dict[str, Any] = None
-    
+
     def __post_init__(self):
         """Set default values for dictionaries"""
         super().__post_init__()
-        if self.updated_fields is None:
-            object.__setattr__(self, 'updated_fields', {})
+        if self.changes is None:
+            object.__setattr__(self, 'changes', {})
         if self.previous_values is None:
             object.__setattr__(self, 'previous_values', {})
+
+
+@dataclass(frozen=True)
+class ErrorDeletedEvent(BaseEvent):
+    """
+    Event published when an error report is deleted.
+
+    This event notifies other services that an error report has been removed.
+    """
+
+    # Event metadata
+    event_type: str = "error.deleted"
+    version: str = "1.0"
+
+    # Event payload
+    error_id: str = ""
+    deleted_by: str = ""
+    deletion_reason: str = ""
+
+    def __post_init__(self):
+        """Set default values"""
+        super().__post_init__()
+        if not self.deletion_reason:
+            object.__setattr__(self, 'deletion_reason', "User requested deletion")
 
 
 @dataclass(frozen=True)

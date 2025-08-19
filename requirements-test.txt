@@ -1,0 +1,72 @@
+# Testing Framework
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-mock>=3.11.0
+pytest-cov>=4.1.0
+pytest-xdist>=3.3.0  # For parallel test execution
+pytest-timeout>=2.1.0  # For test timeouts
+pytest-benchmark>=4.0.0  # For performance testing
+
+# HTTP Testing
+httpx>=0.24.0
+requests-mock>=1.11.0
+responses>=0.23.0
+
+# Database Testing
+pytest-postgresql>=5.0.0
+sqlalchemy-utils>=0.41.0
+alembic>=1.11.0
+
+# Message Queue Testing
+pytest-kafka>=0.6.0
+testcontainers>=3.7.0  # For integration testing with real services
+
+# Cache Testing
+fakeredis>=2.18.0
+redis>=4.6.0
+
+# Test Data Generation
+factory-boy>=3.3.0
+faker>=19.0.0
+freezegun>=1.2.0  # For time mocking
+
+# Mocking and Fixtures
+responses>=0.23.0
+aioresponses>=0.7.4
+pytest-factoryboy>=2.5.0
+
+# Code Quality
+black>=23.0.0
+isort>=5.12.0
+flake8>=6.0.0
+mypy>=1.5.0
+bandit>=1.7.0
+
+# Performance Testing
+locust>=2.16.0  # For load testing
+memory-profiler>=0.61.0
+
+# Documentation Testing
+pytest-doctestplus>=1.0.0
+
+# Environment Management
+python-dotenv>=1.0.0
+pydantic[dotenv]>=2.0.0
+
+# FastAPI Testing
+fastapi[all]>=0.100.0
+starlette>=0.27.0
+
+# Async Testing Utilities
+asynctest>=0.13.0
+aiofiles>=23.0.0
+
+# JSON Schema Validation
+jsonschema>=4.19.0
+
+# UUID and Time Utilities
+uuid>=1.30
+python-dateutil>=2.8.0
+
+# Logging for Tests
+structlog>=23.0.0

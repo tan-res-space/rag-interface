@@ -55,6 +55,8 @@ The system will be implemented using the following technology stack:
 - **Backend Framework:** Python with FastAPI for high-performance API development
 - **Database Systems:**
   - PostgreSQL for relational data (metadata, audit trails, user management)
+  - MongoDB for document-based storage (alternative to PostgreSQL)
+  - SQL Server for enterprise environments (alternative to PostgreSQL)
   - Vector Database (Pinecone/Weaviate/Qdrant) for 1536-dimensional embeddings
   - Redis for caching and session management
 - **Message Queue:** Apache Kafka for event-driven communication between services
@@ -231,9 +233,12 @@ flowchart TD
 **Acceptance Criteria:**
 - [ ] I can click and drag to select text in the ASR draft interface
 - [ ] Selected text is highlighted with a distinct color
-- [ ] I can select multiple non-contiguous text segments
-- [ ] The system captures the exact position and timestamp of selected text
-- [ ] I can deselect text by clicking outside the selection
+- [ ] I can select multiple non-contiguous text segments for a single error report
+- [ ] Each text segment maintains its own position coordinates and metadata
+- [ ] The system captures the exact position and timestamp of each selected text segment
+- [ ] I can deselect individual text segments or clear all selections
+- [ ] Visual indicators show the relationship between multiple selected segments
+- [ ] The system validates that all segments belong to the same speaker context
 
 **Story Points:** 5
 **Priority:** High
@@ -415,15 +420,24 @@ flowchart TD
 
 ### 6.5 Epic 5: Error Handling and Edge Cases
 
-#### 6.5.1 US-5.1: Network Connectivity Issues
+#### 6.5.1 US-5.1: Network Connectivity Issues and Offline Support
 **As a QA personnel**, I want the system to handle network issues gracefully so that I don't lose my work during error reporting.
 
 **Acceptance Criteria:**
-- [ ] The system saves draft error reports locally during network issues
-- [ ] I receive clear notifications about connectivity status
-- [ ] Saved drafts are automatically submitted when connectivity is restored
-- [ ] I can continue working offline with limited functionality
-- [ ] No data is lost during network interruptions
+- [ ] The system saves draft error reports locally using IndexedDB during network issues
+- [ ] I receive clear notifications about connectivity status with visual indicators
+- [ ] Saved drafts are automatically submitted when connectivity is restored with conflict resolution
+- [ ] I can continue working offline with limited functionality (draft creation, local validation)
+- [ ] No data is lost during network interruptions with automatic recovery mechanisms
+- [ ] The system provides offline mode with local storage for up to 100 draft error reports
+- [ ] Offline drafts include timestamp synchronization when reconnected
+- [ ] The system handles partial submissions and provides retry mechanisms
+
+**Technical Implementation:**
+- Client-side storage using IndexedDB for draft persistence
+- Service worker implementation for offline functionality
+- Background sync for automatic submission when online
+- Conflict resolution for concurrent edits across devices
 
 **Story Points:** 8
 **Priority:** Medium
@@ -468,17 +482,24 @@ flowchart TD
   - Speaker identification for the error
 
 #### 7.1.2 FR-1.2: Error Categorization
-- **Requirement:** System must provide error classification options
-- **Categories:**
+- **Requirement:** System must provide error classification options with custom category support
+- **Predefined Categories:**
   - Pronunciation errors
   - Medical terminology errors
   - Grammar/syntax errors
   - Speaker-specific patterns
   - Context-specific errors
+- **Custom Category Support:**
+  - User-defined error categories stored in database
+  - Category approval workflow for quality control
+  - Category sharing across teams and organizations
+  - Category versioning and lifecycle management
 - **Acceptance Criteria:**
   - Dropdown/checkbox interface for category selection
   - Ability to select multiple categories per error
-  - Custom category creation capability
+  - Custom category creation capability with approval workflow
+  - Category search and filtering functionality
+  - Category usage analytics and recommendations
 
 #### 7.1.3 FR-1.3: Correction Submission
 - **Requirement:** QA users must provide correct text for identified errors
@@ -507,10 +528,10 @@ flowchart TD
 #### 7.2.1 FR-2.1: Error Registration API
 - **Requirement:** System must provide API endpoints for registering errors in the RAG database
 - **Endpoints:**
-  - `POST /api/errors/register` - Register new error
-  - `GET /api/errors/speaker/{speakerId}` - Retrieve speaker-specific errors
-  - `PUT /api/errors/{errorId}` - Update error information
-  - `DELETE /api/errors/{errorId}` - Remove error entry
+  - `POST /api/v1/errors/register` - Register new error
+  - `GET /api/v1/errors/speaker/{speakerId}` - Retrieve speaker-specific errors
+  - `PUT /api/v1/errors/{errorId}` - Update error information
+  - `DELETE /api/v1/errors/{errorId}` - Remove error entry
 - **Acceptance Criteria:**
   - RESTful API design
   - JSON request/response format
@@ -569,7 +590,7 @@ sequenceDiagram
 
     QA->>UI: Select error text and provide correction
     UI->>UI: Validate input data
-    UI->>API: POST /api/errors/report
+    UI->>API: POST /api/v1/errors/report
 
     API->>API: Authenticate user
     API->>API: Validate request payload

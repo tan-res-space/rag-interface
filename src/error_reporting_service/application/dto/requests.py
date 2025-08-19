@@ -6,6 +6,7 @@ These DTOs define the structure of incoming requests to use cases.
 
 from dataclasses import dataclass
 from typing import List, Optional, Dict, Any
+from datetime import datetime
 
 
 @dataclass(frozen=True)
@@ -32,6 +33,70 @@ class SubmitErrorReportRequest:
         """Set default metadata if None"""
         if self.metadata is None:
             object.__setattr__(self, 'metadata', {})
+
+
+@dataclass(frozen=True)
+class GetErrorReportRequest:
+    """
+    Request DTO for retrieving an error report by ID.
+    """
+
+    error_id: str
+    requested_by: str
+    include_metadata: bool = True
+
+
+@dataclass(frozen=True)
+class ErrorFilters:
+    """
+    Filters for error report search.
+    """
+
+    severity_levels: Optional[List[str]] = None
+    categories: Optional[List[str]] = None
+    speaker_id: Optional[str] = None
+    job_id: Optional[str] = None
+    status: Optional[str] = None
+    date_from: Optional[datetime] = None
+    date_to: Optional[datetime] = None
+    text_search: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class PaginationParams:
+    """
+    Pagination parameters for search requests.
+    """
+
+    page: int = 1
+    size: int = 10
+
+    def __post_init__(self):
+        """Validate pagination parameters"""
+        if self.page <= 0 or self.size <= 0:
+            raise ValueError("Invalid pagination parameters")
+
+
+@dataclass(frozen=True)
+class SortParams:
+    """
+    Sorting parameters for search requests.
+    """
+
+    field: str = "created_at"
+    direction: str = "desc"  # "asc" or "desc"
+
+
+@dataclass(frozen=True)
+class SearchErrorsRequest:
+    """
+    Request DTO for searching error reports.
+    """
+
+    requested_by: str
+    filters: ErrorFilters
+    pagination: PaginationParams
+    sort: SortParams
 
 
 @dataclass(frozen=True)
