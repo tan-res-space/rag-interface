@@ -1,0 +1,122 @@
+# =====================================================
+# User Management Service - Production Dockerfile
+# =====================================================
+# Multi-stage build for optimized production image
+# Author: RAG Interface Deployment Team
+# Version: 1.0
+# Date: 2025-01-20
+# =====================================================
+
+# =====================================================
+# Stage 1: Build Dependencies
+# =====================================================
+FROM python:3.11-slim as builder
+
+# Set build arguments
+ARG BUILD_DATE
+ARG VERSION=1.0.0
+ARG VCS_REF
+
+# Add metadata labels
+LABEL maintainer="RAG Interface Team" \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="User Management Service" \
+      org.label-schema.description="FastAPI microservice for user authentication and authorization" \
+      org.label-schema.version=$VERSION \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.schema-version="1.0"
+
+# Install system dependencies for building
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements first for better caching
+COPY requirements.txt requirements-prod.txt ./
+
+# Create virtual environment and install dependencies
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Upgrade pip and install dependencies
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements-prod.txt
+
+# =====================================================
+# Stage 2: Production Runtime
+# =====================================================
+FROM python:3.11-slim as production
+
+# Set runtime arguments
+ARG APP_USER=appuser
+ARG APP_UID=1001
+ARG APP_GID=1001
+
+# Install runtime dependencies only
+RUN apt-get update && apt-get install -y \
+    curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# Create non-root user for security
+RUN groupadd -g $APP_GID $APP_USER && \
+    useradd -u $APP_UID -g $APP_GID -m -s /bin/bash $APP_USER
+
+# Copy virtual environment from builder stage
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Set working directory
+WORKDIR /app
+
+# Copy application code
+COPY --chown=$APP_USER:$APP_USER src/user_management_service/ ./src/user_management_service/
+COPY --chown=$APP_USER:$APP_USER src/domain/ ./src/domain/
+
+# Create necessary directories
+RUN mkdir -p /app/logs /app/data && \
+    chown -R $APP_USER:$APP_USER /app
+
+# Switch to non-root user
+USER $APP_USER
+
+# Set environment variables
+ENV PYTHONPATH=/app \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONHASHSEED=random \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# Expose port
+EXPOSE 8001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8001/health || exit 1
+
+# Default command
+CMD ["uvicorn", "src.user_management_service.main:app", "--host", "0.0.0.0", "--port", "8001", "--workers", "4"]
+
+# =====================================================
+# Build Instructions
+# =====================================================
+# Build command:
+# podman build -f Dockerfile.user-management-service \
+#   --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
+#   --build-arg VCS_REF=$(git rev-parse --short HEAD) \
+#   -t rag-interface/user-management-service:latest .
+#
+# Run command:
+# podman run -d \
+#   --name user-management-service \
+#   -p 8001:8001 \
+#   -e DATABASE_URL="postgresql://ums_user:password@db:5432/user_management_db" \
+#   -e JWT_SECRET_KEY="your-secret-key" \
+#   rag-interface/user-management-service:latest
+# =====================================================

@@ -1,0 +1,287 @@
+# =====================================================
+# RAG Interface System - Docker Compose Configuration
+# =====================================================
+# Complete deployment configuration for all services
+# Author: RAG Interface Deployment Team
+# Version: 1.0
+# Date: 2025-01-20
+# =====================================================
+
+version: '3.8'
+
+# =====================================================
+# NETWORKS
+# =====================================================
+networks:
+  rag-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# =====================================================
+# VOLUMES
+# =====================================================
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  logs_data:
+    driver: local
+
+# =====================================================
+# SERVICES
+# =====================================================
+services:
+  # =====================================================
+  # Database Services
+  # =====================================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: rag-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres_secure_2025}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/postgresql:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    networks:
+      - rag-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  redis:
+    image: redis:7-alpine
+    container_name: rag-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis_secure_2025}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    networks:
+      - rag-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # =====================================================
+  # Backend Services
+  # =====================================================
+  error-reporting-service:
+    build:
+      context: ../..
+      dockerfile: deployment/podman/Dockerfile.error-reporting-service
+      args:
+        BUILD_DATE: ${BUILD_DATE}
+        VCS_REF: ${VCS_REF}
+    container_name: error-reporting-service
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://ers_user:${ERS_DB_PASSWORD:-ers_secure_password_2025}@postgres:5432/error_reporting_db
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-redis_secure_2025}@redis:6379/0
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - DEBUG=${DEBUG:-false}
+    volumes:
+      - logs_data:/app/logs
+    ports:
+      - "${ERS_PORT:-8000}:8000"
+    networks:
+      - rag-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  user-management-service:
+    build:
+      context: ../..
+      dockerfile: deployment/podman/Dockerfile.user-management-service
+      args:
+        BUILD_DATE: ${BUILD_DATE}
+        VCS_REF: ${VCS_REF}
+    container_name: user-management-service
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://ums_user:${UMS_DB_PASSWORD:-ums_secure_password_2025}@postgres:5432/user_management_db
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-redis_secure_2025}@redis:6379/1
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-your-super-secret-jwt-key-change-in-production}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - DEBUG=${DEBUG:-false}
+    volumes:
+      - logs_data:/app/logs
+    ports:
+      - "${UMS_PORT:-8001}:8001"
+    networks:
+      - rag-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  rag-integration-service:
+    build:
+      context: ../..
+      dockerfile: deployment/podman/Dockerfile.rag-integration-service
+      args:
+        BUILD_DATE: ${BUILD_DATE}
+        VCS_REF: ${VCS_REF}
+    container_name: rag-integration-service
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://ris_user:${RIS_DB_PASSWORD:-ris_secure_password_2025}@postgres:5432/rag_integration_db
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-redis_secure_2025}@redis:6379/2
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - DEBUG=${DEBUG:-false}
+    volumes:
+      - logs_data:/app/logs
+    ports:
+      - "${RIS_PORT:-8002}:8002"
+    networks:
+      - rag-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  correction-engine-service:
+    build:
+      context: ../..
+      dockerfile: deployment/podman/Dockerfile.correction-engine-service
+      args:
+        BUILD_DATE: ${BUILD_DATE}
+        VCS_REF: ${VCS_REF}
+    container_name: correction-engine-service
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://ces_user:${CES_DB_PASSWORD:-ces_secure_password_2025}@postgres:5432/correction_engine_db
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-redis_secure_2025}@redis:6379/3
+      - RAG_INTEGRATION_SERVICE_URL=http://rag-integration-service:8002
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - DEBUG=${DEBUG:-false}
+    volumes:
+      - logs_data:/app/logs
+    ports:
+      - "${CES_PORT:-8003}:8003"
+    networks:
+      - rag-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rag-integration-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  verification-service:
+    build:
+      context: ../..
+      dockerfile: deployment/podman/Dockerfile.verification-service
+      args:
+        BUILD_DATE: ${BUILD_DATE}
+        VCS_REF: ${VCS_REF}
+    container_name: verification-service
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://vs_user:${VS_DB_PASSWORD:-vs_secure_password_2025}@postgres:5432/verification_db
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-redis_secure_2025}@redis:6379/4
+      - CORRECTION_ENGINE_SERVICE_URL=http://correction-engine-service:8003
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - DEBUG=${DEBUG:-false}
+    volumes:
+      - logs_data:/app/logs
+    ports:
+      - "${VS_PORT:-8004}:8004"
+    networks:
+      - rag-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      correction-engine-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # =====================================================
+  # Frontend Service
+  # =====================================================
+  frontend:
+    build:
+      context: ../..
+      dockerfile: deployment/podman/Dockerfile.frontend
+      args:
+        BUILD_DATE: ${BUILD_DATE}
+        VCS_REF: ${VCS_REF}
+    container_name: rag-interface-frontend
+    restart: unless-stopped
+    environment:
+      - REACT_APP_API_BASE_URL=${FRONTEND_API_URL:-http://localhost:3000}
+      - REACT_APP_ENVIRONMENT=${ENVIRONMENT:-production}
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    networks:
+      - rag-network
+    depends_on:
+      error-reporting-service:
+        condition: service_healthy
+      user-management-service:
+        condition: service_healthy
+      rag-integration-service:
+        condition: service_healthy
+      correction-engine-service:
+        condition: service_healthy
+      verification-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s

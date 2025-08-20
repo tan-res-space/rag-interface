@@ -1,0 +1,109 @@
+# =====================================================
+# Frontend Application - Production Dockerfile
+# =====================================================
+# Multi-stage build for optimized production image
+# Author: RAG Interface Deployment Team
+# Version: 1.0
+# Date: 2025-01-20
+# =====================================================
+
+# =====================================================
+# Stage 1: Build React Application
+# =====================================================
+FROM node:18-alpine as builder
+
+# Set build arguments
+ARG BUILD_DATE
+ARG VERSION=1.0.0
+ARG VCS_REF
+ARG NODE_ENV=production
+
+# Add metadata labels
+LABEL maintainer="RAG Interface Team" \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="RAG Interface Frontend" \
+      org.label-schema.description="React/Vite frontend for RAG Interface System" \
+      org.label-schema.version=$VERSION \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.schema-version="1.0"
+
+# Install build dependencies
+RUN apk add --no-cache \
+    git \
+    python3 \
+    make \
+    g++
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files first for better caching
+COPY frontend/package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production --silent
+
+# Copy source code
+COPY frontend/ ./
+
+# Build the application
+RUN npm run build
+
+# =====================================================
+# Stage 2: Production Runtime with Nginx
+# =====================================================
+FROM nginx:1.25-alpine as production
+
+# Set runtime arguments
+ARG APP_USER=nginx
+ARG APP_UID=101
+ARG APP_GID=101
+
+# Install runtime dependencies
+RUN apk add --no-cache \
+    curl \
+    tzdata
+
+# Copy built application from builder stage
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy custom nginx configuration
+COPY deployment/podman/nginx.conf /etc/nginx/nginx.conf
+COPY deployment/podman/default.conf /etc/nginx/conf.d/default.conf
+
+# Create necessary directories and set permissions
+RUN mkdir -p /var/cache/nginx /var/log/nginx /var/run && \
+    chown -R $APP_USER:$APP_GID /var/cache/nginx /var/log/nginx /var/run /usr/share/nginx/html
+
+# Switch to non-root user
+USER $APP_USER
+
+# Set environment variables
+ENV NODE_ENV=production
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Default command
+CMD ["nginx", "-g", "daemon off;"]
+
+# =====================================================
+# Build Instructions
+# =====================================================
+# Build command:
+# podman build -f Dockerfile.frontend \
+#   --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
+#   --build-arg VCS_REF=$(git rev-parse --short HEAD) \
+#   -t rag-interface/frontend:latest .
+#
+# Run command:
+# podman run -d \
+#   --name rag-interface-frontend \
+#   -p 3000:3000 \
+#   -e REACT_APP_API_BASE_URL="http://localhost:8000" \
+#   rag-interface/frontend:latest
+# =====================================================
