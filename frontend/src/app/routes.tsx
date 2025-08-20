@@ -13,7 +13,7 @@ import { UserRole } from '@domain/types';
 const LoginPage = React.lazy(() => import('@features/auth/pages/LoginPage'));
 const DashboardPage = React.lazy(() => import('@features/dashboard/pages/DashboardPage'));
 const ErrorReportingPage = React.lazy(() => import('@features/error-reporting/pages/ErrorReportingPage'));
-const VerificationPage = React.lazy(() => import('@features/verification/pages/VerificationPage'));
+const VerificationPage = React.lazy(() => import('@features/verification/pages/VerificationDashboardPage'));
 const AdminPage = React.lazy(() => import('@features/admin/pages/AdminPage'));
 const NotFoundPage = React.lazy(() => import('@shared/pages/NotFoundPage'));
 
