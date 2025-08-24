@@ -1,0 +1,2214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>03_Correction_Engine_Service_Design.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="correction-engine-service-ces---detailed-architecture-design">Correction Engine Service (CES) - Detailed Architecture Design</h1>
+<p><strong>Document Version:</strong> 1.2
+<strong>Date:</strong> August 19, 2025
+<strong>Service:</strong> Correction Engine Service (CES)
+<strong>Technology Stack:</strong> Python + FastAPI + PostgreSQL + Redis + Kafka + ML Libraries
+<strong>Design Principles:</strong> SOLID Principles + Hexagonal Architecture + TDD (Real-time Processing)
+<strong>Development Methodology:</strong> Test-Driven Development for Real-time Correction Components</p>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#service-overview">Service Overview</a></li>
+<li><a href="#test-driven-development-for-real-time-processing">Test-Driven Development for Real-time Processing</a></li>
+<li><a href="#solid-principles-for-real-time-correction-processing">SOLID Principles for Real-time Correction Processing</a></li>
+<li><a href="#hexagonal-architecture-design">Hexagonal Architecture Design</a></li>
+<li><a href="#api-specifications">API Specifications</a></li>
+<li><a href="#database-schema-design">Database Schema Design</a></li>
+<li><a href="#integration-points">Integration Points</a></li>
+<li><a href="#error-handling-strategy">Error Handling Strategy</a></li>
+<li><a href="#technology-implementation">Technology Implementation</a></li>
+<li><a href="#directory-structure">Directory Structure</a></li>
+<li><a href="#key-classes-and-interfaces">Key Classes and Interfaces</a></li>
+<li><a href="#configuration-management">Configuration Management</a></li>
+<li><a href="#dependency-management">Dependency Management</a></li>
+<li><a href="#user-stories">User Stories</a></li>
+</ol>
+<hr>
+<h2 id="1-service-overview">1. Service Overview</h2>
+<h3 id="11-service-responsibilities">1.1 Service Responsibilities</h3>
+<p>The Correction Engine Service (CES) is the real-time correction application component of the ASR Error Reporting System. It handles:</p>
+<ul>
+<li><strong>Real-time Corrections</strong>: Apply learned corrections to ASR draft text in real-time</li>
+<li><strong>Pattern Matching</strong>: Match current text against known error patterns</li>
+<li><strong>Confidence Scoring</strong>: Calculate confidence levels for proposed corrections</li>
+<li><strong>Correction Highlighting</strong>: Identify and highlight corrected sections</li>
+<li><strong>Performance Monitoring</strong>: Track correction accuracy and system performance</li>
+<li><strong>A/B Testing</strong>: Support experimental correction algorithms</li>
+<li><strong>Feedback Integration</strong>: Incorporate user feedback to improve corrections</li>
+</ul>
+<h3 id="12-service-boundaries">1.2 Service Boundaries</h3>
+<p><strong>Inputs:</strong></p>
+<ul>
+<li>ASR draft text for real-time correction</li>
+<li>Pattern update events from RAG Integration Service</li>
+<li>Correction feedback from users</li>
+<li>Configuration updates for correction algorithms</li>
+</ul>
+<p><strong>Outputs:</strong></p>
+<ul>
+<li>Corrected text with highlighted changes</li>
+<li>Confidence scores for applied corrections</li>
+<li>Performance metrics and analytics</li>
+<li>Correction applied events for downstream services</li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>RAG Integration Service (pattern data and similarity search)</li>
+<li>ASR Processing Pipeline (draft text input)</li>
+<li>PostgreSQL database (correction history and feedback)</li>
+<li>Redis cache (pattern caching and performance optimization)</li>
+<li>Kafka message queue (event processing and publishing)</li>
+</ul>
+<h3 id="13-core-capabilities">1.3 Core Capabilities</h3>
+<ul>
+<li>Sub-5-second correction application for real-time use</li>
+<li>Pattern-based correction with confidence scoring</li>
+<li>Streaming text processing for live transcription</li>
+<li>A/B testing framework for algorithm optimization</li>
+<li>Feedback loop integration for continuous learning</li>
+<li>Horizontal scaling for high-throughput processing</li>
+<li>Real-time performance monitoring and alerting</li>
+</ul>
+<h3 id="14-performance-requirements">1.4 Performance Requirements</h3>
+<ul>
+<li><strong>Correction Application</strong>: &lt; 5 seconds for typical text segments</li>
+<li><strong>Pattern Matching</strong>: &lt; 2 seconds for similarity search</li>
+<li><strong>Throughput</strong>: 50+ concurrent correction requests</li>
+<li><strong>Availability</strong>: 99.9% uptime for real-time operations</li>
+<li><strong>Accuracy</strong>: 95%+ correction accuracy rate</li>
+<li><strong>Latency</strong>: &lt; 1 second for pattern cache hits</li>
+</ul>
+<hr>
+<h2 id="2-test-driven-development-for-real-time-processing">2. Test-Driven Development for Real-time Processing</h2>
+<h3 id="21-tdd-challenges-for-real-time-systems">2.1 TDD Challenges for Real-time Systems</h3>
+<p><strong>Challenge: Performance Requirements</strong>
+Real-time correction systems must meet strict latency requirements (&lt; 5 seconds for correction application).</p>
+<p><strong>TDD Solution: Performance-Driven Test Design</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestCorrectionEnginePerformance</span>:</span>
+<span class="hljs-meta">    @pytest.mark.performance</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test_correction_application_meets_latency_requirement</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-comment"># Red: Define performance requirement as test</span>
+        correction_engine = CorrectionEngine(mock_pattern_matcher, mock_confidence_calculator)
+        text = <span class="hljs-string">"This is a sample text with potential errors"</span>
+        patterns = create_test_patterns()
+
+        start_time = time.time()
+        result = <span class="hljs-keyword">await</span> correction_engine.apply_corrections(text, patterns)
+        end_time = time.time()
+
+        <span class="hljs-comment"># Performance requirement: &lt; 5 seconds</span>
+        <span class="hljs-keyword">assert</span> (end_time - start_time) &lt; <span class="hljs-number">5.0</span>
+        <span class="hljs-keyword">assert</span> result.corrected_text <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">assert</span> result.confidence_score &gt; <span class="hljs-number">0.0</span>
+
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test_pattern_matching_meets_latency_requirement</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-comment"># Red: Define pattern matching performance</span>
+        pattern_matcher = PatternMatcher(mock_pattern_repository)
+        text = <span class="hljs-string">"Sample text for pattern matching"</span>
+
+        start_time = time.time()
+        matches = <span class="hljs-keyword">await</span> pattern_matcher.find_matches(text)
+        end_time = time.time()
+
+        <span class="hljs-comment"># Pattern matching should be fast (&lt; 1 second)</span>
+        <span class="hljs-keyword">assert</span> (end_time - start_time) &lt; <span class="hljs-number">1.0</span>
+        <span class="hljs-keyword">assert</span> isinstance(matches, list)
+</div></code></pre>
+<p><strong>Challenge: Concurrent Processing</strong>
+Real-time systems must handle multiple concurrent correction requests.</p>
+<p><strong>TDD Solution: Concurrency Testing</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestCorrectionEngineConcurrency</span>:</span>
+<span class="hljs-meta">    @pytest.mark.asyncio</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test_handles_concurrent_correction_requests</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-comment"># Red: Define concurrent processing behavior</span>
+        correction_engine = CorrectionEngine(mock_pattern_matcher, mock_confidence_calculator)
+        texts = [<span class="hljs-string">f"Sample text <span class="hljs-subst">{i}</span>"</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">10</span>)]
+        patterns = create_test_patterns()
+
+        <span class="hljs-comment"># Execute corrections concurrently</span>
+        tasks = [
+            correction_engine.apply_corrections(text, patterns)
+            <span class="hljs-keyword">for</span> text <span class="hljs-keyword">in</span> texts
+        ]
+        results = <span class="hljs-keyword">await</span> asyncio.gather(*tasks)
+
+        <span class="hljs-comment"># All corrections should complete successfully</span>
+        <span class="hljs-keyword">assert</span> len(results) == <span class="hljs-number">10</span>
+        <span class="hljs-keyword">assert</span> all(r.corrected_text <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> results)
+        <span class="hljs-keyword">assert</span> all(r.confidence_score &gt; <span class="hljs-number">0.0</span> <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> results)
+</div></code></pre>
+<h3 id="22-tdd-workflow-for-correction-algorithms">2.2 TDD Workflow for Correction Algorithms</h3>
+<p><strong>Red Phase - Define Correction Behavior:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestCorrectionAlgorithm</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test_applies_simple_substitution_correction</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-comment"># Red: Define basic correction behavior</span>
+        algorithm = RuleBasedCorrectionAlgorithm()
+        text = <span class="hljs-string">"The cat sat on the mat"</span>
+        patterns = [
+            Pattern(original=<span class="hljs-string">"cat"</span>, corrected=<span class="hljs-string">"dog"</span>, confidence=<span class="hljs-number">0.9</span>)
+        ]
+
+        result = algorithm.apply_correction(text, patterns)
+
+        <span class="hljs-keyword">assert</span> result.corrected_text == <span class="hljs-string">"The dog sat on the mat"</span>
+        <span class="hljs-keyword">assert</span> result.confidence_score == <span class="hljs-number">0.9</span>
+        <span class="hljs-keyword">assert</span> len(result.corrections) == <span class="hljs-number">1</span>
+        <span class="hljs-keyword">assert</span> result.corrections[<span class="hljs-number">0</span>].start_position == <span class="hljs-number">4</span>
+        <span class="hljs-keyword">assert</span> result.corrections[<span class="hljs-number">0</span>].end_position == <span class="hljs-number">7</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test_handles_multiple_corrections_in_text</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-comment"># Red: Define multiple correction behavior</span>
+        algorithm = RuleBasedCorrectionAlgorithm()
+        text = <span class="hljs-string">"The cat and the cat sat"</span>
+        patterns = [
+            Pattern(original=<span class="hljs-string">"cat"</span>, corrected=<span class="hljs-string">"dog"</span>, confidence=<span class="hljs-number">0.9</span>)
+        ]
+
+        result = algorithm.apply_correction(text, patterns)
+
+        <span class="hljs-keyword">assert</span> result.corrected_text == <span class="hljs-string">"The dog and the dog sat"</span>
+        <span class="hljs-keyword">assert</span> len(result.corrections) == <span class="hljs-number">2</span>
+</div></code></pre>
+<p><strong>Green Phase - Minimal Implementation:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RuleBasedCorrectionAlgorithm</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply_correction</span><span class="hljs-params">(self, text: str, patterns: List[Pattern])</span> -&gt; CorrectionResult:</span>
+        <span class="hljs-comment"># Green: Minimal implementation to pass tests</span>
+        corrected_text = text
+        corrections = []
+        overall_confidence = <span class="hljs-number">0.0</span>
+
+        <span class="hljs-keyword">for</span> pattern <span class="hljs-keyword">in</span> patterns:
+            <span class="hljs-keyword">if</span> pattern.original <span class="hljs-keyword">in</span> text:
+                corrected_text = corrected_text.replace(pattern.original, pattern.corrected)
+                corrections.append(Correction(
+                    original=pattern.original,
+                    corrected=pattern.corrected,
+                    start_position=text.find(pattern.original),
+                    end_position=text.find(pattern.original) + len(pattern.original),
+                    confidence=pattern.confidence
+                ))
+                overall_confidence = pattern.confidence
+
+        <span class="hljs-keyword">return</span> CorrectionResult(
+            corrected_text=corrected_text,
+            corrections=corrections,
+            confidence_score=overall_confidence
+        )
+</div></code></pre>
+<p><strong>Refactor Phase - Optimize for Real-time Performance:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RuleBasedCorrectionAlgorithm</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, cache: CachePort)</span>:</span>
+        self._cache = cache  <span class="hljs-comment"># DIP: Depend on abstraction</span>
+        self._compiled_patterns = {}  <span class="hljs-comment"># Performance optimization</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply_correction</span><span class="hljs-params">(self, text: str, patterns: List[Pattern])</span> -&gt; CorrectionResult:</span>
+        <span class="hljs-comment"># Refactor: Add caching and optimization while keeping tests green</span>
+        cache_key = self._generate_cache_key(text, patterns)
+        cached_result = self._cache.get(cache_key)
+
+        <span class="hljs-keyword">if</span> cached_result:
+            <span class="hljs-keyword">return</span> cached_result
+
+        <span class="hljs-comment"># Optimized correction with compiled regex patterns</span>
+        result = self._apply_corrections_optimized(text, patterns)
+        self._cache.set(cache_key, result, ttl=<span class="hljs-number">300</span>)  <span class="hljs-comment"># 5-minute cache</span>
+
+        <span class="hljs-keyword">return</span> result
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_apply_corrections_optimized</span><span class="hljs-params">(self, text: str, patterns: List[Pattern])</span> -&gt; CorrectionResult:</span>
+        <span class="hljs-comment"># Use compiled regex for better performance</span>
+        <span class="hljs-keyword">import</span> re
+
+        corrected_text = text
+        corrections = []
+
+        <span class="hljs-keyword">for</span> pattern <span class="hljs-keyword">in</span> patterns:
+            <span class="hljs-keyword">if</span> pattern.original <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> self._compiled_patterns:
+                self._compiled_patterns[pattern.original] = re.compile(
+                    re.escape(pattern.original), re.IGNORECASE
+                )
+
+            regex = self._compiled_patterns[pattern.original]
+            matches = list(regex.finditer(corrected_text))
+
+            <span class="hljs-keyword">for</span> match <span class="hljs-keyword">in</span> reversed(matches):  <span class="hljs-comment"># Reverse to maintain positions</span>
+                start, end = match.span()
+                corrected_text = corrected_text[:start] + pattern.corrected + corrected_text[end:]
+                corrections.append(Correction(
+                    original=pattern.original,
+                    corrected=pattern.corrected,
+                    start_position=start,
+                    end_position=end,
+                    confidence=pattern.confidence
+                ))
+
+        overall_confidence = sum(c.confidence <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> corrections) / len(corrections) <span class="hljs-keyword">if</span> corrections <span class="hljs-keyword">else</span> <span class="hljs-number">0.0</span>
+
+        <span class="hljs-keyword">return</span> CorrectionResult(
+            corrected_text=corrected_text,
+            corrections=corrections,
+            confidence_score=overall_confidence
+        )
+</div></code></pre>
+<h3 id="23-tdd-for-pattern-matching">2.3 TDD for Pattern Matching</h3>
+<p><strong>Testing Pattern Recognition:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestPatternMatcher</span>:</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test_finds_exact_pattern_matches</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-comment"># Red: Define exact matching behavior</span>
+        pattern_matcher = PatternMatcher(mock_pattern_repository)
+        text = <span class="hljs-string">"The quick brown fox jumps"</span>
+        patterns = [
+            Pattern(original=<span class="hljs-string">"quick"</span>, corrected=<span class="hljs-string">"fast"</span>, confidence=<span class="hljs-number">0.8</span>),
+            Pattern(original=<span class="hljs-string">"brown"</span>, corrected=<span class="hljs-string">"red"</span>, confidence=<span class="hljs-number">0.7</span>)
+        ]
+        mock_pattern_repository.get_patterns.return_value = patterns
+
+        matches = <span class="hljs-keyword">await</span> pattern_matcher.find_matches(text)
+
+        <span class="hljs-keyword">assert</span> len(matches) == <span class="hljs-number">2</span>
+        <span class="hljs-keyword">assert</span> matches[<span class="hljs-number">0</span>].pattern.original == <span class="hljs-string">"quick"</span>
+        <span class="hljs-keyword">assert</span> matches[<span class="hljs-number">0</span>].start_position == <span class="hljs-number">4</span>
+        <span class="hljs-keyword">assert</span> matches[<span class="hljs-number">1</span>].pattern.original == <span class="hljs-string">"brown"</span>
+        <span class="hljs-keyword">assert</span> matches[<span class="hljs-number">1</span>].start_position == <span class="hljs-number">10</span>
+
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test_finds_fuzzy_pattern_matches</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-comment"># Red: Define fuzzy matching behavior</span>
+        pattern_matcher = FuzzyPatternMatcher(mock_pattern_repository)
+        text = <span class="hljs-string">"The quik brown fox"</span>  <span class="hljs-comment"># Misspelled "quick"</span>
+        patterns = [
+            Pattern(original=<span class="hljs-string">"quick"</span>, corrected=<span class="hljs-string">"fast"</span>, confidence=<span class="hljs-number">0.8</span>)
+        ]
+        mock_pattern_repository.get_patterns.return_value = patterns
+
+        matches = <span class="hljs-keyword">await</span> pattern_matcher.find_matches(text, fuzzy_threshold=<span class="hljs-number">0.8</span>)
+
+        <span class="hljs-keyword">assert</span> len(matches) == <span class="hljs-number">1</span>
+        <span class="hljs-keyword">assert</span> matches[<span class="hljs-number">0</span>].pattern.original == <span class="hljs-string">"quick"</span>
+        <span class="hljs-keyword">assert</span> matches[<span class="hljs-number">0</span>].fuzzy_score &gt; <span class="hljs-number">0.8</span>  <span class="hljs-comment"># High similarity despite misspelling</span>
+</div></code></pre>
+<h3 id="24-tdd-for-confidence-scoring">2.4 TDD for Confidence Scoring</h3>
+<p><strong>Testing Confidence Calculations:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestConfidenceCalculator</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test_calculates_confidence_for_single_correction</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-comment"># Red: Define confidence calculation behavior</span>
+        calculator = ConfidenceCalculator()
+        correction = Correction(
+            original=<span class="hljs-string">"there"</span>,
+            corrected=<span class="hljs-string">"their"</span>,
+            start_position=<span class="hljs-number">0</span>,
+            end_position=<span class="hljs-number">5</span>,
+            confidence=<span class="hljs-number">0.9</span>
+        )
+        context = CorrectionContext(
+            surrounding_text=<span class="hljs-string">"there house is nice"</span>,
+            pattern_frequency=<span class="hljs-number">10</span>,
+            user_feedback_score=<span class="hljs-number">0.8</span>
+        )
+
+        confidence = calculator.calculate_confidence(correction, context)
+
+        <span class="hljs-keyword">assert</span> <span class="hljs-number">0.0</span> &lt;= confidence &lt;= <span class="hljs-number">1.0</span>
+        <span class="hljs-keyword">assert</span> confidence &gt; <span class="hljs-number">0.7</span>  <span class="hljs-comment"># Should be high confidence</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test_calculates_overall_confidence_for_multiple_corrections</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-comment"># Red: Define overall confidence behavior</span>
+        calculator = ConfidenceCalculator()
+        corrections = [
+            Correction(original=<span class="hljs-string">"there"</span>, corrected=<span class="hljs-string">"their"</span>, confidence=<span class="hljs-number">0.9</span>),
+            Correction(original=<span class="hljs-string">"your"</span>, corrected=<span class="hljs-string">"you're"</span>, confidence=<span class="hljs-number">0.8</span>),
+            Correction(original=<span class="hljs-string">"its"</span>, corrected=<span class="hljs-string">"it's"</span>, confidence=<span class="hljs-number">0.7</span>)
+        ]
+
+        overall_confidence = calculator.calculate_overall_confidence(corrections)
+
+        <span class="hljs-keyword">assert</span> <span class="hljs-number">0.0</span> &lt;= overall_confidence &lt;= <span class="hljs-number">1.0</span>
+        <span class="hljs-comment"># Should be weighted average or similar calculation</span>
+        expected_confidence = (<span class="hljs-number">0.9</span> + <span class="hljs-number">0.8</span> + <span class="hljs-number">0.7</span>) / <span class="hljs-number">3</span>
+        <span class="hljs-keyword">assert</span> abs(overall_confidence - expected_confidence) &lt; <span class="hljs-number">0.1</span>
+</div></code></pre>
+<h3 id="25-real-time-testing-configuration">2.5 Real-time Testing Configuration</h3>
+<p><strong>pytest Configuration for Real-time Testing:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># pytest.ini for Correction Engine Service</span>
+[tool:pytest]
+testpaths = tests
+python_files = test_*.py
+python_classes = Test*
+python_functions = test_*
+addopts =
+    --strict-markers
+    --strict-config
+    --cov=src/correction_engine_service
+    --cov-report=term-missing
+    --cov-report=html:htmlcov
+    --cov-fail-under=<span class="hljs-number">70</span>
+    --asyncio-mode=auto
+    -v
+
+markers =
+    unit: Fast unit tests
+    integration: Integration tests
+    performance: Performance <span class="hljs-keyword">and</span> latency tests
+    concurrency: Concurrent processing tests
+    slow: Tests that take longer than <span class="hljs-number">1</span> second
+    realtime: Real-time processing tests
+</div></code></pre>
+<p><strong>Performance Testing Dependencies:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># requirements-test.txt (additional performance testing tools)</span>
+pytest&gt;=<span class="hljs-number">7.0</span><span class="hljs-number">.0</span>
+pytest-asyncio&gt;=<span class="hljs-number">0.21</span><span class="hljs-number">.0</span>
+pytest-mock&gt;=<span class="hljs-number">3.10</span><span class="hljs-number">.0</span>
+pytest-cov&gt;=<span class="hljs-number">4.0</span><span class="hljs-number">.0</span>
+pytest-benchmark&gt;=<span class="hljs-number">4.0</span><span class="hljs-number">.0</span>  <span class="hljs-comment"># For performance benchmarking</span>
+pytest-xdist&gt;=<span class="hljs-number">3.3</span><span class="hljs-number">.0</span>      <span class="hljs-comment"># For parallel test execution</span>
+memory-profiler&gt;=<span class="hljs-number">0.61</span><span class="hljs-number">.0</span>  <span class="hljs-comment"># For memory usage testing</span>
+</div></code></pre>
+<h3 id="26-tdd-definition-of-done-for-real-time-components">2.6 TDD Definition of Done for Real-time Components</h3>
+<p><strong>Real-time Specific Completion Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox0"><label for="checkbox0">All correction algorithms tested with performance benchmarks</label></li>
+<li><input type="checkbox" id="checkbox1"><label for="checkbox1">Pattern matching tested with various text patterns and edge cases</label></li>
+<li><input type="checkbox" id="checkbox2"><label for="checkbox2">Confidence scoring tested with different correction scenarios</label></li>
+<li><input type="checkbox" id="checkbox3"><label for="checkbox3">Concurrent processing tested with multiple simultaneous requests</label></li>
+<li><input type="checkbox" id="checkbox4"><label for="checkbox4">Cache behavior tested for performance optimization</label></li>
+<li><input type="checkbox" id="checkbox5"><label for="checkbox5">Error handling tested for real-time failure scenarios</label></li>
+<li><input type="checkbox" id="checkbox6"><label for="checkbox6">Memory usage tested to prevent memory leaks</label></li>
+<li><input type="checkbox" id="checkbox7"><label for="checkbox7">Latency requirements validated through automated tests</label></li>
+</ul>
+<p><strong>Real-time Code Review Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox8"><label for="checkbox8">Performance tests validate latency requirements</label></li>
+<li><input type="checkbox" id="checkbox9"><label for="checkbox9">Concurrency tests ensure thread safety</label></li>
+<li><input type="checkbox" id="checkbox10"><label for="checkbox10">Memory usage tests prevent resource leaks</label></li>
+<li><input type="checkbox" id="checkbox11"><label for="checkbox11">Cache invalidation strategies tested</label></li>
+<li><input type="checkbox" id="checkbox12"><label for="checkbox12">Error recovery mechanisms tested</label></li>
+<li><input type="checkbox" id="checkbox13"><label for="checkbox13">Graceful degradation tested under load</label></li>
+<li><input type="checkbox" id="checkbox14"><label for="checkbox14">Monitoring and alerting integration tested</label></li>
+</ul>
+<hr>
+<h2 id="3-solid-principles-for-real-time-correction-processing">3. SOLID Principles for Real-time Correction Processing</h2>
+<h3 id="21-single-responsibility-principle-srp-in-real-time-context">2.1 Single Responsibility Principle (SRP) in Real-time Context</h3>
+<p>The Correction Engine Service applies SRP for real-time processing components:</p>
+<p><strong>Service Level:</strong></p>
+<ul>
+<li><strong>Primary Responsibility</strong>: Real-time correction application and pattern matching only</li>
+<li><strong>Clear Boundaries</strong>: Does not handle error reporting (ERS), vector processing (RIS), or verification (VS)</li>
+</ul>
+<p><strong>Real-time Processing Class Responsibilities:</strong></p>
+<ul>
+<li><code>CorrectionEngine</code>: Only applies corrections to text</li>
+<li><code>PatternMatcher</code>: Only matches text patterns against known corrections</li>
+<li><code>ConfidenceCalculator</code>: Only calculates confidence scores for corrections</li>
+<li><code>CorrectionHighlighter</code>: Only highlights corrected sections in text</li>
+<li><code>PerformanceMonitor</code>: Only tracks correction performance metrics</li>
+<li><code>FeedbackProcessor</code>: Only processes user feedback on corrections</li>
+</ul>
+<p><strong>Method Level:</strong></p>
+<ul>
+<li>Pattern matching methods only match patterns</li>
+<li>Correction application methods only apply corrections</li>
+<li>Confidence calculation methods only calculate confidence scores</li>
+<li>Highlighting methods only handle text highlighting</li>
+</ul>
+<h3 id="22-openclosed-principle-ocp-for-correction-algorithms">2.2 Open/Closed Principle (OCP) for Correction Algorithms</h3>
+<p>The service is designed for correction algorithm extensibility:</p>
+<p><strong>Extension Points:</strong></p>
+<ul>
+<li><strong>Correction Algorithms</strong>: New correction strategies can be added without modifying existing code</li>
+<li><strong>Pattern Matching</strong>: New pattern matching algorithms can be integrated via strategy pattern</li>
+<li><strong>Confidence Scoring</strong>: New confidence calculation methods can be plugged in</li>
+<li><strong>Highlighting Strategies</strong>: New text highlighting approaches can be added through interfaces</li>
+</ul>
+<p><strong>Implementation Strategy:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Abstract base for extensible correction algorithms</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionAlgorithmPort</span><span class="hljs-params">(ABC)</span>:</span>
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply_correction</span><span class="hljs-params">(self, text: str, patterns: List[Pattern])</span> -&gt; CorrectionResult:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">calculate_confidence</span><span class="hljs-params">(self, correction: Correction)</span> -&gt; float:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-comment"># Concrete implementations can be added without modifying existing code</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RuleBased</span> <span class="hljs-title">CorrectionAlgorithm</span><span class="hljs-params">(CorrectionAlgorithmPort)</span>:</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply_correction</span><span class="hljs-params">(self, text: str, patterns: List[Pattern])</span> -&gt; CorrectionResult:</span>
+        <span class="hljs-comment"># Rule-based correction implementation</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MLBasedCorrectionAlgorithm</span><span class="hljs-params">(CorrectionAlgorithmPort)</span>:</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply_correction</span><span class="hljs-params">(self, text: str, patterns: List[Pattern])</span> -&gt; CorrectionResult:</span>
+        <span class="hljs-comment"># ML-based correction implementation</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-comment"># Pattern matching abstraction for extensibility</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PatternMatchingPort</span><span class="hljs-params">(ABC)</span>:</span>
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_matches</span><span class="hljs-params">(self, text: str, patterns: List[Pattern])</span> -&gt; List[Match]:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">calculate_match_confidence</span><span class="hljs-params">(self, match: Match)</span> -&gt; float:</span>
+        <span class="hljs-keyword">pass</span>
+</div></code></pre>
+<h3 id="23-liskov-substitution-principle-lsp-for-correction-components">2.3 Liskov Substitution Principle (LSP) for Correction Components</h3>
+<p>All correction implementations are fully substitutable:</p>
+<p><strong>Algorithm Substitutability:</strong></p>
+<ul>
+<li>All correction algorithms produce consistent output formats</li>
+<li>Switching between rule-based, ML-based, or hybrid algorithms requires no code changes</li>
+<li>All algorithms honor the same performance and accuracy contracts</li>
+</ul>
+<p><strong>Pattern Matching Substitutability:</strong></p>
+<ul>
+<li>Different pattern matching strategies (exact match, fuzzy match, semantic match) are interchangeable</li>
+<li>All provide identical interface behavior and performance characteristics</li>
+<li>Switching between matching algorithms requires only configuration changes</li>
+</ul>
+<p><strong>Confidence Scoring Substitutability:</strong></p>
+<ul>
+<li>Different confidence calculation methods can be swapped seamlessly</li>
+<li>All confidence scorers produce normalized scores between 0 and 1</li>
+<li>Scoring algorithms can be replaced without affecting the correction pipeline</li>
+</ul>
+<h3 id="24-interface-segregation-principle-isp-for-correction-operations">2.4 Interface Segregation Principle (ISP) for Correction Operations</h3>
+<p>Interfaces are specialized for specific correction operations:</p>
+<p><strong>Segregated Correction Interfaces:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Pattern matching operations</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PatternMatchingPort</span><span class="hljs-params">(ABC)</span>:</span>
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_pattern_matches</span><span class="hljs-params">(self, text: str)</span> -&gt; List[PatternMatch]:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_pattern_match</span><span class="hljs-params">(self, match: PatternMatch)</span> -&gt; bool:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-comment"># Correction application operations</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionApplicationPort</span><span class="hljs-params">(ABC)</span>:</span>
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply_correction</span><span class="hljs-params">(self, text: str, correction: Correction)</span> -&gt; str:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">batch_apply_corrections</span><span class="hljs-params">(self, text: str, corrections: List[Correction])</span> -&gt; str:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-comment"># Confidence scoring operations</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConfidenceScoringPort</span><span class="hljs-params">(ABC)</span>:</span>
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">calculate_correction_confidence</span><span class="hljs-params">(self, correction: Correction)</span> -&gt; float:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">calculate_overall_confidence</span><span class="hljs-params">(self, corrections: List[Correction])</span> -&gt; float:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-comment"># Performance monitoring operations</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PerformanceMonitoringPort</span><span class="hljs-params">(ABC)</span>:</span>
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">track_correction_performance</span><span class="hljs-params">(self, correction_result: CorrectionResult)</span> -&gt; <span class="hljs-keyword">None</span>:</span>
+        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @abstractmethod</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_performance_metrics</span><span class="hljs-params">(self, time_range: TimeRange)</span> -&gt; PerformanceMetrics:</span>
+        <span class="hljs-keyword">pass</span>
+</div></code></pre>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>Correction services don't need to know about performance monitoring</li>
+<li>Pattern matching services are isolated from confidence calculations</li>
+<li>Performance monitoring services don't depend on correction logic details</li>
+</ul>
+<h3 id="25-dependency-inversion-principle-dip-for-correction-infrastructure">2.5 Dependency Inversion Principle (DIP) for Correction Infrastructure</h3>
+<p>High-level correction logic depends only on abstractions:</p>
+<p><strong>Correction Dependency Structure:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># High-level correction use case depends on abstractions</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ApplyCorrectionUseCase</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(
+        self,
+        pattern_matcher: PatternMatchingPort,           <span class="hljs-comment"># Abstraction</span>
+        correction_algorithm: CorrectionAlgorithmPort,  <span class="hljs-comment"># Abstraction</span>
+        confidence_scorer: ConfidenceScoringPort,       <span class="hljs-comment"># Abstraction</span>
+        performance_monitor: PerformanceMonitoringPort, <span class="hljs-comment"># Abstraction</span>
+        cache: CachePort,                               <span class="hljs-comment"># Abstraction</span>
+        event_publisher: EventPublishingPort            <span class="hljs-comment"># Abstraction</span>
+    )</span>:</span>
+        self._pattern_matcher = pattern_matcher
+        self._correction_algorithm = correction_algorithm
+        self._confidence_scorer = confidence_scorer
+        self._performance_monitor = performance_monitor
+        self._cache = cache
+        self._event_publisher = event_publisher
+
+<span class="hljs-comment"># Low-level correction modules implement abstractions</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FuzzyPatternMatcher</span><span class="hljs-params">(PatternMatchingPort)</span>:</span>
+    <span class="hljs-comment"># Fuzzy matching implementation</span>
+    <span class="hljs-keyword">pass</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RuleBasedCorrectionEngine</span><span class="hljs-params">(CorrectionAlgorithmPort)</span>:</span>
+    <span class="hljs-comment"># Rule-based correction implementation</span>
+    <span class="hljs-keyword">pass</span>
+</div></code></pre>
+<p><strong>Real-time Processing Benefits:</strong></p>
+<ul>
+<li>Business logic is independent of specific correction algorithms</li>
+<li>Pattern matching implementations can be swapped without affecting use cases</li>
+<li>Correction strategies can be changed without code modifications</li>
+<li>Correction pipeline is completely testable with mock implementations</li>
+<li>Real-time performance requirements are met through abstracted optimizations</li>
+</ul>
+<hr>
+<h2 id="3-hexagonal-architecture-design">3. Hexagonal Architecture Design</h2>
+<h3 id="21-architecture-overview">2.1 Architecture Overview</h3>
+<pre><code class="language-mermaid"><div class="mermaid">graph TB
+    subgraph "External Systems"
+        ASR[ASR Processing Pipeline]
+        RIS[RAG Integration Service]
+        VS[Verification Service]
+        API_GW[API Gateway]
+    end
+
+    subgraph "Correction Engine Service"
+        subgraph "Ports (Interfaces)"
+            CORRECTION_PORT[Correction Application Port<br/>CorrectionApplicationPort]
+            PATTERN_PORT[Pattern Matching Port<br/>PatternMatchingPort]
+            CONFIDENCE_PORT[Confidence Scoring Port<br/>ConfidenceScoringPort]
+            FEEDBACK_PORT[Feedback Processing Port<br/>FeedbackProcessingPort]
+            EVENT_PORT[Event Processing Port<br/>EventProcessingPort]
+        end
+        
+        subgraph "Core Domain (Business Logic)"
+            DOMAIN[Correction Domain<br/>• Pattern Matching Logic<br/>• Confidence Calculation<br/>• Correction Application<br/>• Quality Assessment<br/>• Feedback Processing]
+            USE_CASES[Use Cases<br/>• Apply Corrections<br/>• Calculate Confidence<br/>• Process Patterns<br/>• Handle Feedback<br/>• Monitor Performance<br/>• A/B Test Algorithms]
+        end
+        
+        subgraph "Adapters (Infrastructure)"
+            REST_ADAPTER[REST API Adapter<br/>FastAPI Controllers]
+            ASR_ADAPTER[ASR Pipeline Adapter<br/>Real-time Integration]
+            VECTOR_ADAPTER[Vector Search Adapter<br/>RIS Client]
+            CACHE_ADAPTER[Cache Adapter<br/>Redis Client]
+            DB_ADAPTER[Database Adapter<br/>PostgreSQL Repository]
+            EVENT_ADAPTER[Event Adapter<br/>Kafka Consumer/Producer]
+            ML_ADAPTER[ML Model Adapter<br/>Confidence Models]
+        end
+    end
+
+    subgraph "External Infrastructure"
+        POSTGRES[(PostgreSQL Database)]
+        REDIS[(Redis Cache)]
+        KAFKA[(Kafka Message Queue)]
+        ML_MODELS[(ML Models<br/>Confidence Scoring)]
+    end
+
+    %% External to Ports
+    API_GW --> CORRECTION_PORT
+    ASR --> CORRECTION_PORT
+    RIS -.->|Pattern Events| EVENT_PORT
+    VS --> FEEDBACK_PORT
+
+    %% Ports to Core
+    CORRECTION_PORT --> USE_CASES
+    PATTERN_PORT --> USE_CASES
+    CONFIDENCE_PORT --> USE_CASES
+    FEEDBACK_PORT --> USE_CASES
+    EVENT_PORT --> USE_CASES
+    USE_CASES --> DOMAIN
+
+    %% Core to Adapters
+    DOMAIN --> REST_ADAPTER
+    DOMAIN --> ASR_ADAPTER
+    DOMAIN --> VECTOR_ADAPTER
+    DOMAIN --> CACHE_ADAPTER
+    DOMAIN --> DB_ADAPTER
+    DOMAIN --> EVENT_ADAPTER
+    DOMAIN --> ML_ADAPTER
+
+    %% Adapters to External Infrastructure
+    DB_ADAPTER --> POSTGRES
+    CACHE_ADAPTER --> REDIS
+    EVENT_ADAPTER --> KAFKA
+    ML_ADAPTER --> ML_MODELS
+    VECTOR_ADAPTER --> RIS
+
+    %% Styling
+    classDef coreLogic fill:#e8f5e8,stroke:#4caf50,stroke-width:2px
+    classDef ports fill:#e3f2fd,stroke:#2196f3,stroke-width:2px
+    classDef adapters fill:#fff3e0,stroke:#ff9800,stroke-width:2px
+    classDef external fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px
+
+    class DOMAIN,USE_CASES coreLogic
+    class CORRECTION_PORT,PATTERN_PORT,CONFIDENCE_PORT,FEEDBACK_PORT,EVENT_PORT ports
+    class REST_ADAPTER,ASR_ADAPTER,VECTOR_ADAPTER,CACHE_ADAPTER,DB_ADAPTER,EVENT_ADAPTER,ML_ADAPTER adapters
+    class POSTGRES,REDIS,KAFKA,ML_MODELS external
+</div></code></pre>
+<h3 id="22-port-definitions">2.2 Port Definitions</h3>
+<p><strong>Primary Ports (Driving):</strong></p>
+<ul>
+<li><code>CorrectionApplicationPort</code>: Main correction interface for real-time processing</li>
+<li><code>PatternMatchingPort</code>: Pattern-based correction matching interface</li>
+<li><code>ConfidenceScoringPort</code>: Confidence calculation interface</li>
+<li><code>FeedbackProcessingPort</code>: User feedback integration interface</li>
+</ul>
+<p><strong>Secondary Ports (Driven):</strong></p>
+<ul>
+<li><code>EventProcessingPort</code>: Async event processing interface</li>
+<li><code>CorrectionRepositoryPort</code>: Correction history persistence interface</li>
+<li><code>CachePort</code>: Pattern and result caching interface</li>
+<li><code>VectorSearchPort</code>: Similarity search interface to RIS</li>
+</ul>
+<hr>
+<h2 id="3-api-specifications">3. API Specifications</h2>
+<h3 id="31-rest-api-endpoints">3.1 REST API Endpoints</h3>
+<h4 id="311-real-time-correction">3.1.1 Real-time Correction</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> APIRouter, Depends, HTTPException, status
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> Annotated
+
+router = APIRouter(prefix=<span class="hljs-string">"/api/v1/corrections"</span>, tags=[<span class="hljs-string">"correction-engine"</span>])
+
+<span class="hljs-comment"># POST /api/v1/corrections/apply</span>
+<span class="hljs-meta">@router.post("/corrections/apply", response_model=CorrectionResponse)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply_corrections</span><span class="hljs-params">(
+    request: CorrectionRequest,
+    current_user: User = Depends<span class="hljs-params">(get_current_user)</span>
+)</span> -&gt; CorrectionResponse:</span>
+    <span class="hljs-string">"""Apply real-time corrections to draft text"""</span>
+
+<span class="hljs-comment"># POST /api/v1/corrections/preview</span>
+<span class="hljs-meta">@router.post("/corrections/preview", response_model=CorrectionPreviewResponse)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">preview_corrections</span><span class="hljs-params">(
+    request: CorrectionPreviewRequest,
+    current_user: User = Depends<span class="hljs-params">(get_current_user)</span>
+)</span> -&gt; CorrectionPreviewResponse:</span>
+    <span class="hljs-string">"""Preview corrections without applying them"""</span>
+
+<span class="hljs-comment"># POST /api/v1/corrections/stream</span>
+<span class="hljs-meta">@router.post("/corrections/stream")</span>
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">stream_corrections</span><span class="hljs-params">(
+    websocket: WebSocket,
+    current_user: User = Depends<span class="hljs-params">(get_current_user_ws)</span>
+)</span>:</span>
+    <span class="hljs-string">"""WebSocket endpoint for streaming corrections"""</span>
+</div></code></pre>
+<h4 id="312-correction-management">3.1.2 Correction Management</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># GET /api/v1/corrections/{correction_id}</span>
+<span class="hljs-meta">@router.get("/corrections/{correction_id}", response_model=CorrectionResponse)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_correction</span><span class="hljs-params">(
+    correction_id: str,
+    current_user: User = Depends<span class="hljs-params">(get_current_user)</span>
+)</span> -&gt; CorrectionResponse:</span>
+    <span class="hljs-string">"""Retrieve a specific correction result"""</span>
+
+<span class="hljs-comment"># POST /api/v1/corrections/{correction_id}/feedback</span>
+<span class="hljs-meta">@router.post("/corrections/{correction_id}/feedback", status_code=204)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">submit_feedback</span><span class="hljs-params">(
+    correction_id: str,
+    feedback: CorrectionFeedback,
+    current_user: User = Depends<span class="hljs-params">(get_current_user)</span>
+)</span> -&gt; <span class="hljs-keyword">None</span>:</span>
+    <span class="hljs-string">"""Submit feedback on correction quality"""</span>
+
+<span class="hljs-comment"># GET /api/v1/corrections/history</span>
+<span class="hljs-meta">@router.get("/corrections/history", response_model=PaginatedCorrections)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_correction_history</span><span class="hljs-params">(
+    filters: CorrectionFilters = Depends<span class="hljs-params">()</span>,
+    pagination: PaginationParams = Depends<span class="hljs-params">()</span>,
+    current_user: User = Depends<span class="hljs-params">(get_current_user)</span>
+)</span> -&gt; PaginatedCorrections:</span>
+    <span class="hljs-string">"""Get correction history with filters"""</span>
+</div></code></pre>
+<h4 id="313-performance-and-analytics">3.1.3 Performance and Analytics</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># GET /api/v1/corrections/metrics</span>
+<span class="hljs-meta">@router.get("/corrections/metrics", response_model=CorrectionMetricsResponse)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_correction_metrics</span><span class="hljs-params">(
+    filters: MetricsFilters = Depends<span class="hljs-params">()</span>,
+    current_user: User = Depends<span class="hljs-params">(get_current_user)</span>
+)</span> -&gt; CorrectionMetricsResponse:</span>
+    <span class="hljs-string">"""Get correction performance metrics"""</span>
+
+<span class="hljs-comment"># GET /api/v1/corrections/patterns</span>
+<span class="hljs-meta">@router.get("/corrections/patterns", response_model=PatternAnalysisResponse)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_pattern_analysis</span><span class="hljs-params">(
+    filters: PatternFilters = Depends<span class="hljs-params">()</span>,
+    current_user: User = Depends<span class="hljs-params">(get_current_user)</span>
+)</span> -&gt; PatternAnalysisResponse:</span>
+    <span class="hljs-string">"""Get pattern analysis and effectiveness"""</span>
+</div></code></pre>
+<h3 id="32-data-models">3.2 Data Models</h3>
+<h4 id="321-request-models">3.2.1 Request Models</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> BaseModel, Field, validator
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> List, Optional, Dict, Any
+<span class="hljs-keyword">from</span> enum <span class="hljs-keyword">import</span> Enum
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionMode</span><span class="hljs-params">(str, Enum)</span>:</span>
+    CONSERVATIVE = <span class="hljs-string">"conservative"</span>  <span class="hljs-comment"># High confidence threshold</span>
+    BALANCED = <span class="hljs-string">"balanced"</span>         <span class="hljs-comment"># Medium confidence threshold</span>
+    AGGRESSIVE = <span class="hljs-string">"aggressive"</span>     <span class="hljs-comment"># Low confidence threshold</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionOptions</span><span class="hljs-params">(BaseModel)</span>:</span>
+    mode: CorrectionMode = CorrectionMode.BALANCED
+    confidence_threshold: float = Field(<span class="hljs-number">0.8</span>, ge=<span class="hljs-number">0.0</span>, le=<span class="hljs-number">1.0</span>)
+    max_corrections: int = Field(<span class="hljs-number">10</span>, ge=<span class="hljs-number">1</span>, le=<span class="hljs-number">50</span>)
+    speaker_id: Optional[str] = <span class="hljs-literal">None</span>
+    context_window: int = Field(<span class="hljs-number">5</span>, ge=<span class="hljs-number">1</span>, le=<span class="hljs-number">20</span>)
+    enable_highlighting: bool = <span class="hljs-literal">True</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionRequest</span><span class="hljs-params">(BaseModel)</span>:</span>
+    text: str = Field(..., min_length=<span class="hljs-number">1</span>, max_length=<span class="hljs-number">50000</span>)
+    speaker_id: Optional[str] = <span class="hljs-literal">None</span>
+    job_id: Optional[str] = <span class="hljs-literal">None</span>
+    options: CorrectionOptions = CorrectionOptions()
+    metadata: Optional[Dict[str, Any]] = <span class="hljs-literal">None</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionPreviewRequest</span><span class="hljs-params">(BaseModel)</span>:</span>
+    text: str = Field(..., min_length=<span class="hljs-number">1</span>, max_length=<span class="hljs-number">50000</span>)
+    speaker_id: Optional[str] = <span class="hljs-literal">None</span>
+    options: CorrectionOptions = CorrectionOptions()
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionFeedback</span><span class="hljs-params">(BaseModel)</span>:</span>
+    is_correct: bool
+    user_correction: Optional[str] = <span class="hljs-literal">None</span>
+    feedback_notes: Optional[str] = <span class="hljs-literal">None</span>
+    rating: int = Field(..., ge=<span class="hljs-number">1</span>, le=<span class="hljs-number">5</span>)
+</div></code></pre>
+<h4 id="322-response-models">3.2.2 Response Models</h4>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppliedCorrection</span><span class="hljs-params">(BaseModel)</span>:</span>
+    original_text: str
+    corrected_text: str
+    start_position: int
+    end_position: int
+    confidence_score: float
+    pattern_id: str
+    correction_type: str
+    reasoning: str
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SkippedCorrection</span><span class="hljs-params">(BaseModel)</span>:</span>
+    text: str
+    start_position: int
+    end_position: int
+    confidence_score: float
+    skip_reason: str
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionResponse</span><span class="hljs-params">(BaseModel)</span>:</span>
+    id: str
+    original_text: str
+    corrected_text: str
+    applied_corrections: List[AppliedCorrection]
+    skipped_corrections: List[SkippedCorrection]
+    processing_time: float
+    confidence_score: float
+    metadata: Dict[str, Any]
+    created_at: datetime
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionPreview</span><span class="hljs-params">(BaseModel)</span>:</span>
+    text: str
+    start_position: int
+    end_position: int
+    suggested_correction: str
+    confidence_score: float
+    pattern_match: str
+    reasoning: str
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionPreviewResponse</span><span class="hljs-params">(BaseModel)</span>:</span>
+    original_text: str
+    previews: List[CorrectionPreview]
+    total_suggestions: int
+    processing_time: float
+</div></code></pre>
+<hr>
+<h2 id="4-database-schema-design">4. Database Schema Design</h2>
+<h3 id="41-entity-relationship-diagram">4.1 Entity Relationship Diagram</h3>
+<pre><code class="language-mermaid"><div class="mermaid">erDiagram
+    CORRECTIONS {
+        uuid id PK
+        string job_id
+        string speaker_id
+        text original_text
+        text corrected_text
+        float confidence_score
+        float processing_time
+        jsonb metadata
+        timestamp created_at
+        string created_by
+    }
+
+    APPLIED_CORRECTIONS {
+        uuid id PK
+        uuid correction_id FK
+        text original_text
+        text corrected_text
+        integer start_position
+        integer end_position
+        float confidence_score
+        string pattern_id
+        string correction_type
+        text reasoning
+        timestamp created_at
+    }
+
+    CORRECTION_FEEDBACK {
+        uuid id PK
+        uuid correction_id FK
+        boolean is_correct
+        text user_correction
+        text feedback_notes
+        integer rating
+        string user_id
+        timestamp created_at
+    }
+
+    CORRECTION_PATTERNS {
+        uuid id PK
+        string pattern_hash
+        text pattern_text
+        text correction_text
+        float success_rate
+        integer usage_count
+        float avg_confidence
+        timestamp last_used
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    CORRECTION_METRICS {
+        uuid id PK
+        string metric_type
+        string time_period
+        jsonb metric_data
+        timestamp calculated_at
+    }
+
+    CORRECTIONS ||--o{ APPLIED_CORRECTIONS : contains
+    CORRECTIONS ||--o{ CORRECTION_FEEDBACK : receives
+    APPLIED_CORRECTIONS }o--|| CORRECTION_PATTERNS : uses
+</div></code></pre>
+<h3 id="42-table-definitions">4.2 Table Definitions</h3>
+<h4 id="421-corrections-table">4.2.1 corrections Table</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> corrections (
+    <span class="hljs-keyword">id</span> <span class="hljs-keyword">UUID</span> PRIMARY <span class="hljs-keyword">KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    job_id <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">255</span>),
+    speaker_id <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">255</span>),
+    original_text <span class="hljs-built_in">TEXT</span> <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    corrected_text <span class="hljs-built_in">TEXT</span> <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    confidence_score <span class="hljs-built_in">DECIMAL</span>(<span class="hljs-number">5</span>,<span class="hljs-number">4</span>) <span class="hljs-keyword">CHECK</span> (confidence_score &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">AND</span> confidence_score &lt;= <span class="hljs-number">1</span>),
+    processing_time <span class="hljs-built_in">DECIMAL</span>(<span class="hljs-number">8</span>,<span class="hljs-number">3</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    metadata JSONB <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'{}'</span>,
+    created_at <span class="hljs-built_in">TIMESTAMP</span> <span class="hljs-keyword">WITH</span> <span class="hljs-built_in">TIME</span> ZONE <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NOW</span>(),
+    created_by <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>
+);
+
+<span class="hljs-comment">-- Indexes for performance</span>
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">INDEX</span> idx_corrections_speaker_id <span class="hljs-keyword">ON</span> corrections(speaker_id);
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">INDEX</span> idx_corrections_job_id <span class="hljs-keyword">ON</span> corrections(job_id);
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">INDEX</span> idx_corrections_created_at <span class="hljs-keyword">ON</span> corrections(created_at);
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">INDEX</span> idx_corrections_confidence <span class="hljs-keyword">ON</span> corrections(confidence_score);
+</div></code></pre>
+<h4 id="422-appliedcorrections-table">4.2.2 applied_corrections Table</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> applied_corrections (
+    <span class="hljs-keyword">id</span> <span class="hljs-keyword">UUID</span> PRIMARY <span class="hljs-keyword">KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    correction_id <span class="hljs-keyword">UUID</span> <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span> <span class="hljs-keyword">REFERENCES</span> corrections(<span class="hljs-keyword">id</span>) <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">CASCADE</span>,
+    original_text <span class="hljs-built_in">TEXT</span> <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    corrected_text <span class="hljs-built_in">TEXT</span> <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    start_position <span class="hljs-built_in">INTEGER</span> <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span> <span class="hljs-keyword">CHECK</span> (start_position &gt;= <span class="hljs-number">0</span>),
+    end_position <span class="hljs-built_in">INTEGER</span> <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span> <span class="hljs-keyword">CHECK</span> (end_position &gt; start_position),
+    confidence_score <span class="hljs-built_in">DECIMAL</span>(<span class="hljs-number">5</span>,<span class="hljs-number">4</span>) <span class="hljs-keyword">CHECK</span> (confidence_score &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">AND</span> confidence_score &lt;= <span class="hljs-number">1</span>),
+    pattern_id <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    correction_type <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    reasoning <span class="hljs-built_in">TEXT</span>,
+    created_at <span class="hljs-built_in">TIMESTAMP</span> <span class="hljs-keyword">WITH</span> <span class="hljs-built_in">TIME</span> ZONE <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NOW</span>()
+);
+
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">INDEX</span> idx_applied_corrections_correction_id <span class="hljs-keyword">ON</span> applied_corrections(correction_id);
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">INDEX</span> idx_applied_corrections_pattern_id <span class="hljs-keyword">ON</span> applied_corrections(pattern_id);
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">INDEX</span> idx_applied_corrections_type <span class="hljs-keyword">ON</span> applied_corrections(correction_type);
+</div></code></pre>
+<h4 id="423-correctionpatterns-table">4.2.3 correction_patterns Table</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> correction_patterns (
+    <span class="hljs-keyword">id</span> <span class="hljs-keyword">UUID</span> PRIMARY <span class="hljs-keyword">KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    pattern_hash <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">64</span>) <span class="hljs-keyword">UNIQUE</span> <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    pattern_text <span class="hljs-built_in">TEXT</span> <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    correction_text <span class="hljs-built_in">TEXT</span> <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    success_rate <span class="hljs-built_in">DECIMAL</span>(<span class="hljs-number">5</span>,<span class="hljs-number">4</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0.0</span> <span class="hljs-keyword">CHECK</span> (success_rate &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">AND</span> success_rate &lt;= <span class="hljs-number">1</span>),
+    usage_count <span class="hljs-built_in">INTEGER</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span> <span class="hljs-keyword">CHECK</span> (usage_count &gt;= <span class="hljs-number">0</span>),
+    avg_confidence <span class="hljs-built_in">DECIMAL</span>(<span class="hljs-number">5</span>,<span class="hljs-number">4</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0.0</span> <span class="hljs-keyword">CHECK</span> (avg_confidence &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">AND</span> avg_confidence &lt;= <span class="hljs-number">1</span>),
+    last_used <span class="hljs-built_in">TIMESTAMP</span> <span class="hljs-keyword">WITH</span> <span class="hljs-built_in">TIME</span> ZONE,
+    created_at <span class="hljs-built_in">TIMESTAMP</span> <span class="hljs-keyword">WITH</span> <span class="hljs-built_in">TIME</span> ZONE <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NOW</span>(),
+    updated_at <span class="hljs-built_in">TIMESTAMP</span> <span class="hljs-keyword">WITH</span> <span class="hljs-built_in">TIME</span> ZONE <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NOW</span>()
+);
+
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">INDEX</span> idx_correction_patterns_hash <span class="hljs-keyword">ON</span> correction_patterns(pattern_hash);
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">INDEX</span> idx_correction_patterns_success_rate <span class="hljs-keyword">ON</span> correction_patterns(success_rate);
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">INDEX</span> idx_correction_patterns_usage_count <span class="hljs-keyword">ON</span> correction_patterns(usage_count);
+</div></code></pre>
+<hr>
+<h2 id="5-integration-points">5. Integration Points</h2>
+<h3 id="51-real-time-asr-integration">5.1 Real-time ASR Integration</h3>
+<h4 id="511-websocket-integration">5.1.1 WebSocket Integration</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> WebSocket, WebSocketDisconnect
+<span class="hljs-keyword">import</span> json
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ASRCorrectionWebSocket</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        self.active_connections: List[WebSocket] = []
+
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">connect</span><span class="hljs-params">(self, websocket: WebSocket)</span>:</span>
+        <span class="hljs-keyword">await</span> websocket.accept()
+        self.active_connections.append(websocket)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">disconnect</span><span class="hljs-params">(self, websocket: WebSocket)</span>:</span>
+        self.active_connections.remove(websocket)
+
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_asr_stream</span><span class="hljs-params">(self, websocket: WebSocket)</span>:</span>
+        <span class="hljs-keyword">try</span>:
+            <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+                <span class="hljs-comment"># Receive ASR draft text</span>
+                data = <span class="hljs-keyword">await</span> websocket.receive_text()
+                asr_data = json.loads(data)
+
+                <span class="hljs-comment"># Apply corrections</span>
+                correction_result = <span class="hljs-keyword">await</span> self.apply_corrections(
+                    text=asr_data[<span class="hljs-string">'text'</span>],
+                    speaker_id=asr_data.get(<span class="hljs-string">'speaker_id'</span>),
+                    options=asr_data.get(<span class="hljs-string">'options'</span>, {})
+                )
+
+                <span class="hljs-comment"># Send corrected text back</span>
+                <span class="hljs-keyword">await</span> websocket.send_text(json.dumps({
+                    <span class="hljs-string">'type'</span>: <span class="hljs-string">'correction'</span>,
+                    <span class="hljs-string">'data'</span>: correction_result.dict()
+                }))
+
+        <span class="hljs-keyword">except</span> WebSocketDisconnect:
+            self.disconnect(websocket)
+</div></code></pre>
+<h4 id="512-pattern-event-processing">5.1.2 Pattern Event Processing</h4>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PatternEventProcessor</span>:</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_pattern_updated_event</span><span class="hljs-params">(self, event: dict)</span>:</span>
+        <span class="hljs-string">"""Process pattern updated events from RIS"""</span>
+        pattern_data = event[<span class="hljs-string">'data'</span>]
+
+        <span class="hljs-comment"># Update local pattern cache</span>
+        <span class="hljs-keyword">await</span> self.update_pattern_cache(
+            error_id=pattern_data[<span class="hljs-string">'error_id'</span>],
+            speaker_id=pattern_data[<span class="hljs-string">'speaker_id'</span>],
+            similarity_score=pattern_data[<span class="hljs-string">'pattern_similarity_score'</span>]
+        )
+
+        <span class="hljs-comment"># Trigger pattern retraining if needed</span>
+        <span class="hljs-keyword">if</span> pattern_data[<span class="hljs-string">'similar_patterns_count'</span>] &gt; <span class="hljs-number">5</span>:
+            <span class="hljs-keyword">await</span> self.trigger_pattern_retraining(pattern_data[<span class="hljs-string">'speaker_id'</span>])
+</div></code></pre>
+<h3 id="52-service-integration-flow">5.2 Service Integration Flow</h3>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant ASR as ASR Pipeline
+    participant CES as Correction Engine Service
+    participant RIS as RAG Integration Service
+    participant CACHE as Redis Cache
+    participant DB as PostgreSQL
+    participant VS as Verification Service
+
+    ASR->>CES: Send Draft Text (WebSocket)
+    CES->>CACHE: Check Pattern Cache
+    alt Cache Miss
+        CES->>RIS: Search Similar Patterns
+        RIS-->>CES: Return Similar Patterns
+        CES->>CACHE: Cache Patterns
+    end
+    CES->>CES: Apply Corrections
+    CES->>CES: Calculate Confidence
+    CES->>DB: Store Correction Result
+    CES->>ASR: Return Corrected Text
+    CES->>VS: Publish Correction Event
+</div></code></pre>
+<h3 id="53-event-schemas">5.3 Event Schemas</h3>
+<h4 id="531-correction-events">5.3.1 Correction Events</h4>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionAppliedEventData</span><span class="hljs-params">(BaseModel)</span>:</span>
+    correction_id: str
+    job_id: Optional[str]
+    speaker_id: Optional[str]
+    original_text: str
+    corrected_text: str
+    applied_corrections: List[Dict[str, Any]]
+    confidence_score: float
+    processing_time: float
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionAppliedEvent</span><span class="hljs-params">(BaseEvent)</span>:</span>
+    event_type: str = <span class="hljs-string">"correction.applied"</span>
+    data: CorrectionAppliedEventData
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionFeedbackEventData</span><span class="hljs-params">(BaseModel)</span>:</span>
+    correction_id: str
+    feedback_id: str
+    is_correct: bool
+    user_correction: Optional[str]
+    rating: int
+    user_id: str
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionFeedbackEvent</span><span class="hljs-params">(BaseEvent)</span>:</span>
+    event_type: str = <span class="hljs-string">"correction.feedback"</span>
+    data: CorrectionFeedbackEventData
+</div></code></pre>
+<hr>
+<h2 id="6-error-handling-strategy">6. Error Handling Strategy</h2>
+<h3 id="61-error-categories">6.1 Error Categories</h3>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CESErrorCode</span><span class="hljs-params">(str, Enum)</span>:</span>
+    <span class="hljs-comment"># Input Validation Errors (400)</span>
+    INVALID_TEXT_INPUT = <span class="hljs-string">"INVALID_TEXT_INPUT"</span>
+    TEXT_TOO_LONG = <span class="hljs-string">"TEXT_TOO_LONG"</span>
+    INVALID_SPEAKER_ID = <span class="hljs-string">"INVALID_SPEAKER_ID"</span>
+    INVALID_CORRECTION_OPTIONS = <span class="hljs-string">"INVALID_CORRECTION_OPTIONS"</span>
+
+    <span class="hljs-comment"># Pattern Matching Errors (500)</span>
+    PATTERN_SEARCH_ERROR = <span class="hljs-string">"PATTERN_SEARCH_ERROR"</span>
+    PATTERN_CACHE_ERROR = <span class="hljs-string">"PATTERN_CACHE_ERROR"</span>
+    SIMILARITY_CALCULATION_ERROR = <span class="hljs-string">"SIMILARITY_CALCULATION_ERROR"</span>
+
+    <span class="hljs-comment"># Correction Application Errors (500)</span>
+    CORRECTION_APPLICATION_ERROR = <span class="hljs-string">"CORRECTION_APPLICATION_ERROR"</span>
+    CONFIDENCE_CALCULATION_ERROR = <span class="hljs-string">"CONFIDENCE_CALCULATION_ERROR"</span>
+    CORRECTION_TIMEOUT = <span class="hljs-string">"CORRECTION_TIMEOUT"</span>
+
+    <span class="hljs-comment"># Database Errors (500)</span>
+    CORRECTION_STORAGE_ERROR = <span class="hljs-string">"CORRECTION_STORAGE_ERROR"</span>
+    FEEDBACK_STORAGE_ERROR = <span class="hljs-string">"FEEDBACK_STORAGE_ERROR"</span>
+    PATTERN_UPDATE_ERROR = <span class="hljs-string">"PATTERN_UPDATE_ERROR"</span>
+
+    <span class="hljs-comment"># External Service Errors (500)</span>
+    RIS_CONNECTION_ERROR = <span class="hljs-string">"RIS_CONNECTION_ERROR"</span>
+    ASR_INTEGRATION_ERROR = <span class="hljs-string">"ASR_INTEGRATION_ERROR"</span>
+    EVENT_PUBLISHING_ERROR = <span class="hljs-string">"EVENT_PUBLISHING_ERROR"</span>
+</div></code></pre>
+<h3 id="62-timeout-and-circuit-breaker">6.2 Timeout and Circuit Breaker</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> asyncio
+<span class="hljs-keyword">from</span> contextlib <span class="hljs-keyword">import</span> asynccontextmanager
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionTimeout</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, timeout_seconds: int = <span class="hljs-number">5</span>)</span>:</span>
+        self.timeout_seconds = timeout_seconds
+
+<span class="hljs-meta">    @asynccontextmanager</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">timeout_context</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">try</span>:
+            <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> asyncio.timeout(self.timeout_seconds):
+                <span class="hljs-keyword">yield</span>
+        <span class="hljs-keyword">except</span> asyncio.TimeoutError:
+            <span class="hljs-keyword">raise</span> CorrectionTimeoutException(
+                <span class="hljs-string">f"Correction processing exceeded <span class="hljs-subst">{self.timeout_seconds}</span> seconds"</span>
+            )
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PatternSearchCircuitBreaker</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, failure_threshold: int = <span class="hljs-number">3</span>, timeout: int = <span class="hljs-number">30</span>)</span>:</span>
+        self.failure_threshold = failure_threshold
+        self.timeout = timeout
+        self.failure_count = <span class="hljs-number">0</span>
+        self.last_failure_time = <span class="hljs-literal">None</span>
+        self.state = <span class="hljs-string">"CLOSED"</span>
+
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">search_patterns</span><span class="hljs-params">(self, query: str)</span> -&gt; List[Pattern]:</span>
+        <span class="hljs-keyword">if</span> self.state == <span class="hljs-string">"OPEN"</span>:
+            <span class="hljs-keyword">if</span> time.time() - self.last_failure_time &gt; self.timeout:
+                self.state = <span class="hljs-string">"HALF_OPEN"</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-comment"># Return cached patterns or fallback</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> self.get_fallback_patterns(query)
+
+        <span class="hljs-keyword">try</span>:
+            patterns = <span class="hljs-keyword">await</span> self.ris_client.search_patterns(query)
+            <span class="hljs-keyword">if</span> self.state == <span class="hljs-string">"HALF_OPEN"</span>:
+                self.state = <span class="hljs-string">"CLOSED"</span>
+                self.failure_count = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">return</span> patterns
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+            self.failure_count += <span class="hljs-number">1</span>
+            self.last_failure_time = time.time()
+
+            <span class="hljs-keyword">if</span> self.failure_count &gt;= self.failure_threshold:
+                self.state = <span class="hljs-string">"OPEN"</span>
+
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> self.get_fallback_patterns(query)
+</div></code></pre>
+<hr>
+<h2 id="7-technology-implementation">7. Technology Implementation</h2>
+<h3 id="71-correction-algorithm-implementation">7.1 Correction Algorithm Implementation</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> List, Tuple
+<span class="hljs-keyword">import</span> difflib
+<span class="hljs-keyword">import</span> re
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionEngine</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, confidence_threshold: float = <span class="hljs-number">0.8</span>)</span>:</span>
+        self.confidence_threshold = confidence_threshold
+        self.pattern_matcher = PatternMatcher()
+        self.confidence_calculator = ConfidenceCalculator()
+
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply_corrections</span><span class="hljs-params">(
+        self,
+        text: str,
+        speaker_id: Optional[str] = None,
+        options: CorrectionOptions = None
+    )</span> -&gt; CorrectionResult:</span>
+        <span class="hljs-string">"""Apply corrections to input text"""</span>
+
+        <span class="hljs-comment"># Tokenize text into segments</span>
+        segments = self.tokenize_text(text)
+
+        <span class="hljs-comment"># Find potential corrections for each segment</span>
+        corrections = []
+        <span class="hljs-keyword">for</span> segment <span class="hljs-keyword">in</span> segments:
+            patterns = <span class="hljs-keyword">await</span> self.find_matching_patterns(segment, speaker_id)
+
+            <span class="hljs-keyword">for</span> pattern <span class="hljs-keyword">in</span> patterns:
+                confidence = <span class="hljs-keyword">await</span> self.calculate_confidence(segment, pattern)
+
+                <span class="hljs-keyword">if</span> confidence &gt;= (options.confidence_threshold <span class="hljs-keyword">if</span> options <span class="hljs-keyword">else</span> self.confidence_threshold):
+                    correction = self.create_correction(segment, pattern, confidence)
+                    corrections.append(correction)
+
+        <span class="hljs-comment"># Apply corrections and generate result</span>
+        corrected_text = self.apply_correction_list(text, corrections)
+
+        <span class="hljs-keyword">return</span> CorrectionResult(
+            original_text=text,
+            corrected_text=corrected_text,
+            applied_corrections=corrections,
+            confidence_score=self.calculate_overall_confidence(corrections)
+        )
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tokenize_text</span><span class="hljs-params">(self, text: str)</span> -&gt; List[TextSegment]:</span>
+        <span class="hljs-string">"""Tokenize text into meaningful segments"""</span>
+        <span class="hljs-comment"># Split by sentences and phrases</span>
+        sentences = re.split(<span class="hljs-string">r'[.!?]+'</span>, text)
+        segments = []
+
+        <span class="hljs-keyword">for</span> sentence <span class="hljs-keyword">in</span> sentences:
+            <span class="hljs-keyword">if</span> sentence.strip():
+                <span class="hljs-comment"># Further split by commas and conjunctions</span>
+                phrases = re.split(<span class="hljs-string">r'[,;]|\band\b|\bor\b|\bbut\b'</span>, sentence)
+                <span class="hljs-keyword">for</span> phrase <span class="hljs-keyword">in</span> phrases:
+                    <span class="hljs-keyword">if</span> phrase.strip():
+                        segments.append(TextSegment(
+                            text=phrase.strip(),
+                            start_pos=text.find(phrase.strip()),
+                            end_pos=text.find(phrase.strip()) + len(phrase.strip())
+                        ))
+
+        <span class="hljs-keyword">return</span> segments
+</div></code></pre>
+<h3 id="72-pattern-matching-implementation">7.2 Pattern Matching Implementation</h3>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PatternMatcher</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, similarity_threshold: float = <span class="hljs-number">0.85</span>)</span>:</span>
+        self.similarity_threshold = similarity_threshold
+        self.cache = PatternCache()
+
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_matching_patterns</span><span class="hljs-params">(
+        self,
+        segment: TextSegment,
+        speaker_id: Optional[str] = None
+    )</span> -&gt; List[CorrectionPattern]:</span>
+        <span class="hljs-string">"""Find patterns matching the text segment"""</span>
+
+        <span class="hljs-comment"># Check cache first</span>
+        cache_key = <span class="hljs-string">f"<span class="hljs-subst">{segment.text_hash}</span>:<span class="hljs-subst">{speaker_id <span class="hljs-keyword">or</span> <span class="hljs-string">'global'</span>}</span>"</span>
+        cached_patterns = <span class="hljs-keyword">await</span> self.cache.get(cache_key)
+        <span class="hljs-keyword">if</span> cached_patterns:
+            <span class="hljs-keyword">return</span> cached_patterns
+
+        <span class="hljs-comment"># Search for similar patterns using RIS</span>
+        similar_patterns = <span class="hljs-keyword">await</span> self.ris_client.search_similar_patterns(
+            query_text=segment.text,
+            speaker_id=speaker_id,
+            threshold=self.similarity_threshold
+        )
+
+        <span class="hljs-comment"># Convert to correction patterns</span>
+        correction_patterns = []
+        <span class="hljs-keyword">for</span> pattern <span class="hljs-keyword">in</span> similar_patterns:
+            <span class="hljs-keyword">if</span> pattern.similarity_score &gt;= self.similarity_threshold:
+                correction_pattern = CorrectionPattern(
+                    id=pattern.embedding_id,
+                    original_text=pattern.text,
+                    corrected_text=pattern.metadata.get(<span class="hljs-string">'corrected_text'</span>),
+                    similarity_score=pattern.similarity_score,
+                    pattern_type=pattern.metadata.get(<span class="hljs-string">'error_categories'</span>, [<span class="hljs-string">'unknown'</span>])[<span class="hljs-number">0</span>]
+                )
+                correction_patterns.append(correction_pattern)
+
+        <span class="hljs-comment"># Cache results</span>
+        <span class="hljs-keyword">await</span> self.cache.set(cache_key, correction_patterns, ttl=<span class="hljs-number">3600</span>)
+
+        <span class="hljs-keyword">return</span> correction_patterns
+</div></code></pre>
+<h3 id="73-confidence-calculation">7.3 Confidence Calculation</h3>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConfidenceCalculator</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        self.ml_model = self.load_confidence_model()
+
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">calculate_confidence</span><span class="hljs-params">(
+        self,
+        segment: TextSegment,
+        pattern: CorrectionPattern
+    )</span> -&gt; float:</span>
+        <span class="hljs-string">"""Calculate confidence score for applying a correction"""</span>
+
+        features = self.extract_features(segment, pattern)
+
+        <span class="hljs-comment"># Use ML model for confidence prediction</span>
+        confidence = <span class="hljs-keyword">await</span> self.ml_model.predict(features)
+
+        <span class="hljs-comment"># Apply business rules adjustments</span>
+        confidence = self.apply_business_rules(confidence, segment, pattern)
+
+        <span class="hljs-keyword">return</span> min(max(confidence, <span class="hljs-number">0.0</span>), <span class="hljs-number">1.0</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">extract_features</span><span class="hljs-params">(self, segment: TextSegment, pattern: CorrectionPattern)</span> -&gt; Dict[str, float]:</span>
+        <span class="hljs-string">"""Extract features for confidence calculation"""</span>
+        <span class="hljs-keyword">return</span> {
+            <span class="hljs-string">'similarity_score'</span>: pattern.similarity_score,
+            <span class="hljs-string">'text_length_ratio'</span>: len(pattern.corrected_text) / len(segment.text),
+            <span class="hljs-string">'edit_distance'</span>: self.calculate_edit_distance(segment.text, pattern.original_text),
+            <span class="hljs-string">'pattern_usage_count'</span>: pattern.usage_count,
+            <span class="hljs-string">'pattern_success_rate'</span>: pattern.success_rate,
+            <span class="hljs-string">'context_similarity'</span>: self.calculate_context_similarity(segment, pattern),
+            <span class="hljs-string">'speaker_specificity'</span>: <span class="hljs-number">1.0</span> <span class="hljs-keyword">if</span> pattern.speaker_id <span class="hljs-keyword">else</span> <span class="hljs-number">0.5</span>
+        }
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply_business_rules</span><span class="hljs-params">(
+        self,
+        base_confidence: float,
+        segment: TextSegment,
+        pattern: CorrectionPattern
+    )</span> -&gt; float:</span>
+        <span class="hljs-string">"""Apply business rules to adjust confidence"""</span>
+
+        <span class="hljs-comment"># Reduce confidence for very short texts</span>
+        <span class="hljs-keyword">if</span> len(segment.text) &lt; <span class="hljs-number">10</span>:
+            base_confidence *= <span class="hljs-number">0.8</span>
+
+        <span class="hljs-comment"># Increase confidence for high-usage patterns</span>
+        <span class="hljs-keyword">if</span> pattern.usage_count &gt; <span class="hljs-number">100</span>:
+            base_confidence *= <span class="hljs-number">1.1</span>
+
+        <span class="hljs-comment"># Reduce confidence for low success rate patterns</span>
+        <span class="hljs-keyword">if</span> pattern.success_rate &lt; <span class="hljs-number">0.7</span>:
+            base_confidence *= <span class="hljs-number">0.9</span>
+
+        <span class="hljs-keyword">return</span> base_confidence
+</div></code></pre>
+<hr>
+<h2 id="8-directory-structure">8. Directory Structure</h2>
+<pre class="hljs"><code><div>correction-engine-service/
+├── src/
+│   ├── domain/                          # Business logic (pure, no dependencies)
+│   │   ├── __init__.py
+│   │   ├── entities/
+│   │   │   ├── __init__.py
+│   │   │   ├── correction.py            # Correction entity
+│   │   │   ├── correction_pattern.py    # CorrectionPattern entity
+│   │   │   ├── text_segment.py          # TextSegment entity
+│   │   │   └── feedback.py              # Feedback entity
+│   │   ├── value_objects/
+│   │   │   ├── __init__.py
+│   │   │   ├── correction_mode.py       # CorrectionMode enum
+│   │   │   ├── confidence_score.py      # ConfidenceScore value object
+│   │   │   └── correction_options.py    # CorrectionOptions value object
+│   │   ├── repositories/
+│   │   │   ├── __init__.py
+│   │   │   ├── correction_repository.py # Abstract correction repository
+│   │   │   ├── pattern_repository.py    # Abstract pattern repository
+│   │   │   └── feedback_repository.py   # Abstract feedback repository
+│   │   └── services/
+│   │       ├── __init__.py
+│   │       ├── correction_service.py    # Correction application logic
+│   │       ├── pattern_service.py       # Pattern matching logic
+│   │       ├── confidence_service.py    # Confidence calculation logic
+│   │       └── feedback_service.py      # Feedback processing logic
+│   ├── application/                     # Use cases and application services
+│   │   ├── __init__.py
+│   │   ├── use_cases/
+│   │   │   ├── __init__.py
+│   │   │   ├── apply_corrections.py     # Apply corrections use case
+│   │   │   ├── preview_corrections.py   # Preview corrections use case
+│   │   │   ├── process_feedback.py      # Process feedback use case
+│   │   │   ├── update_patterns.py       # Update patterns use case
+│   │   │   └── calculate_metrics.py     # Calculate metrics use case
+│   │   ├── dto/
+│   │   │   ├── __init__.py
+│   │   │   ├── requests.py              # Pydantic request models
+│   │   │   ├── responses.py             # Pydantic response models
+│   │   │   └── events.py                # Event schemas
+│   │   └── ports/
+│   │       ├── __init__.py
+│   │       ├── correction_port.py       # Correction application interface
+│   │       ├── pattern_port.py          # Pattern matching interface
+│   │       ├── confidence_port.py       # Confidence scoring interface
+│   │       └── feedback_port.py         # Feedback processing interface
+│   ├── infrastructure/                  # Adapters and external concerns
+│   │   ├── __init__.py
+│   │   ├── adapters/
+│   │   │   ├── __init__.py
+│   │   │   ├── database/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── models.py            # SQLAlchemy models
+│   │   │   │   ├── repositories.py      # Repository implementations
+│   │   │   │   └── migrations/          # Alembic migrations
+│   │   │   ├── http/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── controllers.py       # FastAPI controllers
+│   │   │   │   ├── websocket.py         # WebSocket handlers
+│   │   │   │   ├── dependencies.py      # FastAPI dependencies
+│   │   │   │   └── middleware.py        # Custom middleware
+│   │   │   ├── messaging/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── kafka_consumer.py    # Kafka event consumer
+│   │   │   │   ├── kafka_producer.py    # Kafka event producer
+│   │   │   │   └── event_handlers.py    # Event processing handlers
+│   │   │   ├── cache/
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── redis_adapter.py     # Redis cache implementation
+│   │   │   ├── external/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── ris_client.py        # RAG Integration Service client
+│   │   │   │   └── asr_client.py        # ASR Pipeline client
+│   │   │   └── ml/
+│   │   │       ├── __init__.py
+│   │   │       ├── confidence_model.py  # ML confidence model
+│   │   │       └── pattern_matcher.py   # Pattern matching algorithms
+│   │   ├── config/
+│   │   │   ├── __init__.py
+│   │   │   ├── settings.py              # Pydantic settings
+│   │   │   └── container.py             # Dependency injection container
+│   │   └── monitoring/
+│   │       ├── __init__.py
+│   │       ├── metrics.py               # Prometheus metrics
+│   │       └── tracing.py               # OpenTelemetry tracing
+│   ├── main.py                          # FastAPI app setup
+│   └── __init__.py
+├── tests/
+│   ├── __init__.py
+│   ├── unit/                            # Unit tests
+│   │   ├── __init__.py
+│   │   ├── domain/
+│   │   ├── application/
+│   │   └── infrastructure/
+│   ├── integration/                     # Integration tests
+│   │   ├── __init__.py
+│   │   ├── test_corrections.py
+│   │   ├── test_patterns.py
+│   │   └── test_websocket.py
+│   └── fixtures/                        # Test fixtures
+│       ├── __init__.py
+│       ├── correction_data.py
+│       └── pattern_data.py
+├── models/                              # ML model artifacts
+│   ├── confidence/
+│   └── patterns/
+├── docker/
+│   ├── Dockerfile
+│   └── docker-compose.yml
+├── k8s/                                 # Kubernetes manifests
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   ├── configmap.yaml
+│   └── hpa.yaml
+├── pyproject.toml                       # Poetry configuration
+├── README.md
+└── .env.example
+</div></code></pre>
+<hr>
+<h2 id="9-key-classes-and-interfaces">9. Key Classes and Interfaces</h2>
+<h3 id="91-domain-entities">9.1 Domain Entities</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># src/domain/entities/correction.py</span>
+<span class="hljs-keyword">from</span> dataclasses <span class="hljs-keyword">import</span> dataclass
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> List, Dict, Any, Optional
+<span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime
+<span class="hljs-keyword">from</span> uuid <span class="hljs-keyword">import</span> UUID
+
+<span class="hljs-meta">@dataclass</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Correction</span>:</span>
+    id: UUID
+    original_text: str
+    corrected_text: str
+    applied_corrections: List[<span class="hljs-string">'AppliedCorrection'</span>]
+    skipped_corrections: List[<span class="hljs-string">'SkippedCorrection'</span>]
+    confidence_score: float
+    processing_time: float
+    speaker_id: Optional[str]
+    job_id: Optional[str]
+    metadata: Dict[str, Any]
+    created_at: datetime
+    created_by: str
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">calculate_improvement_ratio</span><span class="hljs-params">(self)</span> -&gt; float:</span>
+        <span class="hljs-string">"""Calculate the ratio of text that was improved"""</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.applied_corrections:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0.0</span>
+
+        total_corrected_chars = sum(
+            len(correction.corrected_text)
+            <span class="hljs-keyword">for</span> correction <span class="hljs-keyword">in</span> self.applied_corrections
+        )
+        <span class="hljs-keyword">return</span> total_corrected_chars / len(self.original_text)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_correction_types</span><span class="hljs-params">(self)</span> -&gt; List[str]:</span>
+        <span class="hljs-string">"""Get unique correction types applied"""</span>
+        <span class="hljs-keyword">return</span> list(set(
+            correction.correction_type
+            <span class="hljs-keyword">for</span> correction <span class="hljs-keyword">in</span> self.applied_corrections
+        ))
+
+<span class="hljs-meta">@dataclass</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppliedCorrection</span>:</span>
+    original_text: str
+    corrected_text: str
+    start_position: int
+    end_position: int
+    confidence_score: float
+    pattern_id: str
+    correction_type: str
+    reasoning: str
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">calculate_edit_distance</span><span class="hljs-params">(self)</span> -&gt; int:</span>
+        <span class="hljs-string">"""Calculate edit distance between original and corrected text"""</span>
+        <span class="hljs-keyword">import</span> difflib
+        <span class="hljs-keyword">return</span> len(list(difflib.unified_diff(
+            self.original_text.split(),
+            self.corrected_text.split()
+        )))
+</div></code></pre>
+<h3 id="92-use-case-implementation">9.2 Use Case Implementation</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># src/application/use_cases/apply_corrections.py</span>
+<span class="hljs-keyword">from</span> dataclasses <span class="hljs-keyword">import</span> dataclass
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> Optional
+<span class="hljs-keyword">from</span> uuid <span class="hljs-keyword">import</span> uuid4
+<span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime
+
+<span class="hljs-keyword">from</span> ..dto.requests <span class="hljs-keyword">import</span> CorrectionRequest
+<span class="hljs-keyword">from</span> ..dto.responses <span class="hljs-keyword">import</span> CorrectionResponse
+<span class="hljs-keyword">from</span> ..ports.correction_port <span class="hljs-keyword">import</span> CorrectionApplicationPort
+<span class="hljs-keyword">from</span> ...domain.entities.correction <span class="hljs-keyword">import</span> Correction
+<span class="hljs-keyword">from</span> ...domain.repositories.correction_repository <span class="hljs-keyword">import</span> CorrectionRepositoryPort
+<span class="hljs-keyword">from</span> ...domain.services.correction_service <span class="hljs-keyword">import</span> CorrectionService
+
+<span class="hljs-meta">@dataclass</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ApplyCorrectionsUseCase</span>:</span>
+    correction_service: CorrectionService
+    correction_repository: CorrectionRepositoryPort
+
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">execute</span><span class="hljs-params">(self, request: CorrectionRequest, user_id: str)</span> -&gt; CorrectionResponse:</span>
+        start_time = time.time()
+
+        <span class="hljs-comment"># Apply corrections using domain service</span>
+        correction_result = <span class="hljs-keyword">await</span> self.correction_service.apply_corrections(
+            text=request.text,
+            speaker_id=request.speaker_id,
+            options=request.options
+        )
+
+        processing_time = time.time() - start_time
+
+        <span class="hljs-comment"># Create domain entity</span>
+        correction = Correction(
+            id=uuid4(),
+            original_text=request.text,
+            corrected_text=correction_result.corrected_text,
+            applied_corrections=correction_result.applied_corrections,
+            skipped_corrections=correction_result.skipped_corrections,
+            confidence_score=correction_result.confidence_score,
+            processing_time=processing_time,
+            speaker_id=request.speaker_id,
+            job_id=request.job_id,
+            metadata=request.metadata <span class="hljs-keyword">or</span> {},
+            created_at=datetime.utcnow(),
+            created_by=user_id
+        )
+
+        <span class="hljs-comment"># Store correction</span>
+        saved_correction = <span class="hljs-keyword">await</span> self.correction_repository.save(correction)
+
+        <span class="hljs-comment"># Publish correction applied event</span>
+        <span class="hljs-keyword">await</span> self.event_publisher.publish_correction_applied(saved_correction)
+
+        <span class="hljs-keyword">return</span> CorrectionResponse.from_entity(saved_correction)
+</div></code></pre>
+<hr>
+<h2 id="10-configuration-management">10. Configuration Management</h2>
+<h3 id="101-settings-configuration">10.1 Settings Configuration</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># src/infrastructure/config/settings.py</span>
+<span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> BaseSettings, Field
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> List, Optional
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CorrectionSettings</span><span class="hljs-params">(BaseSettings)</span>:</span>
+    default_confidence_threshold: float = Field(<span class="hljs-number">0.8</span>, env=<span class="hljs-string">"DEFAULT_CONFIDENCE_THRESHOLD"</span>)
+    max_corrections_per_request: int = Field(<span class="hljs-number">50</span>, env=<span class="hljs-string">"MAX_CORRECTIONS_PER_REQUEST"</span>)
+    correction_timeout_seconds: int = Field(<span class="hljs-number">5</span>, env=<span class="hljs-string">"CORRECTION_TIMEOUT_SECONDS"</span>)
+    pattern_cache_ttl_seconds: int = Field(<span class="hljs-number">3600</span>, env=<span class="hljs-string">"PATTERN_CACHE_TTL_SECONDS"</span>)
+    enable_a_b_testing: bool = Field(<span class="hljs-literal">False</span>, env=<span class="hljs-string">"ENABLE_A_B_TESTING"</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RISIntegrationSettings</span><span class="hljs-params">(BaseSettings)</span>:</span>
+    base_url: str = Field(..., env=<span class="hljs-string">"RIS_BASE_URL"</span>)
+    api_key: Optional[str] = Field(<span class="hljs-literal">None</span>, env=<span class="hljs-string">"RIS_API_KEY"</span>)
+    timeout_seconds: int = Field(<span class="hljs-number">10</span>, env=<span class="hljs-string">"RIS_TIMEOUT_SECONDS"</span>)
+    similarity_threshold: float = Field(<span class="hljs-number">0.85</span>, env=<span class="hljs-string">"RIS_SIMILARITY_THRESHOLD"</span>)
+    max_patterns_per_search: int = Field(<span class="hljs-number">20</span>, env=<span class="hljs-string">"RIS_MAX_PATTERNS_PER_SEARCH"</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ASRIntegrationSettings</span><span class="hljs-params">(BaseSettings)</span>:</span>
+    websocket_url: str = Field(..., env=<span class="hljs-string">"ASR_WEBSOCKET_URL"</span>)
+    api_key: Optional[str] = Field(<span class="hljs-literal">None</span>, env=<span class="hljs-string">"ASR_API_KEY"</span>)
+    heartbeat_interval: int = Field(<span class="hljs-number">30</span>, env=<span class="hljs-string">"ASR_HEARTBEAT_INTERVAL"</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MLModelSettings</span><span class="hljs-params">(BaseSettings)</span>:</span>
+    confidence_model_path: str = Field(<span class="hljs-string">"models/confidence/"</span>, env=<span class="hljs-string">"CONFIDENCE_MODEL_PATH"</span>)
+    model_version: str = Field(<span class="hljs-string">"1.0"</span>, env=<span class="hljs-string">"ML_MODEL_VERSION"</span>)
+    batch_size: int = Field(<span class="hljs-number">32</span>, env=<span class="hljs-string">"ML_BATCH_SIZE"</span>)
+    inference_timeout: int = Field(<span class="hljs-number">2</span>, env=<span class="hljs-string">"ML_INFERENCE_TIMEOUT"</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Settings</span><span class="hljs-params">(BaseSettings)</span>:</span>
+    app_name: str = <span class="hljs-string">"Correction Engine Service"</span>
+    app_version: str = <span class="hljs-string">"1.0.0"</span>
+    debug: bool = Field(<span class="hljs-literal">False</span>, env=<span class="hljs-string">"DEBUG"</span>)
+    log_level: str = Field(<span class="hljs-string">"INFO"</span>, env=<span class="hljs-string">"LOG_LEVEL"</span>)
+
+    correction: CorrectionSettings = CorrectionSettings()
+    ris_integration: RISIntegrationSettings = RISIntegrationSettings()
+    asr_integration: ASRIntegrationSettings = ASRIntegrationSettings()
+    ml_models: MLModelSettings = MLModelSettings()
+
+    <span class="hljs-comment"># Database Configuration</span>
+    database_url: str = Field(..., env=<span class="hljs-string">"DATABASE_URL"</span>)
+    redis_url: str = Field(..., env=<span class="hljs-string">"REDIS_URL"</span>)
+
+    <span class="hljs-comment"># Kafka Configuration</span>
+    kafka_bootstrap_servers: List[str] = Field(..., env=<span class="hljs-string">"KAFKA_BOOTSTRAP_SERVERS"</span>)
+    kafka_consumer_group: str = Field(<span class="hljs-string">"correction-engine-service"</span>, env=<span class="hljs-string">"KAFKA_CONSUMER_GROUP"</span>)
+
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Config</span>:</span>
+        env_file = <span class="hljs-string">".env"</span>
+        env_nested_delimiter = <span class="hljs-string">"__"</span>
+
+settings = Settings()
+</div></code></pre>
+<hr>
+<h2 id="11-dependency-management">11. Dependency Management</h2>
+<h3 id="111-poetry-configuration">11.1 Poetry Configuration</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># pyproject.toml</span>
+<span class="hljs-section">[tool.poetry]</span>
+<span class="hljs-attr">name</span> = <span class="hljs-string">"correction-engine-service"</span>
+<span class="hljs-attr">version</span> = <span class="hljs-string">"1.0.0"</span>
+<span class="hljs-attr">description</span> = <span class="hljs-string">"ASR Error Reporting System - Real-time Correction Engine Service"</span>
+<span class="hljs-attr">authors</span> = [<span class="hljs-string">"Development Team &lt;dev@example.com&gt;"</span>]
+<span class="hljs-attr">readme</span> = <span class="hljs-string">"README.md"</span>
+<span class="hljs-attr">packages</span> = [{include = <span class="hljs-string">"src"</span>}]
+
+<span class="hljs-section">[tool.poetry.dependencies]</span>
+<span class="hljs-attr">python</span> = <span class="hljs-string">"^3.11"</span>
+<span class="hljs-attr">fastapi</span> = <span class="hljs-string">"^0.104.0"</span>
+<span class="hljs-attr">uvicorn</span> = {extras = [<span class="hljs-string">"standard"</span>], version = <span class="hljs-string">"^0.24.0"</span>}
+<span class="hljs-attr">pydantic</span> = {extras = [<span class="hljs-string">"email"</span>], version = <span class="hljs-string">"^2.4.0"</span>}
+<span class="hljs-attr">sqlalchemy</span> = {extras = [<span class="hljs-string">"asyncio"</span>], version = <span class="hljs-string">"^2.0.0"</span>}
+<span class="hljs-attr">asyncpg</span> = <span class="hljs-string">"^0.29.0"</span>
+<span class="hljs-attr">alembic</span> = <span class="hljs-string">"^1.12.0"</span>
+
+<span class="hljs-comment"># Real-time and WebSocket</span>
+<span class="hljs-attr">websockets</span> = <span class="hljs-string">"^12.0"</span>
+<span class="hljs-attr">python-socketio</span> = <span class="hljs-string">"^5.10.0"</span>
+
+<span class="hljs-comment"># Text Processing and ML</span>
+<span class="hljs-attr">nltk</span> = <span class="hljs-string">"^3.8.1"</span>
+<span class="hljs-attr">spacy</span> = <span class="hljs-string">"^3.7.0"</span>
+<span class="hljs-attr">scikit-learn</span> = <span class="hljs-string">"^1.3.0"</span>
+<span class="hljs-attr">numpy</span> = <span class="hljs-string">"^1.24.0"</span>
+<span class="hljs-attr">pandas</span> = <span class="hljs-string">"^2.1.0"</span>
+<span class="hljs-attr">torch</span> = <span class="hljs-string">"^2.1.0"</span>
+<span class="hljs-attr">transformers</span> = <span class="hljs-string">"^4.35.0"</span>
+
+<span class="hljs-comment"># Async and Messaging</span>
+<span class="hljs-attr">aiokafka</span> = <span class="hljs-string">"^0.8.0"</span>
+<span class="hljs-attr">redis</span> = {extras = [<span class="hljs-string">"hiredis"</span>], version = <span class="hljs-string">"^5.0.0"</span>}
+<span class="hljs-attr">httpx</span> = <span class="hljs-string">"^0.25.0"</span>
+
+<span class="hljs-comment"># Utilities</span>
+<span class="hljs-attr">tenacity</span> = <span class="hljs-string">"^8.2.3"</span>
+<span class="hljs-attr">dependency-injector</span> = <span class="hljs-string">"^4.41.0"</span>
+<span class="hljs-attr">structlog</span> = <span class="hljs-string">"^23.2.0"</span>
+<span class="hljs-attr">python-multipart</span> = <span class="hljs-string">"^0.0.6"</span>
+
+<span class="hljs-comment"># Monitoring and Observability</span>
+<span class="hljs-attr">prometheus-client</span> = <span class="hljs-string">"^0.18.0"</span>
+<span class="hljs-attr">opentelemetry-api</span> = <span class="hljs-string">"^1.20.0"</span>
+<span class="hljs-attr">opentelemetry-sdk</span> = <span class="hljs-string">"^1.20.0"</span>
+<span class="hljs-attr">opentelemetry-instrumentation-fastapi</span> = <span class="hljs-string">"^0.41b0"</span>
+
+<span class="hljs-section">[tool.poetry.group.dev.dependencies]</span>
+<span class="hljs-attr">pytest</span> = <span class="hljs-string">"^7.4.0"</span>
+<span class="hljs-attr">pytest-asyncio</span> = <span class="hljs-string">"^0.21.0"</span>
+<span class="hljs-attr">pytest-mock</span> = <span class="hljs-string">"^3.12.0"</span>
+<span class="hljs-attr">httpx</span> = <span class="hljs-string">"^0.25.0"</span>
+<span class="hljs-attr">pytest-postgresql</span> = <span class="hljs-string">"^5.0.0"</span>
+<span class="hljs-attr">testcontainers</span> = <span class="hljs-string">"^3.7.0"</span>
+<span class="hljs-attr">black</span> = <span class="hljs-string">"^23.9.0"</span>
+<span class="hljs-attr">isort</span> = <span class="hljs-string">"^5.12.0"</span>
+<span class="hljs-attr">flake8</span> = <span class="hljs-string">"^6.1.0"</span>
+<span class="hljs-attr">mypy</span> = <span class="hljs-string">"^1.6.0"</span>
+<span class="hljs-attr">coverage</span> = <span class="hljs-string">"^7.3.0"</span>
+<span class="hljs-attr">pre-commit</span> = <span class="hljs-string">"^3.5.0"</span>
+
+<span class="hljs-section">[build-system]</span>
+<span class="hljs-attr">requires</span> = [<span class="hljs-string">"poetry-core"</span>]
+<span class="hljs-attr">build-backend</span> = <span class="hljs-string">"poetry.core.masonry.api"</span>
+</div></code></pre>
+<hr>
+<h2 id="12-user-stories">12. User Stories</h2>
+<h3 id="121-epic-real-time-correction-application">12.1 Epic: Real-time Correction Application</h3>
+<h4 id="1211-user-story-apply-real-time-corrections">12.1.1 User Story: Apply Real-time Corrections</h4>
+<p><strong>As an</strong> ASR system
+<strong>I want to</strong> apply real-time corrections to draft transcription text
+<strong>So that</strong> the final output has improved accuracy based on learned patterns</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox15"><label for="checkbox15">Corrections are applied within 5 seconds for typical text segments</label></li>
+<li><input type="checkbox" id="checkbox16"><label for="checkbox16">The system identifies and corrects common speaker-specific errors</label></li>
+<li><input type="checkbox" id="checkbox17"><label for="checkbox17">Confidence scores are provided for each applied correction</label></li>
+<li><input type="checkbox" id="checkbox18"><label for="checkbox18">Original text positions are preserved for highlighting</label></li>
+<li><input type="checkbox" id="checkbox19"><label for="checkbox19">The system handles concurrent correction requests efficiently</label></li>
+<li><input type="checkbox" id="checkbox20"><label for="checkbox20">Corrections are based on similar patterns from the knowledge base</label></li>
+<li><input type="checkbox" id="checkbox21"><label for="checkbox21">Failed corrections don't affect the overall process</label></li>
+</ul>
+<p><strong>Story Points:</strong> 13</p>
+<p><strong>Technical Tasks:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox22"><label for="checkbox22">Implement real-time correction algorithm</label></li>
+<li><input type="checkbox" id="checkbox23"><label for="checkbox23">Add pattern matching with similarity search</label></li>
+<li><input type="checkbox" id="checkbox24"><label for="checkbox24">Create confidence scoring system</label></li>
+<li><input type="checkbox" id="checkbox25"><label for="checkbox25">Implement text segmentation and tokenization</label></li>
+<li><input type="checkbox" id="checkbox26"><label for="checkbox26">Add concurrent request handling</label></li>
+<li><input type="checkbox" id="checkbox27"><label for="checkbox27">Create correction highlighting logic</label></li>
+</ul>
+<h4 id="1212-user-story-preview-corrections">12.1.2 User Story: Preview Corrections</h4>
+<p><strong>As a</strong> QA personnel
+<strong>I want to</strong> preview potential corrections before applying them
+<strong>So that</strong> I can review and approve corrections before they're applied</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox28"><label for="checkbox28">I can see all potential corrections with confidence scores</label></li>
+<li><input type="checkbox" id="checkbox29"><label for="checkbox29">Each correction shows the reasoning behind the suggestion</label></li>
+<li><input type="checkbox" id="checkbox30"><label for="checkbox30">I can filter corrections by confidence threshold</label></li>
+<li><input type="checkbox" id="checkbox31"><label for="checkbox31">The preview shows the exact text positions that would be changed</label></li>
+<li><input type="checkbox" id="checkbox32"><label for="checkbox32">I can see which patterns were used for each correction</label></li>
+<li><input type="checkbox" id="checkbox33"><label for="checkbox33">The preview is generated quickly (&lt; 2 seconds)</label></li>
+<li><input type="checkbox" id="checkbox34"><label for="checkbox34">I can export the preview for review</label></li>
+</ul>
+<p><strong>Story Points:</strong> 5</p>
+<p><strong>Technical Tasks:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox35"><label for="checkbox35">Implement correction preview endpoint</label></li>
+<li><input type="checkbox" id="checkbox36"><label for="checkbox36">Add reasoning generation for corrections</label></li>
+<li><input type="checkbox" id="checkbox37"><label for="checkbox37">Create filtering by confidence threshold</label></li>
+<li><input type="checkbox" id="checkbox38"><label for="checkbox38">Add pattern information to preview results</label></li>
+<li><input type="checkbox" id="checkbox39"><label for="checkbox39">Implement export functionality</label></li>
+</ul>
+<h3 id="122-epic-pattern-based-correction">12.2 Epic: Pattern-based Correction</h3>
+<h4 id="1221-user-story-match-error-patterns">12.2.1 User Story: Match Error Patterns</h4>
+<p><strong>As a</strong> correction engine
+<strong>I want to</strong> match current text against known error patterns
+<strong>So that</strong> I can apply appropriate corrections based on historical data</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox40"><label for="checkbox40">Pattern matching completes within 2 seconds</label></li>
+<li><input type="checkbox" id="checkbox41"><label for="checkbox41">The system finds patterns with similarity scores above threshold</label></li>
+<li><input type="checkbox" id="checkbox42"><label for="checkbox42">Speaker-specific patterns are prioritized over general patterns</label></li>
+<li><input type="checkbox" id="checkbox43"><label for="checkbox43">Pattern matching handles variations in text formatting</label></li>
+<li><input type="checkbox" id="checkbox44"><label for="checkbox44">The system caches frequently used patterns for performance</label></li>
+<li><input type="checkbox" id="checkbox45"><label for="checkbox45">Pattern matching works for different error categories</label></li>
+<li><input type="checkbox" id="checkbox46"><label for="checkbox46">Failed pattern searches have fallback mechanisms</label></li>
+</ul>
+<p><strong>Story Points:</strong> 8</p>
+<p><strong>Technical Tasks:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox47"><label for="checkbox47">Implement pattern matching algorithm</label></li>
+<li><input type="checkbox" id="checkbox48"><label for="checkbox48">Add similarity threshold configuration</label></li>
+<li><input type="checkbox" id="checkbox49"><label for="checkbox49">Create speaker-specific pattern prioritization</label></li>
+<li><input type="checkbox" id="checkbox50"><label for="checkbox50">Implement pattern caching with Redis</label></li>
+<li><input type="checkbox" id="checkbox51"><label for="checkbox51">Add fallback mechanisms for failed searches</label></li>
+<li><input type="checkbox" id="checkbox52"><label for="checkbox52">Create pattern categorization support</label></li>
+</ul>
+<h4 id="1222-user-story-calculate-correction-confidence">12.2.2 User Story: Calculate Correction Confidence</h4>
+<p><strong>As a</strong> correction engine
+<strong>I want to</strong> calculate confidence scores for potential corrections
+<strong>So that</strong> only high-quality corrections are applied automatically</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox53"><label for="checkbox53">Confidence scores are calculated using multiple factors</label></li>
+<li><input type="checkbox" id="checkbox54"><label for="checkbox54">Scores range from 0.0 to 1.0 with clear interpretation</label></li>
+<li><input type="checkbox" id="checkbox55"><label for="checkbox55">The system considers pattern usage history and success rates</label></li>
+<li><input type="checkbox" id="checkbox56"><label for="checkbox56">Context similarity affects confidence calculation</label></li>
+<li><input type="checkbox" id="checkbox57"><label for="checkbox57">Speaker-specific patterns receive higher confidence</label></li>
+<li><input type="checkbox" id="checkbox58"><label for="checkbox58">Business rules can adjust confidence scores</label></li>
+<li><input type="checkbox" id="checkbox59"><label for="checkbox59">Confidence calculation is fast (&lt; 500ms)</label></li>
+</ul>
+<p><strong>Story Points:</strong> 8</p>
+<p><strong>Technical Tasks:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox60"><label for="checkbox60">Implement ML-based confidence calculation</label></li>
+<li><input type="checkbox" id="checkbox61"><label for="checkbox61">Add feature extraction for confidence model</label></li>
+<li><input type="checkbox" id="checkbox62"><label for="checkbox62">Create business rules engine for confidence adjustment</label></li>
+<li><input type="checkbox" id="checkbox63"><label for="checkbox63">Implement context similarity calculation</label></li>
+<li><input type="checkbox" id="checkbox64"><label for="checkbox64">Add pattern success rate tracking</label></li>
+<li><input type="checkbox" id="checkbox65"><label for="checkbox65">Create confidence score interpretation guidelines</label></li>
+</ul>
+<h3 id="123-epic-feedback-and-learning">12.3 Epic: Feedback and Learning</h3>
+<h4 id="1231-user-story-process-correction-feedback">12.3.1 User Story: Process Correction Feedback</h4>
+<p><strong>As a</strong> correction engine
+<strong>I want to</strong> process user feedback on correction quality
+<strong>So that</strong> the system can learn and improve future corrections</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox66"><label for="checkbox66">Users can mark corrections as correct or incorrect</label></li>
+<li><input type="checkbox" id="checkbox67"><label for="checkbox67">Users can provide alternative corrections</label></li>
+<li><input type="checkbox" id="checkbox68"><label for="checkbox68">Feedback is stored with correction context</label></li>
+<li><input type="checkbox" id="checkbox69"><label for="checkbox69">Feedback affects pattern success rates</label></li>
+<li><input type="checkbox" id="checkbox70"><label for="checkbox70">Negative feedback reduces pattern confidence</label></li>
+<li><input type="checkbox" id="checkbox71"><label for="checkbox71">Feedback triggers pattern retraining when needed</label></li>
+<li><input type="checkbox" id="checkbox72"><label for="checkbox72">Feedback processing is asynchronous and doesn't block users</label></li>
+</ul>
+<p><strong>Story Points:</strong> 5</p>
+<p><strong>Technical Tasks:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox73"><label for="checkbox73">Implement feedback collection endpoints</label></li>
+<li><input type="checkbox" id="checkbox74"><label for="checkbox74">Add feedback storage and processing</label></li>
+<li><input type="checkbox" id="checkbox75"><label for="checkbox75">Create pattern success rate updates</label></li>
+<li><input type="checkbox" id="checkbox76"><label for="checkbox76">Implement feedback-based confidence adjustment</label></li>
+<li><input type="checkbox" id="checkbox77"><label for="checkbox77">Add pattern retraining triggers</label></li>
+<li><input type="checkbox" id="checkbox78"><label for="checkbox78">Create asynchronous feedback processing</label></li>
+</ul>
+<h4 id="1232-user-story-ab-test-correction-algorithms">12.3.2 User Story: A/B Test Correction Algorithms</h4>
+<p><strong>As a</strong> system administrator
+<strong>I want to</strong> A/B test different correction algorithms
+<strong>So that</strong> I can optimize correction accuracy and performance</p>
+<p><strong>Acceptance Criteria:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox79"><label for="checkbox79">I can configure multiple correction algorithm variants</label></li>
+<li><input type="checkbox" id="checkbox80"><label for="checkbox80">Traffic is split between algorithm variants</label></li>
+<li><input type="checkbox" id="checkbox81"><label for="checkbox81">Performance metrics are tracked for each variant</label></li>
+<li><input type="checkbox" id="checkbox82"><label for="checkbox82">I can gradually shift traffic to better-performing variants</label></li>
+<li><input type="checkbox" id="checkbox83"><label for="checkbox83">A/B tests can be stopped and rolled back if needed</label></li>
+<li><input type="checkbox" id="checkbox84"><label for="checkbox84">Test results include accuracy, speed, and user satisfaction</label></li>
+<li><input type="checkbox" id="checkbox85"><label for="checkbox85">Configuration changes don't require service restarts</label></li>
+</ul>
+<p><strong>Story Points:</strong> 8</p>
+<p><strong>Technical Tasks:</strong></p>
+<ul>
+<li><input type="checkbox" id="checkbox86"><label for="checkbox86">Implement A/B testing framework</label></li>
+<li><input type="checkbox" id="checkbox87"><label for="checkbox87">Add algorithm variant configuration</label></li>
+<li><input type="checkbox" id="checkbox88"><label for="checkbox88">Create traffic splitting logic</label></li>
+<li><input type="checkbox" id="checkbox89"><label for="checkbox89">Implement performance metrics collection</label></li>
+<li><input type="checkbox" id="checkbox90"><label for="checkbox90">Add gradual traffic shifting capabilities</label></li>
+<li><input type="checkbox" id="checkbox91"><label for="checkbox91">Create A/B test management interface</label></li>
+</ul>
+<h3 id="124-story-point-summary">12.4 Story Point Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Epic</th>
+<th>Stories</th>
+<th>Total Story Points</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Real-time Correction Application</td>
+<td>2 stories</td>
+<td>18 points</td>
+</tr>
+<tr>
+<td>Pattern-based Correction</td>
+<td>2 stories</td>
+<td>16 points</td>
+</tr>
+<tr>
+<td>Feedback and Learning</td>
+<td>2 stories</td>
+<td>13 points</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>6 stories</strong></td>
+<td><strong>47 points</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Estimated Development Time:</strong> 8-10 weeks for 4-5 developers</p>
+<hr>
+<p><strong>Document Status:</strong> ✅ Complete
+<strong>Next Steps:</strong> Begin implementation with real-time correction algorithms
+<strong>Dependencies:</strong> RAG Integration Service (pattern data), ASR Pipeline (draft text)
+<strong>Integration Points:</strong> RAG Integration Service, Verification Service, ASR Processing Pipeline</p>
+<pre class="hljs"><code><div></div></code></pre>
+<pre class="hljs"><code><div></div></code></pre>
+
+</body>
+</html>

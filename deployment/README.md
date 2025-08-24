@@ -56,10 +56,40 @@ cd rag-interface/deployment/podman
 cp .env.template .env
 # Edit .env with your settings (see Configuration section)
 
-# Deploy system
+# Deploy system (Local Development Mode)
 chmod +x deploy.sh
-./deploy.sh
+./deploy.sh --mode local --env development
+
+# Or for Production Deployment
+./deploy.sh --mode production --env production
 ```
+
+### Enhanced Deployment Options
+
+The deployment script now supports dual-mode operation with comprehensive validation:
+
+```bash
+# Show help and available options
+./deploy.sh --help
+
+# Local development deployment (default)
+./deploy.sh --mode local --env development
+
+# Production deployment with strict validation
+./deploy.sh --mode production --env production
+
+# Staging environment deployment
+./deploy.sh --mode production --env staging
+```
+
+**Deployment Modes:**
+- **Local Mode**: Optimized for development with debug logging, relaxed validation
+- **Production Mode**: Strict security validation, optimized performance settings
+
+**Environment Types:**
+- **development**: Local development with hot reload and debug features
+- **staging**: Pre-production testing environment
+- **production**: Full production deployment with security hardening
 
 ### Access the System
 - **Frontend Application**: http://localhost:3000
@@ -124,15 +154,17 @@ graph TB
 
 ### Database Architecture
 
-The system uses a **microservices database pattern** with separate databases for each service:
+The system uses a **single database with multiple schemas** approach for simplified administration while maintaining service isolation:
 
-| Service | Database | Purpose |
-|---------|----------|---------|
-| Error Reporting Service | `error_reporting_db` | Error reports, categories, audit logs |
-| User Management Service | `user_management_db` | Users, sessions, permissions, roles |
-| Verification Service | `verification_db` | Verifications, analytics, reports |
-| Correction Engine Service | `correction_engine_db` | Corrections, patterns, feedback |
-| RAG Integration Service | `rag_integration_db` | Metadata, cache, sync status |
+| Service | Schema | Purpose |
+|---------|--------|---------|
+| Error Reporting Service | `error_reporting` | Error reports, categories, audit logs |
+| User Management Service | `user_management` | Users, sessions, permissions, roles |
+| Verification Service | `verification` | Verifications, analytics, reports |
+| Correction Engine Service | `correction_engine` | Corrections, patterns, feedback |
+| RAG Integration Service | `rag_integration` | Metadata, cache, sync status |
+
+**Database Name**: `rag_interface_db` (PostgreSQL) / `RAGInterfaceDB` (SQL Server)
 
 ## 📖 Documentation Guide
 
@@ -178,36 +210,80 @@ The system uses a **microservices database pattern** with separate databases for
 
 ## ⚙️ Configuration Overview
 
+### Environment Configuration
+
+The system uses a comprehensive `.env` file for configuration. Copy `.env.template` to `.env` and customize:
+
+```bash
+cp .env.template .env
+```
+
 ### Critical Environment Variables
 
 ```bash
-# Database Configuration
+# Deployment Configuration
+DEPLOYMENT_MODE=local          # 'local' or 'production'
+ENVIRONMENT=development        # 'development', 'staging', 'production'
+
+# Database Configuration (All services use single database with schemas)
 POSTGRES_PASSWORD=your_secure_password
+DATABASE_NAME=rag_interface_db
 ERS_DB_PASSWORD=ers_password
 UMS_DB_PASSWORD=ums_password
+RIS_DB_PASSWORD=ris_password   # RAG Integration Service
+CES_DB_PASSWORD=ces_password   # Correction Engine Service
+VS_DB_PASSWORD=vs_password     # Verification Service
 
 # Security
-JWT_SECRET_KEY=your_very_long_random_secret
+JWT_SECRET_KEY=your_very_long_random_secret_32_chars_minimum
 REDIS_PASSWORD=redis_password
 
-# AI/ML Services (Required)
+# AI/ML Services (Required for RAG functionality)
 OPENAI_API_KEY=sk-your-openai-key
 PINECONE_API_KEY=your-pinecone-key
+PINECONE_ENVIRONMENT=us-west1-gcp
 
-# Service Ports
+# Service Ports (Updated for all services)
 FRONTEND_PORT=3000
 ERS_PORT=8000
 UMS_PORT=8001
+RIS_PORT=8002
+CES_PORT=8003
+VS_PORT=8004
 ```
+
+### Configuration Validation
+
+The deployment script automatically validates configuration based on deployment mode:
+
+**Local Mode Validation:**
+- ✅ Basic password validation (warnings for defaults)
+- ✅ Service connectivity checks
+- ✅ Development-friendly settings
+
+**Production Mode Validation:**
+- ❗ Strict password requirements (no defaults allowed)
+- ❗ API key validation (OpenAI, Pinecone required)
+- ❗ JWT secret minimum 32 characters
+- ❗ Resource availability checks (4GB RAM, 20GB disk)
+- ❗ Security hardening verification
 
 ### Security Checklist
 
-- [ ] Change all default passwords
-- [ ] Configure strong JWT secret key
-- [ ] Set up firewall rules
+**Local Development:**
+- [ ] Change default passwords (recommended)
+- [ ] Configure API keys for RAG features
+- [ ] Set basic JWT secret key
+
+**Production Deployment:**
+- [ ] Change ALL default passwords (required)
+- [ ] Configure strong JWT secret key (32+ chars)
+- [ ] Set up valid API keys (OpenAI, Pinecone)
 - [ ] Configure SSL/TLS certificates
-- [ ] Set up monitoring and alerting
-- [ ] Configure backup procedures
+- [ ] Set up firewall rules
+- [ ] Configure monitoring and alerting
+- [ ] Set up backup procedures
+- [ ] Review resource limits and scaling
 
 ## 🔧 Deployment Options
 

@@ -301,34 +301,44 @@ graph TB
         THUNKS[Async Thunks]
     end
 
-    STORE --> AUTH_STATE
-    STORE --> ERROR_STATE
-    STORE --> VER_STATE
-    STORE --> UI_STATE
-
-    AUTH_STATE --> AUTH_ACTIONS
+    %% Corrected Slice Logic
     AUTH_ACTIONS --> AUTH_REDUCERS
-
-    ERROR_STATE --> ERROR_ACTIONS
+    AUTH_REDUCERS --> AUTH_STATE
     ERROR_ACTIONS --> ERROR_REDUCERS
-
-    VER_STATE --> VER_ACTIONS
+    ERROR_REDUCERS --> ERROR_STATE
     VER_ACTIONS --> VER_REDUCERS
-
-    UI_STATE --> UI_ACTIONS
+    VER_REDUCERS --> VER_STATE
     UI_ACTIONS --> UI_REDUCERS
+    UI_REDUCERS --> UI_STATE
 
-    STORE --> RTK_QUERY
-    STORE --> PERSISTENCE
-    STORE --> OFFLINE_MIDDLEWARE
-    STORE --> ANALYTICS_MIDDLEWARE
+    %% Store Composition
+    STORE --- AUTH_STATE
+    STORE --- ERROR_STATE
+    STORE --- VER_STATE
+    STORE --- UI_STATE
 
-    RTK_QUERY --> HOOKS
-    PERSISTENCE --> HOOKS
-    OFFLINE_MIDDLEWARE --> HOOKS
+    %% Middleware Integration
+    STORE -- "applyMiddleware()" --> RTK_QUERY
+    STORE -- "applyMiddleware()" --> PERSISTENCE
+    STORE -- "applyMiddleware()" --> OFFLINE_MIDDLEWARE
+    STORE -- "applyMiddleware()" --> ANALYTICS_MIDDLEWARE
 
-    HOOKS --> SELECTORS
-    HOOKS --> THUNKS
+    %% Component Integration
+    HOOKS -- "useDispatch()" --> AUTH_ACTIONS
+    HOOKS -- "useDispatch()" --> ERROR_ACTIONS
+    HOOKS -- "useDispatch()" --> VER_ACTIONS
+    HOOKS -- "useDispatch()" --> UI_ACTIONS
+    HOOKS -- "useSelector()" --> SELECTORS
+    
+    SELECTORS --> AUTH_STATE
+    SELECTORS --> ERROR_STATE
+    SELECTORS --> VER_STATE
+    SELECTORS --> UI_STATE
+
+    THUNKS -- "dispatch()" --> AUTH_ACTIONS
+    THUNKS -- "dispatch()" --> ERROR_ACTIONS
+    
+    RTK_QUERY -- "provides" --> HOOKS
 ```
 
 ---

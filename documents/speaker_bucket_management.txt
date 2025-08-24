@@ -1,0 +1,27 @@
+Need to create an UI flow based on following requirements:
+
+We are dealing with different medical notes from different speakers. There are two types of notes:
+1. Automatic Speech Recognition (ASR) drafts from Audio, and 
+2. Final Notes corrected by human to correct ASR engine errors.
+
+Here we are trying to improve the quality of ASR drafts for specific speakers.
+Speakers are grouped into buckets based on their quality.
+no_touch: Speakers with no corrections required.
+low_touch: Speakers with high quality ASR drafts with very little human corrections required.
+medium_touch: Speakers with medium quality ASR drafts with some human corrections required.
+high_touch: Speakers with low quality ASR drafts with majority human corrections required.
+
+Primary requirement is to apply RAG corrections (Correction Engine Service) to move the speakers from high_touch, medium_touch, low_touch to no_touch bucket.
+
+Following are the steps we are envisioning but can have more steps if required.
+1. Take input from user (ID or Name) or select from a list of speakers along with their bucket.
+2. Pull the historical ASR Drafts and Final Notes for the speaker from InstaNote database.
+3. Keep 2% of the pulled historical drafts for validation testing, called TEST_DATA.
+4. Create ERROR and CORRECTION pairs based on the “ASR drafts” (contains ERRORs) and “Final notes” (contains CORRECTIONs). Also collect relevant metadata from the service which prepares the ERROR-CORRECTION pairs.
+5. Vectorise the ERROR-CORRECTION pairs along with the metadata. This vectored data will drive the RAG Engine.
+6. Apply RAG based corrections to the ASR drafts of the TEST_DATA.
+7. Present the RAG corrected ASR drafts of TEST_DATA along side their corresponding Final Notes to the users for validation. 
+8. Presentation must be best suited for medical transcriptioninsts (MTs) as Mts will be the primary user of this system and they will validate the quality of the RAG corrected draft compared to the Final Notes.
+9. Users can verify and provide feedbacks.
+10. System will also generate the Sentence Edit Rate (SER) for both the RAG Corrected drafts and Final Notes for comparison.
+11. Finally, system will ask user whether the RAG corrections are enough for the specific Speaker to move from one bucket to another (e.g. low_touch to no_touch)

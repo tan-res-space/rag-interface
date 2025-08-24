@@ -243,7 +243,7 @@ if __name__ == "__main__":
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
-        port=8003,  # Verification Service port
+        port=8004,  # Verification Service port
         reload=settings.debug,
         log_level=settings.log_level.lower()
     )

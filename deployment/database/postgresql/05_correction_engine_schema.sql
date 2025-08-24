@@ -2,24 +2,23 @@
 -- Correction Engine Service - PostgreSQL Schema
 -- =====================================================
 -- This script creates the complete schema for the Correction Engine Service
--- Run this script on the correction_engine_db database as ces_user
+-- Run this script on the rag_interface_db database as ces_user
 -- 
 -- Author: RAG Interface Deployment Team
--- Version: 1.0
+-- Version: 2.0 - Single Database with Schema Separation
 -- Date: 2025-01-20
 -- =====================================================
 
-\c correction_engine_db;
+\c rag_interface_db;
 
--- Enable required extensions
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+-- Set search path to the correction_engine schema
+SET search_path TO correction_engine, public;
 
 -- =====================================================
 -- CORRECTIONS TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS corrections (
+CREATE TABLE IF NOT EXISTS correction_engine.corrections (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     job_id VARCHAR(255),
     speaker_id VARCHAR(255),
@@ -33,19 +32,19 @@ CREATE TABLE IF NOT EXISTS corrections (
 );
 
 -- Create indexes for corrections
-CREATE INDEX IF NOT EXISTS idx_corrections_job_id ON corrections(job_id);
-CREATE INDEX IF NOT EXISTS idx_corrections_speaker_id ON corrections(speaker_id);
-CREATE INDEX IF NOT EXISTS idx_corrections_confidence_score ON corrections(confidence_score);
-CREATE INDEX IF NOT EXISTS idx_corrections_created_at ON corrections(created_at);
-CREATE INDEX IF NOT EXISTS idx_corrections_created_by ON corrections(created_by);
+CREATE INDEX IF NOT EXISTS idx_corrections_job_id ON correction_engine.corrections(job_id);
+CREATE INDEX IF NOT EXISTS idx_corrections_speaker_id ON correction_engine.corrections(speaker_id);
+CREATE INDEX IF NOT EXISTS idx_corrections_confidence_score ON correction_engine.corrections(confidence_score);
+CREATE INDEX IF NOT EXISTS idx_corrections_created_at ON correction_engine.corrections(created_at);
+CREATE INDEX IF NOT EXISTS idx_corrections_created_by ON correction_engine.corrections(created_by);
 
 -- =====================================================
 -- APPLIED CORRECTIONS TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS applied_corrections (
+CREATE TABLE IF NOT EXISTS correction_engine.applied_corrections (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    correction_id UUID NOT NULL REFERENCES corrections(id) ON DELETE CASCADE,
+    correction_id UUID NOT NULL REFERENCES correction_engine.corrections(id) ON DELETE CASCADE,
     original_text TEXT NOT NULL,
     corrected_text TEXT NOT NULL,
     start_position INTEGER NOT NULL CHECK (start_position >= 0),
@@ -58,19 +57,19 @@ CREATE TABLE IF NOT EXISTS applied_corrections (
 );
 
 -- Create indexes for applied_corrections
-CREATE INDEX IF NOT EXISTS idx_applied_corrections_correction_id ON applied_corrections(correction_id);
-CREATE INDEX IF NOT EXISTS idx_applied_corrections_pattern_id ON applied_corrections(pattern_id);
-CREATE INDEX IF NOT EXISTS idx_applied_corrections_correction_type ON applied_corrections(correction_type);
-CREATE INDEX IF NOT EXISTS idx_applied_corrections_confidence_score ON applied_corrections(confidence_score);
-CREATE INDEX IF NOT EXISTS idx_applied_corrections_created_at ON applied_corrections(created_at);
+CREATE INDEX IF NOT EXISTS idx_applied_corrections_correction_id ON correction_engine.applied_corrections(correction_id);
+CREATE INDEX IF NOT EXISTS idx_applied_corrections_pattern_id ON correction_engine.applied_corrections(pattern_id);
+CREATE INDEX IF NOT EXISTS idx_applied_corrections_correction_type ON correction_engine.applied_corrections(correction_type);
+CREATE INDEX IF NOT EXISTS idx_applied_corrections_confidence_score ON correction_engine.applied_corrections(confidence_score);
+CREATE INDEX IF NOT EXISTS idx_applied_corrections_created_at ON correction_engine.applied_corrections(created_at);
 
 -- =====================================================
 -- CORRECTION FEEDBACK TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS correction_feedback (
+CREATE TABLE IF NOT EXISTS correction_engine.correction_feedback (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    correction_id UUID NOT NULL REFERENCES corrections(id) ON DELETE CASCADE,
+    correction_id UUID NOT NULL REFERENCES correction_engine.corrections(id) ON DELETE CASCADE,
     is_correct BOOLEAN NOT NULL,
     user_correction TEXT,
     feedback_notes TEXT,
@@ -80,17 +79,17 @@ CREATE TABLE IF NOT EXISTS correction_feedback (
 );
 
 -- Create indexes for correction_feedback
-CREATE INDEX IF NOT EXISTS idx_correction_feedback_correction_id ON correction_feedback(correction_id);
-CREATE INDEX IF NOT EXISTS idx_correction_feedback_is_correct ON correction_feedback(is_correct);
-CREATE INDEX IF NOT EXISTS idx_correction_feedback_rating ON correction_feedback(rating);
-CREATE INDEX IF NOT EXISTS idx_correction_feedback_user_id ON correction_feedback(user_id);
-CREATE INDEX IF NOT EXISTS idx_correction_feedback_created_at ON correction_feedback(created_at);
+CREATE INDEX IF NOT EXISTS idx_correction_feedback_correction_id ON correction_engine.correction_feedback(correction_id);
+CREATE INDEX IF NOT EXISTS idx_correction_feedback_is_correct ON correction_engine.correction_feedback(is_correct);
+CREATE INDEX IF NOT EXISTS idx_correction_feedback_rating ON correction_engine.correction_feedback(rating);
+CREATE INDEX IF NOT EXISTS idx_correction_feedback_user_id ON correction_engine.correction_feedback(user_id);
+CREATE INDEX IF NOT EXISTS idx_correction_feedback_created_at ON correction_engine.correction_feedback(created_at);
 
 -- =====================================================
 -- CORRECTION PATTERNS TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS correction_patterns (
+CREATE TABLE IF NOT EXISTS correction_engine.correction_patterns (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     pattern_hash VARCHAR(64) NOT NULL UNIQUE,
     pattern_text TEXT NOT NULL,
@@ -104,17 +103,17 @@ CREATE TABLE IF NOT EXISTS correction_patterns (
 );
 
 -- Create indexes for correction_patterns
-CREATE INDEX IF NOT EXISTS idx_correction_patterns_pattern_hash ON correction_patterns(pattern_hash);
-CREATE INDEX IF NOT EXISTS idx_correction_patterns_success_rate ON correction_patterns(success_rate);
-CREATE INDEX IF NOT EXISTS idx_correction_patterns_usage_count ON correction_patterns(usage_count);
-CREATE INDEX IF NOT EXISTS idx_correction_patterns_last_used ON correction_patterns(last_used);
-CREATE INDEX IF NOT EXISTS idx_correction_patterns_created_at ON correction_patterns(created_at);
+CREATE INDEX IF NOT EXISTS idx_correction_patterns_pattern_hash ON correction_engine.correction_patterns(pattern_hash);
+CREATE INDEX IF NOT EXISTS idx_correction_patterns_success_rate ON correction_engine.correction_patterns(success_rate);
+CREATE INDEX IF NOT EXISTS idx_correction_patterns_usage_count ON correction_engine.correction_patterns(usage_count);
+CREATE INDEX IF NOT EXISTS idx_correction_patterns_last_used ON correction_engine.correction_patterns(last_used);
+CREATE INDEX IF NOT EXISTS idx_correction_patterns_created_at ON correction_engine.correction_patterns(created_at);
 
 -- =====================================================
 -- CORRECTION METRICS TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS correction_metrics (
+CREATE TABLE IF NOT EXISTS correction_engine.correction_metrics (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     metric_type VARCHAR(50) NOT NULL,
     time_period VARCHAR(20) NOT NULL,
@@ -123,9 +122,9 @@ CREATE TABLE IF NOT EXISTS correction_metrics (
 );
 
 -- Create indexes for correction_metrics
-CREATE INDEX IF NOT EXISTS idx_correction_metrics_metric_type ON correction_metrics(metric_type);
-CREATE INDEX IF NOT EXISTS idx_correction_metrics_time_period ON correction_metrics(time_period);
-CREATE INDEX IF NOT EXISTS idx_correction_metrics_calculated_at ON correction_metrics(calculated_at);
+CREATE INDEX IF NOT EXISTS idx_correction_metrics_metric_type ON correction_engine.correction_metrics(metric_type);
+CREATE INDEX IF NOT EXISTS idx_correction_metrics_time_period ON correction_engine.correction_metrics(time_period);
+CREATE INDEX IF NOT EXISTS idx_correction_metrics_calculated_at ON correction_engine.correction_metrics(calculated_at);
 
 -- =====================================================
 -- TRIGGERS FOR UPDATED_AT
@@ -142,7 +141,7 @@ $$ language 'plpgsql';
 
 -- Create triggers for updated_at columns
 CREATE TRIGGER update_correction_patterns_updated_at 
-    BEFORE UPDATE ON correction_patterns 
+    BEFORE UPDATE ON correction_engine.correction_patterns 
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- =====================================================
@@ -164,11 +163,11 @@ BEGIN
     -- Get current statistics
     SELECT usage_count, avg_confidence, success_rate 
     INTO current_count, current_avg, current_success_rate
-    FROM correction_patterns 
+    FROM correction_engine.correction_patterns 
     WHERE id = p_pattern_id;
     
     -- Update statistics
-    UPDATE correction_patterns 
+    UPDATE correction_engine.correction_patterns 
     SET 
         usage_count = current_count + 1,
         avg_confidence = ((current_avg * current_count) + p_confidence) / (current_count + 1),
@@ -194,19 +193,19 @@ $$ LANGUAGE plpgsql;
 -- COMMENTS FOR DOCUMENTATION
 -- =====================================================
 
-COMMENT ON TABLE corrections IS 'Main table storing correction operations and results';
-COMMENT ON TABLE applied_corrections IS 'Individual corrections applied within a correction operation';
-COMMENT ON TABLE correction_feedback IS 'User feedback on correction quality and accuracy';
-COMMENT ON TABLE correction_patterns IS 'Learned patterns for text corrections with success metrics';
-COMMENT ON TABLE correction_metrics IS 'Performance metrics for the correction engine';
+COMMENT ON TABLE correction_engine.corrections IS 'Main table storing correction operations and results';
+COMMENT ON TABLE correction_engine.applied_corrections IS 'Individual corrections applied within a correction operation';
+COMMENT ON TABLE correction_engine.correction_feedback IS 'User feedback on correction quality and accuracy';
+COMMENT ON TABLE correction_engine.correction_patterns IS 'Learned patterns for text corrections with success metrics';
+COMMENT ON TABLE correction_engine.correction_metrics IS 'Performance metrics for the correction engine';
 
-COMMENT ON COLUMN corrections.id IS 'Unique identifier for the correction operation';
-COMMENT ON COLUMN corrections.job_id IS 'Reference to the ASR job being corrected';
-COMMENT ON COLUMN corrections.speaker_id IS 'Reference to the speaker in the audio file';
-COMMENT ON COLUMN corrections.original_text IS 'Original text before correction';
-COMMENT ON COLUMN corrections.corrected_text IS 'Text after applying corrections';
-COMMENT ON COLUMN corrections.confidence_score IS 'Overall confidence in the correction quality';
-COMMENT ON COLUMN corrections.processing_time IS 'Time taken to process the correction in seconds';
+COMMENT ON COLUMN correction_engine.corrections.id IS 'Unique identifier for the correction operation';
+COMMENT ON COLUMN correction_engine.corrections.job_id IS 'Reference to the ASR job being corrected';
+COMMENT ON COLUMN correction_engine.corrections.speaker_id IS 'Reference to the speaker in the audio file';
+COMMENT ON COLUMN correction_engine.corrections.original_text IS 'Original text before correction';
+COMMENT ON COLUMN correction_engine.corrections.corrected_text IS 'Text after applying corrections';
+COMMENT ON COLUMN correction_engine.corrections.confidence_score IS 'Overall confidence in the correction quality';
+COMMENT ON COLUMN correction_engine.corrections.processing_time IS 'Time taken to process the correction in seconds';
 
 COMMENT ON FUNCTION update_pattern_stats(UUID, BOOLEAN, DECIMAL) IS 'Updates usage statistics for a correction pattern';
 COMMENT ON FUNCTION generate_pattern_hash(TEXT) IS 'Generates SHA256 hash for pattern deduplication';
@@ -220,7 +219,7 @@ BEGIN
     RAISE NOTICE '=================================================';
     RAISE NOTICE 'Correction Engine Service Schema Created Successfully';
     RAISE NOTICE '=================================================';
-    RAISE NOTICE 'Tables created:';
+    RAISE NOTICE 'Tables created in correction_engine schema:';
     RAISE NOTICE '  - corrections (with 5 indexes)';
     RAISE NOTICE '  - applied_corrections (with 5 indexes)';
     RAISE NOTICE '  - correction_feedback (with 5 indexes)';

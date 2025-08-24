@@ -1,0 +1,124 @@
+# =====================================================
+# Correction Engine Service - Production Dockerfile
+# =====================================================
+# Multi-stage build for optimized production image
+# Author: RAG Interface Deployment Team
+# Version: 1.0
+# Date: 2025-01-20
+# =====================================================
+
+# =====================================================
+# Stage 1: Build Dependencies
+# =====================================================
+FROM python:3.11-slim as builder
+
+# Set build arguments
+ARG BUILD_DATE
+ARG VERSION=1.0.0
+ARG VCS_REF
+
+# Add metadata labels
+LABEL maintainer="RAG Interface Team" \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="Correction Engine Service" \
+      org.label-schema.description="Real-time Correction Engine Service for ASR Error Reporting" \
+      org.label-schema.version=$VERSION \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.schema-version="1.0"
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements first for better caching
+COPY requirements.txt requirements-prod.txt ./
+
+# Create virtual environment and install dependencies
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Upgrade pip and install dependencies
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements-prod.txt
+
+# =====================================================
+# Stage 2: Production Runtime
+# =====================================================
+FROM python:3.11-slim as production
+
+# Set runtime arguments
+ARG APP_USER=appuser
+ARG APP_UID=1003
+ARG APP_GID=1003
+
+# Install runtime dependencies only
+RUN apt-get update && apt-get install -y \
+    curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# Create non-root user for security
+RUN groupadd -g $APP_GID $APP_USER && \
+    useradd -u $APP_UID -g $APP_GID -m -s /bin/bash $APP_USER
+
+# Copy virtual environment from builder stage
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Set working directory
+WORKDIR /app
+
+# Copy application code
+COPY --chown=$APP_USER:$APP_USER src/correction_engine_service/ ./src/correction_engine_service/
+COPY --chown=$APP_USER:$APP_USER src/domain/ ./src/domain/
+
+# Create necessary directories
+RUN mkdir -p /app/logs /app/data /app/models && \
+    chown -R $APP_USER:$APP_USER /app
+
+# Switch to non-root user
+USER $APP_USER
+
+# Set environment variables
+ENV PYTHONPATH=/app \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONHASHSEED=random \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# Expose port
+EXPOSE 8003
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8003/health || exit 1
+
+# Default command
+CMD ["uvicorn", "src.correction_engine_service.main:app", "--host", "0.0.0.0", "--port", "8003", "--workers", "4"]
+
+# =====================================================
+# Build Instructions
+# =====================================================
+# Build command:
+# podman build -f Dockerfile.correction-engine-service \
+#   --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
+#   --build-arg VCS_REF=$(git rev-parse --short HEAD) \
+#   -t rag-interface/correction-engine-service:latest .
+#
+# Run command:
+# podman run -d \
+#   --name correction-engine-service \
+#   -p 8003:8003 \
+#   -e DATABASE_URL="postgresql://ces_user:password@db:5432/rag_interface_db" \
+#   -e REDIS_URL="redis://redis:6379/3" \
+#   -e RAG_INTEGRATION_SERVICE_URL="http://rag-integration-service:8002" \
+#   rag-interface/correction-engine-service:latest
+# =====================================================

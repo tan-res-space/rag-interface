@@ -24,15 +24,19 @@ deployment/database/
 
 ## 🗄️ Database Architecture
 
-The RAG Interface System uses a **microservices database pattern** with separate databases for each service:
+The RAG Interface System uses a **single database with multiple schemas** approach for better administration while maintaining service isolation:
 
-| Service | PostgreSQL DB | SQL Server DB | Purpose |
-|---------|---------------|---------------|---------|
-| Error Reporting Service | `error_reporting_db` | `ErrorReportingDB` | Error reports, categories, audit logs |
-| User Management Service | `user_management_db` | `UserManagementDB` | Users, sessions, permissions |
-| Verification Service | `verification_db` | `VerificationDB` | Verifications, analytics, reports |
-| Correction Engine Service | `correction_engine_db` | `CorrectionEngineDB` | Corrections, patterns, feedback |
-| RAG Integration Service | `rag_integration_db` | `RAGIntegrationDB` | Metadata, cache, sync status |
+| Service | PostgreSQL Schema | SQL Server Schema | Purpose |
+|---------|-------------------|-------------------|---------|
+| Error Reporting Service | `error_reporting` | `ErrorReporting` | Error reports, categories, audit logs |
+| User Management Service | `user_management` | `UserManagement` | Users, sessions, permissions |
+| Verification Service | `verification` | `Verification` | Verifications, analytics, reports |
+| Correction Engine Service | `correction_engine` | `CorrectionEngine` | Corrections, patterns, feedback |
+| RAG Integration Service | `rag_integration` | `RAGIntegration` | Metadata, cache, sync status |
+
+**Database Names:**
+- PostgreSQL: `rag_interface_db`
+- SQL Server: `RAGInterfaceDB`
 
 ## 🚀 Quick Start
 
@@ -47,17 +51,17 @@ The RAG Interface System uses a **microservices database pattern** with separate
    ```bash
    # Connect as postgres superuser
    psql -U postgres -h localhost
-   
-   # Create databases and users
+
+   # Create database and schemas
    \i deployment/database/postgresql/01_create_databases.sql
-   
-   # Create schemas (run each as respective user)
+
+   # Create schemas (run each as respective user on rag_interface_db)
    \i deployment/database/postgresql/02_error_reporting_schema.sql
    \i deployment/database/postgresql/03_user_management_schema.sql
    \i deployment/database/postgresql/04_verification_service_schema.sql
    \i deployment/database/postgresql/05_correction_engine_schema.sql
    \i deployment/database/postgresql/06_rag_integration_schema.sql
-   
+
    # Insert sample data
    \i deployment/database/postgresql/07_sample_data.sql
    ```
@@ -73,11 +77,11 @@ The RAG Interface System uses a **microservices database pattern** with separate
    ```sql
    -- Connect as sa or sysadmin
    sqlcmd -S localhost -U sa -P YourPassword
-   
-   -- Create databases and logins
+
+   -- Create database and schemas
    :r deployment\database\sqlserver\01_create_databases.sql
-   
-   -- Create schemas
+
+   -- Create schemas (run each on RAGInterfaceDB)
    :r deployment\database\sqlserver\02_error_reporting_schema.sql
    :r deployment\database\sqlserver\03_user_management_schema.sql
    -- Continue with remaining schema files...
@@ -127,6 +131,10 @@ The RAG Interface System uses a **microservices database pattern** with separate
 3. **Enable SSL/TLS**
    - Configure SSL certificates for database connections
 
+4. **Schema-Level Security**
+   - Each service user has access only to their specific schema
+   - Cross-schema access is granted only where needed for service integration
+
 ## 📊 Database Schema Overview
 
 ### Error Reporting Service
@@ -168,13 +176,16 @@ The RAG Interface System uses a **microservices database pattern** with separate
 
 ### Regular Tasks
 
-1. **Backup Databases**
+1. **Backup Database**
    ```bash
-   # PostgreSQL
-   pg_dump -U postgres error_reporting_db > backup_ers_$(date +%Y%m%d).sql
-   
+   # PostgreSQL - Full database backup
+   pg_dump -U postgres rag_interface_db > backup_rag_interface_$(date +%Y%m%d).sql
+
+   # PostgreSQL - Schema-specific backup
+   pg_dump -U postgres -n error_reporting rag_interface_db > backup_error_reporting_$(date +%Y%m%d).sql
+
    # SQL Server
-   BACKUP DATABASE ErrorReportingDB TO DISK = 'C:\Backups\ErrorReportingDB.bak'
+   BACKUP DATABASE RAGInterfaceDB TO DISK = 'C:\Backups\RAGInterfaceDB.bak'
    ```
 
 2. **Clean Cache Tables**

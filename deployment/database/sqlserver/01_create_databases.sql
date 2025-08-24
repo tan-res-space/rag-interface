@@ -1,11 +1,11 @@
 -- =====================================================
 -- RAG Interface System - SQL Server Database Creation
 -- =====================================================
--- This script creates the main databases for all microservices
+-- This script creates the unified database with separate schemas for all microservices
 -- Run this script as a SQL Server administrator (sa or sysadmin role)
--- 
+--
 -- Author: RAG Interface Deployment Team
--- Version: 1.0
+-- Version: 2.0 - Single Database with Multiple Schemas
 -- Date: 2025-01-20
 -- =====================================================
 
@@ -17,67 +17,64 @@ RECONFIGURE;
 -- DATABASE CREATION
 -- =====================================================
 
--- Create databases for each microservice
+-- Create unified database for all microservices
 -- Note: This script is idempotent - can be run multiple times safely
 
--- Error Reporting Service Database
-IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'ErrorReportingDB')
+-- RAG Interface Unified Database
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'RAGInterfaceDB')
 BEGIN
-    CREATE DATABASE ErrorReportingDB
+    CREATE DATABASE RAGInterfaceDB
     COLLATE SQL_Latin1_General_CP1_CI_AS;
-    PRINT 'Created database: ErrorReportingDB';
+    PRINT 'Created database: RAGInterfaceDB';
 END
 ELSE
 BEGIN
-    PRINT 'Database ErrorReportingDB already exists';
+    PRINT 'Database RAGInterfaceDB already exists';
 END;
 
--- User Management Service Database  
-IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'UserManagementDB')
+-- Switch to the new database to create schemas
+USE RAGInterfaceDB;
+
+-- =====================================================
+-- SCHEMA CREATION
+-- =====================================================
+
+-- Create schemas for each microservice
+-- This provides logical separation while using a single database
+
+-- Error Reporting Service Schema
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'ErrorReporting')
 BEGIN
-    CREATE DATABASE UserManagementDB
-    COLLATE SQL_Latin1_General_CP1_CI_AS;
-    PRINT 'Created database: UserManagementDB';
-END
-ELSE
-BEGIN
-    PRINT 'Database UserManagementDB already exists';
+    EXEC('CREATE SCHEMA ErrorReporting');
+    PRINT 'Created schema: ErrorReporting';
 END;
 
--- Verification Service Database
-IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'VerificationDB')
+-- User Management Service Schema
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'UserManagement')
 BEGIN
-    CREATE DATABASE VerificationDB
-    COLLATE SQL_Latin1_General_CP1_CI_AS;
-    PRINT 'Created database: VerificationDB';
-END
-ELSE
-BEGIN
-    PRINT 'Database VerificationDB already exists';
+    EXEC('CREATE SCHEMA UserManagement');
+    PRINT 'Created schema: UserManagement';
 END;
 
--- Correction Engine Service Database
-IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'CorrectionEngineDB')
+-- Verification Service Schema
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'Verification')
 BEGIN
-    CREATE DATABASE CorrectionEngineDB
-    COLLATE SQL_Latin1_General_CP1_CI_AS;
-    PRINT 'Created database: CorrectionEngineDB';
-END
-ELSE
-BEGIN
-    PRINT 'Database CorrectionEngineDB already exists';
+    EXEC('CREATE SCHEMA Verification');
+    PRINT 'Created schema: Verification';
 END;
 
--- RAG Integration Service Database (for metadata and caching)
-IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'RAGIntegrationDB')
+-- Correction Engine Service Schema
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'CorrectionEngine')
 BEGIN
-    CREATE DATABASE RAGIntegrationDB
-    COLLATE SQL_Latin1_General_CP1_CI_AS;
-    PRINT 'Created database: RAGIntegrationDB';
-END
-ELSE
+    EXEC('CREATE SCHEMA CorrectionEngine');
+    PRINT 'Created schema: CorrectionEngine';
+END;
+
+-- RAG Integration Service Schema
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'RAGIntegration')
 BEGIN
-    PRINT 'Database RAGIntegrationDB already exists';
+    EXEC('CREATE SCHEMA RAGIntegration');
+    PRINT 'Created schema: RAGIntegration';
 END;
 
 -- =====================================================

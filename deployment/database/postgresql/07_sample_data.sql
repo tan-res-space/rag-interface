@@ -3,9 +3,9 @@
 -- =====================================================
 -- This script inserts sample data for testing and initial setup
 -- Run this script after creating all schemas
--- 
+--
 -- Author: RAG Interface Deployment Team
--- Version: 1.0
+-- Version: 2.0 - Single Database with Schema Separation
 -- Date: 2025-01-20
 -- =====================================================
 
@@ -13,7 +13,10 @@
 -- USER MANAGEMENT SERVICE SAMPLE DATA
 -- =====================================================
 
-\c user_management_db;
+\c rag_interface_db;
+
+-- Set search path for user management
+SET search_path TO user_management, public;
 
 -- Insert default permissions
 INSERT INTO permissions (name, description, resource, action) VALUES
@@ -62,7 +65,8 @@ ON CONFLICT (username) DO NOTHING;
 -- ERROR REPORTING SERVICE SAMPLE DATA
 -- =====================================================
 
-\c error_reporting_db;
+-- Set search path for error reporting
+SET search_path TO error_reporting, public;
 
 -- Insert default error categories
 INSERT INTO error_categories (category_name, description, is_active, sort_order) VALUES
@@ -86,7 +90,7 @@ INSERT INTO error_reports (
 ) VALUES
     (
         gen_random_uuid(), gen_random_uuid(), 
-        (SELECT id FROM user_management_db.users WHERE username = 'qa_user' LIMIT 1),
+        (SELECT id FROM user_management.users WHERE username = 'qa_user' LIMIT 1),
         'The patient has a temperature of ninety eight point six degrees.',
         'The patient has a temperature of 98.6 degrees.',
         '["Number Error"]', 'medium', 35, 58,
@@ -95,7 +99,7 @@ INSERT INTO error_reports (
     ),
     (
         gen_random_uuid(), gen_random_uuid(),
-        (SELECT id FROM user_management_db.users WHERE username = 'qa_user' LIMIT 1),
+        (SELECT id FROM user_management.users WHERE username = 'qa_user' LIMIT 1),
         'Dr. Smith will see you at three PM.',
         'Dr. Smith will see you at 3 PM.',
         '["Number Error", "Proper Noun Error"]', 'low', 26, 34,
@@ -108,7 +112,8 @@ ON CONFLICT DO NOTHING;
 -- VERIFICATION SERVICE SAMPLE DATA
 -- =====================================================
 
-\c verification_db;
+-- Set search path for verification
+SET search_path TO verification, public;
 
 -- Insert sample alert rules
 INSERT INTO alert_rules (name, metric_name, condition, threshold, is_active, notification_config) VALUES
@@ -121,7 +126,8 @@ ON CONFLICT (name) DO NOTHING;
 -- CORRECTION ENGINE SERVICE SAMPLE DATA
 -- =====================================================
 
-\c correction_engine_db;
+-- Set search path for correction engine
+SET search_path TO correction_engine, public;
 
 -- Insert sample correction patterns
 INSERT INTO correction_patterns (pattern_hash, pattern_text, correction_text, success_rate, usage_count, avg_confidence) VALUES
@@ -135,7 +141,8 @@ ON CONFLICT (pattern_hash) DO NOTHING;
 -- RAG INTEGRATION SERVICE SAMPLE DATA
 -- =====================================================
 
-\c rag_integration_db;
+-- Set search path for RAG integration
+SET search_path TO rag_integration, public;
 
 -- Insert sample vector database sync status
 INSERT INTO vector_db_sync_status (vector_db_type, sync_status, total_vectors, synced_vectors) VALUES

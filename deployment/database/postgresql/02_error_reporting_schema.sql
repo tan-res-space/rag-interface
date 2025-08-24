@@ -2,24 +2,27 @@
 -- Error Reporting Service - PostgreSQL Schema
 -- =====================================================
 -- This script creates the complete schema for the Error Reporting Service
--- Run this script on the error_reporting_db database as ers_user
--- 
+-- Run this script on the rag_interface_db database as ers_user
+--
 -- Author: RAG Interface Deployment Team
--- Version: 1.0
+-- Version: 2.0 - Single Database with Schema Separation
 -- Date: 2025-01-20
 -- =====================================================
 
-\c error_reporting_db;
+\c rag_interface_db;
 
--- Enable required extensions
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+-- Set search path to the error_reporting schema
+SET search_path TO error_reporting, public;
+
+-- Ensure extensions are available (should already be created in database setup)
+-- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- =====================================================
 -- ERROR REPORTS TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS error_reports (
+CREATE TABLE IF NOT EXISTS error_reporting.error_reports (
     error_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     job_id UUID NOT NULL,
     speaker_id UUID NOT NULL,
@@ -42,21 +45,21 @@ CREATE TABLE IF NOT EXISTS error_reports (
 );
 
 -- Create indexes for error_reports
-CREATE INDEX IF NOT EXISTS idx_error_reports_job_id ON error_reports(job_id);
-CREATE INDEX IF NOT EXISTS idx_error_reports_speaker_id ON error_reports(speaker_id);
-CREATE INDEX IF NOT EXISTS idx_error_reports_reported_by ON error_reports(reported_by);
-CREATE INDEX IF NOT EXISTS idx_error_reports_severity_level ON error_reports(severity_level);
-CREATE INDEX IF NOT EXISTS idx_error_reports_status ON error_reports(status);
-CREATE INDEX IF NOT EXISTS idx_error_reports_reported_at ON error_reports(reported_at);
-CREATE INDEX IF NOT EXISTS idx_error_reports_error_timestamp ON error_reports(error_timestamp);
+CREATE INDEX IF NOT EXISTS idx_error_reports_job_id ON error_reporting.error_reports(job_id);
+CREATE INDEX IF NOT EXISTS idx_error_reports_speaker_id ON error_reporting.error_reports(speaker_id);
+CREATE INDEX IF NOT EXISTS idx_error_reports_reported_by ON error_reporting.error_reports(reported_by);
+CREATE INDEX IF NOT EXISTS idx_error_reports_severity_level ON error_reporting.error_reports(severity_level);
+CREATE INDEX IF NOT EXISTS idx_error_reports_status ON error_reporting.error_reports(status);
+CREATE INDEX IF NOT EXISTS idx_error_reports_reported_at ON error_reporting.error_reports(reported_at);
+CREATE INDEX IF NOT EXISTS idx_error_reports_error_timestamp ON error_reporting.error_reports(error_timestamp);
 
 -- =====================================================
 -- ERROR AUDIT LOGS TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS error_audit_logs (
+CREATE TABLE IF NOT EXISTS error_reporting.error_audit_logs (
     audit_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    error_id UUID NOT NULL REFERENCES error_reports(error_id) ON DELETE CASCADE,
+    error_id UUID NOT NULL REFERENCES error_reporting.error_reports(error_id) ON DELETE CASCADE,
     action_type VARCHAR(50) NOT NULL,
     old_values JSONB,
     new_values JSONB,
@@ -68,18 +71,18 @@ CREATE TABLE IF NOT EXISTS error_audit_logs (
 );
 
 -- Create indexes for error_audit_logs
-CREATE INDEX IF NOT EXISTS idx_error_audit_logs_error_id ON error_audit_logs(error_id);
-CREATE INDEX IF NOT EXISTS idx_error_audit_logs_action_type ON error_audit_logs(action_type);
-CREATE INDEX IF NOT EXISTS idx_error_audit_logs_performed_by ON error_audit_logs(performed_by);
-CREATE INDEX IF NOT EXISTS idx_error_audit_logs_performed_at ON error_audit_logs(performed_at);
+CREATE INDEX IF NOT EXISTS idx_error_audit_logs_error_id ON error_reporting.error_audit_logs(error_id);
+CREATE INDEX IF NOT EXISTS idx_error_audit_logs_action_type ON error_reporting.error_audit_logs(action_type);
+CREATE INDEX IF NOT EXISTS idx_error_audit_logs_performed_by ON error_reporting.error_audit_logs(performed_by);
+CREATE INDEX IF NOT EXISTS idx_error_audit_logs_performed_at ON error_reporting.error_audit_logs(performed_at);
 
 -- =====================================================
 -- ERROR VALIDATIONS TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS error_validations (
+CREATE TABLE IF NOT EXISTS error_reporting.error_validations (
     validation_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    error_id UUID NOT NULL REFERENCES error_reports(error_id) ON DELETE CASCADE,
+    error_id UUID NOT NULL REFERENCES error_reporting.error_reports(error_id) ON DELETE CASCADE,
     validation_type VARCHAR(50) NOT NULL,
     is_valid BOOLEAN NOT NULL,
     validation_details JSONB DEFAULT '{}',
@@ -88,16 +91,16 @@ CREATE TABLE IF NOT EXISTS error_validations (
 );
 
 -- Create indexes for error_validations
-CREATE INDEX IF NOT EXISTS idx_error_validations_error_id ON error_validations(error_id);
-CREATE INDEX IF NOT EXISTS idx_error_validations_validation_type ON error_validations(validation_type);
-CREATE INDEX IF NOT EXISTS idx_error_validations_is_valid ON error_validations(is_valid);
-CREATE INDEX IF NOT EXISTS idx_error_validations_validated_by ON error_validations(validated_by);
+CREATE INDEX IF NOT EXISTS idx_error_validations_error_id ON error_reporting.error_validations(error_id);
+CREATE INDEX IF NOT EXISTS idx_error_validations_validation_type ON error_reporting.error_validations(validation_type);
+CREATE INDEX IF NOT EXISTS idx_error_validations_is_valid ON error_reporting.error_validations(is_valid);
+CREATE INDEX IF NOT EXISTS idx_error_validations_validated_by ON error_reporting.error_validations(validated_by);
 
 -- =====================================================
 -- ERROR CATEGORIES TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS error_categories (
+CREATE TABLE IF NOT EXISTS error_reporting.error_categories (
     category_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     category_name VARCHAR(100) NOT NULL UNIQUE,
     description TEXT,
@@ -108,9 +111,9 @@ CREATE TABLE IF NOT EXISTS error_categories (
 );
 
 -- Create indexes for error_categories
-CREATE INDEX IF NOT EXISTS idx_error_categories_category_name ON error_categories(category_name);
-CREATE INDEX IF NOT EXISTS idx_error_categories_is_active ON error_categories(is_active);
-CREATE INDEX IF NOT EXISTS idx_error_categories_sort_order ON error_categories(sort_order);
+CREATE INDEX IF NOT EXISTS idx_error_categories_category_name ON error_reporting.error_categories(category_name);
+CREATE INDEX IF NOT EXISTS idx_error_categories_is_active ON error_reporting.error_categories(is_active);
+CREATE INDEX IF NOT EXISTS idx_error_categories_sort_order ON error_reporting.error_categories(sort_order);
 
 -- =====================================================
 -- TRIGGERS FOR UPDATED_AT
@@ -126,38 +129,38 @@ END;
 $$ language 'plpgsql';
 
 -- Create triggers for updated_at columns
-CREATE TRIGGER update_error_reports_updated_at 
-    BEFORE UPDATE ON error_reports 
+CREATE TRIGGER update_error_reports_updated_at
+    BEFORE UPDATE ON error_reporting.error_reports
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_error_categories_updated_at 
-    BEFORE UPDATE ON error_categories 
+CREATE TRIGGER update_error_categories_updated_at
+    BEFORE UPDATE ON error_reporting.error_categories
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- =====================================================
 -- COMMENTS FOR DOCUMENTATION
 -- =====================================================
 
-COMMENT ON TABLE error_reports IS 'Main table storing error reports submitted by QA personnel';
-COMMENT ON TABLE error_audit_logs IS 'Audit trail for all changes made to error reports';
-COMMENT ON TABLE error_validations IS 'Validation results for error reports';
-COMMENT ON TABLE error_categories IS 'Master list of error categories available in the system';
+COMMENT ON TABLE error_reporting.error_reports IS 'Main table storing error reports submitted by QA personnel';
+COMMENT ON TABLE error_reporting.error_audit_logs IS 'Audit trail for all changes made to error reports';
+COMMENT ON TABLE error_reporting.error_validations IS 'Validation results for error reports';
+COMMENT ON TABLE error_reporting.error_categories IS 'Master list of error categories available in the system';
 
-COMMENT ON COLUMN error_reports.error_id IS 'Unique identifier for the error report';
-COMMENT ON COLUMN error_reports.job_id IS 'Reference to the ASR job where the error was found';
-COMMENT ON COLUMN error_reports.speaker_id IS 'Reference to the speaker in the audio file';
-COMMENT ON COLUMN error_reports.reported_by IS 'User ID of the QA personnel who reported the error';
-COMMENT ON COLUMN error_reports.original_text IS 'Original text from ASR output containing the error';
-COMMENT ON COLUMN error_reports.corrected_text IS 'Corrected version of the text';
-COMMENT ON COLUMN error_reports.error_categories IS 'JSON array of error category names';
-COMMENT ON COLUMN error_reports.severity_level IS 'Impact level of the error (low, medium, high, critical)';
-COMMENT ON COLUMN error_reports.start_position IS 'Character position where the error starts';
-COMMENT ON COLUMN error_reports.end_position IS 'Character position where the error ends';
-COMMENT ON COLUMN error_reports.context_notes IS 'Additional context or notes about the error';
-COMMENT ON COLUMN error_reports.error_timestamp IS 'When the error occurred in the original audio';
-COMMENT ON COLUMN error_reports.reported_at IS 'When the error was reported to the system';
-COMMENT ON COLUMN error_reports.status IS 'Current processing status of the error report';
-COMMENT ON COLUMN error_reports.metadata IS 'Additional metadata in JSON format';
+COMMENT ON COLUMN error_reporting.error_reports.error_id IS 'Unique identifier for the error report';
+COMMENT ON COLUMN error_reporting.error_reports.job_id IS 'Reference to the ASR job where the error was found';
+COMMENT ON COLUMN error_reporting.error_reports.speaker_id IS 'Reference to the speaker in the audio file';
+COMMENT ON COLUMN error_reporting.error_reports.reported_by IS 'User ID of the QA personnel who reported the error';
+COMMENT ON COLUMN error_reporting.error_reports.original_text IS 'Original text from ASR output containing the error';
+COMMENT ON COLUMN error_reporting.error_reports.corrected_text IS 'Corrected version of the text';
+COMMENT ON COLUMN error_reporting.error_reports.error_categories IS 'JSON array of error category names';
+COMMENT ON COLUMN error_reporting.error_reports.severity_level IS 'Impact level of the error (low, medium, high, critical)';
+COMMENT ON COLUMN error_reporting.error_reports.start_position IS 'Character position where the error starts';
+COMMENT ON COLUMN error_reporting.error_reports.end_position IS 'Character position where the error ends';
+COMMENT ON COLUMN error_reporting.error_reports.context_notes IS 'Additional context or notes about the error';
+COMMENT ON COLUMN error_reporting.error_reports.error_timestamp IS 'When the error occurred in the original audio';
+COMMENT ON COLUMN error_reporting.error_reports.reported_at IS 'When the error was reported to the system';
+COMMENT ON COLUMN error_reporting.error_reports.status IS 'Current processing status of the error report';
+COMMENT ON COLUMN error_reporting.error_reports.metadata IS 'Additional metadata in JSON format';
 
 -- =====================================================
 -- COMPLETION MESSAGE

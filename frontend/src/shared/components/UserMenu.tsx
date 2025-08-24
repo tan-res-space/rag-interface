@@ -68,8 +68,10 @@ export const UserMenu: React.FC = () => {
     }
   };
 
-  const getInitials = (firstName: string, lastName: string): string => {
-    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+  const getInitials = (firstName?: string, lastName?: string): string => {
+    const first = firstName?.charAt(0) || '';
+    const last = lastName?.charAt(0) || '';
+    return `${first}${last}`.toUpperCase() || currentUser?.username?.charAt(0)?.toUpperCase() || 'U';
   };
 
   if (!currentUser) {
@@ -138,13 +140,13 @@ export const UserMenu: React.FC = () => {
         {/* User info */}
         <Box sx={{ px: 2, py: 1 }}>
           <Typography variant="subtitle2" noWrap>
-            {currentUser.fullName}
+            {currentUser.fullName || `${currentUser.firstName || ''} ${currentUser.lastName || ''}`.trim() || currentUser.username}
           </Typography>
           <Typography variant="body2" color="text.secondary" noWrap>
             {currentUser.email}
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            {currentUser.roles.join(', ')}
+            {Array.isArray(currentUser.roles) ? currentUser.roles.join(', ') : currentUser.roles || 'User'}
           </Typography>
         </Box>
         

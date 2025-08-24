@@ -24,6 +24,10 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 ENV_FILE="$SCRIPT_DIR/.env"
 COMPOSE_FILE="$SCRIPT_DIR/docker-compose.yml"
 
+# Deployment mode configuration
+DEPLOYMENT_MODE="${DEPLOYMENT_MODE:-local}"
+ENVIRONMENT="${ENVIRONMENT:-development}"
+
 # Functions
 log_info() {
     echo -e "${BLUE}[INFO]${NC} $1"
@@ -41,29 +45,53 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+print_usage() {
+    echo "Usage: $0 [OPTIONS]"
+    echo ""
+    echo "Options:"
+    echo "  -m, --mode MODE     Deployment mode: 'local' or 'production' (default: local)"
+    echo "  -e, --env ENV       Environment: 'development', 'staging', 'production' (default: development)"
+    echo "  -h, --help          Show this help message"
+    echo ""
+    echo "Examples:"
+    echo "  $0                           # Deploy in local development mode"
+    echo "  $0 --mode production         # Deploy in production mode"
+    echo "  $0 -m local -e development   # Deploy in local development mode (explicit)"
+    echo ""
+}
+
 check_prerequisites() {
-    log_info "Checking prerequisites..."
-    
+    log_info "Checking prerequisites for $DEPLOYMENT_MODE deployment..."
+
     # Check if podman or docker is available
     if command -v podman &> /dev/null; then
         CONTAINER_ENGINE="podman"
-        COMPOSE_CMD="podman-compose"
+        # Check for podman-compose first, then fall back to docker-compose
+        if command -v podman-compose &> /dev/null; then
+            COMPOSE_CMD="podman-compose"
+        elif command -v docker-compose &> /dev/null; then
+            COMPOSE_CMD="docker-compose"
+cd 
+        else
+            log_error "Neither podman-compose nor docker-compose is installed. Please install one of them."
+            exit 1
+        fi
     elif command -v docker &> /dev/null; then
         CONTAINER_ENGINE="docker"
-        COMPOSE_CMD="docker-compose"
+        if command -v docker-compose &> /dev/null; then
+            COMPOSE_CMD="docker-compose"
+        else
+            log_error "docker-compose is not installed. Please install it."
+            exit 1
+        fi
     else
         log_error "Neither Podman nor Docker is installed. Please install one of them."
         exit 1
     fi
-    
+
     log_info "Using container engine: $CONTAINER_ENGINE"
-    
-    # Check if compose is available
-    if ! command -v $COMPOSE_CMD &> /dev/null; then
-        log_error "$COMPOSE_CMD is not installed. Please install it."
-        exit 1
-    fi
-    
+    log_info "Using compose command: $COMPOSE_CMD"
+
     # Check if git is available (for VCS_REF)
     if ! command -v git &> /dev/null; then
         log_warning "Git is not installed. VCS_REF will be set to 'unknown'."
@@ -71,34 +99,72 @@ check_prerequisites() {
     else
         VCS_REF=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
     fi
-    
+
+    # Additional checks for production mode
+    if [[ "$DEPLOYMENT_MODE" == "production" ]]; then
+        log_info "Running additional production checks..."
+
+        # Check available memory
+        local available_memory=$(free -m | awk 'NR==2{printf "%.0f", $7}')
+        if [[ $available_memory -lt 4096 ]]; then
+            log_warning "Available memory ($available_memory MB) is less than recommended 4GB for production"
+        fi
+
+        # Check available disk space
+        local available_disk=$(df -BG "$PROJECT_ROOT" | awk 'NR==2{print $4}' | sed 's/G//')
+        if [[ $available_disk -lt 20 ]]; then
+            log_warning "Available disk space ($available_disk GB) is less than recommended 20GB for production"
+        fi
+    fi
+
     log_success "Prerequisites check completed"
 }
 
 setup_environment() {
-    log_info "Setting up environment..."
-    
+    log_info "Setting up environment for $DEPLOYMENT_MODE mode..."
+
     # Check if .env file exists
     if [[ ! -f "$ENV_FILE" ]]; then
         log_warning ".env file not found. Creating from template..."
         cp "$SCRIPT_DIR/.env.template" "$ENV_FILE"
+
+        # Set deployment mode in the new .env file
+        sed -i "s/ENVIRONMENT=production/ENVIRONMENT=$ENVIRONMENT/" "$ENV_FILE"
+
         log_warning "Please edit $ENV_FILE with your configuration before running again."
+        log_info "Key settings to configure:"
+        log_info "  - Database passwords (remove CHANGE_ME prefixes)"
+        log_info "  - JWT secret key"
+        log_info "  - API keys (OpenAI, Pinecone)"
         exit 1
     fi
-    
+
     # Export environment variables
     export BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
     export VCS_REF="$VCS_REF"
-    
+    export DEPLOYMENT_MODE="$DEPLOYMENT_MODE"
+    export ENVIRONMENT="$ENVIRONMENT"
+
+    # Apply deployment mode specific configurations
+    if [[ "$DEPLOYMENT_MODE" == "local" ]]; then
+        log_info "Applying local development configurations..."
+        export DEBUG=true
+        export LOG_LEVEL=DEBUG
+    else
+        log_info "Applying production configurations..."
+        export DEBUG=false
+        export LOG_LEVEL=INFO
+    fi
+
     log_success "Environment setup completed"
 }
 
 validate_configuration() {
-    log_info "Validating configuration..."
-    
+    log_info "Validating configuration for $DEPLOYMENT_MODE deployment..."
+
     # Source the .env file
     source "$ENV_FILE"
-    
+
     # Check critical variables
     local critical_vars=(
         "POSTGRES_PASSWORD"
@@ -106,21 +172,48 @@ validate_configuration() {
         "JWT_SECRET_KEY"
         "ERS_DB_PASSWORD"
         "UMS_DB_PASSWORD"
+        "RIS_DB_PASSWORD"
+        "CES_DB_PASSWORD"
+        "VS_DB_PASSWORD"
     )
-    
+
     for var in "${critical_vars[@]}"; do
         if [[ -z "${!var:-}" ]]; then
             log_error "Required environment variable $var is not set"
             exit 1
         fi
-        
-        # Check if using default passwords
+
+        # Check if using default passwords (stricter for production)
         if [[ "${!var}" == *"CHANGE_ME"* ]]; then
-            log_error "Please change the default password for $var"
-            exit 1
+            if [[ "$DEPLOYMENT_MODE" == "production" ]]; then
+                log_error "Production deployment requires changing default password for $var"
+                exit 1
+            else
+                log_warning "Using default password for $var (acceptable for local development)"
+            fi
         fi
     done
-    
+
+    # Production-specific validations
+    if [[ "$DEPLOYMENT_MODE" == "production" ]]; then
+        # Check API keys for RAG functionality
+        if [[ -z "${OPENAI_API_KEY:-}" ]] || [[ "${OPENAI_API_KEY}" == "your-openai-api-key-here" ]]; then
+            log_error "Production deployment requires valid OPENAI_API_KEY"
+            exit 1
+        fi
+
+        if [[ -z "${PINECONE_API_KEY:-}" ]] || [[ "${PINECONE_API_KEY}" == "your-pinecone-api-key-here" ]]; then
+            log_error "Production deployment requires valid PINECONE_API_KEY"
+            exit 1
+        fi
+
+        # Check JWT secret strength
+        if [[ ${#JWT_SECRET_KEY} -lt 32 ]]; then
+            log_error "Production JWT_SECRET_KEY must be at least 32 characters long"
+            exit 1
+        fi
+    fi
+
     log_success "Configuration validation completed"
 }
 
@@ -228,10 +321,49 @@ show_status() {
     log_warning "Please change default passwords!"
 }
 
+# Parse command line arguments
+parse_arguments() {
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -m|--mode)
+                DEPLOYMENT_MODE="$2"
+                shift 2
+                ;;
+            -e|--env)
+                ENVIRONMENT="$2"
+                shift 2
+                ;;
+            -h|--help)
+                print_usage
+                exit 0
+                ;;
+            *)
+                log_error "Unknown option: $1"
+                print_usage
+                exit 1
+                ;;
+        esac
+    done
+
+    # Validate deployment mode
+    if [[ "$DEPLOYMENT_MODE" != "local" && "$DEPLOYMENT_MODE" != "production" ]]; then
+        log_error "Invalid deployment mode: $DEPLOYMENT_MODE. Must be 'local' or 'production'"
+        exit 1
+    fi
+
+    # Validate environment
+    if [[ "$ENVIRONMENT" != "development" && "$ENVIRONMENT" != "staging" && "$ENVIRONMENT" != "production" ]]; then
+        log_error "Invalid environment: $ENVIRONMENT. Must be 'development', 'staging', or 'production'"
+        exit 1
+    fi
+}
+
 # Main deployment function
 main() {
     log_info "Starting RAG Interface System deployment..."
-    
+    log_info "Deployment Mode: $DEPLOYMENT_MODE"
+    log_info "Environment: $ENVIRONMENT"
+
     check_prerequisites
     setup_environment
     validate_configuration
@@ -241,11 +373,12 @@ main() {
     deploy_frontend
     check_health
     show_status
-    
-    log_success "RAG Interface System deployed successfully!"
+
+    log_success "RAG Interface System deployed successfully in $DEPLOYMENT_MODE mode!"
 }
 
 # Script execution
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    main "$@"
+    parse_arguments "$@"
+    main
 fi

@@ -30,7 +30,7 @@ The RAG Interface System is a comprehensive platform for managing ASR (Automatic
 The system consists of:
 - **Frontend**: Web-based user interface (React application)
 - **Backend**: 5 microservices (Python FastAPI)
-- **Database**: PostgreSQL or SQL Server
+- **Database**: Single PostgreSQL or SQL Server database with multiple schemas
 - **Cache**: Redis for performance
 - **Vector Database**: For AI/ML functionality (Pinecone, Weaviate, etc.)
 
@@ -152,11 +152,12 @@ Edit the `.env` file to configure your system:
 
 #### Database Configuration
 ```bash
-# PostgreSQL settings
+# PostgreSQL settings (Single database with multiple schemas)
 POSTGRES_PASSWORD=your_secure_password_here
 POSTGRES_PORT=5432
+DATABASE_NAME=rag_interface_db
 
-# Service database passwords
+# Service database passwords (each service connects with different user)
 ERS_DB_PASSWORD=ers_password_here
 UMS_DB_PASSWORD=ums_password_here
 VS_DB_PASSWORD=vs_password_here

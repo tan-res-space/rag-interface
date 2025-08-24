@@ -416,6 +416,8 @@ code {
 <li><strong>Database Systems:</strong>
 <ul>
 <li>PostgreSQL for relational data (metadata, audit trails, user management)</li>
+<li>MongoDB for document-based storage (alternative to PostgreSQL)</li>
+<li>SQL Server for enterprise environments (alternative to PostgreSQL)</li>
 <li>Vector Database (Pinecone/Weaviate/Qdrant) for 1536-dimensional embeddings</li>
 <li>Redis for caching and session management</li>
 </ul>
@@ -577,9 +579,12 @@ code {
 <ul>
 <li><input type="checkbox" id="checkbox0"><label for="checkbox0">I can click and drag to select text in the ASR draft interface</label></li>
 <li><input type="checkbox" id="checkbox1"><label for="checkbox1">Selected text is highlighted with a distinct color</label></li>
-<li><input type="checkbox" id="checkbox2"><label for="checkbox2">I can select multiple non-contiguous text segments</label></li>
-<li><input type="checkbox" id="checkbox3"><label for="checkbox3">The system captures the exact position and timestamp of selected text</label></li>
-<li><input type="checkbox" id="checkbox4"><label for="checkbox4">I can deselect text by clicking outside the selection</label></li>
+<li><input type="checkbox" id="checkbox2"><label for="checkbox2">I can select multiple non-contiguous text segments for a single error report</label></li>
+<li><input type="checkbox" id="checkbox3"><label for="checkbox3">Each text segment maintains its own position coordinates and metadata</label></li>
+<li><input type="checkbox" id="checkbox4"><label for="checkbox4">The system captures the exact position and timestamp of each selected text segment</label></li>
+<li><input type="checkbox" id="checkbox5"><label for="checkbox5">I can deselect individual text segments or clear all selections</label></li>
+<li><input type="checkbox" id="checkbox6"><label for="checkbox6">Visual indicators show the relationship between multiple selected segments</label></li>
+<li><input type="checkbox" id="checkbox7"><label for="checkbox7">The system validates that all segments belong to the same speaker context</label></li>
 </ul>
 <p><strong>Story Points:</strong> 5
 <strong>Priority:</strong> High</p>
@@ -587,11 +592,11 @@ code {
 <p><strong>As a QA personnel</strong>, I want to associate reported errors with specific speakers so that the system can learn speaker-specific error patterns.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox5"><label for="checkbox5">I can identify the speaker from a dropdown list of available speakers</label></li>
-<li><input type="checkbox" id="checkbox6"><label for="checkbox6">The system auto-suggests the speaker based on the current job context</label></li>
-<li><input type="checkbox" id="checkbox7"><label for="checkbox7">I can search for speakers by name or ID</label></li>
-<li><input type="checkbox" id="checkbox8"><label for="checkbox8">Speaker information is mandatory for error submission</label></li>
-<li><input type="checkbox" id="checkbox9"><label for="checkbox9">The system validates speaker existence before submission</label></li>
+<li><input type="checkbox" id="checkbox8"><label for="checkbox8">I can identify the speaker from a dropdown list of available speakers</label></li>
+<li><input type="checkbox" id="checkbox9"><label for="checkbox9">The system auto-suggests the speaker based on the current job context</label></li>
+<li><input type="checkbox" id="checkbox10"><label for="checkbox10">I can search for speakers by name or ID</label></li>
+<li><input type="checkbox" id="checkbox11"><label for="checkbox11">Speaker information is mandatory for error submission</label></li>
+<li><input type="checkbox" id="checkbox12"><label for="checkbox12">The system validates speaker existence before submission</label></li>
 </ul>
 <p><strong>Story Points:</strong> 3
 <strong>Priority:</strong> High</p>
@@ -599,11 +604,11 @@ code {
 <p><strong>As a QA personnel</strong>, I want to categorize errors by type so that the system can apply appropriate correction strategies.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox10"><label for="checkbox10">I can select from predefined error categories (pronunciation, medical terminology, grammar, etc.)</label></li>
-<li><input type="checkbox" id="checkbox11"><label for="checkbox11">I can select multiple categories for a single error</label></li>
-<li><input type="checkbox" id="checkbox12"><label for="checkbox12">I can add custom categories with proper justification</label></li>
-<li><input type="checkbox" id="checkbox13"><label for="checkbox13">Category selection is mandatory for error submission</label></li>
-<li><input type="checkbox" id="checkbox14"><label for="checkbox14">The system provides category descriptions and examples</label></li>
+<li><input type="checkbox" id="checkbox13"><label for="checkbox13">I can select from predefined error categories (pronunciation, medical terminology, grammar, etc.)</label></li>
+<li><input type="checkbox" id="checkbox14"><label for="checkbox14">I can select multiple categories for a single error</label></li>
+<li><input type="checkbox" id="checkbox15"><label for="checkbox15">I can add custom categories with proper justification</label></li>
+<li><input type="checkbox" id="checkbox16"><label for="checkbox16">Category selection is mandatory for error submission</label></li>
+<li><input type="checkbox" id="checkbox17"><label for="checkbox17">The system provides category descriptions and examples</label></li>
 </ul>
 <p><strong>Story Points:</strong> 5
 <strong>Priority:</strong> Medium</p>
@@ -611,11 +616,11 @@ code {
 <p><strong>As a QA personnel</strong>, I want to provide the correct text for identified errors so that the system can learn the appropriate corrections.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox15"><label for="checkbox15">I can enter corrected text in a dedicated input field</label></li>
-<li><input type="checkbox" id="checkbox16"><label for="checkbox16">The system validates that correction text is different from original</label></li>
-<li><input type="checkbox" id="checkbox17"><label for="checkbox17">I can preview the correction before submission</label></li>
-<li><input type="checkbox" id="checkbox18"><label for="checkbox18">Character limits are enforced and displayed</label></li>
-<li><input type="checkbox" id="checkbox19"><label for="checkbox19">The system prevents submission of empty corrections</label></li>
+<li><input type="checkbox" id="checkbox18"><label for="checkbox18">I can enter corrected text in a dedicated input field</label></li>
+<li><input type="checkbox" id="checkbox19"><label for="checkbox19">The system validates that correction text is different from original</label></li>
+<li><input type="checkbox" id="checkbox20"><label for="checkbox20">I can preview the correction before submission</label></li>
+<li><input type="checkbox" id="checkbox21"><label for="checkbox21">Character limits are enforced and displayed</label></li>
+<li><input type="checkbox" id="checkbox22"><label for="checkbox22">The system prevents submission of empty corrections</label></li>
 </ul>
 <p><strong>Story Points:</strong> 3
 <strong>Priority:</strong> High</p>
@@ -623,11 +628,11 @@ code {
 <p><strong>As a QA personnel</strong>, I want to provide contextual information about errors so that corrections can be applied more accurately.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox20"><label for="checkbox20">I can add notes about the error context</label></li>
-<li><input type="checkbox" id="checkbox21"><label for="checkbox21">I can specify error severity level (low, medium, high, critical)</label></li>
-<li><input type="checkbox" id="checkbox22"><label for="checkbox22">I can indicate if the error affects medical accuracy</label></li>
-<li><input type="checkbox" id="checkbox23"><label for="checkbox23">Audio quality indicators are automatically captured</label></li>
-<li><input type="checkbox" id="checkbox24"><label for="checkbox24">I can add tags for better searchability</label></li>
+<li><input type="checkbox" id="checkbox23"><label for="checkbox23">I can add notes about the error context</label></li>
+<li><input type="checkbox" id="checkbox24"><label for="checkbox24">I can specify error severity level (low, medium, high, critical)</label></li>
+<li><input type="checkbox" id="checkbox25"><label for="checkbox25">I can indicate if the error affects medical accuracy</label></li>
+<li><input type="checkbox" id="checkbox26"><label for="checkbox26">Audio quality indicators are automatically captured</label></li>
+<li><input type="checkbox" id="checkbox27"><label for="checkbox27">I can add tags for better searchability</label></li>
 </ul>
 <p><strong>Story Points:</strong> 5
 <strong>Priority:</strong> Medium</p>
@@ -635,11 +640,11 @@ code {
 <p><strong>As a QA personnel</strong>, I want the system to automatically find similar error patterns using vector similarity so that I can identify recurring issues across different speakers and contexts.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox25"><label for="checkbox25">The system generates vector embeddings for all error and correction text</label></li>
-<li><input type="checkbox" id="checkbox26"><label for="checkbox26">I can view similarity scores for related error patterns</label></li>
-<li><input type="checkbox" id="checkbox27"><label for="checkbox27">The system suggests similar errors from other speakers with configurable similarity thresholds</label></li>
-<li><input type="checkbox" id="checkbox28"><label for="checkbox28">I can filter similarity results by ASR engine, note type, and error classification</label></li>
-<li><input type="checkbox" id="checkbox29"><label for="checkbox29">Quality metrics (WER, SER, edit percentages) are displayed for similar patterns</label></li>
+<li><input type="checkbox" id="checkbox28"><label for="checkbox28">The system generates vector embeddings for all error and correction text</label></li>
+<li><input type="checkbox" id="checkbox29"><label for="checkbox29">I can view similarity scores for related error patterns</label></li>
+<li><input type="checkbox" id="checkbox30"><label for="checkbox30">The system suggests similar errors from other speakers with configurable similarity thresholds</label></li>
+<li><input type="checkbox" id="checkbox31"><label for="checkbox31">I can filter similarity results by ASR engine, note type, and error classification</label></li>
+<li><input type="checkbox" id="checkbox32"><label for="checkbox32">Quality metrics (WER, SER, edit percentages) are displayed for similar patterns</label></li>
 </ul>
 <p><strong>Story Points:</strong> 8
 <strong>Priority:</strong> High</p>
@@ -648,11 +653,11 @@ code {
 <p><strong>As a QA personnel</strong>, I want to access a verification dashboard so that I can review and validate applied corrections.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox30"><label for="checkbox30">I can access the dashboard through the main navigation</label></li>
-<li><input type="checkbox" id="checkbox31"><label for="checkbox31">The dashboard loads within 3 seconds</label></li>
-<li><input type="checkbox" id="checkbox32"><label for="checkbox32">I can see a summary of recent corrections applied</label></li>
-<li><input type="checkbox" id="checkbox33"><label for="checkbox33">The interface is responsive and works on tablets</label></li>
-<li><input type="checkbox" id="checkbox34"><label for="checkbox34">I can bookmark specific dashboard views</label></li>
+<li><input type="checkbox" id="checkbox33"><label for="checkbox33">I can access the dashboard through the main navigation</label></li>
+<li><input type="checkbox" id="checkbox34"><label for="checkbox34">The dashboard loads within 3 seconds</label></li>
+<li><input type="checkbox" id="checkbox35"><label for="checkbox35">I can see a summary of recent corrections applied</label></li>
+<li><input type="checkbox" id="checkbox36"><label for="checkbox36">The interface is responsive and works on tablets</label></li>
+<li><input type="checkbox" id="checkbox37"><label for="checkbox37">I can bookmark specific dashboard views</label></li>
 </ul>
 <p><strong>Story Points:</strong> 3
 <strong>Priority:</strong> High</p>
@@ -660,11 +665,11 @@ code {
 <p><strong>As a QA personnel</strong>, I want to filter and search corrections so that I can efficiently find specific items to verify.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox35"><label for="checkbox35">I can filter by speaker, date range, error type, and correction status</label></li>
-<li><input type="checkbox" id="checkbox36"><label for="checkbox36">I can search by keywords in original or corrected text</label></li>
-<li><input type="checkbox" id="checkbox37"><label for="checkbox37">I can sort results by date, speaker, or correction confidence</label></li>
-<li><input type="checkbox" id="checkbox38"><label for="checkbox38">Filter combinations work correctly together</label></li>
-<li><input type="checkbox" id="checkbox39"><label for="checkbox39">Search results are highlighted and paginated</label></li>
+<li><input type="checkbox" id="checkbox38"><label for="checkbox38">I can filter by speaker, date range, error type, and correction status</label></li>
+<li><input type="checkbox" id="checkbox39"><label for="checkbox39">I can search by keywords in original or corrected text</label></li>
+<li><input type="checkbox" id="checkbox40"><label for="checkbox40">I can sort results by date, speaker, or correction confidence</label></li>
+<li><input type="checkbox" id="checkbox41"><label for="checkbox41">Filter combinations work correctly together</label></li>
+<li><input type="checkbox" id="checkbox42"><label for="checkbox42">Search results are highlighted and paginated</label></li>
 </ul>
 <p><strong>Story Points:</strong> 8
 <strong>Priority:</strong> Medium</p>
@@ -672,11 +677,11 @@ code {
 <p><strong>As a QA personnel</strong>, I want to see before and after text comparison so that I can evaluate correction accuracy.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox40"><label for="checkbox40">I can view original and corrected text side by side</label></li>
-<li><input type="checkbox" id="checkbox41"><label for="checkbox41">Differences are highlighted with color coding</label></li>
-<li><input type="checkbox" id="checkbox42"><label for="checkbox42">I can see the confidence score for each correction</label></li>
-<li><input type="checkbox" id="checkbox43"><label for="checkbox43">Context around the correction is provided</label></li>
-<li><input type="checkbox" id="checkbox44"><label for="checkbox44">I can expand/collapse the comparison view</label></li>
+<li><input type="checkbox" id="checkbox43"><label for="checkbox43">I can view original and corrected text side by side</label></li>
+<li><input type="checkbox" id="checkbox44"><label for="checkbox44">Differences are highlighted with color coding</label></li>
+<li><input type="checkbox" id="checkbox45"><label for="checkbox45">I can see the confidence score for each correction</label></li>
+<li><input type="checkbox" id="checkbox46"><label for="checkbox46">Context around the correction is provided</label></li>
+<li><input type="checkbox" id="checkbox47"><label for="checkbox47">I can expand/collapse the comparison view</label></li>
 </ul>
 <p><strong>Story Points:</strong> 5
 <strong>Priority:</strong> High</p>
@@ -684,11 +689,11 @@ code {
 <p><strong>As a QA personnel</strong>, I want to approve or reject applied corrections so that the system can improve its learning accuracy.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox45"><label for="checkbox45">I can mark corrections as approved or rejected with one click</label></li>
-<li><input type="checkbox" id="checkbox46"><label for="checkbox46">I can provide feedback comments for rejected corrections</label></li>
-<li><input type="checkbox" id="checkbox47"><label for="checkbox47">Bulk approval/rejection is available for multiple items</label></li>
-<li><input type="checkbox" id="checkbox48"><label for="checkbox48">My decisions are immediately reflected in the system</label></li>
-<li><input type="checkbox" id="checkbox49"><label for="checkbox49">I can undo recent approval/rejection actions</label></li>
+<li><input type="checkbox" id="checkbox48"><label for="checkbox48">I can mark corrections as approved or rejected with one click</label></li>
+<li><input type="checkbox" id="checkbox49"><label for="checkbox49">I can provide feedback comments for rejected corrections</label></li>
+<li><input type="checkbox" id="checkbox50"><label for="checkbox50">Bulk approval/rejection is available for multiple items</label></li>
+<li><input type="checkbox" id="checkbox51"><label for="checkbox51">My decisions are immediately reflected in the system</label></li>
+<li><input type="checkbox" id="checkbox52"><label for="checkbox52">I can undo recent approval/rejection actions</label></li>
 </ul>
 <p><strong>Story Points:</strong> 5
 <strong>Priority:</strong> High</p>
@@ -697,11 +702,11 @@ code {
 <p><strong>As a System Administrator</strong>, I want to monitor system performance so that I can ensure optimal operation and identify issues early.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox50"><label for="checkbox50">I can view real-time system metrics (response times, error rates, throughput)</label></li>
-<li><input type="checkbox" id="checkbox51"><label for="checkbox51">I can set up alerts for performance thresholds</label></li>
-<li><input type="checkbox" id="checkbox52"><label for="checkbox52">Historical performance data is available for analysis</label></li>
-<li><input type="checkbox" id="checkbox53"><label for="checkbox53">I can drill down into specific service performance</label></li>
-<li><input type="checkbox" id="checkbox54"><label for="checkbox54">Dashboard auto-refreshes with configurable intervals</label></li>
+<li><input type="checkbox" id="checkbox53"><label for="checkbox53">I can view real-time system metrics (response times, error rates, throughput)</label></li>
+<li><input type="checkbox" id="checkbox54"><label for="checkbox54">I can set up alerts for performance thresholds</label></li>
+<li><input type="checkbox" id="checkbox55"><label for="checkbox55">Historical performance data is available for analysis</label></li>
+<li><input type="checkbox" id="checkbox56"><label for="checkbox56">I can drill down into specific service performance</label></li>
+<li><input type="checkbox" id="checkbox57"><label for="checkbox57">Dashboard auto-refreshes with configurable intervals</label></li>
 </ul>
 <p><strong>Story Points:</strong> 8
 <strong>Priority:</strong> Medium</p>
@@ -709,11 +714,11 @@ code {
 <p><strong>As a System Administrator</strong>, I want to monitor user activity so that I can track system adoption and identify training needs.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox55"><label for="checkbox55">I can view user login patterns and session durations</label></li>
-<li><input type="checkbox" id="checkbox56"><label for="checkbox56">I can see error reporting and verification activity by user</label></li>
-<li><input type="checkbox" id="checkbox57"><label for="checkbox57">Usage statistics are available in exportable formats</label></li>
-<li><input type="checkbox" id="checkbox58"><label for="checkbox58">I can identify inactive users and high-volume users</label></li>
-<li><input type="checkbox" id="checkbox59"><label for="checkbox59">Privacy controls ensure compliance with data protection policies</label></li>
+<li><input type="checkbox" id="checkbox58"><label for="checkbox58">I can view user login patterns and session durations</label></li>
+<li><input type="checkbox" id="checkbox59"><label for="checkbox59">I can see error reporting and verification activity by user</label></li>
+<li><input type="checkbox" id="checkbox60"><label for="checkbox60">Usage statistics are available in exportable formats</label></li>
+<li><input type="checkbox" id="checkbox61"><label for="checkbox61">I can identify inactive users and high-volume users</label></li>
+<li><input type="checkbox" id="checkbox62"><label for="checkbox62">Privacy controls ensure compliance with data protection policies</label></li>
 </ul>
 <p><strong>Story Points:</strong> 5
 <strong>Priority:</strong> Low</p>
@@ -722,11 +727,11 @@ code {
 <p><strong>As an MTS</strong>, I want to be notified when automated corrections are applied to my assigned jobs so that I can focus on remaining issues.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox60"><label for="checkbox60">I receive notifications for jobs with applied corrections</label></li>
-<li><input type="checkbox" id="checkbox61"><label for="checkbox61">Notifications include summary of corrections made</label></li>
-<li><input type="checkbox" id="checkbox62"><label for="checkbox62">I can configure notification preferences (email, in-app, etc.)</label></li>
-<li><input type="checkbox" id="checkbox63"><label for="checkbox63">Notifications are grouped by job to avoid spam</label></li>
-<li><input type="checkbox" id="checkbox64"><label for="checkbox64">I can mark notifications as read/unread</label></li>
+<li><input type="checkbox" id="checkbox63"><label for="checkbox63">I receive notifications for jobs with applied corrections</label></li>
+<li><input type="checkbox" id="checkbox64"><label for="checkbox64">Notifications include summary of corrections made</label></li>
+<li><input type="checkbox" id="checkbox65"><label for="checkbox65">I can configure notification preferences (email, in-app, etc.)</label></li>
+<li><input type="checkbox" id="checkbox66"><label for="checkbox66">Notifications are grouped by job to avoid spam</label></li>
+<li><input type="checkbox" id="checkbox67"><label for="checkbox67">I can mark notifications as read/unread</label></li>
 </ul>
 <p><strong>Story Points:</strong> 5
 <strong>Priority:</strong> Medium</p>
@@ -734,24 +739,34 @@ code {
 <p><strong>As an MTS</strong>, I want to review automated corrections in my workflow so that I can validate them before final submission.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox65"><label for="checkbox65">Automated corrections are clearly marked in the draft</label></li>
-<li><input type="checkbox" id="checkbox66"><label for="checkbox66">I can see the confidence score for each correction</label></li>
-<li><input type="checkbox" id="checkbox67"><label for="checkbox67">I can accept, modify, or reject individual corrections</label></li>
-<li><input type="checkbox" id="checkbox68"><label for="checkbox68">My decisions feed back into the learning system</label></li>
-<li><input type="checkbox" id="checkbox69"><label for="checkbox69">The interface integrates seamlessly with existing MTS tools</label></li>
+<li><input type="checkbox" id="checkbox68"><label for="checkbox68">Automated corrections are clearly marked in the draft</label></li>
+<li><input type="checkbox" id="checkbox69"><label for="checkbox69">I can see the confidence score for each correction</label></li>
+<li><input type="checkbox" id="checkbox70"><label for="checkbox70">I can accept, modify, or reject individual corrections</label></li>
+<li><input type="checkbox" id="checkbox71"><label for="checkbox71">My decisions feed back into the learning system</label></li>
+<li><input type="checkbox" id="checkbox72"><label for="checkbox72">The interface integrates seamlessly with existing MTS tools</label></li>
 </ul>
 <p><strong>Story Points:</strong> 8
 <strong>Priority:</strong> Medium</p>
 <h3 id="65-epic-5-error-handling-and-edge-cases">6.5 Epic 5: Error Handling and Edge Cases</h3>
-<h4 id="651-us-51-network-connectivity-issues">6.5.1 US-5.1: Network Connectivity Issues</h4>
+<h4 id="651-us-51-network-connectivity-issues-and-offline-support">6.5.1 US-5.1: Network Connectivity Issues and Offline Support</h4>
 <p><strong>As a QA personnel</strong>, I want the system to handle network issues gracefully so that I don't lose my work during error reporting.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox70"><label for="checkbox70">The system saves draft error reports locally during network issues</label></li>
-<li><input type="checkbox" id="checkbox71"><label for="checkbox71">I receive clear notifications about connectivity status</label></li>
-<li><input type="checkbox" id="checkbox72"><label for="checkbox72">Saved drafts are automatically submitted when connectivity is restored</label></li>
-<li><input type="checkbox" id="checkbox73"><label for="checkbox73">I can continue working offline with limited functionality</label></li>
-<li><input type="checkbox" id="checkbox74"><label for="checkbox74">No data is lost during network interruptions</label></li>
+<li><input type="checkbox" id="checkbox73"><label for="checkbox73">The system saves draft error reports locally using IndexedDB during network issues</label></li>
+<li><input type="checkbox" id="checkbox74"><label for="checkbox74">I receive clear notifications about connectivity status with visual indicators</label></li>
+<li><input type="checkbox" id="checkbox75"><label for="checkbox75">Saved drafts are automatically submitted when connectivity is restored with conflict resolution</label></li>
+<li><input type="checkbox" id="checkbox76"><label for="checkbox76">I can continue working offline with limited functionality (draft creation, local validation)</label></li>
+<li><input type="checkbox" id="checkbox77"><label for="checkbox77">No data is lost during network interruptions with automatic recovery mechanisms</label></li>
+<li><input type="checkbox" id="checkbox78"><label for="checkbox78">The system provides offline mode with local storage for up to 100 draft error reports</label></li>
+<li><input type="checkbox" id="checkbox79"><label for="checkbox79">Offline drafts include timestamp synchronization when reconnected</label></li>
+<li><input type="checkbox" id="checkbox80"><label for="checkbox80">The system handles partial submissions and provides retry mechanisms</label></li>
+</ul>
+<p><strong>Technical Implementation:</strong></p>
+<ul>
+<li>Client-side storage using IndexedDB for draft persistence</li>
+<li>Service worker implementation for offline functionality</li>
+<li>Background sync for automatic submission when online</li>
+<li>Conflict resolution for concurrent edits across devices</li>
 </ul>
 <p><strong>Story Points:</strong> 8
 <strong>Priority:</strong> Medium</p>
@@ -759,11 +774,11 @@ code {
 <p><strong>As a QA personnel</strong>, I want clear error messages when I submit invalid data so that I can correct issues quickly.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox75"><label for="checkbox75">Error messages are specific and actionable</label></li>
-<li><input type="checkbox" id="checkbox76"><label for="checkbox76">Invalid fields are clearly highlighted</label></li>
-<li><input type="checkbox" id="checkbox77"><label for="checkbox77">I can see all validation errors at once</label></li>
-<li><input type="checkbox" id="checkbox78"><label for="checkbox78">The system suggests corrections for common mistakes</label></li>
-<li><input type="checkbox" id="checkbox79"><label for="checkbox79">Form data is preserved when validation fails</label></li>
+<li><input type="checkbox" id="checkbox81"><label for="checkbox81">Error messages are specific and actionable</label></li>
+<li><input type="checkbox" id="checkbox82"><label for="checkbox82">Invalid fields are clearly highlighted</label></li>
+<li><input type="checkbox" id="checkbox83"><label for="checkbox83">I can see all validation errors at once</label></li>
+<li><input type="checkbox" id="checkbox84"><label for="checkbox84">The system suggests corrections for common mistakes</label></li>
+<li><input type="checkbox" id="checkbox85"><label for="checkbox85">Form data is preserved when validation fails</label></li>
 </ul>
 <p><strong>Story Points:</strong> 5
 <strong>Priority:</strong> Medium</p>
@@ -771,11 +786,11 @@ code {
 <p><strong>As any user</strong>, I want the system to remain responsive during high load periods so that my productivity is not impacted.</p>
 <p><strong>Acceptance Criteria:</strong></p>
 <ul>
-<li><input type="checkbox" id="checkbox80"><label for="checkbox80">The system provides graceful degradation during high load</label></li>
-<li><input type="checkbox" id="checkbox81"><label for="checkbox81">Users receive notifications about system status</label></li>
-<li><input type="checkbox" id="checkbox82"><label for="checkbox82">Critical functions remain available even under load</label></li>
-<li><input type="checkbox" id="checkbox83"><label for="checkbox83">Queue management prevents system crashes</label></li>
-<li><input type="checkbox" id="checkbox84"><label for="checkbox84">Load balancing distributes traffic effectively</label></li>
+<li><input type="checkbox" id="checkbox86"><label for="checkbox86">The system provides graceful degradation during high load</label></li>
+<li><input type="checkbox" id="checkbox87"><label for="checkbox87">Users receive notifications about system status</label></li>
+<li><input type="checkbox" id="checkbox88"><label for="checkbox88">Critical functions remain available even under load</label></li>
+<li><input type="checkbox" id="checkbox89"><label for="checkbox89">Queue management prevents system crashes</label></li>
+<li><input type="checkbox" id="checkbox90"><label for="checkbox90">Load balancing distributes traffic effectively</label></li>
 </ul>
 <p><strong>Story Points:</strong> 13
 <strong>Priority:</strong> High</p>
@@ -795,8 +810,8 @@ code {
 </ul>
 <h4 id="712-fr-12-error-categorization">7.1.2 FR-1.2: Error Categorization</h4>
 <ul>
-<li><strong>Requirement:</strong> System must provide error classification options</li>
-<li><strong>Categories:</strong>
+<li><strong>Requirement:</strong> System must provide error classification options with custom category support</li>
+<li><strong>Predefined Categories:</strong>
 <ul>
 <li>Pronunciation errors</li>
 <li>Medical terminology errors</li>
@@ -805,11 +820,21 @@ code {
 <li>Context-specific errors</li>
 </ul>
 </li>
+<li><strong>Custom Category Support:</strong>
+<ul>
+<li>User-defined error categories stored in database</li>
+<li>Category approval workflow for quality control</li>
+<li>Category sharing across teams and organizations</li>
+<li>Category versioning and lifecycle management</li>
+</ul>
+</li>
 <li><strong>Acceptance Criteria:</strong>
 <ul>
 <li>Dropdown/checkbox interface for category selection</li>
 <li>Ability to select multiple categories per error</li>
-<li>Custom category creation capability</li>
+<li>Custom category creation capability with approval workflow</li>
+<li>Category search and filtering functionality</li>
+<li>Category usage analytics and recommendations</li>
 </ul>
 </li>
 </ul>
@@ -852,10 +877,10 @@ code {
 <li><strong>Requirement:</strong> System must provide API endpoints for registering errors in the RAG database</li>
 <li><strong>Endpoints:</strong>
 <ul>
-<li><code>POST /api/errors/register</code> - Register new error</li>
-<li><code>GET /api/errors/speaker/{speakerId}</code> - Retrieve speaker-specific errors</li>
-<li><code>PUT /api/errors/{errorId}</code> - Update error information</li>
-<li><code>DELETE /api/errors/{errorId}</code> - Remove error entry</li>
+<li><code>POST /api/v1/errors/register</code> - Register new error</li>
+<li><code>GET /api/v1/errors/speaker/{speakerId}</code> - Retrieve speaker-specific errors</li>
+<li><code>PUT /api/v1/errors/{errorId}</code> - Update error information</li>
+<li><code>DELETE /api/v1/errors/{errorId}</code> - Remove error entry</li>
 </ul>
 </li>
 <li><strong>Acceptance Criteria:</strong>
@@ -930,7 +955,7 @@ code {
 
     QA->>UI: Select error text and provide correction
     UI->>UI: Validate input data
-    UI->>API: POST /api/errors/report
+    UI->>API: POST /api/v1/errors/report
 
     API->>API: Authenticate user
     API->>API: Validate request payload
@@ -1416,31 +1441,31 @@ code {
 <h2 id="11-implementation-timeline">11. Implementation Timeline</h2>
 <h3 id="111-phase-1-foundation-months-1-2">11.1 Phase 1: Foundation (Months 1-2)</h3>
 <ul>
-<li><input type="checkbox" id="checkbox85"><label for="checkbox85">System architecture design and setup</label></li>
-<li><input type="checkbox" id="checkbox86"><label for="checkbox86">Basic error reporting interface</label></li>
-<li><input type="checkbox" id="checkbox87"><label for="checkbox87">RAG database integration</label></li>
-<li><input type="checkbox" id="checkbox88"><label for="checkbox88">Core API development</label></li>
+<li><input type="checkbox" id="checkbox91"><label for="checkbox91">System architecture design and setup</label></li>
+<li><input type="checkbox" id="checkbox92"><label for="checkbox92">Basic error reporting interface</label></li>
+<li><input type="checkbox" id="checkbox93"><label for="checkbox93">RAG database integration</label></li>
+<li><input type="checkbox" id="checkbox94"><label for="checkbox94">Core API development</label></li>
 </ul>
 <h3 id="112-phase-2-core-functionality-months-3-4">11.2 Phase 2: Core Functionality (Months 3-4)</h3>
 <ul>
-<li><input type="checkbox" id="checkbox89"><label for="checkbox89">Error categorization and submission</label></li>
-<li><input type="checkbox" id="checkbox90"><label for="checkbox90">Automated correction engine</label></li>
-<li><input type="checkbox" id="checkbox91"><label for="checkbox91">Speaker-specific error learning</label></li>
-<li><input type="checkbox" id="checkbox92"><label for="checkbox92">Basic verification dashboard</label></li>
+<li><input type="checkbox" id="checkbox95"><label for="checkbox95">Error categorization and submission</label></li>
+<li><input type="checkbox" id="checkbox96"><label for="checkbox96">Automated correction engine</label></li>
+<li><input type="checkbox" id="checkbox97"><label for="checkbox97">Speaker-specific error learning</label></li>
+<li><input type="checkbox" id="checkbox98"><label for="checkbox98">Basic verification dashboard</label></li>
 </ul>
 <h3 id="113-phase-3-enhancement-months-5-6">11.3 Phase 3: Enhancement (Months 5-6)</h3>
 <ul>
-<li><input type="checkbox" id="checkbox93"><label for="checkbox93">Advanced verification features</label></li>
-<li><input type="checkbox" id="checkbox94"><label for="checkbox94">Performance optimization</label></li>
-<li><input type="checkbox" id="checkbox95"><label for="checkbox95">Comprehensive testing</label></li>
-<li><input type="checkbox" id="checkbox96"><label for="checkbox96">User training and documentation</label></li>
+<li><input type="checkbox" id="checkbox99"><label for="checkbox99">Advanced verification features</label></li>
+<li><input type="checkbox" id="checkbox100"><label for="checkbox100">Performance optimization</label></li>
+<li><input type="checkbox" id="checkbox101"><label for="checkbox101">Comprehensive testing</label></li>
+<li><input type="checkbox" id="checkbox102"><label for="checkbox102">User training and documentation</label></li>
 </ul>
 <h3 id="114-phase-4-deployment-month-7">11.4 Phase 4: Deployment (Month 7)</h3>
 <ul>
-<li><input type="checkbox" id="checkbox97"><label for="checkbox97">Production deployment</label></li>
-<li><input type="checkbox" id="checkbox98"><label for="checkbox98">User onboarding</label></li>
-<li><input type="checkbox" id="checkbox99"><label for="checkbox99">Monitoring and support setup</label></li>
-<li><input type="checkbox" id="checkbox100"><label for="checkbox100">Success metrics tracking</label></li>
+<li><input type="checkbox" id="checkbox103"><label for="checkbox103">Production deployment</label></li>
+<li><input type="checkbox" id="checkbox104"><label for="checkbox104">User onboarding</label></li>
+<li><input type="checkbox" id="checkbox105"><label for="checkbox105">Monitoring and support setup</label></li>
+<li><input type="checkbox" id="checkbox106"><label for="checkbox106">Success metrics tracking</label></li>
 </ul>
 <hr>
 <h2 id="12-constraints-and-assumptions">12. Constraints and Assumptions</h2>

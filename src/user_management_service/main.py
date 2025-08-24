@@ -159,48 +159,88 @@ async def root():
     }
 
 
+# Create API router
+from fastapi import APIRouter
+from pydantic import BaseModel
+from typing import Optional
+
+api_router = APIRouter(prefix="/api/v1")
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+    ipAddress: Optional[str] = None
+    userAgent: Optional[str] = None
+
+class LoginResponse(BaseModel):
+    accessToken: str
+    refreshToken: str
+    tokenType: str
+    expiresIn: int
+    user: dict
+
 # Authentication endpoints
-@app.post("/auth/login")
-async def login(username: str, password: str):
+@api_router.post("/auth/login", response_model=LoginResponse)
+async def login(credentials: LoginRequest):
     """User login endpoint"""
-    # Placeholder implementation
-    if username == "admin" and password == "password":
-        return {
-            "access_token": "fake-jwt-token",
-            "token_type": "bearer",
-            "expires_in": 3600,
-            "user": {
-                "id": str(uuid.uuid4()),
-                "username": username,
-                "roles": ["admin"]
+    # Placeholder implementation with correct credentials
+    if credentials.username == "admin" and credentials.password == "AdminPassword123!":
+        user_id = str(uuid.uuid4())
+        return LoginResponse(
+            accessToken="fake-jwt-token",
+            refreshToken="fake-refresh-token",
+            tokenType="bearer",
+            expiresIn=3600,
+            user={
+                "userId": user_id,
+                "username": credentials.username,
+                "email": "admin@example.com",
+                "firstName": "Admin",
+                "lastName": "User",
+                "fullName": "Admin User",
+                "roles": ["admin"],
+                "permissions": ["admin:read", "admin:write", "users:read", "users:write"],
+                "status": "active",
+                "department": "IT",
+                "createdAt": datetime.utcnow().isoformat(),
+                "updatedAt": datetime.utcnow().isoformat(),
+                "isActive": True
             }
-        }
+        )
     else:
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
 
-@app.post("/auth/logout")
+@api_router.post("/auth/logout")
 async def logout():
     """User logout endpoint"""
     return {"message": "Successfully logged out"}
 
 
-@app.get("/auth/me")
+@api_router.get("/auth/me")
 async def get_current_user():
     """Get current user information"""
-    # Placeholder implementation
+    # Placeholder implementation - return format matching frontend User interface
+    user_id = str(uuid.uuid4())
     return {
-        "id": str(uuid.uuid4()),
-        "username": "test_user",
-        "email": "test@example.com",
-        "roles": ["qa_personnel"],
+        "userId": user_id,
+        "username": "admin",
+        "email": "admin@example.com",
+        "firstName": "Admin",
+        "lastName": "User",
+        "fullName": "Admin User",
+        "roles": ["admin"],
+        "permissions": ["admin:read", "admin:write", "users:read", "users:write"],
         "status": "active",
-        "is_active": True
+        "department": "IT",
+        "createdAt": datetime.utcnow().isoformat(),
+        "updatedAt": datetime.utcnow().isoformat(),
+        "isActive": True
     }
 
 
 # User management endpoints
-@app.get("/users")
+@api_router.get("/users")
 async def list_users():
     """List all users"""
     # Placeholder implementation
@@ -225,7 +265,7 @@ async def list_users():
     }
 
 
-@app.post("/users")
+@api_router.post("/users")
 async def create_user(username: str, email: str, roles: list):
     """Create a new user"""
     # Placeholder implementation
@@ -240,7 +280,7 @@ async def create_user(username: str, email: str, roles: list):
     }
 
 
-@app.get("/users/{user_id}")
+@api_router.get("/users/{user_id}")
 async def get_user(user_id: str):
     """Get user by ID"""
     # Placeholder implementation
@@ -248,7 +288,7 @@ async def get_user(user_id: str):
         uuid.UUID(user_id)
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid user ID format")
-    
+
     return {
         "id": user_id,
         "username": "test_user",
@@ -257,6 +297,9 @@ async def get_user(user_id: str):
         "status": "active",
         "created_at": "2023-01-01T00:00:00Z"
     }
+
+# Include API router in the app
+app.include_router(api_router)
 
 
 # Exception handlers

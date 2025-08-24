@@ -90,7 +90,7 @@ services:
     container_name: error-reporting-service
     restart: unless-stopped
     environment:
-      - DATABASE_URL=postgresql://ers_user:${ERS_DB_PASSWORD:-ers_secure_password_2025}@postgres:5432/error_reporting_db
+      - DATABASE_URL=postgresql://ers_user:${ERS_DB_PASSWORD:-ers_secure_password_2025}@postgres:5432/${DATABASE_NAME:-rag_interface_db}?options=-csearch_path%3Derror_reporting
       - REDIS_URL=redis://:${REDIS_PASSWORD:-redis_secure_2025}@redis:6379/0
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
       - DEBUG=${DEBUG:-false}
@@ -122,7 +122,7 @@ services:
     container_name: user-management-service
     restart: unless-stopped
     environment:
-      - DATABASE_URL=postgresql://ums_user:${UMS_DB_PASSWORD:-ums_secure_password_2025}@postgres:5432/user_management_db
+      - DATABASE_URL=postgresql://ums_user:${UMS_DB_PASSWORD:-ums_secure_password_2025}@postgres:5432/${DATABASE_NAME:-rag_interface_db}?options=-csearch_path%3Duser_management
       - REDIS_URL=redis://:${REDIS_PASSWORD:-redis_secure_2025}@redis:6379/1
       - JWT_SECRET_KEY=${JWT_SECRET_KEY:-your-super-secret-jwt-key-change-in-production}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
@@ -155,7 +155,7 @@ services:
     container_name: rag-integration-service
     restart: unless-stopped
     environment:
-      - DATABASE_URL=postgresql://ris_user:${RIS_DB_PASSWORD:-ris_secure_password_2025}@postgres:5432/rag_integration_db
+      - DATABASE_URL=postgresql://ris_user:${RIS_DB_PASSWORD:-ris_secure_password_2025}@postgres:5432/${DATABASE_NAME:-rag_interface_db}?options=-csearch_path%3Drag_integration
       - REDIS_URL=redis://:${REDIS_PASSWORD:-redis_secure_2025}@redis:6379/2
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - PINECONE_API_KEY=${PINECONE_API_KEY}
@@ -189,7 +189,7 @@ services:
     container_name: correction-engine-service
     restart: unless-stopped
     environment:
-      - DATABASE_URL=postgresql://ces_user:${CES_DB_PASSWORD:-ces_secure_password_2025}@postgres:5432/correction_engine_db
+      - DATABASE_URL=postgresql://ces_user:${CES_DB_PASSWORD:-ces_secure_password_2025}@postgres:5432/${DATABASE_NAME:-rag_interface_db}?options=-csearch_path%3Dcorrection_engine
       - REDIS_URL=redis://:${REDIS_PASSWORD:-redis_secure_2025}@redis:6379/3
       - RAG_INTEGRATION_SERVICE_URL=http://rag-integration-service:8002
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
@@ -224,7 +224,7 @@ services:
     container_name: verification-service
     restart: unless-stopped
     environment:
-      - DATABASE_URL=postgresql://vs_user:${VS_DB_PASSWORD:-vs_secure_password_2025}@postgres:5432/verification_db
+      - DATABASE_URL=postgresql://vs_user:${VS_DB_PASSWORD:-vs_secure_password_2025}@postgres:5432/${DATABASE_NAME:-rag_interface_db}?options=-csearch_path%3Dverification
       - REDIS_URL=redis://:${REDIS_PASSWORD:-redis_secure_2025}@redis:6379/4
       - CORRECTION_ENGINE_SERVICE_URL=http://correction-engine-service:8003
       - LOG_LEVEL=${LOG_LEVEL:-INFO}

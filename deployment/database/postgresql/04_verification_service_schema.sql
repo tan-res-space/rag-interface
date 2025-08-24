@@ -2,24 +2,23 @@
 -- Verification Service - PostgreSQL Schema
 -- =====================================================
 -- This script creates the complete schema for the Verification Service
--- Run this script on the verification_db database as vs_user
+-- Run this script on the rag_interface_db database as vs_user
 -- 
 -- Author: RAG Interface Deployment Team
--- Version: 1.0
+-- Version: 2.0 - Single Database with Schema Separation
 -- Date: 2025-01-20
 -- =====================================================
 
-\c verification_db;
+\c rag_interface_db;
 
--- Enable required extensions
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+-- Set search path to the verification schema
+SET search_path TO verification, public;
 
 -- =====================================================
 -- VERIFICATIONS TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS verifications (
+CREATE TABLE IF NOT EXISTS verification.verifications (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     correction_id UUID NOT NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected', 'needs_review')),
@@ -32,17 +31,17 @@ CREATE TABLE IF NOT EXISTS verifications (
 );
 
 -- Create indexes for verifications
-CREATE INDEX IF NOT EXISTS idx_verifications_correction_id ON verifications(correction_id);
-CREATE INDEX IF NOT EXISTS idx_verifications_status ON verifications(status);
-CREATE INDEX IF NOT EXISTS idx_verifications_verified_by ON verifications(verified_by);
-CREATE INDEX IF NOT EXISTS idx_verifications_verified_at ON verifications(verified_at);
-CREATE INDEX IF NOT EXISTS idx_verifications_created_at ON verifications(created_at);
+CREATE INDEX IF NOT EXISTS idx_verifications_correction_id ON verification.verifications(correction_id);
+CREATE INDEX IF NOT EXISTS idx_verifications_status ON verification.verifications(status);
+CREATE INDEX IF NOT EXISTS idx_verifications_verified_by ON verification.verifications(verified_by);
+CREATE INDEX IF NOT EXISTS idx_verifications_verified_at ON verification.verifications(verified_at);
+CREATE INDEX IF NOT EXISTS idx_verifications_created_at ON verification.verifications(created_at);
 
 -- =====================================================
 -- ANALYTICS METRICS TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS analytics_metrics (
+CREATE TABLE IF NOT EXISTS verification.analytics_metrics (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     metric_name VARCHAR(100) NOT NULL,
     metric_type VARCHAR(50) NOT NULL,
@@ -54,18 +53,18 @@ CREATE TABLE IF NOT EXISTS analytics_metrics (
 );
 
 -- Create indexes for analytics_metrics
-CREATE INDEX IF NOT EXISTS idx_analytics_metrics_metric_name ON analytics_metrics(metric_name);
-CREATE INDEX IF NOT EXISTS idx_analytics_metrics_metric_type ON analytics_metrics(metric_type);
-CREATE INDEX IF NOT EXISTS idx_analytics_metrics_time_period ON analytics_metrics(time_period);
-CREATE INDEX IF NOT EXISTS idx_analytics_metrics_calculated_at ON analytics_metrics(calculated_at);
-CREATE INDEX IF NOT EXISTS idx_analytics_metrics_period_start ON analytics_metrics(period_start);
-CREATE INDEX IF NOT EXISTS idx_analytics_metrics_period_end ON analytics_metrics(period_end);
+CREATE INDEX IF NOT EXISTS idx_analytics_metrics_metric_name ON verification.analytics_metrics(metric_name);
+CREATE INDEX IF NOT EXISTS idx_analytics_metrics_metric_type ON verification.analytics_metrics(metric_type);
+CREATE INDEX IF NOT EXISTS idx_analytics_metrics_time_period ON verification.analytics_metrics(time_period);
+CREATE INDEX IF NOT EXISTS idx_analytics_metrics_calculated_at ON verification.analytics_metrics(calculated_at);
+CREATE INDEX IF NOT EXISTS idx_analytics_metrics_period_start ON verification.analytics_metrics(period_start);
+CREATE INDEX IF NOT EXISTS idx_analytics_metrics_period_end ON verification.analytics_metrics(period_end);
 
 -- =====================================================
 -- QUALITY ASSESSMENTS TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS quality_assessments (
+CREATE TABLE IF NOT EXISTS verification.quality_assessments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     correction_id UUID NOT NULL,
     accuracy_score DECIMAL(5,4) CHECK (accuracy_score >= 0 AND accuracy_score <= 1),
@@ -76,16 +75,16 @@ CREATE TABLE IF NOT EXISTS quality_assessments (
 );
 
 -- Create indexes for quality_assessments
-CREATE INDEX IF NOT EXISTS idx_quality_assessments_correction_id ON quality_assessments(correction_id);
-CREATE INDEX IF NOT EXISTS idx_quality_assessments_accuracy_score ON quality_assessments(accuracy_score);
-CREATE INDEX IF NOT EXISTS idx_quality_assessments_confidence_score ON quality_assessments(confidence_score);
-CREATE INDEX IF NOT EXISTS idx_quality_assessments_assessed_at ON quality_assessments(assessed_at);
+CREATE INDEX IF NOT EXISTS idx_quality_assessments_correction_id ON verification.quality_assessments(correction_id);
+CREATE INDEX IF NOT EXISTS idx_quality_assessments_accuracy_score ON verification.quality_assessments(accuracy_score);
+CREATE INDEX IF NOT EXISTS idx_quality_assessments_confidence_score ON verification.quality_assessments(confidence_score);
+CREATE INDEX IF NOT EXISTS idx_quality_assessments_assessed_at ON verification.quality_assessments(assessed_at);
 
 -- =====================================================
 -- DASHBOARD CACHE TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS dashboard_cache (
+CREATE TABLE IF NOT EXISTS verification.dashboard_cache (
     cache_key VARCHAR(255) PRIMARY KEY,
     cache_data JSONB NOT NULL,
     expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -93,14 +92,14 @@ CREATE TABLE IF NOT EXISTS dashboard_cache (
 );
 
 -- Create indexes for dashboard_cache
-CREATE INDEX IF NOT EXISTS idx_dashboard_cache_expires_at ON dashboard_cache(expires_at);
-CREATE INDEX IF NOT EXISTS idx_dashboard_cache_created_at ON dashboard_cache(created_at);
+CREATE INDEX IF NOT EXISTS idx_dashboard_cache_expires_at ON verification.dashboard_cache(expires_at);
+CREATE INDEX IF NOT EXISTS idx_dashboard_cache_created_at ON verification.dashboard_cache(created_at);
 
 -- =====================================================
 -- REPORTS TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS reports (
+CREATE TABLE IF NOT EXISTS verification.reports (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -115,18 +114,18 @@ CREATE TABLE IF NOT EXISTS reports (
 );
 
 -- Create indexes for reports
-CREATE INDEX IF NOT EXISTS idx_reports_name ON reports(name);
-CREATE INDEX IF NOT EXISTS idx_reports_format ON reports(format);
-CREATE INDEX IF NOT EXISTS idx_reports_status ON reports(status);
-CREATE INDEX IF NOT EXISTS idx_reports_created_by ON reports(created_by);
-CREATE INDEX IF NOT EXISTS idx_reports_created_at ON reports(created_at);
-CREATE INDEX IF NOT EXISTS idx_reports_completed_at ON reports(completed_at);
+CREATE INDEX IF NOT EXISTS idx_reports_name ON verification.reports(name);
+CREATE INDEX IF NOT EXISTS idx_reports_format ON verification.reports(format);
+CREATE INDEX IF NOT EXISTS idx_reports_status ON verification.reports(status);
+CREATE INDEX IF NOT EXISTS idx_reports_created_by ON verification.reports(created_by);
+CREATE INDEX IF NOT EXISTS idx_reports_created_at ON verification.reports(created_at);
+CREATE INDEX IF NOT EXISTS idx_reports_completed_at ON verification.reports(completed_at);
 
 -- =====================================================
 -- ALERT RULES TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS alert_rules (
+CREATE TABLE IF NOT EXISTS verification.alert_rules (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(255) NOT NULL UNIQUE,
     metric_name VARCHAR(100) NOT NULL,
@@ -139,18 +138,18 @@ CREATE TABLE IF NOT EXISTS alert_rules (
 );
 
 -- Create indexes for alert_rules
-CREATE INDEX IF NOT EXISTS idx_alert_rules_name ON alert_rules(name);
-CREATE INDEX IF NOT EXISTS idx_alert_rules_metric_name ON alert_rules(metric_name);
-CREATE INDEX IF NOT EXISTS idx_alert_rules_is_active ON alert_rules(is_active);
-CREATE INDEX IF NOT EXISTS idx_alert_rules_created_at ON alert_rules(created_at);
+CREATE INDEX IF NOT EXISTS idx_alert_rules_name ON verification.alert_rules(name);
+CREATE INDEX IF NOT EXISTS idx_alert_rules_metric_name ON verification.alert_rules(metric_name);
+CREATE INDEX IF NOT EXISTS idx_alert_rules_is_active ON verification.alert_rules(is_active);
+CREATE INDEX IF NOT EXISTS idx_alert_rules_created_at ON verification.alert_rules(created_at);
 
 -- =====================================================
 -- ALERTS TABLE
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS alerts (
+CREATE TABLE IF NOT EXISTS verification.alerts (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    rule_id UUID NOT NULL REFERENCES alert_rules(id) ON DELETE CASCADE,
+    rule_id UUID NOT NULL REFERENCES verification.alert_rules(id) ON DELETE CASCADE,
     severity VARCHAR(20) NOT NULL CHECK (severity IN ('low', 'medium', 'high', 'critical')),
     message TEXT NOT NULL,
     alert_data JSONB DEFAULT '{}',
@@ -160,11 +159,11 @@ CREATE TABLE IF NOT EXISTS alerts (
 );
 
 -- Create indexes for alerts
-CREATE INDEX IF NOT EXISTS idx_alerts_rule_id ON alerts(rule_id);
-CREATE INDEX IF NOT EXISTS idx_alerts_severity ON alerts(severity);
-CREATE INDEX IF NOT EXISTS idx_alerts_is_resolved ON alerts(is_resolved);
-CREATE INDEX IF NOT EXISTS idx_alerts_triggered_at ON alerts(triggered_at);
-CREATE INDEX IF NOT EXISTS idx_alerts_resolved_at ON alerts(resolved_at);
+CREATE INDEX IF NOT EXISTS idx_alerts_rule_id ON verification.alerts(rule_id);
+CREATE INDEX IF NOT EXISTS idx_alerts_severity ON verification.alerts(severity);
+CREATE INDEX IF NOT EXISTS idx_alerts_is_resolved ON verification.alerts(is_resolved);
+CREATE INDEX IF NOT EXISTS idx_alerts_triggered_at ON verification.alerts(triggered_at);
+CREATE INDEX IF NOT EXISTS idx_alerts_resolved_at ON verification.alerts(resolved_at);
 
 -- =====================================================
 -- TRIGGERS FOR UPDATED_AT
@@ -181,7 +180,7 @@ $$ language 'plpgsql';
 
 -- Create triggers for updated_at columns
 CREATE TRIGGER update_alert_rules_updated_at 
-    BEFORE UPDATE ON alert_rules 
+    BEFORE UPDATE ON verification.alert_rules 
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- =====================================================
@@ -194,7 +193,7 @@ RETURNS INTEGER AS $$
 DECLARE
     deleted_count INTEGER;
 BEGIN
-    DELETE FROM dashboard_cache WHERE expires_at < NOW();
+    DELETE FROM verification.dashboard_cache WHERE expires_at < NOW();
     GET DIAGNOSTICS deleted_count = ROW_COUNT;
     RETURN deleted_count;
 END;
@@ -204,13 +203,13 @@ $$ LANGUAGE plpgsql;
 -- COMMENTS FOR DOCUMENTATION
 -- =====================================================
 
-COMMENT ON TABLE verifications IS 'Verification results for corrections made by the system';
-COMMENT ON TABLE analytics_metrics IS 'Calculated metrics for system performance and quality analysis';
-COMMENT ON TABLE quality_assessments IS 'Quality assessments for individual corrections';
-COMMENT ON TABLE dashboard_cache IS 'Cached data for dashboard performance optimization';
-COMMENT ON TABLE reports IS 'Generated reports and their metadata';
-COMMENT ON TABLE alert_rules IS 'Rules for triggering system alerts based on metrics';
-COMMENT ON TABLE alerts IS 'Active and historical system alerts';
+COMMENT ON TABLE verification.verifications IS 'Verification results for corrections made by the system';
+COMMENT ON TABLE verification.analytics_metrics IS 'Calculated metrics for system performance and quality analysis';
+COMMENT ON TABLE verification.quality_assessments IS 'Quality assessments for individual corrections';
+COMMENT ON TABLE verification.dashboard_cache IS 'Cached data for dashboard performance optimization';
+COMMENT ON TABLE verification.reports IS 'Generated reports and their metadata';
+COMMENT ON TABLE verification.alert_rules IS 'Rules for triggering system alerts based on metrics';
+COMMENT ON TABLE verification.alerts IS 'Active and historical system alerts';
 
 COMMENT ON FUNCTION cleanup_expired_cache() IS 'Removes expired entries from dashboard_cache table';
 
@@ -223,7 +222,7 @@ BEGIN
     RAISE NOTICE '=================================================';
     RAISE NOTICE 'Verification Service Schema Created Successfully';
     RAISE NOTICE '=================================================';
-    RAISE NOTICE 'Tables created:';
+    RAISE NOTICE 'Tables created in verification schema:';
     RAISE NOTICE '  - verifications (with 5 indexes)';
     RAISE NOTICE '  - analytics_metrics (with 6 indexes)';
     RAISE NOTICE '  - quality_assessments (with 4 indexes)';

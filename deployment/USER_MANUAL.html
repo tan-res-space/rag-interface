@@ -394,7 +394,7 @@ code {
 <ul>
 <li><strong>Frontend</strong>: Web-based user interface (React application)</li>
 <li><strong>Backend</strong>: 5 microservices (Python FastAPI)</li>
-<li><strong>Database</strong>: PostgreSQL or SQL Server</li>
+<li><strong>Database</strong>: Single PostgreSQL or SQL Server database with multiple schemas</li>
 <li><strong>Cache</strong>: Redis for performance</li>
 <li><strong>Vector Database</strong>: For AI/ML functionality (Pinecone, Weaviate, etc.)</li>
 </ul>
@@ -524,11 +524,12 @@ chmod +x deploy.sh
 <h3 id="environment-variables">Environment Variables</h3>
 <p>Edit the <code>.env</code> file to configure your system:</p>
 <h4 id="database-configuration">Database Configuration</h4>
-<pre class="hljs"><code><div><span class="hljs-comment"># PostgreSQL settings</span>
+<pre class="hljs"><code><div><span class="hljs-comment"># PostgreSQL settings (Single database with multiple schemas)</span>
 POSTGRES_PASSWORD=your_secure_password_here
 POSTGRES_PORT=5432
+DATABASE_NAME=rag_interface_db
 
-<span class="hljs-comment"># Service database passwords</span>
+<span class="hljs-comment"># Service database passwords (each service connects with different user)</span>
 ERS_DB_PASSWORD=ers_password_here
 UMS_DB_PASSWORD=ums_password_here
 VS_DB_PASSWORD=vs_password_here
