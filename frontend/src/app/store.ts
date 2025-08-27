@@ -10,12 +10,18 @@ import { verificationApi } from '@infrastructure/api/verification-api';
 import { userApi } from '@infrastructure/api/user-api';
 import authReducer from '@features/auth/auth-slice';
 import uiReducer from '@shared/slices/ui-slice';
+import speakerReducer from '@features/speaker-management/speaker-slice';
+import mtValidationReducer from '@features/mt-validation/mt-validation-slice';
+import dashboardReducer from '@features/dashboard/dashboard-slice';
 
 export const store = configureStore({
   reducer: {
     // Feature reducers
     auth: authReducer,
     ui: uiReducer,
+    speakers: speakerReducer,
+    mtValidation: mtValidationReducer,
+    dashboard: dashboardReducer,
     
     // API reducers
     [authApi.reducerPath]: authApi.reducer,
