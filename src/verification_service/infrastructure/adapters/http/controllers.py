@@ -9,8 +9,19 @@ from fastapi import APIRouter, HTTPException, Depends, status
 from typing import List, Optional
 import uuid
 
-# Create router
+# Create main router
 router = APIRouter()
+
+# Include specialized routers
+try:
+    from .ser_calculation_router import router as ser_router
+    from .mt_validation_router import router as mt_validation_router
+
+    router.include_router(ser_router)
+    router.include_router(mt_validation_router)
+except ImportError:
+    # Continue without specialized routers if not available
+    pass
 
 
 # Placeholder dependency for authentication

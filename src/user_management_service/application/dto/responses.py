@@ -12,6 +12,7 @@ from uuid import UUID
 from pydantic import BaseModel, Field
 
 from ...domain.entities.user import UserRole, UserStatus, Permission
+from ...domain.value_objects.speaker_bucket import SpeakerBucket
 
 
 class UserResponse(BaseModel):
@@ -375,5 +376,203 @@ class UserSecurityStatusResponse(BaseModel):
                 "last_login": "2025-08-19T09:15:00Z",
                 "password_age_days": 45,
                 "security_warnings": []
+            }
+        }
+
+
+# =====================================================
+# SPEAKER MANAGEMENT RESPONSE DTOS
+# =====================================================
+
+class SpeakerResponse(BaseModel):
+    """Response DTO for speaker data"""
+
+    speaker_id: str
+    speaker_identifier: str
+    speaker_name: str
+    current_bucket: str
+    bucket_description: str
+    total_notes_count: int
+    processed_notes_count: int
+    processing_progress: float
+    average_ser_score: Optional[float] = None
+    recommended_bucket: str
+    should_transition: bool
+    quality_trend: str
+    priority_score: int
+    has_sufficient_data: bool
+    last_processed_at: Optional[datetime] = None
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        """Pydantic configuration"""
+        schema_extra = {
+            "example": {
+                "speaker_id": "550e8400-e29b-41d4-a716-446655440000",
+                "speaker_identifier": "SPK001",
+                "speaker_name": "Dr. John Smith",
+                "current_bucket": "high_touch",
+                "bucket_description": "Speakers with low ASR quality requiring significant corrections",
+                "total_notes_count": 150,
+                "processed_notes_count": 120,
+                "processing_progress": 80.0,
+                "average_ser_score": 25.5,
+                "recommended_bucket": "medium_touch",
+                "should_transition": True,
+                "quality_trend": "improving",
+                "priority_score": 2,
+                "has_sufficient_data": True,
+                "last_processed_at": "2025-08-19T14:30:00Z",
+                "created_at": "2025-08-01T10:00:00Z",
+                "updated_at": "2025-08-19T14:30:00Z"
+            }
+        }
+
+
+class SpeakerListResponse(BaseModel):
+    """Response DTO for speaker list with pagination"""
+
+    speakers: List[SpeakerResponse]
+    total_count: int
+    page: int
+    page_size: int
+    total_pages: int
+
+    class Config:
+        """Pydantic configuration"""
+        schema_extra = {
+            "example": {
+                "speakers": [],
+                "total_count": 25,
+                "page": 1,
+                "page_size": 10,
+                "total_pages": 3
+            }
+        }
+
+
+class HistoricalASRDataResponse(BaseModel):
+    """Response DTO for historical ASR data"""
+
+    data_id: str
+    speaker_id: str
+    instanote_job_id: Optional[str] = None
+    note_type: Optional[str] = None
+    asr_engine: Optional[str] = None
+    asr_word_count: int
+    final_word_count: int
+    text_length_difference: int
+    text_length_ratio: float
+    has_significant_changes: bool
+    is_test_data: bool
+    suitable_for_training: bool
+    suitable_for_testing: bool
+    processing_date: Optional[datetime] = None
+    processing_age_days: Optional[int] = None
+    is_recent_data: bool
+    created_at: datetime
+
+    class Config:
+        """Pydantic configuration"""
+        schema_extra = {
+            "example": {
+                "data_id": "550e8400-e29b-41d4-a716-446655440000",
+                "speaker_id": "550e8400-e29b-41d4-a716-446655440001",
+                "instanote_job_id": "JOB123456",
+                "note_type": "consultation",
+                "asr_engine": "whisper_v2",
+                "asr_word_count": 245,
+                "final_word_count": 250,
+                "text_length_difference": 5,
+                "text_length_ratio": 1.02,
+                "has_significant_changes": True,
+                "is_test_data": False,
+                "suitable_for_training": True,
+                "suitable_for_testing": True,
+                "processing_date": "2025-08-15T09:30:00Z",
+                "processing_age_days": 4,
+                "is_recent_data": True,
+                "created_at": "2025-08-15T09:30:00Z"
+            }
+        }
+
+
+class BucketTransitionRequestResponse(BaseModel):
+    """Response DTO for bucket transition request"""
+
+    request_id: str
+    speaker_id: str
+    from_bucket: str
+    to_bucket: str
+    transition_type: str
+    transition_reason: str
+    ser_improvement: Optional[float] = None
+    status: str
+    requested_by: Optional[str] = None
+    approved_by: Optional[str] = None
+    approval_notes: Optional[str] = None
+    is_urgent: bool
+    priority_score: int
+    processing_time_hours: Optional[float] = None
+    created_at: datetime
+    approved_at: Optional[datetime] = None
+
+    class Config:
+        """Pydantic configuration"""
+        schema_extra = {
+            "example": {
+                "request_id": "550e8400-e29b-41d4-a716-446655440000",
+                "speaker_id": "550e8400-e29b-41d4-a716-446655440001",
+                "from_bucket": "high_touch",
+                "to_bucket": "medium_touch",
+                "transition_type": "improvement",
+                "transition_reason": "Significant improvement in SER scores after RAG corrections",
+                "ser_improvement": 15.5,
+                "status": "pending",
+                "requested_by": "550e8400-e29b-41d4-a716-446655440002",
+                "approved_by": None,
+                "approval_notes": None,
+                "is_urgent": False,
+                "priority_score": 3,
+                "processing_time_hours": None,
+                "created_at": "2025-08-19T10:00:00Z",
+                "approved_at": None
+            }
+        }
+
+
+class SpeakerBucketStatsResponse(BaseModel):
+    """Response DTO for speaker bucket statistics"""
+
+    bucket_counts: Dict[str, int]
+    total_speakers: int
+    speakers_needing_transition: int
+    average_ser_by_bucket: Dict[str, float]
+    quality_distribution: Dict[str, int]
+
+    class Config:
+        """Pydantic configuration"""
+        schema_extra = {
+            "example": {
+                "bucket_counts": {
+                    "no_touch": 15,
+                    "low_touch": 25,
+                    "medium_touch": 35,
+                    "high_touch": 45
+                },
+                "total_speakers": 120,
+                "speakers_needing_transition": 8,
+                "average_ser_by_bucket": {
+                    "no_touch": 3.2,
+                    "low_touch": 8.5,
+                    "medium_touch": 22.1,
+                    "high_touch": 45.8
+                },
+                "quality_distribution": {
+                    "high": 40,
+                    "medium": 50,
+                    "low": 30
+                }
             }
         }

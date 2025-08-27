@@ -16,8 +16,17 @@ from src.rag_integration_service.application.dto.responses import (
     EmbeddingResponse, BatchEmbeddingResponse, SimilaritySearchResponse
 )
 
-# Create router
+# Create main router
 router = APIRouter()
+
+# Include specialized routers
+try:
+    from .speaker_rag_router import router as speaker_rag_router
+
+    router.include_router(speaker_rag_router)
+except ImportError:
+    # Continue without specialized routers if not available
+    pass
 
 
 # Placeholder dependency for authentication

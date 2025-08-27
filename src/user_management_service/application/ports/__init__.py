@@ -12,13 +12,15 @@ from .user_repository_port import IUserRepositoryPort
 from .password_service_port import IPasswordServicePort
 from .token_service_port import ITokenServicePort
 from .event_publisher_port import IEventPublisherPort
+from .speaker_repository_port import ISpeakerRepositoryPort
 
 __all__ = [
     "IAuthenticationPort",
-    "IAuthorizationPort", 
+    "IAuthorizationPort",
     "IUserManagementPort",
     "IUserRepositoryPort",
     "IPasswordServicePort",
     "ITokenServicePort",
-    "IEventPublisherPort"
+    "IEventPublisherPort",
+    "ISpeakerRepositoryPort"
 ]

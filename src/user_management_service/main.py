@@ -301,6 +301,18 @@ async def get_user(user_id: str):
 # Include API router in the app
 app.include_router(api_router)
 
+# Include speaker management routers
+try:
+    from .infrastructure.adapters.http.speaker_router import router as speaker_router
+    from .infrastructure.adapters.http.bucket_transition_router import router as bucket_transition_router
+
+    app.include_router(speaker_router)
+    app.include_router(bucket_transition_router)
+    logger.info("Speaker management routers included successfully")
+except ImportError as e:
+    logger.warning(f"Could not import speaker management routers: {e}")
+    # Continue without speaker management endpoints for now
+
 
 # Exception handlers
 @app.exception_handler(HTTPException)

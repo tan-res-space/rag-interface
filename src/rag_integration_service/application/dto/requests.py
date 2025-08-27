@@ -9,6 +9,7 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime
 
 from src.rag_integration_service.domain.value_objects.embedding_type import EmbeddingType
+from src.rag_integration_service.domain.entities.speaker_rag_processing_job import JobType
 
 
 @dataclass(frozen=True)
@@ -303,3 +304,162 @@ class ProcessErrorEventRequest:
         
         if self.metadata is None:
             object.__setattr__(self, 'metadata', {})
+
+
+# =====================================================
+# SPEAKER RAG PROCESSING REQUEST DTOS
+# =====================================================
+
+@dataclass(frozen=True)
+class HistoricalDataItem:
+    """
+    Data item representing historical ASR data for processing.
+    """
+
+    historical_data_id: str  # UUID as string
+    asr_text: str
+    final_text: str
+    metadata: Optional[Dict[str, Any]] = None
+
+    def __post_init__(self):
+        """Validate historical data item."""
+        if not self.historical_data_id:
+            raise ValueError("historical_data_id cannot be empty")
+
+        if not self.asr_text or not self.asr_text.strip():
+            raise ValueError("asr_text cannot be empty")
+
+        if not self.final_text or not self.final_text.strip():
+            raise ValueError("final_text cannot be empty")
+
+        if self.asr_text.strip() == self.final_text.strip():
+            raise ValueError("asr_text and final_text cannot be identical")
+
+
+@dataclass(frozen=True)
+class ProcessSpeakerHistoricalDataRequest:
+    """
+    Request DTO for processing speaker historical data to generate error-correction pairs.
+    """
+
+    speaker_id: str  # UUID as string
+    historical_data_items: List[HistoricalDataItem]
+    context_window: int = 50
+    min_confidence_threshold: float = 0.3
+    metadata: Optional[Dict[str, Any]] = None
+
+    def __post_init__(self):
+        """Validate request parameters."""
+        if not self.speaker_id:
+            raise ValueError("speaker_id cannot be empty")
+
+        if not self.historical_data_items:
+            raise ValueError("historical_data_items cannot be empty")
+
+        if len(self.historical_data_items) > 1000:
+            raise ValueError("Cannot process more than 1000 historical data items at once")
+
+        if self.context_window < 0 or self.context_window > 200:
+            raise ValueError("context_window must be between 0 and 200")
+
+        if self.min_confidence_threshold < 0 or self.min_confidence_threshold > 1:
+            raise ValueError("min_confidence_threshold must be between 0 and 1")
+
+
+@dataclass(frozen=True)
+class GenerateErrorCorrectionPairsRequest:
+    """
+    Request DTO for generating error-correction pairs from single ASR/final text pair.
+    """
+
+    speaker_id: str  # UUID as string
+    historical_data_id: str  # UUID as string
+    asr_text: str
+    final_text: str
+    context_window: int = 50
+    save_pairs: bool = True
+    metadata: Optional[Dict[str, Any]] = None
+
+    def __post_init__(self):
+        """Validate request parameters."""
+        if not self.speaker_id:
+            raise ValueError("speaker_id cannot be empty")
+
+        if not self.historical_data_id:
+            raise ValueError("historical_data_id cannot be empty")
+
+        if not self.asr_text or not self.asr_text.strip():
+            raise ValueError("asr_text cannot be empty")
+
+        if not self.final_text or not self.final_text.strip():
+            raise ValueError("final_text cannot be empty")
+
+        if self.asr_text.strip() == self.final_text.strip():
+            raise ValueError("asr_text and final_text cannot be identical")
+
+
+@dataclass(frozen=True)
+class CreateSpeakerRAGJobRequest:
+    """
+    Request DTO for creating a speaker RAG processing job.
+    """
+
+    speaker_id: str  # UUID as string
+    job_type: JobType
+    metadata: Optional[Dict[str, Any]] = None
+
+    def __post_init__(self):
+        """Validate request parameters."""
+        if not self.speaker_id:
+            raise ValueError("speaker_id cannot be empty")
+
+        if not isinstance(self.job_type, JobType):
+            raise ValueError("job_type must be a valid JobType")
+
+
+@dataclass(frozen=True)
+class VectorizeErrorPairsRequest:
+    """
+    Request DTO for vectorizing error-correction pairs for a speaker.
+    """
+
+    speaker_id: str  # UUID as string
+    batch_size: int = 100
+    min_confidence: float = 0.3
+    error_types: Optional[List[str]] = None
+    metadata: Optional[Dict[str, Any]] = None
+
+    def __post_init__(self):
+        """Validate request parameters."""
+        if not self.speaker_id:
+            raise ValueError("speaker_id cannot be empty")
+
+        if self.batch_size <= 0 or self.batch_size > 500:
+            raise ValueError("batch_size must be between 1 and 500")
+
+        if self.min_confidence < 0 or self.min_confidence > 1:
+            raise ValueError("min_confidence must be between 0 and 1")
+
+
+@dataclass(frozen=True)
+class GetSpeakerErrorPatternsRequest:
+    """
+    Request DTO for getting error patterns analysis for a speaker.
+    """
+
+    speaker_id: str  # UUID as string
+    error_type_filter: Optional[str] = None
+    min_confidence: Optional[float] = None
+    include_examples: bool = True
+    max_examples_per_type: int = 5
+
+    def __post_init__(self):
+        """Validate request parameters."""
+        if not self.speaker_id:
+            raise ValueError("speaker_id cannot be empty")
+
+        if self.min_confidence is not None and (self.min_confidence < 0 or self.min_confidence > 1):
+            raise ValueError("min_confidence must be between 0 and 1")
+
+        if self.max_examples_per_type < 0 or self.max_examples_per_type > 20:
+            raise ValueError("max_examples_per_type must be between 0 and 20")

@@ -288,3 +288,157 @@ class ModelInfoResponse:
         """Set default values."""
         if not hasattr(self, 'performance_metrics') or self.performance_metrics is None:
             object.__setattr__(self, 'performance_metrics', {})
+
+
+# =====================================================
+# SPEAKER RAG PROCESSING RESPONSE DTOS
+# =====================================================
+
+@dataclass(frozen=True)
+class ErrorCorrectionPairResponse:
+    """
+    Response DTO for error-correction pair data.
+    """
+
+    pair_id: str  # UUID as string
+    speaker_id: str  # UUID as string
+    historical_data_id: str  # UUID as string
+    error_text: str
+    correction_text: str
+    error_type: str
+    confidence_score: Optional[float]
+    has_context: bool
+    suitable_for_training: bool
+    created_at: Optional[datetime] = None
+
+    def __post_init__(self):
+        """Set default values."""
+        if self.created_at is None:
+            object.__setattr__(self, 'created_at', datetime.utcnow())
+
+
+@dataclass(frozen=True)
+class ProcessingJobResponse:
+    """
+    Response DTO for processing job status and information.
+    """
+
+    job_id: str  # UUID as string
+    speaker_id: str  # UUID as string
+    job_type: str
+    status: str
+    progress_percentage: float
+    total_records: Optional[int]
+    processed_records: int
+    error_records: int
+    duration_minutes: Optional[float]
+    error_message: Optional[str]
+    created_at: Optional[datetime]
+    started_at: Optional[datetime]
+    completed_at: Optional[datetime]
+
+    def __post_init__(self):
+        """Set default values."""
+        if self.created_at is None:
+            object.__setattr__(self, 'created_at', datetime.utcnow())
+
+
+@dataclass(frozen=True)
+class SpeakerRAGProcessingResponse:
+    """
+    Response DTO for speaker RAG processing results.
+    """
+
+    job_id: str  # UUID as string
+    speaker_id: str  # UUID as string
+    total_pairs_generated: int
+    error_statistics: Dict[str, Any]
+    processing_summary: Dict[str, Any]
+    status: str = "completed"
+
+    def __post_init__(self):
+        """Set default values."""
+        if not hasattr(self, 'error_statistics') or self.error_statistics is None:
+            object.__setattr__(self, 'error_statistics', {})
+
+        if not hasattr(self, 'processing_summary') or self.processing_summary is None:
+            object.__setattr__(self, 'processing_summary', {})
+
+
+@dataclass(frozen=True)
+class SpeakerErrorPatternsResponse:
+    """
+    Response DTO for speaker error patterns analysis.
+    """
+
+    speaker_id: str  # UUID as string
+    total_pairs: int
+    error_statistics: Dict[str, Any]
+    error_patterns: Dict[str, int]
+    high_confidence_pairs: int
+    training_suitable_pairs: int
+    analysis_timestamp: datetime
+
+    def __post_init__(self):
+        """Set default values."""
+        if not hasattr(self, 'analysis_timestamp') or self.analysis_timestamp is None:
+            object.__setattr__(self, 'analysis_timestamp', datetime.utcnow())
+
+        if not hasattr(self, 'error_statistics') or self.error_statistics is None:
+            object.__setattr__(self, 'error_statistics', {})
+
+        if not hasattr(self, 'error_patterns') or self.error_patterns is None:
+            object.__setattr__(self, 'error_patterns', {})
+
+
+@dataclass(frozen=True)
+class VectorizationResponse:
+    """
+    Response DTO for vectorization operation results.
+    """
+
+    job_id: str  # UUID as string
+    speaker_id: str  # UUID as string
+    total_pairs_vectorized: int
+    successful_vectorizations: int
+    failed_vectorizations: int
+    processing_time_minutes: float
+    embedding_model_info: Dict[str, str]
+    status: str = "completed"
+
+    def __post_init__(self):
+        """Set default values."""
+        if not hasattr(self, 'embedding_model_info') or self.embedding_model_info is None:
+            object.__setattr__(self, 'embedding_model_info', {})
+
+
+@dataclass(frozen=True)
+class SpeakerRAGStatsResponse:
+    """
+    Response DTO for speaker RAG statistics and analytics.
+    """
+
+    speaker_id: str  # UUID as string
+    total_error_correction_pairs: int
+    error_type_distribution: Dict[str, int]
+    confidence_distribution: Dict[str, int]
+    training_data_quality: Dict[str, Any]
+    processing_history: List[Dict[str, Any]]
+    last_updated: datetime
+
+    def __post_init__(self):
+        """Set default values."""
+        if not hasattr(self, 'last_updated') or self.last_updated is None:
+            object.__setattr__(self, 'last_updated', datetime.utcnow())
+
+        if not hasattr(self, 'error_type_distribution') or self.error_type_distribution is None:
+            object.__setattr__(self, 'error_type_distribution', {})
+
+        if not hasattr(self, 'confidence_distribution') or self.confidence_distribution is None:
+            object.__setattr__(self, 'confidence_distribution', {})
+
+        if not hasattr(self, 'training_data_quality') or self.training_data_quality is None:
+            object.__setattr__(self, 'training_data_quality', {})
+
+        if not hasattr(self, 'processing_history') or self.processing_history is None:
+            object.__setattr__(self, 'processing_history', [])
