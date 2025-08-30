@@ -73,7 +73,7 @@ async def test(): \
 asyncio.run(test())"
 
 # CRUD smoke test through the adapter
- db-crud-test:
+db-crud-test:
 	python - <<'PY'
 import asyncio, uuid
 from datetime import datetime, timedelta

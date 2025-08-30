@@ -7,6 +7,4 @@ for testing and demonstration purposes.
 
 from .adapter import InMemoryEventPublisherAdapter
 
-__all__ = [
-    "InMemoryEventPublisherAdapter"
-]
+__all__ = ["InMemoryEventPublisherAdapter"]

@@ -6,23 +6,24 @@ This test suite covers all business rules, validation logic, and edge cases
 as specified in the design document.
 """
 
-import pytest
-from uuid import uuid4, UUID
 from datetime import datetime, timedelta
-from typing import List, Dict, Any
+from typing import Any, Dict, List
+from uuid import UUID, uuid4
+
+import pytest
 
 # Import will be available after we create the entity
 from src.error_reporting_service.domain.entities.error_report import (
     ErrorReport,
+    ErrorStatus,
     SeverityLevel,
-    ErrorStatus
 )
 from tests.factories import ErrorReportFactory, create_medical_error_report
 
 
 class TestErrorReportEntity:
     """Test suite for ErrorReport domain entity"""
-    
+
     def test_create_valid_error_report(self):
         """Test creating a valid error report with all required fields"""
         # Arrange
@@ -38,7 +39,7 @@ class TestErrorReportEntity:
         end_position = 24
         error_timestamp = datetime.utcnow()
         reported_at = datetime.utcnow()
-        
+
         # Act
         error_report = ErrorReport(
             error_id=error_id,
@@ -52,9 +53,9 @@ class TestErrorReportEntity:
             start_position=start_position,
             end_position=end_position,
             error_timestamp=error_timestamp,
-            reported_at=reported_at
+            reported_at=reported_at,
         )
-        
+
         # Assert
         assert error_report.error_id == error_id
         assert error_report.job_id == job_id
@@ -69,10 +70,12 @@ class TestErrorReportEntity:
         assert error_report.error_timestamp == error_timestamp
         assert error_report.reported_at == reported_at
         assert error_report.status == ErrorStatus.PENDING  # Default status
-    
+
     def test_invalid_position_range_raises_error(self):
         """Test that invalid position range raises validation error"""
-        with pytest.raises(ValueError, match="end_position must be greater than start_position"):
+        with pytest.raises(
+            ValueError, match="end_position must be greater than start_position"
+        ):
             ErrorReport(
                 error_id=uuid4(),
                 job_id=uuid4(),
@@ -85,12 +88,14 @@ class TestErrorReportEntity:
                 start_position=10,
                 end_position=5,  # Invalid: less than start_position
                 error_timestamp=datetime.utcnow(),
-                reported_at=datetime.utcnow()
+                reported_at=datetime.utcnow(),
             )
-    
+
     def test_same_original_and_corrected_text_raises_error(self):
         """Test that identical original and corrected text raises validation error"""
-        with pytest.raises(ValueError, match="corrected_text must differ from original_text"):
+        with pytest.raises(
+            ValueError, match="corrected_text must differ from original_text"
+        ):
             ErrorReport(
                 error_id=uuid4(),
                 job_id=uuid4(),
@@ -103,9 +108,9 @@ class TestErrorReportEntity:
                 start_position=0,
                 end_position=9,
                 error_timestamp=datetime.utcnow(),
-                reported_at=datetime.utcnow()
+                reported_at=datetime.utcnow(),
             )
-    
+
     def test_empty_error_categories_raises_error(self):
         """Test that empty error categories raises validation error"""
         with pytest.raises(ValueError, match="error_categories cannot be empty"):
@@ -121,15 +126,15 @@ class TestErrorReportEntity:
                 start_position=0,
                 end_position=9,
                 error_timestamp=datetime.utcnow(),
-                reported_at=datetime.utcnow()
+                reported_at=datetime.utcnow(),
             )
-    
+
     def test_error_report_with_optional_fields(self):
         """Test creating error report with optional fields"""
         # Arrange
         context_notes = "Common misspelling in medical terminology"
         metadata = {"audio_quality": "good", "confidence_score": 0.95}
-        
+
         # Act
         error_report = ErrorReport(
             error_id=uuid4(),
@@ -145,18 +150,18 @@ class TestErrorReportEntity:
             context_notes=context_notes,
             error_timestamp=datetime.utcnow(),
             reported_at=datetime.utcnow(),
-            metadata=metadata
+            metadata=metadata,
         )
-        
+
         # Assert
         assert error_report.context_notes == context_notes
         assert error_report.metadata == metadata
-    
+
     def test_error_report_equality(self):
         """Test error report equality based on error_id"""
         # Arrange
         error_id = uuid4()
-        
+
         error_report1 = ErrorReport(
             error_id=error_id,
             job_id=uuid4(),
@@ -169,9 +174,9 @@ class TestErrorReportEntity:
             start_position=0,
             end_position=5,
             error_timestamp=datetime.utcnow(),
-            reported_at=datetime.utcnow()
+            reported_at=datetime.utcnow(),
         )
-        
+
         error_report2 = ErrorReport(
             error_id=error_id,  # Same ID
             job_id=uuid4(),
@@ -184,13 +189,13 @@ class TestErrorReportEntity:
             start_position=0,
             end_position=5,
             error_timestamp=datetime.utcnow(),
-            reported_at=datetime.utcnow()
+            reported_at=datetime.utcnow(),
         )
-        
+
         # Act & Assert
         assert error_report1 == error_report2  # Should be equal based on ID
         assert hash(error_report1) == hash(error_report2)
-    
+
     def test_error_report_string_representation(self):
         """Test error report string representation"""
         # Arrange
@@ -206,12 +211,12 @@ class TestErrorReportEntity:
             start_position=0,
             end_position=4,
             error_timestamp=datetime.utcnow(),
-            reported_at=datetime.utcnow()
+            reported_at=datetime.utcnow(),
         )
-        
+
         # Act
         str_repr = str(error_report)
-        
+
         # Assert
         assert "ErrorReport" in str_repr
         assert str(error_report.error_id) in str_repr
@@ -220,14 +225,14 @@ class TestErrorReportEntity:
 
 class TestSeverityLevel:
     """Test suite for SeverityLevel enum"""
-    
+
     def test_severity_level_values(self):
         """Test that all severity levels have correct values"""
         assert SeverityLevel.LOW.value == "low"
         assert SeverityLevel.MEDIUM.value == "medium"
         assert SeverityLevel.HIGH.value == "high"
         assert SeverityLevel.CRITICAL.value == "critical"
-    
+
     def test_severity_level_ordering(self):
         """Test severity level ordering for comparison"""
         # This will be implemented if we add ordering to the enum
@@ -236,7 +241,7 @@ class TestSeverityLevel:
 
 class TestErrorStatus:
     """Test suite for ErrorStatus enum"""
-    
+
     def test_error_status_values(self):
         """Test that all error statuses have correct values"""
         assert ErrorStatus.PENDING.value == "pending"
@@ -262,7 +267,7 @@ class TestErrorReportBusinessRules:
                 start_position=-1,  # Invalid: negative position
                 end_position=5,
                 error_timestamp=datetime.utcnow(),
-                reported_at=datetime.utcnow()
+                reported_at=datetime.utcnow(),
             )
 
     def test_empty_original_text_raises_error(self):
@@ -280,7 +285,7 @@ class TestErrorReportBusinessRules:
                 start_position=0,
                 end_position=5,
                 error_timestamp=datetime.utcnow(),
-                reported_at=datetime.utcnow()
+                reported_at=datetime.utcnow(),
             )
 
     def test_empty_corrected_text_raises_error(self):
@@ -298,7 +303,7 @@ class TestErrorReportBusinessRules:
                 start_position=0,
                 end_position=5,
                 error_timestamp=datetime.utcnow(),
-                reported_at=datetime.utcnow()
+                reported_at=datetime.utcnow(),
             )
 
     def test_whitespace_only_text_raises_error(self):
@@ -316,7 +321,7 @@ class TestErrorReportBusinessRules:
                 start_position=0,
                 end_position=3,
                 error_timestamp=datetime.utcnow(),
-                reported_at=datetime.utcnow()
+                reported_at=datetime.utcnow(),
             )
 
     def test_position_range_exceeds_text_length_raises_error(self):
@@ -334,13 +339,15 @@ class TestErrorReportBusinessRules:
                 start_position=0,
                 end_position=10,  # Invalid: exceeds text length
                 error_timestamp=datetime.utcnow(),
-                reported_at=datetime.utcnow()
+                reported_at=datetime.utcnow(),
             )
 
     def test_is_critical_method(self):
         """Test the is_critical method for severity checking"""
         # Test critical error
-        critical_error = ErrorReportFactory.create(severity_level=SeverityLevel.CRITICAL)
+        critical_error = ErrorReportFactory.create(
+            severity_level=SeverityLevel.CRITICAL
+        )
         assert critical_error.is_critical() is True
 
         # Test non-critical errors
@@ -360,9 +367,9 @@ class TestErrorReportBusinessRules:
             error_categories=["medical_terminology"],
             severity_level=SeverityLevel.HIGH,
             start_position=16,  # "diabetis" starts at position 16
-            end_position=24,    # "diabetis" ends at position 24
+            end_position=24,  # "diabetis" ends at position 24
             error_timestamp=datetime.utcnow(),
-            reported_at=datetime.utcnow()
+            reported_at=datetime.utcnow(),
         )
 
         assert error_report.calculate_error_length() == 8  # "diabetis" is 8 characters
@@ -381,7 +388,7 @@ class TestErrorReportBusinessRules:
             start_position=16,
             end_position=24,
             error_timestamp=datetime.utcnow(),
-            reported_at=datetime.utcnow()
+            reported_at=datetime.utcnow(),
         )
 
         assert error_report.get_error_text() == "diabetis"
@@ -400,7 +407,7 @@ class TestErrorReportBusinessRules:
             start_position=16,
             end_position=24,
             error_timestamp=datetime.utcnow(),
-            reported_at=datetime.utcnow()
+            reported_at=datetime.utcnow(),
         )
 
         assert error_report.get_correction_text() == "diabetes"
@@ -471,7 +478,7 @@ class TestErrorReportEdgeCases:
             start_position=0,
             end_position=1,
             error_timestamp=datetime.utcnow(),
-            reported_at=datetime.utcnow()
+            reported_at=datetime.utcnow(),
         )
 
         assert error_report.calculate_error_length() == 1
@@ -495,7 +502,7 @@ class TestErrorReportEdgeCases:
             start_position=0,
             end_position=5000,
             error_timestamp=datetime.utcnow(),
-            reported_at=datetime.utcnow()
+            reported_at=datetime.utcnow(),
         )
 
         assert len(error_report.original_text) == 5000
@@ -515,7 +522,7 @@ class TestErrorReportEdgeCases:
             start_position=0,
             end_position=17,
             error_timestamp=datetime.utcnow(),
-            reported_at=datetime.utcnow()
+            reported_at=datetime.utcnow(),
         )
 
         assert "é" in error_report.original_text
@@ -537,7 +544,7 @@ class TestErrorReportEdgeCases:
             start_position=16,
             end_position=41,
             error_timestamp=datetime.utcnow(),
-            reported_at=datetime.utcnow()
+            reported_at=datetime.utcnow(),
         )
 
         assert len(error_report.error_categories) == 4
@@ -553,12 +560,12 @@ class TestErrorReportEdgeCases:
             "technical_issues": ["static", "echo"],
             "nested_data": {
                 "recording_device": "microphone_a",
-                "room_acoustics": "poor"
+                "room_acoustics": "poor",
             },
             "timestamps": {
                 "recording_start": "2023-01-01T10:00:00Z",
-                "error_detected": "2023-01-01T10:05:30Z"
-            }
+                "error_detected": "2023-01-01T10:05:30Z",
+            },
         }
 
         error_report = ErrorReport(
@@ -574,9 +581,11 @@ class TestErrorReportEdgeCases:
             end_position=9,
             error_timestamp=datetime.utcnow(),
             reported_at=datetime.utcnow(),
-            metadata=complex_metadata
+            metadata=complex_metadata,
         )
 
         assert error_report.metadata["audio_quality"] == "good"
-        assert error_report.metadata["nested_data"]["recording_device"] == "microphone_a"
+        assert (
+            error_report.metadata["nested_data"]["recording_device"] == "microphone_a"
+        )
         assert len(error_report.metadata["technical_issues"]) == 2

@@ -14,6 +14,7 @@ const LoginPage = React.lazy(() => import('@features/auth/pages/LoginPage'));
 const DashboardPage = React.lazy(() => import('@features/dashboard/pages/DashboardPage'));
 const ErrorReportingPage = React.lazy(() => import('@features/error-reporting/pages/ErrorReportingPage'));
 const VerificationPage = React.lazy(() => import('@features/verification/pages/VerificationDashboardPage'));
+const SystemHealthPage = React.lazy(() => import('@features/system-health/pages/SystemHealthPage'));
 const AdminPage = React.lazy(() => import('@features/admin/pages/AdminPage'));
 const NotFoundPage = React.lazy(() => import('@shared/pages/NotFoundPage'));
 
@@ -54,7 +55,17 @@ export const AppRoutes: React.FC = () => {
           
           {/* Verification */}
           <Route path="verification" element={<VerificationPage />} />
-          
+
+          {/* System Health */}
+          <Route
+            path="system-health"
+            element={
+              <ProtectedRoute requiredRoles={[UserRole.ADMIN, UserRole.QA_SUPERVISOR]}>
+                <SystemHealthPage />
+              </ProtectedRoute>
+            }
+          />
+
           {/* Admin (role-based access) */}
           <Route
             path="admin"

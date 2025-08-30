@@ -7,6 +7,4 @@ for testing and demonstration purposes.
 
 from .adapter import InMemoryDatabaseAdapter
 
-__all__ = [
-    "InMemoryDatabaseAdapter"
-]
+__all__ = ["InMemoryDatabaseAdapter"]

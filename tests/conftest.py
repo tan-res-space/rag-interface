@@ -7,29 +7,34 @@ following TDD principles and the design specification requirements.
 
 import asyncio
 import os
-import pytest
 import uuid
 from datetime import datetime, timedelta
-from typing import AsyncGenerator, Generator, Dict, Any
+from typing import Any, AsyncGenerator, Dict, Generator
 from unittest.mock import AsyncMock, Mock
+
+import pytest
 
 # Test database imports
 import sqlalchemy as sa
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
-from sqlalchemy.pool import StaticPool
 
 # FastAPI testing imports
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.pool import StaticPool
+
+from src.error_reporting_service.domain.entities.error_report import (
+    ErrorReport,
+    ErrorStatus,
+    SeverityLevel,
+)
+from src.error_reporting_service.infrastructure.adapters.database.postgresql.models import (
+    Base,
+)
+from src.error_reporting_service.infrastructure.config.settings import Settings
 
 # Application imports
 from src.error_reporting_service.main import app
-from src.error_reporting_service.domain.entities.error_report import (
-    ErrorReport, SeverityLevel, ErrorStatus
-)
-from src.error_reporting_service.infrastructure.adapters.database.postgresql.models import Base
-from src.error_reporting_service.infrastructure.config.settings import Settings
-
 
 # Test Configuration
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
@@ -52,15 +57,15 @@ async def test_engine():
         TEST_DATABASE_URL,
         echo=False,
         poolclass=StaticPool,
-        connect_args={"check_same_thread": False}
+        connect_args={"check_same_thread": False},
     )
-    
+
     # Create all tables
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-    
+
     yield engine
-    
+
     # Cleanup
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
@@ -73,7 +78,7 @@ async def test_session(test_engine) -> AsyncGenerator[AsyncSession, None]:
     async_session = async_sessionmaker(
         test_engine, class_=AsyncSession, expire_on_commit=False
     )
-    
+
     async with async_session() as session:
         yield session
         await session.rollback()
@@ -90,7 +95,7 @@ def test_settings() -> Settings:
         redis={"url": TEST_REDIS_URL},
         kafka={"bootstrap_servers": TEST_KAFKA_BOOTSTRAP_SERVERS},
         secret_key="test-secret-key",
-        access_token_expire_minutes=30
+        access_token_expire_minutes=30,
     )
 
 
@@ -137,7 +142,7 @@ def sample_error_report(
     sample_error_id: uuid.UUID,
     sample_job_id: uuid.UUID,
     sample_speaker_id: uuid.UUID,
-    sample_user_id: uuid.UUID
+    sample_user_id: uuid.UUID,
 ) -> ErrorReport:
     """Create a sample error report for testing."""
     return ErrorReport(
@@ -155,7 +160,7 @@ def sample_error_report(
         error_timestamp=datetime.utcnow(),
         reported_at=datetime.utcnow(),
         status=ErrorStatus.PENDING,
-        metadata={"audio_quality": "good", "confidence_score": 0.95}
+        metadata={"audio_quality": "good", "confidence_score": 0.95},
     )
 
 
@@ -211,7 +216,7 @@ def test_user() -> Dict[str, Any]:
         "username": "test_user",
         "email": "test@example.com",
         "roles": ["qa_personnel"],
-        "organization_id": str(uuid.uuid4())
+        "organization_id": str(uuid.uuid4()),
     }
 
 
@@ -229,7 +234,7 @@ def valid_error_report_data() -> Dict[str, Any]:
         "start_position": 16,
         "end_position": 24,
         "context_notes": "Common misspelling",
-        "metadata": {"audio_quality": "good"}
+        "metadata": {"audio_quality": "good"},
     }
 
 
@@ -246,7 +251,7 @@ def invalid_error_report_data() -> Dict[str, Any]:
         "start_position": -1,
         "end_position": 0,
         "context_notes": "x" * 1001,  # Exceeds max length
-        "metadata": {}
+        "metadata": {},
     }
 
 

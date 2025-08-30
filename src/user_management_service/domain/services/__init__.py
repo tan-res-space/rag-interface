@@ -9,6 +9,4 @@ Domain services are stateless and contain pure business logic.
 
 from .user_validation_service import UserValidationService
 
-__all__ = [
-    "UserValidationService"
-]
+__all__ = ["UserValidationService"]

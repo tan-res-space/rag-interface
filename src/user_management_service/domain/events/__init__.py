@@ -7,22 +7,22 @@ in the user management domain.
 
 from .domain_events import (
     BaseDomainEvent,
-    UserCreatedEvent,
-    UserActivatedEvent,
-    UserSuspendedEvent,
-    UserRoleChangedEvent,
-    UserLoginSuccessEvent,
-    UserLoginFailureEvent,
     UserAccountLockedEvent,
+    UserActivatedEvent,
+    UserCreatedEvent,
+    UserDeletedEvent,
+    UserLoginFailureEvent,
+    UserLoginSuccessEvent,
     UserPasswordChangedEvent,
     UserProfileUpdatedEvent,
-    UserDeletedEvent
+    UserRoleChangedEvent,
+    UserSuspendedEvent,
 )
 
 __all__ = [
     "BaseDomainEvent",
     "UserCreatedEvent",
-    "UserActivatedEvent", 
+    "UserActivatedEvent",
     "UserSuspendedEvent",
     "UserRoleChangedEvent",
     "UserLoginSuccessEvent",
@@ -30,5 +30,5 @@ __all__ = [
     "UserAccountLockedEvent",
     "UserPasswordChangedEvent",
     "UserProfileUpdatedEvent",
-    "UserDeletedEvent"
+    "UserDeletedEvent",
 ]

@@ -5,24 +5,24 @@ This module sets up the FastAPI application with all necessary middleware,
 routes, and dependency injection following Hexagonal Architecture principles.
 """
 
+import logging
+import uuid
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request, HTTPException
+from datetime import datetime
+
+import uvicorn
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
-import uvicorn
-import logging
-from datetime import datetime
-import uuid
 
 # Application imports
 from .infrastructure.config.settings import settings
 
-
 # Configure logging
 logging.basicConfig(
     level=getattr(logging, settings.log_level.upper()),
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -31,39 +31,39 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     """
     Application lifespan manager.
-    
+
     Handles startup and shutdown events for the User Management Service.
     """
     # Startup
     logger.info("User Management Service starting up...")
-    
+
     try:
         # Initialize authentication systems
         await initialize_auth_systems()
-        
+
         # Initialize database connections
         await initialize_database()
-        
+
         # Initialize cache
         await initialize_cache()
-        
+
         logger.info("User Management Service startup completed successfully")
-        
+
     except Exception as e:
         logger.error(f"Failed to start User Management Service: {e}")
         raise
-    
+
     yield
-    
+
     # Shutdown
     logger.info("User Management Service shutting down...")
-    
+
     try:
         # Cleanup resources
         await cleanup_resources()
-        
+
         logger.info("User Management Service shutdown completed")
-        
+
     except Exception as e:
         logger.error(f"Error during shutdown: {e}")
 
@@ -89,8 +89,7 @@ app.add_middleware(
 
 # Add trusted host middleware for security
 app.add_middleware(
-    TrustedHostMiddleware,
-    allowed_hosts=["*"]  # Configure appropriately for production
+    TrustedHostMiddleware, allowed_hosts=["*"]  # Configure appropriately for production
 )
 
 
@@ -99,7 +98,7 @@ async def add_request_id_middleware(request: Request, call_next):
     """Add request ID to all requests for tracing"""
     request_id = str(uuid.uuid4())
     request.state.request_id = request_id
-    
+
     response = await call_next(request)
     response.headers["X-Request-ID"] = request_id
     return response
@@ -116,23 +115,20 @@ async def error_handling_middleware(request: Request, call_next):
         raise
     except Exception as e:
         logger.exception(f"Unhandled exception: {e}")
-        
+
         error_response = {
             "success": False,
             "error": {
                 "code": "INTERNAL_SERVER_ERROR",
                 "message": "An internal server error occurred",
-                "details": str(e) if settings.debug else "Internal server error"
+                "details": str(e) if settings.debug else "Internal server error",
             },
             "timestamp": datetime.utcnow().isoformat(),
             "request_id": getattr(request.state, "request_id", str(uuid.uuid4())),
-            "version": "1.0.0"
+            "version": "1.0.0",
         }
-        
-        return JSONResponse(
-            status_code=500,
-            content=error_response
-        )
+
+        return JSONResponse(status_code=500, content=error_response)
 
 
 # Health check endpoint
@@ -143,7 +139,7 @@ async def health_check():
         "status": "healthy",
         "version": "1.0.0",
         "timestamp": datetime.utcnow().isoformat(),
-        "service": "user-management-service"
+        "service": "user-management-service",
     }
 
 
@@ -155,16 +151,20 @@ async def root():
         "service": "User Management Service",
         "version": "1.0.0",
         "status": "running",
-        "docs": "/docs" if settings.debug else "Documentation not available in production"
+        "docs": (
+            "/docs" if settings.debug else "Documentation not available in production"
+        ),
     }
 
+
+from typing import Optional
 
 # Create API router
 from fastapi import APIRouter
 from pydantic import BaseModel
-from typing import Optional
 
 api_router = APIRouter(prefix="/api/v1")
+
 
 class LoginRequest(BaseModel):
     username: str
@@ -172,12 +172,14 @@ class LoginRequest(BaseModel):
     ipAddress: Optional[str] = None
     userAgent: Optional[str] = None
 
+
 class LoginResponse(BaseModel):
     accessToken: str
     refreshToken: str
     tokenType: str
     expiresIn: int
     user: dict
+
 
 # Authentication endpoints
 @api_router.post("/auth/login", response_model=LoginResponse)
@@ -199,13 +201,18 @@ async def login(credentials: LoginRequest):
                 "lastName": "User",
                 "fullName": "Admin User",
                 "roles": ["admin"],
-                "permissions": ["admin:read", "admin:write", "users:read", "users:write"],
+                "permissions": [
+                    "admin:read",
+                    "admin:write",
+                    "users:read",
+                    "users:write",
+                ],
                 "status": "active",
                 "department": "IT",
                 "createdAt": datetime.utcnow().isoformat(),
                 "updatedAt": datetime.utcnow().isoformat(),
-                "isActive": True
-            }
+                "isActive": True,
+            },
         )
     else:
         raise HTTPException(status_code=401, detail="Invalid credentials")
@@ -235,7 +242,7 @@ async def get_current_user():
         "department": "IT",
         "createdAt": datetime.utcnow().isoformat(),
         "updatedAt": datetime.utcnow().isoformat(),
-        "isActive": True
+        "isActive": True,
     }
 
 
@@ -251,17 +258,17 @@ async def list_users():
                 "username": "admin",
                 "email": "admin@example.com",
                 "roles": ["admin"],
-                "status": "active"
+                "status": "active",
             },
             {
                 "id": str(uuid.uuid4()),
                 "username": "qa_user",
                 "email": "qa@example.com",
                 "roles": ["qa_personnel"],
-                "status": "active"
-            }
+                "status": "active",
+            },
         ],
-        "total": 2
+        "total": 2,
     }
 
 
@@ -276,7 +283,7 @@ async def create_user(username: str, email: str, roles: list):
         "email": email,
         "roles": roles,
         "status": "active",
-        "created_at": datetime.utcnow().isoformat()
+        "created_at": datetime.utcnow().isoformat(),
     }
 
 
@@ -295,16 +302,19 @@ async def get_user(user_id: str):
         "email": "test@example.com",
         "roles": ["qa_personnel"],
         "status": "active",
-        "created_at": "2023-01-01T00:00:00Z"
+        "created_at": "2023-01-01T00:00:00Z",
     }
+
 
 # Include API router in the app
 app.include_router(api_router)
 
 # Include speaker management routers
 try:
+    from .infrastructure.adapters.http.bucket_transition_router import (
+        router as bucket_transition_router,
+    )
     from .infrastructure.adapters.http.speaker_router import router as speaker_router
-    from .infrastructure.adapters.http.bucket_transition_router import router as bucket_transition_router
 
     app.include_router(speaker_router)
     app.include_router(bucket_transition_router)
@@ -323,17 +333,14 @@ async def http_exception_handler(request: Request, exc: HTTPException):
         "error": {
             "code": f"HTTP_{exc.status_code}",
             "message": exc.detail,
-            "status_code": exc.status_code
+            "status_code": exc.status_code,
         },
         "timestamp": datetime.utcnow().isoformat(),
         "request_id": getattr(request.state, "request_id", str(uuid.uuid4())),
-        "version": "1.0.0"
+        "version": "1.0.0",
     }
-    
-    return JSONResponse(
-        status_code=exc.status_code,
-        content=error_response
-    )
+
+    return JSONResponse(status_code=exc.status_code, content=error_response)
 
 
 @app.exception_handler(ValueError)
@@ -341,19 +348,13 @@ async def value_error_handler(request: Request, exc: ValueError):
     """Handle ValueError exceptions"""
     error_response = {
         "success": False,
-        "error": {
-            "code": "INVALID_REQUEST",
-            "message": str(exc)
-        },
+        "error": {"code": "INVALID_REQUEST", "message": str(exc)},
         "timestamp": datetime.utcnow().isoformat(),
         "request_id": getattr(request.state, "request_id", str(uuid.uuid4())),
-        "version": "1.0.0"
+        "version": "1.0.0",
     }
-    
-    return JSONResponse(
-        status_code=400,
-        content=error_response
-    )
+
+    return JSONResponse(status_code=400, content=error_response)
 
 
 # Initialization functions
@@ -391,5 +392,5 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=8004,  # User Management Service port
         reload=settings.debug,
-        log_level=settings.log_level.lower()
+        log_level=settings.log_level.lower(),
     )

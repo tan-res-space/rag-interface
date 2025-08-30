@@ -7,6 +7,4 @@ for testing and demonstration purposes.
 
 from .adapter import InMemoryUserRepositoryAdapter
 
-__all__ = [
-    "InMemoryUserRepositoryAdapter"
-]
+__all__ = ["InMemoryUserRepositoryAdapter"]

@@ -10,14 +10,14 @@ from .adapters import (
     DatabaseAdapterFactory,
     EventBusAdapterFactory,
     PasswordServiceAdapter,
-    TokenServiceAdapter
+    TokenServiceAdapter,
 )
 from .config import settings
 
 __all__ = [
     "DatabaseAdapterFactory",
     "EventBusAdapterFactory",
-    "PasswordServiceAdapter", 
+    "PasswordServiceAdapter",
     "TokenServiceAdapter",
-    "settings"
+    "settings",
 ]

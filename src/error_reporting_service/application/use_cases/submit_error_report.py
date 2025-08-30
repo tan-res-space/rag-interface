@@ -5,53 +5,53 @@ This use case handles the submission of new error reports.
 It orchestrates domain validation, persistence, and event publishing.
 """
 
-from uuid import uuid4, UUID
 from datetime import datetime
+from uuid import UUID, uuid4
 
-from src.error_reporting_service.domain.entities.error_report import (
-    ErrorReport, SeverityLevel, ErrorStatus
-)
-from src.error_reporting_service.domain.services.validation_service import (
-    ErrorValidationService
-)
-from src.error_reporting_service.domain.services.categorization_service import (
-    ErrorCategorizationService
-)
-from src.error_reporting_service.domain.events.domain_events import (
-    ErrorReportedEvent
-)
 from src.error_reporting_service.application.dto.requests import (
-    SubmitErrorReportRequest
+    SubmitErrorReportRequest,
 )
 from src.error_reporting_service.application.dto.responses import (
-    SubmitErrorReportResponse
-)
-from src.error_reporting_service.application.ports.secondary.repository_port import (
-    ErrorReportRepository
+    SubmitErrorReportResponse,
 )
 from src.error_reporting_service.application.ports.secondary.event_publisher_port import (
-    EventPublisher
+    EventPublisher,
+)
+from src.error_reporting_service.application.ports.secondary.repository_port import (
+    ErrorReportRepository,
+)
+from src.error_reporting_service.domain.entities.error_report import (
+    ErrorReport,
+    ErrorStatus,
+    SeverityLevel,
+)
+from src.error_reporting_service.domain.events.domain_events import ErrorReportedEvent
+from src.error_reporting_service.domain.services.categorization_service import (
+    ErrorCategorizationService,
+)
+from src.error_reporting_service.domain.services.validation_service import (
+    ErrorValidationService,
 )
 
 
 class SubmitErrorReportUseCase:
     """
     Use case for submitting error reports.
-    
+
     This use case coordinates the process of validating, saving, and publishing
     events for new error reports.
     """
-    
+
     def __init__(
         self,
         repository: ErrorReportRepository,
         event_publisher: EventPublisher,
         validation_service: ErrorValidationService,
-        categorization_service: ErrorCategorizationService
+        categorization_service: ErrorCategorizationService,
     ):
         """
         Initialize the use case with its dependencies.
-        
+
         Args:
             repository: Repository for error report persistence
             event_publisher: Publisher for domain events
@@ -62,50 +62,54 @@ class SubmitErrorReportUseCase:
         self._event_publisher = event_publisher
         self._validation_service = validation_service
         self._categorization_service = categorization_service
-    
-    async def execute(self, request: SubmitErrorReportRequest) -> SubmitErrorReportResponse:
+
+    async def execute(
+        self, request: SubmitErrorReportRequest
+    ) -> SubmitErrorReportResponse:
         """
         Execute the submit error report use case.
-        
+
         Args:
             request: The error report submission request
-            
+
         Returns:
             Response containing the result of the submission
-            
+
         Raises:
             ValueError: If validation fails
             RepositoryError: If persistence fails
             EventPublishingError: If event publishing fails
         """
-        
+
         # 1. Create domain entity from request
         error_report = self._create_error_report_from_request(request)
-        
+
         # 2. Validate business rules
         self._validate_error_report(error_report)
-        
+
         # 3. Persist error report
         saved_error = await self._repository.save(error_report)
-        
+
         # 4. Publish domain event
         await self._publish_error_reported_event(saved_error)
-        
+
         # 5. Return success response
         return SubmitErrorReportResponse(
             error_id=str(saved_error.error_id),
             status="success",
             message="Error report submitted successfully",
-            validation_warnings=[]
+            validation_warnings=[],
         )
-    
-    def _create_error_report_from_request(self, request: SubmitErrorReportRequest) -> ErrorReport:
+
+    def _create_error_report_from_request(
+        self, request: SubmitErrorReportRequest
+    ) -> ErrorReport:
         """
         Create a domain entity from the request DTO.
-        
+
         Args:
             request: The error report submission request
-            
+
         Returns:
             ErrorReport domain entity
         """
@@ -124,31 +128,33 @@ class SubmitErrorReportUseCase:
             error_timestamp=datetime.utcnow(),
             reported_at=datetime.utcnow(),
             status=ErrorStatus.PENDING,
-            metadata=request.metadata or {}
+            metadata=request.metadata or {},
         )
-    
+
     def _validate_error_report(self, error_report: ErrorReport) -> None:
         """
         Validate the error report using domain services.
-        
+
         Args:
             error_report: The error report to validate
-            
+
         Raises:
             ValueError: If validation fails
         """
         # Validate error categories
-        if not self._validation_service.validate_error_categories(error_report.error_categories):
+        if not self._validation_service.validate_error_categories(
+            error_report.error_categories
+        ):
             raise ValueError("Invalid error categories")
-        
+
         # Validate context integrity
         if not self._validation_service.validate_context_integrity(error_report):
             raise ValueError("Invalid error context or position")
-    
+
     async def _publish_error_reported_event(self, error_report: ErrorReport) -> None:
         """
         Publish the error reported domain event.
-        
+
         Args:
             error_report: The error report that was saved
         """
@@ -164,7 +170,7 @@ class SubmitErrorReportUseCase:
             categories=error_report.error_categories,
             severity=error_report.severity_level.value,
             reported_by=str(error_report.reported_by),
-            metadata=error_report.metadata
+            metadata=error_report.metadata,
         )
-        
+
         await self._event_publisher.publish_error_reported(event)

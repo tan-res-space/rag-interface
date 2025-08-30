@@ -8,14 +8,6 @@ Domain events are used for communication between bounded contexts and
 for triggering side effects in response to domain changes.
 """
 
-from .domain_events import (
-    ErrorReportedEvent,
-    ErrorUpdatedEvent,
-    ErrorDeletedEvent
-)
+from .domain_events import ErrorDeletedEvent, ErrorReportedEvent, ErrorUpdatedEvent
 
-__all__ = [
-    "ErrorReportedEvent",
-    "ErrorUpdatedEvent", 
-    "ErrorDeletedEvent"
-]
+__all__ = ["ErrorReportedEvent", "ErrorUpdatedEvent", "ErrorDeletedEvent"]

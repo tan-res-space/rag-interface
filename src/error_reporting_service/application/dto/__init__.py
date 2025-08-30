@@ -8,7 +8,4 @@ DTOs define the contract between the application and external systems.
 from .requests import SubmitErrorReportRequest
 from .responses import SubmitErrorReportResponse
 
-__all__ = [
-    "SubmitErrorReportRequest",
-    "SubmitErrorReportResponse"
-]
+__all__ = ["SubmitErrorReportRequest", "SubmitErrorReportResponse"]

@@ -7,6 +7,4 @@ Use cases orchestrate domain logic and coordinate between domain services and in
 
 from .submit_error_report import SubmitErrorReportUseCase
 
-__all__ = [
-    "SubmitErrorReportUseCase"
-]
+__all__ = ["SubmitErrorReportUseCase"]

@@ -8,6 +8,7 @@ import { authApi } from '@infrastructure/api/auth-api';
 import { errorReportApi } from '@infrastructure/api/error-report-api';
 import { verificationApi } from '@infrastructure/api/verification-api';
 import { userApi } from '@infrastructure/api/user-api';
+import { healthApi } from '@infrastructure/api/health-api';
 import authReducer from '@features/auth/auth-slice';
 import uiReducer from '@shared/slices/ui-slice';
 import speakerReducer from '@features/speaker-management/speaker-slice';
@@ -28,6 +29,7 @@ export const store = configureStore({
     [errorReportApi.reducerPath]: errorReportApi.reducer,
     [verificationApi.reducerPath]: verificationApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
+    [healthApi.reducerPath]: healthApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -42,7 +44,8 @@ export const store = configureStore({
       .concat(authApi.middleware)
       .concat(errorReportApi.middleware)
       .concat(verificationApi.middleware)
-      .concat(userApi.middleware),
+      .concat(userApi.middleware)
+      .concat(healthApi.middleware),
   devTools: process.env.NODE_ENV !== 'production',
 });
 

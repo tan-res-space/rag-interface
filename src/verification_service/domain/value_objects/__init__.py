@@ -6,11 +6,7 @@ in the verification service domain.
 """
 
 from .quality_score import QualityScore
-from .verification_status import VerificationStatus
 from .ser_metrics import SERMetrics
+from .verification_status import VerificationStatus
 
-__all__ = [
-    "QualityScore",
-    "VerificationStatus",
-    "SERMetrics"
-]
+__all__ = ["QualityScore", "VerificationStatus", "SERMetrics"]

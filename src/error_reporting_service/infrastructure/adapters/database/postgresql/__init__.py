@@ -7,6 +7,4 @@ using SQLAlchemy with async support.
 
 from .adapter import PostgreSQLAdapter
 
-__all__ = [
-    "PostgreSQLAdapter"
-]
+__all__ = ["PostgreSQLAdapter"]

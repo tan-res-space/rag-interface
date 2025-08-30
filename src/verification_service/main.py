@@ -5,25 +5,26 @@ This module sets up the FastAPI application with all necessary middleware,
 routes, and dependency injection following Hexagonal Architecture principles.
 """
 
+import logging
+import uuid
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request, HTTPException
+from datetime import datetime
+
+import uvicorn
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
-import uvicorn
-import logging
-from datetime import datetime
-import uuid
+
+from .infrastructure.adapters.http.controllers import router as api_router
 
 # Application imports
 from .infrastructure.config.settings import settings
-from .infrastructure.adapters.http.controllers import router as api_router
-
 
 # Configure logging
 logging.basicConfig(
     level=getattr(logging, settings.log_level.upper()),
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -32,39 +33,39 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     """
     Application lifespan manager.
-    
+
     Handles startup and shutdown events for the Verification Service.
     """
     # Startup
     logger.info("Verification Service starting up...")
-    
+
     try:
         # Initialize analytics engines
         await initialize_analytics()
-        
+
         # Initialize database connections
         await initialize_database()
-        
+
         # Initialize cache
         await initialize_cache()
-        
+
         logger.info("Verification Service startup completed successfully")
-        
+
     except Exception as e:
         logger.error(f"Failed to start Verification Service: {e}")
         raise
-    
+
     yield
-    
+
     # Shutdown
     logger.info("Verification Service shutting down...")
-    
+
     try:
         # Cleanup resources
         await cleanup_resources()
-        
+
         logger.info("Verification Service shutdown completed")
-        
+
     except Exception as e:
         logger.error(f"Error during shutdown: {e}")
 
@@ -90,8 +91,7 @@ app.add_middleware(
 
 # Add trusted host middleware for security
 app.add_middleware(
-    TrustedHostMiddleware,
-    allowed_hosts=["*"]  # Configure appropriately for production
+    TrustedHostMiddleware, allowed_hosts=["*"]  # Configure appropriately for production
 )
 
 
@@ -100,7 +100,7 @@ async def add_request_id_middleware(request: Request, call_next):
     """Add request ID to all requests for tracing"""
     request_id = str(uuid.uuid4())
     request.state.request_id = request_id
-    
+
     response = await call_next(request)
     response.headers["X-Request-ID"] = request_id
     return response
@@ -117,23 +117,20 @@ async def error_handling_middleware(request: Request, call_next):
         raise
     except Exception as e:
         logger.exception(f"Unhandled exception: {e}")
-        
+
         error_response = {
             "success": False,
             "error": {
                 "code": "INTERNAL_SERVER_ERROR",
                 "message": "An internal server error occurred",
-                "details": str(e) if settings.debug else "Internal server error"
+                "details": str(e) if settings.debug else "Internal server error",
             },
             "timestamp": datetime.utcnow().isoformat(),
             "request_id": getattr(request.state, "request_id", str(uuid.uuid4())),
-            "version": "1.0.0"
+            "version": "1.0.0",
         }
-        
-        return JSONResponse(
-            status_code=500,
-            content=error_response
-        )
+
+        return JSONResponse(status_code=500, content=error_response)
 
 
 # Health check endpoint
@@ -144,7 +141,7 @@ async def health_check():
         "status": "healthy",
         "version": "1.0.0",
         "timestamp": datetime.utcnow().isoformat(),
-        "service": "verification-service"
+        "service": "verification-service",
     }
 
 
@@ -156,16 +153,14 @@ async def root():
         "service": "Verification Service",
         "version": "1.0.0",
         "status": "running",
-        "docs": "/docs" if settings.debug else "Documentation not available in production"
+        "docs": (
+            "/docs" if settings.debug else "Documentation not available in production"
+        ),
     }
 
 
 # Include API routes
-app.include_router(
-    api_router,
-    prefix="/api/v1",
-    tags=["verification"]
-)
+app.include_router(api_router, prefix="/api/v1", tags=["verification"])
 
 
 # Exception handlers
@@ -177,17 +172,14 @@ async def http_exception_handler(request: Request, exc: HTTPException):
         "error": {
             "code": f"HTTP_{exc.status_code}",
             "message": exc.detail,
-            "status_code": exc.status_code
+            "status_code": exc.status_code,
         },
         "timestamp": datetime.utcnow().isoformat(),
         "request_id": getattr(request.state, "request_id", str(uuid.uuid4())),
-        "version": "1.0.0"
+        "version": "1.0.0",
     }
-    
-    return JSONResponse(
-        status_code=exc.status_code,
-        content=error_response
-    )
+
+    return JSONResponse(status_code=exc.status_code, content=error_response)
 
 
 @app.exception_handler(ValueError)
@@ -195,19 +187,13 @@ async def value_error_handler(request: Request, exc: ValueError):
     """Handle ValueError exceptions"""
     error_response = {
         "success": False,
-        "error": {
-            "code": "INVALID_REQUEST",
-            "message": str(exc)
-        },
+        "error": {"code": "INVALID_REQUEST", "message": str(exc)},
         "timestamp": datetime.utcnow().isoformat(),
         "request_id": getattr(request.state, "request_id", str(uuid.uuid4())),
-        "version": "1.0.0"
+        "version": "1.0.0",
     }
-    
-    return JSONResponse(
-        status_code=400,
-        content=error_response
-    )
+
+    return JSONResponse(status_code=400, content=error_response)
 
 
 # Initialization functions
@@ -245,5 +231,5 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=8004,  # Verification Service port
         reload=settings.debug,
-        log_level=settings.log_level.lower()
+        log_level=settings.log_level.lower(),
     )

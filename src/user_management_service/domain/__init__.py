@@ -5,32 +5,30 @@ This layer contains the business logic and domain entities for the User Manageme
 It is independent of external concerns and contains pure business logic.
 """
 
-from .entities import User, UserRole, UserStatus, Permission, UserProfile
-from .services import UserValidationService
+from .entities import Permission, User, UserProfile, UserRole, UserStatus
 from .events import (
-    UserCreatedEvent,
-    UserActivatedEvent,
-    UserSuspendedEvent,
-    UserRoleChangedEvent,
-    UserLoginSuccessEvent,
-    UserLoginFailureEvent,
     UserAccountLockedEvent,
+    UserActivatedEvent,
+    UserCreatedEvent,
+    UserDeletedEvent,
+    UserLoginFailureEvent,
+    UserLoginSuccessEvent,
     UserPasswordChangedEvent,
     UserProfileUpdatedEvent,
-    UserDeletedEvent
+    UserRoleChangedEvent,
+    UserSuspendedEvent,
 )
+from .services import UserValidationService
 
 __all__ = [
     # Entities
     "User",
     "UserRole",
-    "UserStatus", 
+    "UserStatus",
     "Permission",
     "UserProfile",
-    
     # Services
     "UserValidationService",
-    
     # Events
     "UserCreatedEvent",
     "UserActivatedEvent",
@@ -41,5 +39,5 @@ __all__ = [
     "UserAccountLockedEvent",
     "UserPasswordChangedEvent",
     "UserProfileUpdatedEvent",
-    "UserDeletedEvent"
+    "UserDeletedEvent",
 ]

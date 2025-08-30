@@ -5,13 +5,13 @@ This module contains port interfaces for the verification service application la
 """
 
 from .mt_validation_repository_port import (
+    HistoricalDataComparisonItem,
     IMTValidationRepositoryPort,
     ValidationTestDataItem,
-    HistoricalDataComparisonItem
 )
 
 __all__ = [
     "IMTValidationRepositoryPort",
-    "ValidationTestDataItem", 
-    "HistoricalDataComparisonItem"
+    "ValidationTestDataItem",
+    "HistoricalDataComparisonItem",
 ]

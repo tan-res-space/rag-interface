@@ -11,13 +11,13 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from ...domain.entities.user import UserRole, UserStatus, Permission
+from ...domain.entities.user import Permission, UserRole, UserStatus
 from ...domain.value_objects.speaker_bucket import SpeakerBucket
 
 
 class UserResponse(BaseModel):
     """Response DTO for user data"""
-    
+
     user_id: str
     username: str
     email: str
@@ -34,9 +34,10 @@ class UserResponse(BaseModel):
     last_login: Optional[datetime] = None
     is_active: bool
     metadata: Dict[str, str]
-    
+
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "user_id": "550e8400-e29b-41d4-a716-446655440000",
@@ -54,23 +55,24 @@ class UserResponse(BaseModel):
                 "updated_at": "2025-08-19T10:30:00Z",
                 "last_login": "2025-08-19T09:15:00Z",
                 "is_active": True,
-                "metadata": {"employee_id": "EMP001"}
+                "metadata": {"employee_id": "EMP001"},
             }
         }
 
 
 class CreateUserResponse(BaseModel):
     """Response DTO for user creation"""
-    
+
     user_id: str
     username: str
     email: str
     status: str
     message: str
     validation_warnings: List[str] = Field(default_factory=list)
-    
+
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "user_id": "550e8400-e29b-41d4-a716-446655440000",
@@ -78,14 +80,14 @@ class CreateUserResponse(BaseModel):
                 "email": "john.doe@hospital.org",
                 "status": "pending_activation",
                 "message": "User created successfully",
-                "validation_warnings": []
+                "validation_warnings": [],
             }
         }
 
 
 class AuthenticationResponse(BaseModel):
     """Response DTO for user authentication"""
-    
+
     success: bool
     user_id: Optional[str] = None
     username: Optional[str] = None
@@ -95,9 +97,10 @@ class AuthenticationResponse(BaseModel):
     expires_in: Optional[int] = None  # seconds
     permissions: List[str] = Field(default_factory=list)
     message: str
-    
+
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "success": True,
@@ -108,23 +111,24 @@ class AuthenticationResponse(BaseModel):
                 "token_type": "bearer",
                 "expires_in": 1800,
                 "permissions": ["submit_error_report", "view_error_reports"],
-                "message": "Authentication successful"
+                "message": "Authentication successful",
             }
         }
 
 
 class TokenValidationResponse(BaseModel):
     """Response DTO for token validation"""
-    
+
     valid: bool
     user_id: Optional[str] = None
     username: Optional[str] = None
     permissions: List[str] = Field(default_factory=list)
     expires_at: Optional[datetime] = None
     message: str
-    
+
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "valid": True,
@@ -132,23 +136,24 @@ class TokenValidationResponse(BaseModel):
                 "username": "john.doe",
                 "permissions": ["submit_error_report", "view_error_reports"],
                 "expires_at": "2025-08-19T11:30:00Z",
-                "message": "Token is valid"
+                "message": "Token is valid",
             }
         }
 
 
 class TokenRefreshResponse(BaseModel):
     """Response DTO for token refresh"""
-    
+
     success: bool
     access_token: Optional[str] = None
     refresh_token: Optional[str] = None
     token_type: str = Field(default="bearer")
     expires_in: Optional[int] = None  # seconds
     message: str
-    
+
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "success": True,
@@ -156,96 +161,104 @@ class TokenRefreshResponse(BaseModel):
                 "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
                 "token_type": "bearer",
                 "expires_in": 1800,
-                "message": "Token refreshed successfully"
+                "message": "Token refreshed successfully",
             }
         }
 
 
 class UpdateUserResponse(BaseModel):
     """Response DTO for user update"""
-    
+
     user_id: str
     updated_fields: List[str]
     message: str
     validation_warnings: List[str] = Field(default_factory=list)
-    
+
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "user_id": "550e8400-e29b-41d4-a716-446655440000",
                 "updated_fields": ["email", "department"],
                 "message": "User updated successfully",
-                "validation_warnings": []
+                "validation_warnings": [],
             }
         }
 
 
 class ChangeUserRolesResponse(BaseModel):
     """Response DTO for role changes"""
-    
+
     user_id: str
     previous_roles: List[str]
     new_roles: List[str]
     new_permissions: List[str]
     message: str
-    
+
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "user_id": "550e8400-e29b-41d4-a716-446655440000",
                 "previous_roles": ["qa_personnel"],
                 "new_roles": ["qa_personnel", "mts_personnel"],
-                "new_permissions": ["submit_error_report", "view_error_reports", "verify_corrections"],
-                "message": "User roles updated successfully"
+                "new_permissions": [
+                    "submit_error_report",
+                    "view_error_reports",
+                    "verify_corrections",
+                ],
+                "message": "User roles updated successfully",
             }
         }
 
 
 class ChangeUserStatusResponse(BaseModel):
     """Response DTO for status changes"""
-    
+
     user_id: str
     previous_status: str
     new_status: str
     message: str
-    
+
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "user_id": "550e8400-e29b-41d4-a716-446655440000",
                 "previous_status": "active",
                 "new_status": "suspended",
-                "message": "User status updated successfully"
+                "message": "User status updated successfully",
             }
         }
 
 
 class ChangePasswordResponse(BaseModel):
     """Response DTO for password changes"""
-    
+
     user_id: str
     success: bool
     message: str
     password_strength_score: Optional[float] = None  # 0.0 to 1.0
-    
+
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "user_id": "550e8400-e29b-41d4-a716-446655440000",
                 "success": True,
                 "message": "Password changed successfully",
-                "password_strength_score": 0.85
+                "password_strength_score": 0.85,
             }
         }
 
 
 class PaginatedUsersResponse(BaseModel):
     """Response DTO for paginated user lists"""
-    
+
     users: List[UserResponse]
     total_count: int
     page: int
@@ -253,9 +266,10 @@ class PaginatedUsersResponse(BaseModel):
     total_pages: int
     has_next: bool
     has_previous: bool
-    
+
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "users": [
@@ -273,7 +287,7 @@ class PaginatedUsersResponse(BaseModel):
                         "created_at": "2025-08-19T10:30:00Z",
                         "updated_at": "2025-08-19T10:30:00Z",
                         "is_active": True,
-                        "metadata": {}
+                        "metadata": {},
                     }
                 ],
                 "total_count": 1,
@@ -281,14 +295,14 @@ class PaginatedUsersResponse(BaseModel):
                 "page_size": 20,
                 "total_pages": 1,
                 "has_next": False,
-                "has_previous": False
+                "has_previous": False,
             }
         }
 
 
 class UserAuditLogEntry(BaseModel):
     """Response DTO for audit log entries"""
-    
+
     event_id: str
     event_type: str
     user_id: Optional[str] = None
@@ -297,9 +311,10 @@ class UserAuditLogEntry(BaseModel):
     details: Dict[str, str]
     ip_address: Optional[str] = None
     user_agent: Optional[str] = None
-    
+
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "event_id": "evt_123456789",
@@ -309,14 +324,14 @@ class UserAuditLogEntry(BaseModel):
                 "timestamp": "2025-08-19T10:30:00Z",
                 "details": {"session_id": "sess_abc123"},
                 "ip_address": "192.168.1.100",
-                "user_agent": "Mozilla/5.0..."
+                "user_agent": "Mozilla/5.0...",
             }
         }
 
 
 class PaginatedAuditLogResponse(BaseModel):
     """Response DTO for paginated audit logs"""
-    
+
     entries: List[UserAuditLogEntry]
     total_count: int
     page: int
@@ -324,9 +339,10 @@ class PaginatedAuditLogResponse(BaseModel):
     total_pages: int
     has_next: bool
     has_previous: bool
-    
+
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "entries": [
@@ -337,7 +353,7 @@ class PaginatedAuditLogResponse(BaseModel):
                         "username": "john.doe",
                         "timestamp": "2025-08-19T10:30:00Z",
                         "details": {},
-                        "ip_address": "192.168.1.100"
+                        "ip_address": "192.168.1.100",
                     }
                 ],
                 "total_count": 1,
@@ -345,14 +361,14 @@ class PaginatedAuditLogResponse(BaseModel):
                 "page_size": 50,
                 "total_pages": 1,
                 "has_next": False,
-                "has_previous": False
+                "has_previous": False,
             }
         }
 
 
 class UserSecurityStatusResponse(BaseModel):
     """Response DTO for user security status"""
-    
+
     user_id: str
     username: str
     risk_level: str  # 'low', 'medium', 'high', 'critical'
@@ -362,9 +378,10 @@ class UserSecurityStatusResponse(BaseModel):
     last_login: Optional[datetime] = None
     password_age_days: Optional[int] = None
     security_warnings: List[str] = Field(default_factory=list)
-    
+
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "user_id": "550e8400-e29b-41d4-a716-446655440000",
@@ -375,7 +392,7 @@ class UserSecurityStatusResponse(BaseModel):
                 "locked_until": None,
                 "last_login": "2025-08-19T09:15:00Z",
                 "password_age_days": 45,
-                "security_warnings": []
+                "security_warnings": [],
             }
         }
 
@@ -383,6 +400,7 @@ class UserSecurityStatusResponse(BaseModel):
 # =====================================================
 # SPEAKER MANAGEMENT RESPONSE DTOS
 # =====================================================
+
 
 class SpeakerResponse(BaseModel):
     """Response DTO for speaker data"""
@@ -407,6 +425,7 @@ class SpeakerResponse(BaseModel):
 
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "speaker_id": "550e8400-e29b-41d4-a716-446655440000",
@@ -425,7 +444,7 @@ class SpeakerResponse(BaseModel):
                 "has_sufficient_data": True,
                 "last_processed_at": "2025-08-19T14:30:00Z",
                 "created_at": "2025-08-01T10:00:00Z",
-                "updated_at": "2025-08-19T14:30:00Z"
+                "updated_at": "2025-08-19T14:30:00Z",
             }
         }
 
@@ -441,13 +460,14 @@ class SpeakerListResponse(BaseModel):
 
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "speakers": [],
                 "total_count": 25,
                 "page": 1,
                 "page_size": 10,
-                "total_pages": 3
+                "total_pages": 3,
             }
         }
 
@@ -475,6 +495,7 @@ class HistoricalASRDataResponse(BaseModel):
 
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "data_id": "550e8400-e29b-41d4-a716-446655440000",
@@ -493,7 +514,7 @@ class HistoricalASRDataResponse(BaseModel):
                 "processing_date": "2025-08-15T09:30:00Z",
                 "processing_age_days": 4,
                 "is_recent_data": True,
-                "created_at": "2025-08-15T09:30:00Z"
+                "created_at": "2025-08-15T09:30:00Z",
             }
         }
 
@@ -520,6 +541,7 @@ class BucketTransitionRequestResponse(BaseModel):
 
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "request_id": "550e8400-e29b-41d4-a716-446655440000",
@@ -537,7 +559,7 @@ class BucketTransitionRequestResponse(BaseModel):
                 "priority_score": 3,
                 "processing_time_hours": None,
                 "created_at": "2025-08-19T10:00:00Z",
-                "approved_at": None
+                "approved_at": None,
             }
         }
 
@@ -553,13 +575,14 @@ class SpeakerBucketStatsResponse(BaseModel):
 
     class Config:
         """Pydantic configuration"""
+
         schema_extra = {
             "example": {
                 "bucket_counts": {
                     "no_touch": 15,
                     "low_touch": 25,
                     "medium_touch": 35,
-                    "high_touch": 45
+                    "high_touch": 45,
                 },
                 "total_speakers": 120,
                 "speakers_needing_transition": 8,
@@ -567,12 +590,8 @@ class SpeakerBucketStatsResponse(BaseModel):
                     "no_touch": 3.2,
                     "low_touch": 8.5,
                     "medium_touch": 22.1,
-                    "high_touch": 45.8
+                    "high_touch": 45.8,
                 },
-                "quality_distribution": {
-                    "high": 40,
-                    "medium": 50,
-                    "low": 30
-                }
+                "quality_distribution": {"high": 40, "medium": 50, "low": 30},
             }
         }

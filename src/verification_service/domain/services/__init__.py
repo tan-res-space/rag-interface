@@ -7,6 +7,4 @@ for the verification service domain.
 
 from .ser_calculation_service import SERCalculationService
 
-__all__ = [
-    "SERCalculationService"
-]
+__all__ = ["SERCalculationService"]

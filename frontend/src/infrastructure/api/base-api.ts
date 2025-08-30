@@ -80,3 +80,67 @@ export const SERVICE_ENDPOINTS = {
   VERIFICATION: '/api/v1/verifications',
   ANALYTICS: '/api/v1/analytics',
 } as const;
+
+// Base API class for class-based API clients
+export class BaseApi {
+  protected baseURL: string;
+
+  constructor() {
+    this.baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+  }
+
+  protected getHeaders(): Record<string, string> {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+
+    // Get token from localStorage (this is a simplified approach)
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    return headers;
+  }
+
+  protected async request<T>(
+    url: string,
+    options: RequestInit = {}
+  ): Promise<T> {
+    const response = await fetch(`${this.baseURL}${url}`, {
+      ...options,
+      headers: {
+        ...this.getHeaders(),
+        ...options.headers,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+    }
+
+    return response.json();
+  }
+
+  protected async get<T>(url: string): Promise<T> {
+    return this.request<T>(url, { method: 'GET' });
+  }
+
+  protected async post<T>(url: string, data?: any): Promise<T> {
+    return this.request<T>(url, {
+      method: 'POST',
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  protected async put<T>(url: string, data?: any): Promise<T> {
+    return this.request<T>(url, {
+      method: 'PUT',
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  protected async delete<T>(url: string): Promise<T> {
+    return this.request<T>(url, { method: 'DELETE' });
+  }
+}

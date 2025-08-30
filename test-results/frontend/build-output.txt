@@ -1,0 +1,1050 @@
+
+> rag-interface-frontend@1.0.0 build
+> tsc -b && vite build
+
+src/domain/types/dashboard.ts(6,33): error TS6133: 'SessionStatus' is declared but its value is never read.
+src/features/dashboard/components/AlertsPanel.tsx(22,3): error TS6133: 'Alert' is declared but its value is never read.
+src/features/dashboard/components/AlertsPanel.tsx(36,17): error TS6133: 'FilterIcon' is declared but its value is never read.
+src/features/dashboard/components/DashboardFilters.tsx(32,20): error TS6133: 'CalendarIcon' is declared but its value is never read.
+src/features/dashboard/components/DashboardFilters.tsx(122,21): error TS2345: Argument of type '(prev: DashboardFilters) => { dateRange: { start: string; end: string; preset: "today" | "week" | "month" | "quarter" | "year" | "yesterday"; }; speakers?: string[] | undefined; buckets?: SpeakerBucket[] | undefined; services?: string[] | undefined; mtUsers?: string[] | undefined; }' is not assignable to parameter of type 'SetStateAction<DashboardFilters>'.
+  Type '(prev: DashboardFilters) => { dateRange: { start: string; end: string; preset: "today" | "week" | "month" | "quarter" | "year" | "yesterday"; }; speakers?: string[] | undefined; buckets?: SpeakerBucket[] | undefined; services?: string[] | undefined; mtUsers?: string[] | undefined; }' is not assignable to type '(prevState: DashboardFilters) => DashboardFilters'.
+    Call signature return types '{ dateRange: { start: string; end: string; preset: "today" | "week" | "month" | "quarter" | "year" | "yesterday"; }; speakers?: string[] | undefined; buckets?: SpeakerBucket[] | undefined; services?: string[] | undefined; mtUsers?: string[] | undefined; }' and 'DashboardFilters' are incompatible.
+      The types of 'dateRange.preset' are incompatible between these types.
+        Type '"today" | "week" | "month" | "quarter" | "year" | "yesterday"' is not assignable to type '"today" | "week" | "month" | "quarter" | "year" | "custom" | undefined'.
+          Type '"yesterday"' is not assignable to type '"today" | "week" | "month" | "quarter" | "year" | "custom" | undefined'.
+src/features/dashboard/components/DashboardFilters.tsx(182,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardFilters.tsx(206,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardFilters.tsx(219,21): error TS2322: Type '{ label: string; value: Date | null; onChange: (date: PickerValue) => void; renderInput: (params: any) => Element; }' is not assignable to type 'IntrinsicAttributes & DatePickerProps<true> & RefAttributes<HTMLDivElement>'.
+  Property 'renderInput' does not exist on type 'IntrinsicAttributes & DatePickerProps<true> & RefAttributes<HTMLDivElement>'.
+src/features/dashboard/components/DashboardFilters.tsx(219,35): error TS7006: Parameter 'params' implicitly has an 'any' type.
+src/features/dashboard/components/DashboardFilters.tsx(222,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardFilters.tsx(235,21): error TS2322: Type '{ label: string; value: Date | null; onChange: (date: PickerValue) => void; renderInput: (params: any) => Element; }' is not assignable to type 'IntrinsicAttributes & DatePickerProps<true> & RefAttributes<HTMLDivElement>'.
+  Property 'renderInput' does not exist on type 'IntrinsicAttributes & DatePickerProps<true> & RefAttributes<HTMLDivElement>'.
+src/features/dashboard/components/DashboardFilters.tsx(235,35): error TS7006: Parameter 'params' implicitly has an 'any' type.
+src/features/dashboard/components/DashboardFilters.tsx(241,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardFilters.tsx(246,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardFilters.tsx(279,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardFilters.tsx(311,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardFilters.tsx(343,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardHeader.tsx(18,3): error TS6133: 'Badge' is declared but its value is never read.
+src/features/dashboard/components/DashboardSettings.tsx(25,3): error TS6133: 'TextField' is declared but its value is never read.
+src/features/dashboard/components/DashboardSettings.tsx(166,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardSettings.tsx(182,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardSettings.tsx(199,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardSettings.tsx(214,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardSettings.tsx(231,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardSettings.tsx(246,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardSettings.tsx(266,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardSettings.tsx(290,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardSettings.tsx(304,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/DashboardSettings.tsx(352,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/MTValidationMetrics.tsx(25,18): error TS6133: 'CompletedIcon' is declared but its value is never read.
+src/features/dashboard/components/MTValidationMetrics.tsx(127,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/MTValidationMetrics.tsx(137,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/QuickMetricsBar.tsx(16,3): error TS6133: 'Icon' is declared but its value is never read.
+src/features/dashboard/components/QuickMetricsBar.tsx(156,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; key: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; key: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/QuickMetricsBar.tsx(181,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; key: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; key: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/RAGProcessingStatus.tsx(128,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/RAGProcessingStatus.tsx(138,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/SERMetricsChart.tsx(276,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/SERMetricsChart.tsx(287,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/SERMetricsChart.tsx(298,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/SERMetricsChart.tsx(309,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/ServicesHealthPanel.tsx(123,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/ServicesHealthPanel.tsx(171,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/SpeakerBucketOverview.tsx(16,3): error TS6133: 'Chip' is declared but its value is never read.
+src/features/dashboard/components/SpeakerBucketOverview.tsx(32,17): error TS6133: 'TrendUpIcon' is declared but its value is never read.
+src/features/dashboard/components/SpeakerBucketOverview.tsx(33,19): error TS6133: 'TrendDownIcon' is declared but its value is never read.
+src/features/dashboard/components/SpeakerBucketOverview.tsx(34,19): error TS6133: 'TrendFlatIcon' is declared but its value is never read.
+src/features/dashboard/components/SpeakerBucketOverview.tsx(115,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/SpeakerBucketOverview.tsx(118,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/SpeakerBucketOverview.tsx(173,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/SpeakerBucketOverview.tsx(198,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/SpeakerBucketOverview.tsx(232,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/SpeakerBucketOverview.tsx(239,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/SpeakerBucketOverview.tsx(250,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/SpeakerBucketOverview.tsx(261,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/SpeakerBucketOverview.tsx(272,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/SpeakerBucketOverview.tsx(288,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/TransitionStatistics.tsx(24,16): error TS6133: 'TransitionIcon' is declared but its value is never read.
+src/features/dashboard/components/TransitionStatistics.tsx(28,13): error TS6133: 'RejectedIcon' is declared but its value is never read.
+src/features/dashboard/components/TransitionStatistics.tsx(126,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/components/TransitionStatistics.tsx(136,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/dashboard-slice.ts(291,9): error TS2322: Type 'string | undefined' is not assignable to type '"today" | "week" | "month" | "quarter" | "year" | "custom" | undefined'.
+  Type 'string' is not assignable to type '"today" | "week" | "month" | "quarter" | "year" | "custom" | undefined'.
+src/features/dashboard/index.ts(19,21): error TS2300: Duplicate identifier 'DashboardFilters'.
+src/features/dashboard/index.ts(89,3): error TS2300: Duplicate identifier 'DashboardFilters'.
+src/features/dashboard/pages/DashboardPage.tsx(13,3): error TS6133: 'Paper' is declared but its value is never read.
+src/features/dashboard/pages/DashboardPage.tsx(14,3): error TS6133: 'Typography' is declared but its value is never read.
+src/features/dashboard/pages/DashboardPage.tsx(15,3): error TS6133: 'IconButton' is declared but its value is never read.
+src/features/dashboard/pages/DashboardPage.tsx(16,3): error TS6133: 'Tooltip' is declared but its value is never read.
+src/features/dashboard/pages/DashboardPage.tsx(23,3): error TS6133: 'AppBar' is declared but its value is never read.
+src/features/dashboard/pages/DashboardPage.tsx(24,3): error TS6133: 'Toolbar' is declared but its value is never read.
+src/features/dashboard/pages/DashboardPage.tsx(25,3): error TS6133: 'Chip' is declared but its value is never read.
+src/features/dashboard/pages/DashboardPage.tsx(31,17): error TS6133: 'FullscreenIcon' is declared but its value is never read.
+src/features/dashboard/pages/DashboardPage.tsx(32,21): error TS6133: 'FullscreenExitIcon' is declared but its value is never read.
+src/features/dashboard/pages/DashboardPage.tsx(36,16): error TS6133: 'DashboardIcon' is declared but its value is never read.
+src/features/dashboard/pages/DashboardPage.tsx(37,10): error TS6133: 'AddIcon' is declared but its value is never read.
+src/features/dashboard/pages/DashboardPage.tsx(260,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; lg: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; lg: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/pages/DashboardPage.tsx(269,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; lg: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; lg: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/pages/DashboardPage.tsx(278,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; lg: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; lg: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/pages/DashboardPage.tsx(287,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; lg: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; lg: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/pages/DashboardPage.tsx(296,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; lg: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; lg: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/pages/DashboardPage.tsx(305,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/dashboard/pages/DashboardPage.tsx(307,15): error TS2322: Type 'ServicesHealthStatus | null' is not assignable to type 'ServicesHealthStatus | undefined'.
+  Type 'null' is not assignable to type 'ServicesHealthStatus | undefined'.
+src/features/mt-validation/components/FeedbackPanel.tsx(25,3): error TS6133: 'Slider' is declared but its value is never read.
+src/features/mt-validation/components/FeedbackPanel.tsx(29,3): error TS6133: 'Tooltip' is declared but its value is never read.
+src/features/mt-validation/components/FeedbackPanel.tsx(33,11): error TS6133: 'SaveIcon' is declared but its value is never read.
+src/features/mt-validation/components/KeyboardShortcutsHelper.tsx(177,36): error TS6133: 'categoryIndex' is declared but its value is never read.
+src/features/mt-validation/components/KeyboardShortcutsHelper.tsx(189,24): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; key: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; key: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/MTValidationInterface.tsx(13,3): error TS6133: 'Grid' is declared but its value is never read.
+src/features/mt-validation/components/MTValidationInterface.tsx(14,3): error TS6133: 'Card' is declared but its value is never read.
+src/features/mt-validation/components/MTValidationInterface.tsx(15,3): error TS6133: 'CardContent' is declared but its value is never read.
+src/features/mt-validation/components/MTValidationInterface.tsx(16,3): error TS6133: 'CardHeader' is declared but its value is never read.
+src/features/mt-validation/components/MTValidationInterface.tsx(17,3): error TS6133: 'Divider' is declared but its value is never read.
+src/features/mt-validation/components/MTValidationInterface.tsx(22,3): error TS6133: 'Alert' is declared but its value is never read.
+src/features/mt-validation/components/MTValidationInterface.tsx(23,3): error TS6133: 'Fab' is declared but its value is never read.
+src/features/mt-validation/components/MTValidationInterface.tsx(35,11): error TS6133: 'SaveIcon' is declared but its value is never read.
+src/features/mt-validation/components/MTValidationInterface.tsx(39,22): error TS6133: 'KeyboardArrowUpIcon' is declared but its value is never read.
+src/features/mt-validation/components/MTValidationInterface.tsx(78,3): error TS6133: 'onComplete' is declared but its value is never read.
+src/features/mt-validation/components/MTValidationInterface.tsx(79,3): error TS6133: 'onPause' is declared but its value is never read.
+src/features/mt-validation/components/MTValidationInterface.tsx(80,3): error TS6133: 'compact' is declared but its value is never read.
+src/features/mt-validation/components/MTValidationInterface.tsx(264,30): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & SvgIconOwnProps & CommonProps & Omit<any, "color" | ... 10 more ... | "viewBox">): Element | null', gave the following error.
+    Type '"default" | "primary"' is not assignable to type 'OverridableStringUnion<"warning" | "error" | "info" | "success" | "primary" | "action" | "secondary" | "disabled" | "inherit", SvgIconPropsColorOverrides> | undefined'.
+      Type '"default"' is not assignable to type 'OverridableStringUnion<"warning" | "error" | "info" | "success" | "primary" | "action" | "secondary" | "disabled" | "inherit", SvgIconPropsColorOverrides> | undefined'.
+  Overload 2 of 2, '(props: DefaultComponentProps<SvgIconTypeMap<{}, "svg">>): Element | null', gave the following error.
+    Type '"default" | "primary"' is not assignable to type 'OverridableStringUnion<"warning" | "error" | "info" | "success" | "primary" | "action" | "secondary" | "disabled" | "inherit", SvgIconPropsColorOverrides> | undefined'.
+      Type '"default"' is not assignable to type 'OverridableStringUnion<"warning" | "error" | "info" | "success" | "primary" | "action" | "secondary" | "disabled" | "inherit", SvgIconPropsColorOverrides> | undefined'.
+src/features/mt-validation/components/SERMetricsPanel.tsx(18,3): error TS6133: 'Divider' is declared but its value is never read.
+src/features/mt-validation/components/SERMetricsPanel.tsx(165,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SERMetricsPanel.tsx(227,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SERMetricsPanel.tsx(297,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SERMetricsPanel.tsx(310,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSetupDialog.tsx(38,17): error TS6133: 'AssessmentIcon' is declared but its value is never read.
+src/features/mt-validation/components/SessionSetupDialog.tsx(39,15): error TS6133: 'SettingsIcon' is declared but its value is never read.
+src/features/mt-validation/components/SessionSetupDialog.tsx(235,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSetupDialog.tsx(247,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSetupDialog.tsx(284,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSetupDialog.tsx(291,26): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSetupDialog.tsx(299,26): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSetupDialog.tsx(307,26): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSetupDialog.tsx(315,26): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSetupDialog.tsx(346,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSetupDialog.tsx(359,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSetupDialog.tsx(374,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSetupDialog.tsx(400,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSetupDialog.tsx(412,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSummaryDialog.tsx(8,27): error TS6133: 'useEffect' is declared but its value is never read.
+src/features/mt-validation/components/SessionSummaryDialog.tsx(21,3): error TS6133: 'Divider' is declared but its value is never read.
+src/features/mt-validation/components/SessionSummaryDialog.tsx(37,17): error TS6133: 'ImprovementIcon' is declared but its value is never read.
+src/features/mt-validation/components/SessionSummaryDialog.tsx(38,13): error TS6133: 'PersonIcon' is declared but its value is never read.
+src/features/mt-validation/components/SessionSummaryDialog.tsx(39,12): error TS6133: 'TimerIcon' is declared but its value is never read.
+src/features/mt-validation/components/SessionSummaryDialog.tsx(152,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSummaryDialog.tsx(172,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSummaryDialog.tsx(197,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSummaryDialog.tsx(210,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSummaryDialog.tsx(223,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSummaryDialog.tsx(236,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSummaryDialog.tsx(259,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; key: string; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; key: string; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/SessionSummaryDialog.tsx(275,23): error TS2322: Type '"warning" | "error" | "info" | "default" | "success"' is not assignable to type 'OverridableStringUnion<"warning" | "error" | "info" | "success" | "primary" | "secondary" | "inherit", LinearProgressPropsColorOverrides> | undefined'.
+  Type '"default"' is not assignable to type 'OverridableStringUnion<"warning" | "error" | "info" | "success" | "primary" | "secondary" | "inherit", LinearProgressPropsColorOverrides> | undefined'.
+src/features/mt-validation/components/TextComparisonPanel.tsx(11,3): error TS6133: 'Paper' is declared but its value is never read.
+src/features/mt-validation/components/TextComparisonPanel.tsx(20,3): error TS6133: 'ToggleButton' is declared but its value is never read.
+src/features/mt-validation/components/TextComparisonPanel.tsx(21,3): error TS6133: 'ToggleButtonGroup' is declared but its value is never read.
+src/features/mt-validation/components/TextComparisonPanel.tsx(28,17): error TS6133: 'SideBySideIcon' is declared but its value is never read.
+src/features/mt-validation/components/TextComparisonPanel.tsx(29,17): error TS6133: 'UnifiedIcon' is declared but its value is never read.
+src/features/mt-validation/components/TextComparisonPanel.tsx(30,13): error TS6133: 'OverlayIcon' is declared but its value is never read.
+src/features/mt-validation/components/TextComparisonPanel.tsx(149,25): error TS6133: 'setShowReference' is declared but its value is never read.
+src/features/mt-validation/components/TextComparisonPanel.tsx(177,14): error TS2678: Type '"move"' is not comparable to type '"equal" | "delete" | "replace" | "insert"'.
+src/features/mt-validation/components/TextComparisonPanel.tsx(186,41): error TS6133: 'label' is declared but its value is never read.
+src/features/mt-validation/components/TextComparisonPanel.tsx(284,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/TextComparisonPanel.tsx(316,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/TextComparisonPanel.tsx(349,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/ValidationProgress.tsx(118,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/ValidationProgress.tsx(132,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/components/ValidationProgress.tsx(147,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/mt-validation-slice.ts(10,3): error TS6133: 'ValidationItem' is declared but its value is never read.
+src/features/mt-validation/mt-validation-slice.ts(19,3): error TS6133: 'SessionStatus' is declared but its value is never read.
+src/features/mt-validation/mt-validation-slice.ts(21,3): error TS6133: 'ImprovementAssessment' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(13,3): error TS6133: 'Paper' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(15,3): error TS6133: 'Dialog' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(16,3): error TS6133: 'DialogTitle' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(17,3): error TS6133: 'DialogContent' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(18,3): error TS6133: 'DialogActions' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(21,3): error TS6133: 'Fab' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(28,3): error TS6133: 'Chip' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(33,12): error TS6133: 'PauseIcon' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(34,11): error TS6133: 'StopIcon' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(39,10): error TS6133: 'AddIcon' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(57,3): error TS6133: 'ValidationSession' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(64,1): error TS6133: 'ValidationProgress' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(76,9): error TS6133: 'sessionProgress' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(79,9): error TS6133: 'workflowState' is declared but its value is never read.
+src/features/mt-validation/pages/MTValidationPage.tsx(293,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/pages/MTValidationPage.tsx(301,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/mt-validation/pages/MTValidationPage.tsx(309,16): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/CreateSpeakerDialog.tsx(212,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/CreateSpeakerDialog.tsx(227,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/CreateSpeakerDialog.tsx(242,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/CreateSpeakerDialog.tsx(267,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/CreateSpeakerDialog.tsx(281,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/CreateSpeakerDialog.tsx(296,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerDetailsDialog.tsx(22,3): error TS6133: 'Divider' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerDetailsDialog.tsx(24,3): error TS6133: 'Tooltip' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerDetailsDialog.tsx(35,16): error TS6133: 'TransitionIcon' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerDetailsDialog.tsx(136,28): error TS6133: 'event' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerDetailsDialog.tsx(184,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerDetailsDialog.tsx(199,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerDetailsDialog.tsx(212,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerDetailsDialog.tsx(225,18): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerDetailsDialog.tsx(274,20): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerDetailsDialog.tsx(309,20): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerSearchAndSelection.tsx(44,3): error TS6133: 'setCurrentPage' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerSearchAndSelection.tsx(79,3): error TS6133: 'onSpeakerSelect' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerSearchAndSelection.tsx(80,3): error TS6133: 'multiSelect' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerSearchAndSelection.tsx(309,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerSearchAndSelection.tsx(328,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerSearchAndSelection.tsx(347,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerSearchAndSelection.tsx(359,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerSearchAndSelection.tsx(372,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerStatistics.tsx(55,9): error TS6133: 'speakers' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerStatistics.tsx(122,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerStatistics.tsx(137,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerStatistics.tsx(152,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerStatistics.tsx(167,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerStatistics.tsx(190,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; key: SpeakerBucket; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; key: SpeakerBucket; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerStatistics.tsx(242,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerStatistics.tsx(271,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerStatistics.tsx(306,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerStatistics.tsx(319,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerStatistics.tsx(332,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/speaker-management/components/SpeakerTable.tsx(12,3): error TS6133: 'IconButton' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerTable.tsx(17,3): error TS6133: 'Menu' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerTable.tsx(18,3): error TS6133: 'MenuItem' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerTable.tsx(19,3): error TS6133: 'ListItemIcon' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerTable.tsx(20,3): error TS6133: 'ListItemText' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerTable.tsx(37,15): error TS6133: 'MoreVertIcon' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerTable.tsx(40,14): error TS6133: 'HistoryIcon' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerTable.tsx(71,3): error TS6133: 'onTransitionRequest' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerTable.tsx(72,3): error TS6133: 'onViewHistory' is declared but its value is never read.
+src/features/speaker-management/components/SpeakerTable.tsx(273,36): error TS2352: Conversion of type 'GridRowSelectionModel' to type 'string[]' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'GridRowSelectionModel' is missing the following properties from type 'string[]': length, pop, push, concat, and 29 more.
+src/features/speaker-management/components/SpeakerTable.tsx(287,9): error TS2353: Object literal may only specify known properties, and 'sort_by' does not exist in type 'SpeakerSearchParams'.
+src/features/speaker-management/components/SpeakerTable.tsx(328,9): error TS2739: Type 'string[]' is missing the following properties from type 'GridRowSelectionModel': type, ids
+src/features/speaker-management/pages/SpeakerManagementPage.tsx(16,3): error TS6133: 'Button' is declared but its value is never read.
+src/features/speaker-management/pages/SpeakerManagementPage.tsx(17,3): error TS6133: 'Dialog' is declared but its value is never read.
+src/features/speaker-management/pages/SpeakerManagementPage.tsx(18,3): error TS6133: 'DialogTitle' is declared but its value is never read.
+src/features/speaker-management/pages/SpeakerManagementPage.tsx(19,3): error TS6133: 'DialogContent' is declared but its value is never read.
+src/features/speaker-management/pages/SpeakerManagementPage.tsx(20,3): error TS6133: 'DialogActions' is declared but its value is never read.
+src/features/speaker-management/pages/SpeakerManagementPage.tsx(29,17): error TS6133: 'AssessmentIcon' is declared but its value is never read.
+src/features/speaker-management/pages/SpeakerManagementPage.tsx(75,9): error TS6133: 'viewMode' is declared but its value is never read.
+src/features/speaker-management/pages/SpeakerManagementPage.tsx(100,28): error TS6133: 'event' is declared but its value is never read.
+src/features/speaker-management/pages/SpeakerManagementPage.tsx(219,15): error TS2322: Type '(speaker: Speaker) => void' is not assignable to type '(speakerId: string) => void'.
+  Types of parameters 'speaker' and 'speakerId' are incompatible.
+    Type 'string' is not assignable to type 'Speaker'.
+src/features/speaker-management/speaker-slice.ts(9,3): error TS6133: 'SpeakerListResponse' is declared but its value is never read.
+src/features/speaker-management/speaker-slice.ts(16,3): error TS6133: 'SpeakerBucket' is declared but its value is never read.
+src/features/system-health/components/DiagnosticsPanel.tsx(144,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/system-health/components/DiagnosticsPanel.tsx(228,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/system-health/components/DiagnosticsPanel.tsx(293,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/system-health/components/DiagnosticsPanel.tsx(303,22): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/system-health/components/DiagnosticsPanel.tsx(317,22): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/system-health/components/DiagnosticsPanel.tsx(332,24): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; sm: number; md: number; key: string; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; sm: number; md: number; key: string; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/system-health/components/DiagnosticsPanel.tsx(360,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/system-health/components/DiagnosticsPanel.tsx(369,22): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/system-health/components/DiagnosticsPanel.tsx(378,22): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/system-health/components/DiagnosticsPanel.tsx(387,22): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element[]; item: true; xs: number; sm: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element[]; item: true; xs: number; sm: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/system-health/components/HealthOverview.tsx(167,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/system-health/components/HealthOverview.tsx(222,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/system-health/components/HealthOverview.tsx(248,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/system-health/components/HealthOverview.tsx(274,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/features/system-health/components/TroubleshootingPanel.tsx(45,3): error TS2339: Property 'onClose' does not exist on type 'TroubleshootingPanelProps'.
+src/features/system-health/components/TroubleshootingPanel.tsx(84,5): error TS6133: 'event' is declared but its value is never read.
+src/features/system-health/hooks/useHealthMonitoring.ts(14,3): error TS6196: 'HealthCheckResult' is declared but never used.
+src/features/system-health/hooks/useHealthMonitoring.ts(15,3): error TS6196: 'SystemHealthOverview' is declared but never used.
+src/features/system-health/hooks/useHealthMonitoring.ts(42,10): error TS6133: 'lastRefresh' is declared but its value is never read.
+src/features/system-health/hooks/useServiceHealth.ts(13,3): error TS6196: 'HealthCheckResult' is declared but never used.
+src/features/system-health/pages/SystemHealthPage.tsx(14,3): error TS6133: 'CardHeader' is declared but its value is never read.
+src/features/system-health/pages/SystemHealthPage.tsx(28,15): error TS6133: 'SettingsIcon' is declared but its value is never read.
+src/features/system-health/pages/SystemHealthPage.tsx(29,15): error TS6133: 'TimelineIcon' is declared but its value is never read.
+src/features/system-health/pages/SystemHealthPage.tsx(33,10): error TS2614: Module '"../components/HealthOverview"' has no exported member 'HealthOverview'. Did you mean to use 'import HealthOverview from "../components/HealthOverview"' instead?
+src/features/system-health/pages/SystemHealthPage.tsx(34,10): error TS2614: Module '"../components/ServiceStatusCard"' has no exported member 'ServiceStatusCard'. Did you mean to use 'import ServiceStatusCard from "../components/ServiceStatusCard"' instead?
+src/features/system-health/pages/SystemHealthPage.tsx(35,10): error TS2614: Module '"../components/DiagnosticsPanel"' has no exported member 'DiagnosticsPanel'. Did you mean to use 'import DiagnosticsPanel from "../components/DiagnosticsPanel"' instead?
+src/features/system-health/pages/SystemHealthPage.tsx(36,10): error TS2614: Module '"../components/TroubleshootingPanel"' has no exported member 'TroubleshootingPanel'. Did you mean to use 'import TroubleshootingPanel from "../components/TroubleshootingPanel"' instead?
+src/features/system-health/pages/SystemHealthPage.tsx(49,5): error TS6133: 'exportReport' is declared but its value is never read.
+src/features/system-health/pages/SystemHealthPage.tsx(252,61): error TS6133: 'config' is declared but its value is never read.
+src/features/system-health/pages/SystemHealthPage.tsx(256,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any, keyof IntrinsicElements>; } & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<...> & Omit<...>): Element | null', gave the following error.
+    Property 'component' is missing in type '{ children: Element; item: true; xs: number; md: number; lg: number; key: string; }' but required in type '{ component: ElementType<any, keyof IntrinsicElements>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<GridTypeMap<{}, "div">>): Element | null', gave the following error.
+    Type '{ children: Element; item: true; xs: number; md: number; lg: number; key: string; }' is not assignable to type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+      Property 'item' does not exist on type 'IntrinsicAttributes & GridBaseProps & { sx?: SxProps<Theme> | undefined; } & SystemProps<Theme> & Omit<...>'.
+src/infrastructure/api/dashboard-api.ts(16,3): error TS6133: 'DashboardWidget' is declared but its value is never read.
+src/infrastructure/api/health-api.ts(13,3): error TS6196: 'HealthHistoryEntry' is declared but never used.
+src/infrastructure/api/health-api.ts(16,3): error TS6196: 'HealthCheckApiResponse' is declared but never used.
+src/infrastructure/api/health-api.ts(17,3): error TS6196: 'SystemHealthApiResponse' is declared but never used.
+src/infrastructure/api/health-api.ts(18,3): error TS6196: 'DiagnosticsApiResponse' is declared but never used.
+src/infrastructure/api/health-api.ts(19,3): error TS6196: 'HealthHistoryApiResponse' is declared but never used.
+src/infrastructure/api/health-api.ts(77,14): error TS7022: 'healthApi' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer.
+src/infrastructure/api/health-api.ts(88,3): error TS7023: 'endpoints' implicitly has return type 'any' because it does not have a return type annotation and is referenced directly or indirectly in one of its return expressions.
+src/infrastructure/api/health-api.ts(156,22): error TS6133: 'result' is declared but its value is never read.
+src/infrastructure/api/health-api.ts(156,30): error TS6133: 'error' is declared but its value is never read.
+src/infrastructure/api/health-api.ts(227,7): error TS7023: 'queryFn' implicitly has return type 'any' because it does not have a return type annotation and is referenced directly or indirectly in one of its return expressions.
+src/infrastructure/api/health-api.ts(229,15): error TS7022: 'healthResult' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer.
+src/infrastructure/api/health-api.ts(241,58): error TS18046: 's' is of type 'unknown'.
+src/infrastructure/api/health-api.ts(242,59): error TS18046: 's' is of type 'unknown'.
+src/infrastructure/api/health-api.ts(243,56): error TS18046: 's' is of type 'unknown'.
+src/infrastructure/api/health-api.ts(244,58): error TS18046: 's' is of type 'unknown'.
+src/infrastructure/api/health-api.ts(256,13): error TS2571: Object is of type 'unknown'.
+src/infrastructure/api/health-api.ts(256,51): error TS18046: 's' is of type 'unknown'.
+src/infrastructure/api/health-api.ts(384,14): error TS2339: Property 'data' does not exist on type 'string | HealthCheckResult'.
+  Property 'data' does not exist on type 'string'.
+src/infrastructure/api/health-api.ts(385,24): error TS2339: Property 'status' does not exist on type 'string | HealthCheckResult'.
+  Property 'status' does not exist on type 'string'.
+src/infrastructure/api/health-api.ts(387,27): error TS2339: Property 'timestamp' does not exist on type 'string | HealthCheckResult'.
+  Property 'timestamp' does not exist on type 'string'.
+src/infrastructure/api/health-api.ts(388,25): error TS2339: Property 'service' does not exist on type 'string | HealthCheckResult'.
+  Property 'service' does not exist on type 'string'.
+src/infrastructure/api/health-api.ts(395,48): error TS2339: Property 'status' does not exist on type 'string | HealthCheckResult'.
+  Property 'status' does not exist on type 'string'.
+src/infrastructure/api/health-api.ts(396,47): error TS2339: Property 'status' does not exist on type 'string | HealthCheckResult'.
+  Property 'status' does not exist on type 'string'.
+src/infrastructure/api/health-api.ts(398,52): error TS2339: Property 'status' does not exist on type 'string | HealthCheckResult'.
+  Property 'status' does not exist on type 'string'.
+src/infrastructure/api/health-api.ts(399,53): error TS2339: Property 'status' does not exist on type 'string | HealthCheckResult'.
+  Property 'status' does not exist on type 'string'.
+src/infrastructure/api/health-api.ts(400,50): error TS2339: Property 'status' does not exist on type 'string | HealthCheckResult'.
+  Property 'status' does not exist on type 'string'.
+src/infrastructure/api/health-api.ts(401,52): error TS2339: Property 'status' does not exist on type 'string | HealthCheckResult'.
+  Property 'status' does not exist on type 'string'.
+src/infrastructure/api/health-api.ts(403,70): error TS2339: Property 'responseTime' does not exist on type 'string | HealthCheckResult'.
+  Property 'responseTime' does not exist on type 'string'.
+src/infrastructure/api/mt-validation-api.ts(18,3): error TS6133: 'ValidationExportData' is declared but its value is never read.
+src/infrastructure/api/speaker-api.ts(13,3): error TS6133: 'TransitionRequestFormData' is declared but its value is never read.
+src/infrastructure/api/speaker-api.ts(17,3): error TS6133: 'ApiResponse' is declared but its value is never read.
+src/infrastructure/api/speaker-api.ts(18,3): error TS6133: 'PaginatedResponse' is declared but its value is never read.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(6,26): error TS6133: 'fireEvent' is declared but its value is never read.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(9,10): error TS2305: Module '"@/shared/theme/theme"' has no exported member 'theme'.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(11,10): error TS2305: Module '"@/domain/types/verification"' has no exported member 'TextComparison'.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(11,26): error TS2305: Module '"@/domain/types/verification"' has no exported member 'ChangeType'.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(117,13): error TS2322: Type '{ comparison: TextComparison; highlightDifferences: true; }' is not assignable to type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+  Property 'comparison' does not exist on type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(127,32): error TS6133: 'content' is declared but its value is never read.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(131,32): error TS6133: 'content' is declared but its value is never read.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(140,13): error TS2322: Type '{ comparison: TextComparison; highlightDifferences: true; }' is not assignable to type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+  Property 'comparison' does not exist on type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(156,13): error TS2322: Type '{ comparison: TextComparison; highlightDifferences: true; }' is not assignable to type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+  Property 'comparison' does not exist on type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(207,13): error TS2322: Type '{ comparison: TextComparison; highlightDifferences: true; }' is not assignable to type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+  Property 'comparison' does not exist on type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(231,13): error TS2322: Type '{ comparison: TextComparison; highlightDifferences: true; }' is not assignable to type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+  Property 'comparison' does not exist on type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(248,13): error TS2322: Type '{ comparison: TextComparison; highlightDifferences: true; }' is not assignable to type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+  Property 'comparison' does not exist on type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(266,13): error TS2322: Type '{ comparison: TextComparison; highlightDifferences: true; }' is not assignable to type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+  Property 'comparison' does not exist on type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(292,13): error TS2322: Type '{ comparison: TextComparison; highlightDifferences: true; }' is not assignable to type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+  Property 'comparison' does not exist on type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(316,13): error TS2322: Type '{ comparison: TextComparison; onApprove: Mock<any, any, any>; showActions: true; }' is not assignable to type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+  Property 'comparison' does not exist on type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(336,13): error TS2322: Type '{ comparison: TextComparison; onReject: Mock<any, any, any>; showActions: true; }' is not assignable to type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+  Property 'comparison' does not exist on type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(361,13): error TS2322: Type '{ comparison: TextComparison; highlightDifferences: true; }' is not assignable to type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+  Property 'comparison' does not exist on type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+src/tests/enhanced/before-after-comparison-fixes.test.tsx(393,13): error TS2322: Type '{ comparison: TextComparison; highlightDifferences: true; }' is not assignable to type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+  Property 'comparison' does not exist on type 'IntrinsicAttributes & BeforeAfterComparisonProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(6,26): error TS6133: 'fireEvent' is declared but its value is never read.
+src/tests/enhanced/error-categorization-fixes.test.tsx(9,10): error TS2305: Module '"@/shared/theme/theme"' has no exported member 'theme'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(11,31): error TS2307: Cannot find module '@/domain/types/error-reporting' or its corresponding type declarations.
+src/tests/enhanced/error-categorization-fixes.test.tsx(77,12): error TS2741: Property 'onCategoriesChange' is missing in type '{ categories: ErrorCategory[]; selectedCategories: never[]; onSelectionChange: Mock<any, any, any>; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' but required in type 'ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(93,12): error TS2741: Property 'onCategoriesChange' is missing in type '{ categories: ErrorCategory[]; selectedCategories: never[]; onSelectionChange: Mock<any, any, any>; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' but required in type 'ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(114,12): error TS2741: Property 'onCategoriesChange' is missing in type '{ disabled: true; categories: ErrorCategory[]; selectedCategories: never[]; onSelectionChange: Mock<any, any, any>; searchable: boolean; showSubcategories: boolean; }' but required in type 'ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(135,13): error TS2322: Type '{ onSelectionChange: Mock<any, any, any>; categories: ErrorCategory[]; selectedCategories: never[]; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' is not assignable to type 'IntrinsicAttributes & ErrorCategorizationProps'.
+  Property 'onSelectionChange' does not exist on type 'IntrinsicAttributes & ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(154,13): error TS2322: Type '{ onSelectionChange: Mock<any, any, any>; categories: ErrorCategory[]; selectedCategories: never[]; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' is not assignable to type 'IntrinsicAttributes & ErrorCategorizationProps'.
+  Property 'onSelectionChange' does not exist on type 'IntrinsicAttributes & ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(179,13): error TS2322: Type '{ selectedCategories: string[]; onSelectionChange: Mock<any, any, any>; categories: ErrorCategory[]; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' is not assignable to type 'IntrinsicAttributes & ErrorCategorizationProps'.
+  Property 'onSelectionChange' does not exist on type 'IntrinsicAttributes & ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(193,13): error TS6133: 'user' is declared but its value is never read.
+src/tests/enhanced/error-categorization-fixes.test.tsx(197,12): error TS2741: Property 'onCategoriesChange' is missing in type '{ selectedCategories: string[]; categories: ErrorCategory[]; onSelectionChange: Mock<any, any, any>; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' but required in type 'ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(218,13): error TS2322: Type '{ selectedCategories: string[]; onSelectionChange: Mock<any, any, any>; categories: ErrorCategory[]; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' is not assignable to type 'IntrinsicAttributes & ErrorCategorizationProps'.
+  Property 'onSelectionChange' does not exist on type 'IntrinsicAttributes & ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(234,12): error TS2741: Property 'onCategoriesChange' is missing in type '{ selectedCategories: string[]; categories: ErrorCategory[]; onSelectionChange: Mock<any, any, any>; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' but required in type 'ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(259,12): error TS2741: Property 'onCategoriesChange' is missing in type '{ categories: ErrorCategory[]; selectedCategories: never[]; onSelectionChange: Mock<any, any, any>; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' but required in type 'ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(277,12): error TS2741: Property 'onCategoriesChange' is missing in type '{ categories: ErrorCategory[]; selectedCategories: never[]; onSelectionChange: Mock<any, any, any>; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' but required in type 'ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(296,12): error TS2741: Property 'onCategoriesChange' is missing in type '{ categories: ErrorCategory[]; selectedCategories: never[]; onSelectionChange: Mock<any, any, any>; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' but required in type 'ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(311,12): error TS2741: Property 'onCategoriesChange' is missing in type '{ selectedCategories: string[]; categories: ErrorCategory[]; onSelectionChange: Mock<any, any, any>; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' but required in type 'ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(326,12): error TS2741: Property 'onCategoriesChange' is missing in type '{ selectedCategories: string[]; categories: ErrorCategory[]; onSelectionChange: Mock<any, any, any>; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' but required in type 'ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(348,12): error TS2741: Property 'onCategoriesChange' is missing in type '{ categories: ErrorCategory[]; selectedCategories: never[]; onSelectionChange: Mock<any, any, any>; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' but required in type 'ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(369,13): error TS2322: Type '{ onSelectionChange: Mock<any, any, any>; categories: ErrorCategory[]; selectedCategories: never[]; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' is not assignable to type 'IntrinsicAttributes & ErrorCategorizationProps'.
+  Property 'onSelectionChange' does not exist on type 'IntrinsicAttributes & ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(384,13): error TS6133: 'user' is declared but its value is never read.
+src/tests/enhanced/error-categorization-fixes.test.tsx(388,12): error TS2741: Property 'onCategoriesChange' is missing in type '{ selectedCategories: string[]; categories: ErrorCategory[]; onSelectionChange: Mock<any, any, any>; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' but required in type 'ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(406,12): error TS2741: Property 'onCategoriesChange' is missing in type '{ categories: never[]; selectedCategories: never[]; onSelectionChange: Mock<any, any, any>; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' but required in type 'ErrorCategorizationProps'.
+src/tests/enhanced/error-categorization-fixes.test.tsx(419,12): error TS2741: Property 'onCategoriesChange' is missing in type '{ selectedCategories: string[]; categories: ErrorCategory[]; onSelectionChange: Mock<any, any, any>; disabled: boolean; searchable: boolean; showSubcategories: boolean; }' but required in type 'ErrorCategorizationProps'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(6,46): error TS6133: 'within' is declared but its value is never read.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(9,10): error TS2305: Module '"@/shared/theme/theme"' has no exported member 'theme'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(11,57): error TS2307: Cannot find module '@/domain/types/error-reporting' or its corresponding type declarations.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(102,13): error TS2322: Type '{ onSelectionChange: Mock<any, any, any>; selectable: boolean; data: ErrorReport[]; columns: ({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]; loading: boolean; onEdit: Mock<...>; onSort: Mock<...>; onFilter: Mo...' is not assignable to type 'IntrinsicAttributes & InteractiveDataGridProps'.
+  Property 'selectable' does not exist on type 'IntrinsicAttributes & InteractiveDataGridProps'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(128,13): error TS2322: Type '{ onSelectionChange: Mock<any, any, any>; selectable: boolean; data: ErrorReport[]; columns: ({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]; loading: boolean; onEdit: Mock<...>; onSort: Mock<...>; onFilter: Mo...' is not assignable to type 'IntrinsicAttributes & InteractiveDataGridProps'.
+  Property 'selectable' does not exist on type 'IntrinsicAttributes & InteractiveDataGridProps'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(159,13): error TS2322: Type '{ onSelectionChange: Mock<any, any, any>; selectable: boolean; data: ErrorReport[]; columns: ({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]; loading: boolean; onEdit: Mock<...>; onSort: Mock<...>; onFilter: Mo...' is not assignable to type 'IntrinsicAttributes & InteractiveDataGridProps'.
+  Property 'selectable' does not exist on type 'IntrinsicAttributes & InteractiveDataGridProps'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(178,13): error TS6133: 'user' is declared but its value is never read.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(184,13): error TS2322: Type '{ editable: boolean; data: ErrorReport[]; columns: ({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]; loading: boolean; onSelectionChange: Mock<...>; onEdit: Mock<...>; onSort: Mock<...>; onFilter: Mock<...>; }' is not assignable to type 'IntrinsicAttributes & InteractiveDataGridProps'.
+  Property 'editable' does not exist on type 'IntrinsicAttributes & InteractiveDataGridProps'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(219,13): error TS2322: Type '{ onEdit: Mock<any, any, any>; editable: boolean; data: ErrorReport[]; columns: ({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]; loading: boolean; onSelectionChange: Mock<...>; onSort: Mock<...>; onFilter: Mock...' is not assignable to type 'IntrinsicAttributes & InteractiveDataGridProps'.
+  Property 'editable' does not exist on type 'IntrinsicAttributes & InteractiveDataGridProps'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(264,13): error TS2322: Type '{ editable: boolean; data: ErrorReport[]; columns: ({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]; loading: boolean; onSelectionChange: Mock<...>; onEdit: Mock<...>; onSort: Mock<...>; onFilter: Mock<...>; }' is not assignable to type 'IntrinsicAttributes & InteractiveDataGridProps'.
+  Property 'editable' does not exist on type 'IntrinsicAttributes & InteractiveDataGridProps'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(309,13): error TS2322: Type '{ onSort: Mock<any, any, any>; sortable: boolean; data: ErrorReport[]; columns: ({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]; loading: boolean; onSelectionChange: Mock<...>; onEdit: Mock<...>; onFilter: Mock...' is not assignable to type 'IntrinsicAttributes & InteractiveDataGridProps'.
+  Property 'sortable' does not exist on type 'IntrinsicAttributes & InteractiveDataGridProps'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(330,13): error TS2322: Type '{ onFilter: Mock<any, any, any>; filterable: boolean; data: ErrorReport[]; columns: ({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]; loading: boolean; onSelectionChange: Mock<...>; onEdit: Mock<...>; onSort: Mo...' is not assignable to type 'IntrinsicAttributes & InteractiveDataGridProps'.
+  Property 'filterable' does not exist on type 'IntrinsicAttributes & InteractiveDataGridProps'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(356,13): error TS2322: Type 'boolean' is not assignable to type '{ page: number; pageSize: number; total: number; onPageChange: (page: number) => void; onPageSizeChange: (pageSize: number) => void; }'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(376,13): error TS2322: Type 'boolean' is not assignable to type '{ page: number; pageSize: number; total: number; onPageChange: (page: number) => void; onPageSizeChange: (pageSize: number) => void; }'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(398,12): error TS2322: Type '{ loading: true; data: ErrorReport[]; columns: ({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]; onSelectionChange: Mock<...>; onEdit: Mock<...>; onSort: Mock<...>; onFilter: Mock<...>; }' is not assignable to type 'InteractiveDataGridProps'.
+  Types of property 'columns' are incompatible.
+    Type '({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]' is not assignable to type 'DataGridColumn[]'.
+      Type '{ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; }' is not assignable to type 'DataGridColumn'.
+        Type '{ field: string; headerName: string; width: number; editable?: undefined; }' is missing the following properties from type 'DataGridColumn': id, label, sortable, filterable
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(411,12): error TS2322: Type '{ data: never[]; columns: ({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]; loading: boolean; onSelectionChange: Mock<...>; onEdit: Mock<...>; onSort: Mock<...>; onFilter: Mock<...>; }' is not assignable to type 'InteractiveDataGridProps'.
+  Types of property 'columns' are incompatible.
+    Type '({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]' is not assignable to type 'DataGridColumn[]'.
+      Type '{ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; }' is not assignable to type 'DataGridColumn'.
+        Type '{ field: string; headerName: string; width: number; editable?: undefined; }' is missing the following properties from type 'DataGridColumn': id, label, sortable, filterable
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(426,13): error TS2322: Type '{ error: string; data: ErrorReport[]; columns: ({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]; loading: boolean; onSelectionChange: Mock<...>; onEdit: Mock<...>; onSort: Mock<...>; onFilter: Mock<...>; }' is not assignable to type 'IntrinsicAttributes & InteractiveDataGridProps'.
+  Property 'error' does not exist on type 'IntrinsicAttributes & InteractiveDataGridProps'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(441,13): error TS2322: Type '{ selectable: boolean; data: ErrorReport[]; columns: ({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]; loading: boolean; onSelectionChange: Mock<...>; onEdit: Mock<...>; onSort: Mock<...>; onFilter: Mock<...>; }' is not assignable to type 'IntrinsicAttributes & InteractiveDataGridProps'.
+  Property 'selectable' does not exist on type 'IntrinsicAttributes & InteractiveDataGridProps'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(458,13): error TS2322: Type '{ selectable: boolean; data: ErrorReport[]; columns: ({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]; loading: boolean; onSelectionChange: Mock<...>; onEdit: Mock<...>; onSort: Mock<...>; onFilter: Mock<...>; }' is not assignable to type 'IntrinsicAttributes & InteractiveDataGridProps'.
+  Property 'selectable' does not exist on type 'IntrinsicAttributes & InteractiveDataGridProps'.
+src/tests/enhanced/interactive-data-grid-fixes.test.tsx(487,13): error TS2322: Type '{ data: any[]; virtualization: boolean; columns: ({ field: string; headerName: string; width: number; editable?: undefined; } | { field: string; headerName: string; width: number; editable: boolean; })[]; ... 4 more ...; onFilter: Mock<...>; }' is not assignable to type 'IntrinsicAttributes & InteractiveDataGridProps'.
+  Property 'virtualization' does not exist on type 'IntrinsicAttributes & InteractiveDataGridProps'.
+src/tests/enhanced/speaker-bucket-transitions.test.tsx(6,26): error TS6133: 'fireEvent' is declared but its value is never read.
+src/tests/enhanced/speaker-bucket-transitions.test.tsx(13,10): error TS2305: Module '"@/shared/theme/theme"' has no exported member 'theme'.
+src/tests/enhanced/speaker-bucket-transitions.test.tsx(104,52): error TS6133: 'newBucket' is declared but its value is never read.
+src/tests/integration/mt-validation.test.tsx(6,26): error TS6133: 'fireEvent' is declared but its value is never read.
+src/tests/integration/mt-validation.test.tsx(6,46): error TS6133: 'within' is declared but its value is never read.
+src/tests/integration/mt-validation.test.tsx(13,23): error TS2307: Cannot find module '@/app/theme' or its corresponding type declarations.
+src/tests/integration/mt-validation.test.tsx(29,3): error TS2353: Object literal may only specify known properties, and 'test_data_ids' does not exist in type 'ValidationSession'.
+src/tests/integration/mt-validation.test.tsx(31,25): error TS2339: Property 'ACTIVE' does not exist on type 'typeof SessionStatus'.
+src/tests/integration/mt-validation.test.tsx(72,5): error TS2739: Type '{ improvement: number; improvement_percentage: number; is_significant_improvement: true; }' is missing the following properties from type 'SERComparison': original_ser, corrected_ser
+src/tests/integration/mt-validation.test.tsx(108,5): error TS2739: Type '{ improvement: number; improvement_percentage: number; is_significant_improvement: false; }' is missing the following properties from type 'SERComparison': original_ser, corrected_ser
+src/tests/integration/speaker-management.test.tsx(6,26): error TS6133: 'fireEvent' is declared but its value is never read.
+src/tests/integration/speaker-management.test.tsx(13,23): error TS2307: Cannot find module '@/app/theme' or its corresponding type declarations.
+src/tests/integration/speaker-management.test.tsx(268,31): error TS2345: Argument of type 'Element' is not assignable to parameter of type 'HTMLElement'.
+  Type 'Element' is missing the following properties from type 'HTMLElement': accessKey, accessKeyLabel, autocapitalize, dir, and 126 more.

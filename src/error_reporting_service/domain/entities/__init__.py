@@ -8,10 +8,6 @@ Entities are objects that have a distinct identity and lifecycle.
 They encapsulate business rules and maintain data consistency.
 """
 
-from .error_report import ErrorReport, SeverityLevel, ErrorStatus
+from .error_report import ErrorReport, ErrorStatus, SeverityLevel
 
-__all__ = [
-    "ErrorReport",
-    "SeverityLevel", 
-    "ErrorStatus"
-]
+__all__ = ["ErrorReport", "SeverityLevel", "ErrorStatus"]

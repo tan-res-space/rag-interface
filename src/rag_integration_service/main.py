@@ -5,26 +5,27 @@ This module sets up the FastAPI application with all necessary middleware,
 routes, and dependency injection following Hexagonal Architecture principles.
 """
 
+import asyncio
+import logging
+import uuid
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request, HTTPException
+from datetime import datetime
+
+import uvicorn
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
-import uvicorn
-import logging
-from datetime import datetime
-import uuid
-import asyncio
+
+from .infrastructure.adapters.http.controllers import router as api_router
 
 # Application imports
 from .infrastructure.config.settings import settings
-from .infrastructure.adapters.http.controllers import router as api_router
-
 
 # Configure logging
 logging.basicConfig(
     level=getattr(logging, settings.log_level.upper()),
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -33,42 +34,42 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     """
     Application lifespan manager.
-    
+
     Handles startup and shutdown events for the RAG Integration Service.
     """
     # Startup
     logger.info("RAG Integration Service starting up...")
-    
+
     try:
         # Initialize ML models
         await initialize_ml_models()
-        
+
         # Initialize vector database
         await initialize_vector_database()
-        
+
         # Initialize cache
         await initialize_cache()
-        
+
         # Start background tasks
         await start_background_tasks()
-        
+
         logger.info("RAG Integration Service startup completed successfully")
-        
+
     except Exception as e:
         logger.error(f"Failed to start RAG Integration Service: {e}")
         raise
-    
+
     yield
-    
+
     # Shutdown
     logger.info("RAG Integration Service shutting down...")
-    
+
     try:
         # Cleanup resources
         await cleanup_resources()
-        
+
         logger.info("RAG Integration Service shutdown completed")
-        
+
     except Exception as e:
         logger.error(f"Error during shutdown: {e}")
 
@@ -94,8 +95,7 @@ app.add_middleware(
 
 # Add trusted host middleware for security
 app.add_middleware(
-    TrustedHostMiddleware,
-    allowed_hosts=["*"]  # Configure appropriately for production
+    TrustedHostMiddleware, allowed_hosts=["*"]  # Configure appropriately for production
 )
 
 
@@ -104,7 +104,7 @@ async def add_request_id_middleware(request: Request, call_next):
     """Add request ID to all requests for tracing"""
     request_id = str(uuid.uuid4())
     request.state.request_id = request_id
-    
+
     response = await call_next(request)
     response.headers["X-Request-ID"] = request_id
     return response
@@ -121,23 +121,20 @@ async def error_handling_middleware(request: Request, call_next):
         raise
     except Exception as e:
         logger.exception(f"Unhandled exception: {e}")
-        
+
         error_response = {
             "success": False,
             "error": {
                 "code": "INTERNAL_SERVER_ERROR",
                 "message": "An internal server error occurred",
-                "details": str(e) if settings.debug else "Internal server error"
+                "details": str(e) if settings.debug else "Internal server error",
             },
             "timestamp": datetime.utcnow().isoformat(),
             "request_id": getattr(request.state, "request_id", str(uuid.uuid4())),
-            "version": "1.0.0"
+            "version": "1.0.0",
         }
-        
-        return JSONResponse(
-            status_code=500,
-            content=error_response
-        )
+
+        return JSONResponse(status_code=500, content=error_response)
 
 
 # Health check endpoint
@@ -148,7 +145,7 @@ async def health_check():
         "status": "healthy",
         "version": "1.0.0",
         "timestamp": datetime.utcnow().isoformat(),
-        "service": "rag-integration-service"
+        "service": "rag-integration-service",
     }
 
 
@@ -160,16 +157,14 @@ async def root():
         "service": "RAG Integration Service",
         "version": "1.0.0",
         "status": "running",
-        "docs": "/docs" if settings.debug else "Documentation not available in production"
+        "docs": (
+            "/docs" if settings.debug else "Documentation not available in production"
+        ),
     }
 
 
 # Include API routes
-app.include_router(
-    api_router,
-    prefix="/api/v1",
-    tags=["rag-integration"]
-)
+app.include_router(api_router, prefix="/api/v1", tags=["rag-integration"])
 
 
 # Exception handlers
@@ -181,17 +176,14 @@ async def http_exception_handler(request: Request, exc: HTTPException):
         "error": {
             "code": f"HTTP_{exc.status_code}",
             "message": exc.detail,
-            "status_code": exc.status_code
+            "status_code": exc.status_code,
         },
         "timestamp": datetime.utcnow().isoformat(),
         "request_id": getattr(request.state, "request_id", str(uuid.uuid4())),
-        "version": "1.0.0"
+        "version": "1.0.0",
     }
-    
-    return JSONResponse(
-        status_code=exc.status_code,
-        content=error_response
-    )
+
+    return JSONResponse(status_code=exc.status_code, content=error_response)
 
 
 @app.exception_handler(ValueError)
@@ -199,19 +191,13 @@ async def value_error_handler(request: Request, exc: ValueError):
     """Handle ValueError exceptions"""
     error_response = {
         "success": False,
-        "error": {
-            "code": "INVALID_REQUEST",
-            "message": str(exc)
-        },
+        "error": {"code": "INVALID_REQUEST", "message": str(exc)},
         "timestamp": datetime.utcnow().isoformat(),
         "request_id": getattr(request.state, "request_id", str(uuid.uuid4())),
-        "version": "1.0.0"
+        "version": "1.0.0",
     }
-    
-    return JSONResponse(
-        status_code=400,
-        content=error_response
-    )
+
+    return JSONResponse(status_code=400, content=error_response)
 
 
 @app.exception_handler(PermissionError)
@@ -221,19 +207,16 @@ async def permission_error_handler(request: Request, exc: PermissionError):
         "success": False,
         "error": {
             "code": "UNAUTHORIZED" if "Access denied" in str(exc) else "FORBIDDEN",
-            "message": str(exc)
+            "message": str(exc),
         },
         "timestamp": datetime.utcnow().isoformat(),
         "request_id": getattr(request.state, "request_id", str(uuid.uuid4())),
-        "version": "1.0.0"
+        "version": "1.0.0",
     }
-    
+
     status_code = 401 if "Access denied" in str(exc) else 403
-    
-    return JSONResponse(
-        status_code=status_code,
-        content=error_response
-    )
+
+    return JSONResponse(status_code=status_code, content=error_response)
 
 
 # Initialization functions
@@ -278,5 +261,5 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=8002,  # RAG Integration Service port
         reload=settings.debug,
-        log_level=settings.log_level.lower()
+        log_level=settings.log_level.lower(),
     )

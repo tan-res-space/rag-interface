@@ -5,11 +5,15 @@ These DTOs define the structure of requests to use cases and API endpoints.
 """
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 
-from src.rag_integration_service.domain.value_objects.embedding_type import EmbeddingType
-from src.rag_integration_service.domain.entities.speaker_rag_processing_job import JobType
+from src.rag_integration_service.domain.entities.speaker_rag_processing_job import (
+    JobType,
+)
+from src.rag_integration_service.domain.value_objects.embedding_type import (
+    EmbeddingType,
+)
 
 
 @dataclass(frozen=True)
@@ -17,23 +21,23 @@ class EmbeddingRequest:
     """
     Request DTO for single embedding generation.
     """
-    
+
     text: str
     embedding_type: EmbeddingType
     metadata: Optional[Dict[str, Any]] = None
     model_version: Optional[str] = None
     requested_by: Optional[str] = None
-    
+
     def __post_init__(self):
         """Validate request parameters."""
         if not self.text or not self.text.strip():
             raise ValueError("text cannot be empty")
-        
+
         if len(self.text) > 10000:
             raise ValueError("text cannot exceed 10000 characters")
-        
+
         if self.metadata is None:
-            object.__setattr__(self, 'metadata', {})
+            object.__setattr__(self, "metadata", {})
 
 
 @dataclass(frozen=True)
@@ -41,30 +45,30 @@ class BatchEmbeddingRequest:
     """
     Request DTO for batch embedding generation.
     """
-    
+
     texts: List[str]
     embedding_type: EmbeddingType
     metadata: Optional[Dict[str, Any]] = None
     model_version: Optional[str] = None
     requested_by: Optional[str] = None
-    
+
     def __post_init__(self):
         """Validate request parameters."""
         if not self.texts:
             raise ValueError("texts list cannot be empty")
-        
+
         if len(self.texts) > 100:
             raise ValueError("batch size cannot exceed 100 texts")
-        
+
         for i, text in enumerate(self.texts):
             if not text or not text.strip():
                 raise ValueError(f"text at index {i} cannot be empty")
-            
+
             if len(text) > 10000:
                 raise ValueError(f"text at index {i} cannot exceed 10000 characters")
-        
+
         if self.metadata is None:
-            object.__setattr__(self, 'metadata', {})
+            object.__setattr__(self, "metadata", {})
 
 
 @dataclass(frozen=True)
@@ -72,7 +76,7 @@ class SimilaritySearchRequest:
     """
     Request DTO for similarity search operations.
     """
-    
+
     query_text: Optional[str] = None
     query_vector: Optional[List[float]] = None
     embedding_type: Optional[EmbeddingType] = None
@@ -81,44 +85,44 @@ class SimilaritySearchRequest:
     threshold: float = 0.7
     include_metadata: bool = True
     requested_by: Optional[str] = None
-    
+
     def __post_init__(self):
         """Validate request parameters."""
         # Either query_text or query_vector must be provided
         if not self.query_text and not self.query_vector:
             raise ValueError("Either query_text or query_vector must be provided")
-        
+
         if self.query_text and self.query_vector:
             raise ValueError("Cannot provide both query_text and query_vector")
-        
+
         # Validate query_text if provided
         if self.query_text:
             if not self.query_text.strip():
                 raise ValueError("query_text cannot be empty")
-            
+
             if len(self.query_text) > 10000:
                 raise ValueError("query_text cannot exceed 10000 characters")
-            
+
             if not self.embedding_type:
                 raise ValueError("embedding_type is required when using query_text")
-        
+
         # Validate query_vector if provided
         if self.query_vector:
             if len(self.query_vector) != 1536:
                 raise ValueError("query_vector must be 1536-dimensional")
-            
+
             if not all(isinstance(x, (int, float)) for x in self.query_vector):
                 raise ValueError("query_vector must contain only numeric values")
-        
+
         # Validate other parameters
         if self.top_k <= 0 or self.top_k > 100:
             raise ValueError("top_k must be between 1 and 100")
-        
+
         if not (0.0 <= self.threshold <= 1.0):
             raise ValueError("threshold must be between 0.0 and 1.0")
-        
+
         if self.filters is None:
-            object.__setattr__(self, 'filters', {})
+            object.__setattr__(self, "filters", {})
 
 
 @dataclass(frozen=True)
@@ -126,7 +130,7 @@ class SpeakerSimilarityRequest:
     """
     Request DTO for speaker-specific similarity search.
     """
-    
+
     speaker_id: str
     query_text: Optional[str] = None
     query_vector: Optional[List[float]] = None
@@ -135,35 +139,35 @@ class SpeakerSimilarityRequest:
     threshold: float = 0.7
     include_metadata: bool = True
     requested_by: Optional[str] = None
-    
+
     def __post_init__(self):
         """Validate request parameters."""
         if not self.speaker_id or not self.speaker_id.strip():
             raise ValueError("speaker_id cannot be empty")
-        
+
         # Either query_text or query_vector must be provided
         if not self.query_text and not self.query_vector:
             raise ValueError("Either query_text or query_vector must be provided")
-        
+
         if self.query_text and self.query_vector:
             raise ValueError("Cannot provide both query_text and query_vector")
-        
+
         # Validate query_text if provided
         if self.query_text:
             if not self.query_text.strip():
                 raise ValueError("query_text cannot be empty")
-            
+
             if not self.embedding_type:
                 raise ValueError("embedding_type is required when using query_text")
-        
+
         # Validate query_vector if provided
         if self.query_vector and len(self.query_vector) != 1536:
             raise ValueError("query_vector must be 1536-dimensional")
-        
+
         # Validate other parameters
         if self.top_k <= 0 or self.top_k > 100:
             raise ValueError("top_k must be between 1 and 100")
-        
+
         if not (0.0 <= self.threshold <= 1.0):
             raise ValueError("threshold must be between 0.0 and 1.0")
 
@@ -173,7 +177,7 @@ class CategorySimilarityRequest:
     """
     Request DTO for category-specific similarity search.
     """
-    
+
     category: str
     query_text: Optional[str] = None
     query_vector: Optional[List[float]] = None
@@ -182,35 +186,35 @@ class CategorySimilarityRequest:
     threshold: float = 0.7
     include_metadata: bool = True
     requested_by: Optional[str] = None
-    
+
     def __post_init__(self):
         """Validate request parameters."""
         if not self.category or not self.category.strip():
             raise ValueError("category cannot be empty")
-        
+
         # Either query_text or query_vector must be provided
         if not self.query_text and not self.query_vector:
             raise ValueError("Either query_text or query_vector must be provided")
-        
+
         if self.query_text and self.query_vector:
             raise ValueError("Cannot provide both query_text and query_vector")
-        
+
         # Validate query_text if provided
         if self.query_text:
             if not self.query_text.strip():
                 raise ValueError("query_text cannot be empty")
-            
+
             if not self.embedding_type:
                 raise ValueError("embedding_type is required when using query_text")
-        
+
         # Validate query_vector if provided
         if self.query_vector and len(self.query_vector) != 1536:
             raise ValueError("query_vector must be 1536-dimensional")
-        
+
         # Validate other parameters
         if self.top_k <= 0 or self.top_k > 100:
             raise ValueError("top_k must be between 1 and 100")
-        
+
         if not (0.0 <= self.threshold <= 1.0):
             raise ValueError("threshold must be between 0.0 and 1.0")
 
@@ -220,23 +224,23 @@ class PatternAnalysisRequest:
     """
     Request DTO for pattern analysis operations.
     """
-    
+
     filters: Optional[Dict[str, Any]] = None
     time_window_days: int = 30
     min_pattern_frequency: int = 3
     include_quality_metrics: bool = True
     requested_by: Optional[str] = None
-    
+
     def __post_init__(self):
         """Validate request parameters."""
         if self.time_window_days <= 0 or self.time_window_days > 365:
             raise ValueError("time_window_days must be between 1 and 365")
-        
+
         if self.min_pattern_frequency <= 0:
             raise ValueError("min_pattern_frequency must be positive")
-        
+
         if self.filters is None:
-            object.__setattr__(self, 'filters', {})
+            object.__setattr__(self, "filters", {})
 
 
 @dataclass(frozen=True)
@@ -244,23 +248,23 @@ class QualityMetricsRequest:
     """
     Request DTO for quality metrics calculation.
     """
-    
+
     filters: Optional[Dict[str, Any]] = None
     time_window_days: int = 30
     group_by: Optional[List[str]] = None
     include_trends: bool = True
     requested_by: Optional[str] = None
-    
+
     def __post_init__(self):
         """Validate request parameters."""
         if self.time_window_days <= 0 or self.time_window_days > 365:
             raise ValueError("time_window_days must be between 1 and 365")
-        
+
         if self.filters is None:
-            object.__setattr__(self, 'filters', {})
-        
+            object.__setattr__(self, "filters", {})
+
         if self.group_by is None:
-            object.__setattr__(self, 'group_by', [])
+            object.__setattr__(self, "group_by", [])
 
 
 @dataclass(frozen=True)
@@ -268,7 +272,7 @@ class ProcessErrorEventRequest:
     """
     Request DTO for processing error events from other services.
     """
-    
+
     error_id: str
     job_id: str
     speaker_id: str
@@ -278,37 +282,38 @@ class ProcessErrorEventRequest:
     severity_level: str
     context_notes: Optional[str] = None
     metadata: Optional[Dict[str, Any]] = None
-    
+
     def __post_init__(self):
         """Validate request parameters."""
         if not self.error_id or not self.error_id.strip():
             raise ValueError("error_id cannot be empty")
-        
+
         if not self.job_id or not self.job_id.strip():
             raise ValueError("job_id cannot be empty")
-        
+
         if not self.speaker_id or not self.speaker_id.strip():
             raise ValueError("speaker_id cannot be empty")
-        
+
         if not self.original_text or not self.original_text.strip():
             raise ValueError("original_text cannot be empty")
-        
+
         if not self.corrected_text or not self.corrected_text.strip():
             raise ValueError("corrected_text cannot be empty")
-        
+
         if not self.error_categories:
             raise ValueError("error_categories cannot be empty")
-        
+
         if not self.severity_level or not self.severity_level.strip():
             raise ValueError("severity_level cannot be empty")
-        
+
         if self.metadata is None:
-            object.__setattr__(self, 'metadata', {})
+            object.__setattr__(self, "metadata", {})
 
 
 # =====================================================
 # SPEAKER RAG PROCESSING REQUEST DTOS
 # =====================================================
+
 
 @dataclass(frozen=True)
 class HistoricalDataItem:
@@ -357,7 +362,9 @@ class ProcessSpeakerHistoricalDataRequest:
             raise ValueError("historical_data_items cannot be empty")
 
         if len(self.historical_data_items) > 1000:
-            raise ValueError("Cannot process more than 1000 historical data items at once")
+            raise ValueError(
+                "Cannot process more than 1000 historical data items at once"
+            )
 
         if self.context_window < 0 or self.context_window > 200:
             raise ValueError("context_window must be between 0 and 200")
@@ -458,7 +465,9 @@ class GetSpeakerErrorPatternsRequest:
         if not self.speaker_id:
             raise ValueError("speaker_id cannot be empty")
 
-        if self.min_confidence is not None and (self.min_confidence < 0 or self.min_confidence > 1):
+        if self.min_confidence is not None and (
+            self.min_confidence < 0 or self.min_confidence > 1
+        ):
             raise ValueError("min_confidence must be between 0 and 1")
 
         if self.max_examples_per_type < 0 or self.max_examples_per_type > 20:

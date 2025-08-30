@@ -19,6 +19,7 @@ import {
   VerifiedUser as VerificationIcon,
   AdminPanelSettings as AdminIcon,
   Analytics as AnalyticsIcon,
+  MonitorHeart as SystemHealthIcon,
 } from '@mui/icons-material';
 import { useAppSelector } from '@/app/hooks';
 import { selectCurrentUser } from '@features/auth/auth-slice';
@@ -58,6 +59,13 @@ const navigationItems: NavigationItem[] = [
     label: 'Analytics',
     path: '/analytics',
     icon: <AnalyticsIcon />,
+    requiredRoles: [UserRole.QA_SUPERVISOR, UserRole.ADMIN],
+  },
+  {
+    id: 'system-health',
+    label: 'System Health',
+    path: '/system-health',
+    icon: <SystemHealthIcon />,
     requiredRoles: [UserRole.QA_SUPERVISOR, UserRole.ADMIN],
   },
   {

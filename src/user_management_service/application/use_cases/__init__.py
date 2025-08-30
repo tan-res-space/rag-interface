@@ -8,7 +8,4 @@ for the User Management Service.
 from .authenticate_user import AuthenticateUserUseCase
 from .manage_speakers_use_case import ManageSpeakersUseCase
 
-__all__ = [
-    "AuthenticateUserUseCase",
-    "ManageSpeakersUseCase"
-]
+__all__ = ["AuthenticateUserUseCase", "ManageSpeakersUseCase"]

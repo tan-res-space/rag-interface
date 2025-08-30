@@ -7,6 +7,4 @@ for the RAG integration service domain.
 
 from .speaker_rag_processing_service import SpeakerRAGProcessingService
 
-__all__ = [
-    "SpeakerRAGProcessingService"
-]
+__all__ = ["SpeakerRAGProcessingService"]

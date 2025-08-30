@@ -5,18 +5,18 @@ These DTOs define the structure of incoming requests to use cases.
 """
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 
 @dataclass(frozen=True)
 class SubmitErrorReportRequest:
     """
     Request DTO for submitting an error report.
-    
+
     Contains all the information needed to create a new error report.
     """
-    
+
     job_id: str
     speaker_id: str
     original_text: str
@@ -28,11 +28,11 @@ class SubmitErrorReportRequest:
     reported_by: str
     context_notes: Optional[str] = None
     metadata: Dict[str, Any] = None
-    
+
     def __post_init__(self):
         """Set default metadata if None"""
         if self.metadata is None:
-            object.__setattr__(self, 'metadata', {})
+            object.__setattr__(self, "metadata", {})
 
 
 @dataclass(frozen=True)
@@ -104,7 +104,7 @@ class GetErrorReportRequest:
     """
     Request DTO for retrieving an error report by ID.
     """
-    
+
     error_id: str
     requested_by: str
 
@@ -114,7 +114,7 @@ class UpdateErrorReportRequest:
     """
     Request DTO for updating an error report.
     """
-    
+
     error_id: str
     updated_by: str
     updates: Dict[str, Any]
@@ -125,7 +125,7 @@ class SearchErrorReportsRequest:
     """
     Request DTO for searching error reports.
     """
-    
+
     speaker_id: Optional[str] = None
     job_id: Optional[str] = None
     error_categories: Optional[List[str]] = None

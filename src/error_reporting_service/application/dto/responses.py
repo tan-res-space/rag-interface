@@ -5,8 +5,9 @@ These DTOs define the structure of responses from use cases.
 """
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
 from src.error_reporting_service.domain.entities.error_report import ErrorReport
 
 
@@ -14,29 +15,29 @@ from src.error_reporting_service.domain.entities.error_report import ErrorReport
 class SubmitErrorReportResponse:
     """
     Response DTO for error report submission.
-    
+
     Contains the result of submitting an error report.
     """
-    
+
     error_id: str
     status: str
     message: str
     validation_warnings: List[str] = None
-    
+
     def __post_init__(self):
         """Set default validation warnings if None"""
         if self.validation_warnings is None:
-            object.__setattr__(self, 'validation_warnings', [])
+            object.__setattr__(self, "validation_warnings", [])
 
 
 @dataclass(frozen=True)
 class ErrorReportResponse:
     """
     Response DTO for error report data.
-    
+
     Contains error report information for API responses.
     """
-    
+
     error_id: str
     job_id: str
     speaker_id: str
@@ -59,7 +60,7 @@ class SearchErrorReportsResponse:
     """
     Response DTO for error report search results.
     """
-    
+
     error_reports: List[ErrorReportResponse]
     total_count: int
     page: int
@@ -73,7 +74,7 @@ class UpdateErrorReportResponse:
     """
     Response DTO for error report update operations.
     """
-    
+
     error_id: str
     status: str
     message: str
@@ -108,9 +109,9 @@ class PaginatedErrorReports:
         """Calculate total pages"""
         if self.size > 0:
             calculated_pages = (self.total + self.size - 1) // self.size
-            object.__setattr__(self, 'pages', calculated_pages)
+            object.__setattr__(self, "pages", calculated_pages)
         else:
-            object.__setattr__(self, 'pages', 0)
+            object.__setattr__(self, "pages", 0)
 
 
 @dataclass(frozen=True)

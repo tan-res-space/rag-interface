@@ -1,0 +1,2892 @@
+{
+  "config": {
+    "configFile": "/home/tan/Documents/augment-projects/rag-interface/frontend/playwright.config.ts",
+    "rootDir": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 10,
+    "metadata": {
+      "actualWorkers": 8
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "playwright-report/results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "playwright-report/results.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 8
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 8
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 8
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 8
+        },
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 8
+        },
+        "id": "Mobile Safari",
+        "name": "Mobile Safari",
+        "testDir": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 8,
+    "webServer": {
+      "command": "export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && \\. \"$NVM_DIR/nvm.sh\" && npm run dev",
+      "url": "http://localhost:5173",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "accessibility.spec.ts",
+      "file": "accessibility.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Accessibility Tests",
+          "file": "accessibility.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should have proper heading hierarchy",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5665,
+                      "error": {
+                        "message": "Error: locator._expect: expectedNumber: expected float, got object",
+                        "stack": "Error: locator._expect: expectedNumber: expected float, got object\n    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts:20:22",
+                        "location": {
+                          "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts",
+                          "column": 22,
+                          "line": 20
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 18 |\u001b[39m     \n \u001b[90m 19 |\u001b[39m     \u001b[90m// Should have at least one h1\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 20 |\u001b[39m     \u001b[36mawait\u001b[39m expect(h1)\u001b[33m.\u001b[39mtoHaveCount({ min\u001b[33m:\u001b[39m \u001b[35m1\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 21 |\u001b[39m     \n \u001b[90m 22 |\u001b[39m     \u001b[90m// Headings should be in logical order\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mif\u001b[39m (\u001b[36mawait\u001b[39m h1\u001b[33m.\u001b[39mcount() \u001b[33m>\u001b[39m \u001b[35m0\u001b[39m) {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts",
+                            "column": 22,
+                            "line": 20
+                          },
+                          "message": "Error: locator._expect: expectedNumber: expected float, got object\n\n\u001b[0m \u001b[90m 18 |\u001b[39m     \n \u001b[90m 19 |\u001b[39m     \u001b[90m// Should have at least one h1\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 20 |\u001b[39m     \u001b[36mawait\u001b[39m expect(h1)\u001b[33m.\u001b[39mtoHaveCount({ min\u001b[33m:\u001b[39m \u001b[35m1\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 21 |\u001b[39m     \n \u001b[90m 22 |\u001b[39m     \u001b[90m// Headings should be in logical order\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mif\u001b[39m (\u001b[36mawait\u001b[39m h1\u001b[33m.\u001b[39mcount() \u001b[33m>\u001b[39m \u001b[35m0\u001b[39m) {\u001b[0m\n\u001b[2m    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts:20:22\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:38.840Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/accessibility-Accessibilit-30286-ve-proper-heading-hierarchy-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/accessibility-Accessibilit-30286-ve-proper-heading-hierarchy-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/accessibility-Accessibilit-30286-ve-proper-heading-hierarchy-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts",
+                        "column": 22,
+                        "line": 20
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ddd864604af8a6a0198f-6743550d6f8da32f6c0d",
+              "file": "accessibility.spec.ts",
+              "line": 13,
+              "column": 3
+            },
+            {
+              "title": "should have proper ARIA labels and roles",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5756,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:38.879Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ddd864604af8a6a0198f-048c52f5a28fb2aa0b71",
+              "file": "accessibility.spec.ts",
+              "line": 28,
+              "column": 3
+            },
+            {
+              "title": "should support keyboard navigation",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 9088,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator(':focus')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':focus')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator(':focus')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':focus')\u001b[22m\n\n    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts:60:34",
+                        "location": {
+                          "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts",
+                          "column": 34,
+                          "line": 60
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 58 |\u001b[39m     \u001b[90m// Should focus on first focusable element\u001b[39m\n \u001b[90m 59 |\u001b[39m     \u001b[36mconst\u001b[39m focusedElement \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m':focus'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 60 |\u001b[39m     \u001b[36mawait\u001b[39m expect(focusedElement)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 61 |\u001b[39m     \n \u001b[90m 62 |\u001b[39m     \u001b[90m// Continue tabbing through elements\u001b[39m\n \u001b[90m 63 |\u001b[39m     \u001b[36mfor\u001b[39m (\u001b[36mlet\u001b[39m i \u001b[33m=\u001b[39m \u001b[35m0\u001b[39m\u001b[33m;\u001b[39m i \u001b[33m<\u001b[39m \u001b[35m5\u001b[39m\u001b[33m;\u001b[39m i\u001b[33m++\u001b[39m) {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts",
+                            "column": 34,
+                            "line": 60
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator(':focus')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':focus')\u001b[22m\n\n\n\u001b[0m \u001b[90m 58 |\u001b[39m     \u001b[90m// Should focus on first focusable element\u001b[39m\n \u001b[90m 59 |\u001b[39m     \u001b[36mconst\u001b[39m focusedElement \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m':focus'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 60 |\u001b[39m     \u001b[36mawait\u001b[39m expect(focusedElement)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 61 |\u001b[39m     \n \u001b[90m 62 |\u001b[39m     \u001b[90m// Continue tabbing through elements\u001b[39m\n \u001b[90m 63 |\u001b[39m     \u001b[36mfor\u001b[39m (\u001b[36mlet\u001b[39m i \u001b[33m=\u001b[39m \u001b[35m0\u001b[39m\u001b[33m;\u001b[39m i \u001b[33m<\u001b[39m \u001b[35m5\u001b[39m\u001b[33m;\u001b[39m i\u001b[33m++\u001b[39m) {\u001b[0m\n\u001b[2m    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts:60:34\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:38.861Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/accessibility-Accessibilit-bf7b3-support-keyboard-navigation-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/accessibility-Accessibilit-bf7b3-support-keyboard-navigation-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/accessibility-Accessibilit-bf7b3-support-keyboard-navigation-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts",
+                        "column": 34,
+                        "line": 60
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ddd864604af8a6a0198f-5285c0e56331422aca39",
+              "file": "accessibility.spec.ts",
+              "line": 54,
+              "column": 3
+            },
+            {
+              "title": "should have sufficient color contrast",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 9255,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/.*\\/dashboard/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:5173/login\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    9 × unexpected value \"http://localhost:5173/login\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/.*\\/dashboard/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:5173/login\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    9 × unexpected value \"http://localhost:5173/login\"\u001b[22m\n\n    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts:10:24",
+                        "location": {
+                          "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts",
+                          "column": 24,
+                          "line": 10
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  8 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[name=\"password\"]'\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m'AdminPassword123!'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m  9 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/.*\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 11 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 12 |\u001b[39m\n \u001b[90m 13 |\u001b[39m   test(\u001b[32m'should have proper heading hierarchy'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts",
+                            "column": 24,
+                            "line": 10
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/.*\\/dashboard/\u001b[39m\nReceived string:  \u001b[31m\"http://localhost:5173/login\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    9 × unexpected value \"http://localhost:5173/login\"\u001b[22m\n\n\n\u001b[0m \u001b[90m  8 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[name=\"password\"]'\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m'AdminPassword123!'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m  9 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/.*\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 11 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 12 |\u001b[39m\n \u001b[90m 13 |\u001b[39m   test(\u001b[32m'should have proper heading hierarchy'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts:10:24\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:38.876Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/accessibility-Accessibilit-fff64-e-sufficient-color-contrast-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/accessibility-Accessibilit-fff64-e-sufficient-color-contrast-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/accessibility-Accessibilit-fff64-e-sufficient-color-contrast-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts",
+                        "column": 24,
+                        "line": 10
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ddd864604af8a6a0198f-163f36a15f58a9a9d54d",
+              "file": "accessibility.spec.ts",
+              "line": 70,
+              "column": 3
+            },
+            {
+              "title": "should have proper form labels",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 5655,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:38.840Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ddd864604af8a6a0198f-38b57b8b3cadf5ce75b1",
+              "file": "accessibility.spec.ts",
+              "line": 85,
+              "column": 3
+            },
+            {
+              "title": "should support screen reader announcements",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 5962,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:38.845Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ddd864604af8a6a0198f-f975edf5d019f13245ea",
+              "file": "accessibility.spec.ts",
+              "line": 108,
+              "column": 3
+            },
+            {
+              "title": "should have proper focus management",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 6050,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:38.855Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ddd864604af8a6a0198f-852e613dad5f5c8a4731",
+              "file": "accessibility.spec.ts",
+              "line": 126,
+              "column": 3
+            },
+            {
+              "title": "should support high contrast mode",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 6655,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:38.868Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ddd864604af8a6a0198f-c4fe761925b0de1cd68a",
+              "file": "accessibility.spec.ts",
+              "line": 152,
+              "column": 3
+            },
+            {
+              "title": "should have proper error announcements",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 5205,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:44.644Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ddd864604af8a6a0198f-49be19b433b7af66fbb8",
+              "file": "accessibility.spec.ts",
+              "line": 165,
+              "column": 3
+            },
+            {
+              "title": "should support zoom up to 200%",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5260,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:45.679Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ddd864604af8a6a0198f-34f1727ca44bdb6066e6",
+              "file": "accessibility.spec.ts",
+              "line": 182,
+              "column": 3
+            },
+            {
+              "title": "should have proper skip links",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5021,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:44.871Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ddd864604af8a6a0198f-7a4ea22e3d2aa3dc4eab",
+              "file": "accessibility.spec.ts",
+              "line": 197,
+              "column": 3
+            },
+            {
+              "title": "should have descriptive link text",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 4998,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:44.946Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ddd864604af8a6a0198f-e0d6bf7c26fff61e95dd",
+              "file": "accessibility.spec.ts",
+              "line": 216,
+              "column": 3
+            },
+            {
+              "title": "should support reduced motion preferences",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 6,
+                      "status": "failed",
+                      "duration": 6933,
+                      "error": {
+                        "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('text=/error.*report/i') resolved to 3 elements:\n    1) <span class=\"MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root\">Error Reporting</span> aka getByRole('button', { name: 'Error Reporting' })\n    2) <h4 class=\"MuiTypography-root MuiTypography-h4 MuiTypography-gutterBottom css-wqnmda-MuiTypography-root\">Error Reporting Interface</h4> aka getByRole('heading', { name: 'Error Reporting Interface' })\n    3) <div data-testid=\"selectable-text\" class=\"MuiBox-root css-8jgips\">This is a sample transcription text that contains…</div> aka getByTestId('selectable-text')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/error.*report/i')\u001b[22m\n",
+                        "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('text=/error.*report/i') resolved to 3 elements:\n    1) <span class=\"MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root\">Error Reporting</span> aka getByRole('button', { name: 'Error Reporting' })\n    2) <h4 class=\"MuiTypography-root MuiTypography-h4 MuiTypography-gutterBottom css-wqnmda-MuiTypography-root\">Error Reporting Interface</h4> aka getByRole('heading', { name: 'Error Reporting Interface' })\n    3) <div data-testid=\"selectable-text\" class=\"MuiBox-root css-8jgips\">This is a sample transcription text that contains…</div> aka getByTestId('selectable-text')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/error.*report/i')\u001b[22m\n\n    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts:245:57",
+                        "location": {
+                          "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts",
+                          "column": 57,
+                          "line": 245
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 243 |\u001b[39m     \u001b[90m// Navigate between pages to ensure transitions work\u001b[39m\n \u001b[90m 244 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/error-reporting'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 245 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/error.*report/i'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 246 |\u001b[39m     \n \u001b[90m 247 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/verification'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 248 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/verification/i'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts",
+                            "column": 57,
+                            "line": 245
+                          },
+                          "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('text=/error.*report/i') resolved to 3 elements:\n    1) <span class=\"MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root\">Error Reporting</span> aka getByRole('button', { name: 'Error Reporting' })\n    2) <h4 class=\"MuiTypography-root MuiTypography-h4 MuiTypography-gutterBottom css-wqnmda-MuiTypography-root\">Error Reporting Interface</h4> aka getByRole('heading', { name: 'Error Reporting Interface' })\n    3) <div data-testid=\"selectable-text\" class=\"MuiBox-root css-8jgips\">This is a sample transcription text that contains…</div> aka getByTestId('selectable-text')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/error.*report/i')\u001b[22m\n\n\n\u001b[0m \u001b[90m 243 |\u001b[39m     \u001b[90m// Navigate between pages to ensure transitions work\u001b[39m\n \u001b[90m 244 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/error-reporting'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 245 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/error.*report/i'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 246 |\u001b[39m     \n \u001b[90m 247 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/verification'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 248 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/verification/i'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts:245:57\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:45.057Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/accessibility-Accessibilit-ba620--reduced-motion-preferences-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/accessibility-Accessibilit-ba620--reduced-motion-preferences-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/accessibility-Accessibilit-ba620--reduced-motion-preferences-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts",
+                        "column": 57,
+                        "line": 245
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ddd864604af8a6a0198f-5d457ca24e0c013f6ff7",
+              "file": "accessibility.spec.ts",
+              "line": 235,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "auth-fixed.spec.ts",
+      "file": "auth-fixed.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Authentication Flow - Fixed Implementation",
+          "file": "auth-fixed.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should show login page when not authenticated",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 5855,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:45.695Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a19a2ff6f3fa80150e22-30f1f53942809278223e",
+              "file": "auth-fixed.spec.ts",
+              "line": 13,
+              "column": 3
+            },
+            {
+              "title": "should show validation errors for empty form",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 9517,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('text=/Please enter both username and password/i')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/Please enter both username and password/i')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('text=/Please enter both username and password/i')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/Please enter both username and password/i')\u001b[22m\n\n    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth-fixed.spec.ts:46:83",
+                        "location": {
+                          "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth-fixed.spec.ts",
+                          "column": 83,
+                          "line": 46
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 44 |\u001b[39m     \n \u001b[90m 45 |\u001b[39m     \u001b[90m// Should show validation errors\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 46 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/Please enter both username and password/i'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 47 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 48 |\u001b[39m\n \u001b[90m 49 |\u001b[39m   test(\u001b[32m'should show error for invalid credentials'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth-fixed.spec.ts",
+                            "column": 83,
+                            "line": 46
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('text=/Please enter both username and password/i')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/Please enter both username and password/i')\u001b[22m\n\n\n\u001b[0m \u001b[90m 44 |\u001b[39m     \n \u001b[90m 45 |\u001b[39m     \u001b[90m// Should show validation errors\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 46 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/Please enter both username and password/i'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 47 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 48 |\u001b[39m\n \u001b[90m 49 |\u001b[39m   test(\u001b[32m'should show error for invalid credentials'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth-fixed.spec.ts:46:83\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:48.718Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-fixed-Authentication--83661-ation-errors-for-empty-form-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-fixed-Authentication--83661-ation-errors-for-empty-form-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-fixed-Authentication--83661-ation-errors-for-empty-form-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth-fixed.spec.ts",
+                        "column": 83,
+                        "line": 46
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "a19a2ff6f3fa80150e22-eb1481ca825f161cd549",
+              "file": "auth-fixed.spec.ts",
+              "line": 36,
+              "column": 3
+            },
+            {
+              "title": "should show error for invalid credentials",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 4598,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:48.914Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a19a2ff6f3fa80150e22-06d86b74d0f8e208046a",
+              "file": "auth-fixed.spec.ts",
+              "line": 49,
+              "column": 3
+            },
+            {
+              "title": "should login successfully with valid credentials",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 7620,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:49.893Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a19a2ff6f3fa80150e22-fc24c56c75eeb57f1897",
+              "file": "auth-fixed.spec.ts",
+              "line": 66,
+              "column": 3
+            },
+            {
+              "title": "should handle authentication state properly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 11308,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:49.948Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a19a2ff6f3fa80150e22-4a3ad50517d3fcb8b385",
+              "file": "auth-fixed.spec.ts",
+              "line": 89,
+              "column": 3
+            },
+            {
+              "title": "should handle session expiration",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "failed",
+                      "duration": 8886,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth-fixed.spec.ts:129:59",
+                        "location": {
+                          "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth-fixed.spec.ts",
+                          "column": 59,
+                          "line": 129
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 127 |\u001b[39m     \u001b[36mconst\u001b[39m hasLoginForm \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[name=\"username\"]'\u001b[39m)\u001b[33m.\u001b[39mcount() \u001b[33m>\u001b[39m \u001b[35m0\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 128 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 129 |\u001b[39m     expect(currentUrl\u001b[33m.\u001b[39mincludes(\u001b[32m'/login'\u001b[39m) \u001b[33m||\u001b[39m hasLoginForm)\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 130 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 131 |\u001b[39m\n \u001b[90m 132 |\u001b[39m   test(\u001b[32m'should maintain session across page refreshes'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth-fixed.spec.ts",
+                            "column": 59,
+                            "line": 129
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 127 |\u001b[39m     \u001b[36mconst\u001b[39m hasLoginForm \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[name=\"username\"]'\u001b[39m)\u001b[33m.\u001b[39mcount() \u001b[33m>\u001b[39m \u001b[35m0\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 128 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 129 |\u001b[39m     expect(currentUrl\u001b[33m.\u001b[39mincludes(\u001b[32m'/login'\u001b[39m) \u001b[33m||\u001b[39m hasLoginForm)\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 130 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 131 |\u001b[39m\n \u001b[90m 132 |\u001b[39m   test(\u001b[32m'should maintain session across page refreshes'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth-fixed.spec.ts:129:59\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:49.994Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-fixed-Authentication--80565-d-handle-session-expiration-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-fixed-Authentication--80565-d-handle-session-expiration-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-fixed-Authentication--80565-d-handle-session-expiration-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth-fixed.spec.ts",
+                        "column": 59,
+                        "line": 129
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "a19a2ff6f3fa80150e22-0ab44f7d2885fcd2d76f",
+              "file": "auth-fixed.spec.ts",
+              "line": 114,
+              "column": 3
+            },
+            {
+              "title": "should maintain session across page refreshes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 14683,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:51.061Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a19a2ff6f3fa80150e22-62a42918ded52c61caba",
+              "file": "auth-fixed.spec.ts",
+              "line": 132,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "UI Component Verification",
+          "file": "auth-fixed.spec.ts",
+          "line": 157,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should verify login page renders correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 5337,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Username input found: true\n"
+                        },
+                        {
+                          "text": "Password input found: true\n"
+                        },
+                        {
+                          "text": "Submit button found: true\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:51.568Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a19a2ff6f3fa80150e22-b9141a158ac323e3cb43",
+              "file": "auth-fixed.spec.ts",
+              "line": 158,
+              "column": 3
+            },
+            {
+              "title": "should verify dashboard page structure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 5547,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Dashboard page content length: 29752\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:52.689Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a19a2ff6f3fa80150e22-66e620cb9d95a514356e",
+              "file": "auth-fixed.spec.ts",
+              "line": 184,
+              "column": 3
+            },
+            {
+              "title": "should verify error reporting page structure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 5266,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:53.626Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a19a2ff6f3fa80150e22-5729833d9806de8f0a63",
+              "file": "auth-fixed.spec.ts",
+              "line": 199,
+              "column": 3
+            },
+            {
+              "title": "should verify verification page structure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 5014,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:56.924Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a19a2ff6f3fa80150e22-00144e0138e4333d7af2",
+              "file": "auth-fixed.spec.ts",
+              "line": 209,
+              "column": 3
+            },
+            {
+              "title": "should verify admin page structure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 5141,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:57.538Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a19a2ff6f3fa80150e22-e5695b0fe1cbf56524a8",
+              "file": "auth-fixed.spec.ts",
+              "line": 219,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "auth.spec.ts",
+      "file": "auth.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Authentication Flow",
+          "file": "auth.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should redirect to login page when not authenticated",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 2244,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:58.345Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-725199e3a0779f8a4639",
+              "file": "auth.spec.ts",
+              "line": 9,
+              "column": 3
+            },
+            {
+              "title": "should show validation errors for invalid login",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 9173,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('text=/Please enter both username and password/i')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/Please enter both username and password/i')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('text=/Please enter both username and password/i')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/Please enter both username and password/i')\u001b[22m\n\n    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts:27:83",
+                        "location": {
+                          "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts",
+                          "column": 83,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m     \u001b[90m// Should show validation errors\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/Please enter both username and password/i'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   test(\u001b[32m'should show error for invalid credentials'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts",
+                            "column": 83,
+                            "line": 27
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('text=/Please enter both username and password/i')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/Please enter both username and password/i')\u001b[22m\n\n\n\u001b[0m \u001b[90m 25 |\u001b[39m\n \u001b[90m 26 |\u001b[39m     \u001b[90m// Should show validation errors\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/Please enter both username and password/i'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m   test(\u001b[32m'should show error for invalid credentials'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts:27:83\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:58.927Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-Authentication-Flow-s-72909-on-errors-for-invalid-login-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-Authentication-Flow-s-72909-on-errors-for-invalid-login-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-Authentication-Flow-s-72909-on-errors-for-invalid-login-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts",
+                        "column": 83,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-54d25acbe02b974d1f87",
+              "file": "auth.spec.ts",
+              "line": 20,
+              "column": 3
+            },
+            {
+              "title": "should show error for invalid credentials",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 4110,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:58.921Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-05954164880eaca3a0f9",
+              "file": "auth.spec.ts",
+              "line": 30,
+              "column": 3
+            },
+            {
+              "title": "should login successfully with valid credentials",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 5,
+                      "status": "failed",
+                      "duration": 6787,
+                      "error": {
+                        "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('text=/dashboard|welcome/i') resolved to 2 elements:\n    1) <span class=\"MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root\">Dashboard</span> aka getByRole('button', { name: 'Dashboard', exact: true })\n    2) <h1 class=\"MuiTypography-root MuiTypography-h5 css-109ucu2-MuiTypography-root\">Speaker Bucket Management Dashboard</h1> aka getByRole('heading', { name: 'Speaker Bucket Management' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/dashboard|welcome/i')\u001b[22m\n",
+                        "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('text=/dashboard|welcome/i') resolved to 2 elements:\n    1) <span class=\"MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root\">Dashboard</span> aka getByRole('button', { name: 'Dashboard', exact: true })\n    2) <h1 class=\"MuiTypography-root MuiTypography-h5 css-109ucu2-MuiTypography-root\">Speaker Bucket Management Dashboard</h1> aka getByRole('heading', { name: 'Speaker Bucket Management' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/dashboard|welcome/i')\u001b[22m\n\n    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts:58:61",
+                        "location": {
+                          "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts",
+                          "column": 61,
+                          "line": 58
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 56 |\u001b[39m\n \u001b[90m 57 |\u001b[39m     \u001b[90m// Should show authenticated content\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 58 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/dashboard|welcome/i'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 59 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 60 |\u001b[39m\n \u001b[90m 61 |\u001b[39m   test(\u001b[32m'should logout successfully'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts",
+                            "column": 61,
+                            "line": 58
+                          },
+                          "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('text=/dashboard|welcome/i') resolved to 2 elements:\n    1) <span class=\"MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root\">Dashboard</span> aka getByRole('button', { name: 'Dashboard', exact: true })\n    2) <h1 class=\"MuiTypography-root MuiTypography-h5 css-109ucu2-MuiTypography-root\">Speaker Bucket Management Dashboard</h1> aka getByRole('heading', { name: 'Speaker Bucket Management' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/dashboard|welcome/i')\u001b[22m\n\n\n\u001b[0m \u001b[90m 56 |\u001b[39m\n \u001b[90m 57 |\u001b[39m     \u001b[90m// Should show authenticated content\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 58 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/dashboard|welcome/i'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 59 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 60 |\u001b[39m\n \u001b[90m 61 |\u001b[39m   test(\u001b[32m'should logout successfully'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts:58:61\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:23:59.546Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-Authentication-Flow-s-74377-ully-with-valid-credentials-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-Authentication-Flow-s-74377-ully-with-valid-credentials-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-Authentication-Flow-s-74377-ully-with-valid-credentials-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts",
+                        "column": 61,
+                        "line": 58
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-efd14549b37f77aa6096",
+              "file": "auth.spec.ts",
+              "line": 44,
+              "column": 3
+            },
+            {
+              "title": "should logout successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 6,
+                      "status": "interrupted",
+                      "duration": 7785,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:24:00.606Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-Authentication-Flow-should-logout-successfully-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-Authentication-Flow-should-logout-successfully-chromium/video.webm"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-c0ce6ccc7b7e02794edb",
+              "file": "auth.spec.ts",
+              "line": 61,
+              "column": 3
+            },
+            {
+              "title": "should maintain session across page refreshes",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 6905,
+                      "error": {
+                        "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('text=/dashboard|welcome/i') resolved to 2 elements:\n    1) <span class=\"MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root\">Dashboard</span> aka getByRole('button', { name: 'Dashboard', exact: true })\n    2) <h1 class=\"MuiTypography-root MuiTypography-h5 css-109ucu2-MuiTypography-root\">Speaker Bucket Management Dashboard</h1> aka getByRole('heading', { name: 'Speaker Bucket Management' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/dashboard|welcome/i')\u001b[22m\n",
+                        "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('text=/dashboard|welcome/i') resolved to 2 elements:\n    1) <span class=\"MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root\">Dashboard</span> aka getByRole('button', { name: 'Dashboard', exact: true })\n    2) <h1 class=\"MuiTypography-root MuiTypography-h5 css-109ucu2-MuiTypography-root\">Speaker Bucket Management Dashboard</h1> aka getByRole('heading', { name: 'Speaker Bucket Management' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/dashboard|welcome/i')\u001b[22m\n\n    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts:92:61",
+                        "location": {
+                          "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts",
+                          "column": 61,
+                          "line": 92
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 90 |\u001b[39m     \u001b[90m// Should still be authenticated\u001b[39m\n \u001b[90m 91 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/.*\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 92 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/dashboard|welcome/i'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 93 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 94 |\u001b[39m\n \u001b[90m 95 |\u001b[39m   test(\u001b[32m'should handle session expiration'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts",
+                            "column": 61,
+                            "line": 92
+                          },
+                          "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('text=/dashboard|welcome/i') resolved to 2 elements:\n    1) <span class=\"MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root\">Dashboard</span> aka getByRole('button', { name: 'Dashboard', exact: true })\n    2) <h1 class=\"MuiTypography-root MuiTypography-h5 css-109ucu2-MuiTypography-root\">Speaker Bucket Management Dashboard</h1> aka getByRole('heading', { name: 'Speaker Bucket Management' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/dashboard|welcome/i')\u001b[22m\n\n\n\u001b[0m \u001b[90m 90 |\u001b[39m     \u001b[90m// Should still be authenticated\u001b[39m\n \u001b[90m 91 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/.*\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 92 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/dashboard|welcome/i'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 93 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 94 |\u001b[39m\n \u001b[90m 95 |\u001b[39m   test(\u001b[32m'should handle session expiration'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts:92:61\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:24:01.274Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-Authentication-Flow-s-e5bd5-ssion-across-page-refreshes-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-Authentication-Flow-s-e5bd5-ssion-across-page-refreshes-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-Authentication-Flow-s-e5bd5-ssion-across-page-refreshes-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts",
+                        "column": 61,
+                        "line": 92
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-55b690104650e6585b70",
+              "file": "auth.spec.ts",
+              "line": 78,
+              "column": 3
+            },
+            {
+              "title": "should handle session expiration",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "interrupted",
+                      "duration": 7623,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:24:01.957Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-Authentication-Flow-should-handle-session-expiration-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/auth-Authentication-Flow-should-handle-session-expiration-chromium/video.webm"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-070f31ed26386b74b75f",
+              "file": "auth.spec.ts",
+              "line": 95,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "error-reporting.spec.ts",
+      "file": "error-reporting.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Error Reporting Interface",
+          "file": "error-reporting.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should display error reporting interface",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 5419,
+                      "error": {
+                        "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('text=/error.*report|report.*error/i') resolved to 3 elements:\n    1) <span class=\"MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root\">Error Reporting</span> aka getByRole('button', { name: 'Error Reporting' })\n    2) <h4 class=\"MuiTypography-root MuiTypography-h4 MuiTypography-gutterBottom css-wqnmda-MuiTypography-root\">Error Reporting Interface</h4> aka getByRole('heading', { name: 'Error Reporting Interface' })\n    3) <div data-testid=\"selectable-text\" class=\"MuiBox-root css-8jgips\">This is a sample transcription text that contains…</div> aka getByTestId('selectable-text')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/error.*report|report.*error/i')\u001b[22m\n",
+                        "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('text=/error.*report|report.*error/i') resolved to 3 elements:\n    1) <span class=\"MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root\">Error Reporting</span> aka getByRole('button', { name: 'Error Reporting' })\n    2) <h4 class=\"MuiTypography-root MuiTypography-h4 MuiTypography-gutterBottom css-wqnmda-MuiTypography-root\">Error Reporting Interface</h4> aka getByRole('heading', { name: 'Error Reporting Interface' })\n    3) <div data-testid=\"selectable-text\" class=\"MuiBox-root css-8jgips\">This is a sample transcription text that contains…</div> aka getByTestId('selectable-text')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/error.*report|report.*error/i')\u001b[22m\n\n    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/error-reporting.spec.ts:18:71",
+                        "location": {
+                          "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/error-reporting.spec.ts",
+                          "column": 71,
+                          "line": 18
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 16 |\u001b[39m   test(\u001b[32m'should display error reporting interface'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[90m// Check for error reporting elements\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/error.*report|report.*error/i'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m     \n \u001b[90m 20 |\u001b[39m     \u001b[90m// Should show text input areas\u001b[39m\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'textarea, [contenteditable], .text-editor'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/error-reporting.spec.ts",
+                            "column": 71,
+                            "line": 18
+                          },
+                          "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('text=/error.*report|report.*error/i') resolved to 3 elements:\n    1) <span class=\"MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root\">Error Reporting</span> aka getByRole('button', { name: 'Error Reporting' })\n    2) <h4 class=\"MuiTypography-root MuiTypography-h4 MuiTypography-gutterBottom css-wqnmda-MuiTypography-root\">Error Reporting Interface</h4> aka getByRole('heading', { name: 'Error Reporting Interface' })\n    3) <div data-testid=\"selectable-text\" class=\"MuiBox-root css-8jgips\">This is a sample transcription text that contains…</div> aka getByTestId('selectable-text')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=/error.*report|report.*error/i')\u001b[22m\n\n\n\u001b[0m \u001b[90m 16 |\u001b[39m   test(\u001b[32m'should display error reporting interface'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[90m// Check for error reporting elements\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/error.*report|report.*error/i'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m     \n \u001b[90m 20 |\u001b[39m     \u001b[90m// Should show text input areas\u001b[39m\n \u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'textarea, [contenteditable], .text-editor'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/error-reporting.spec.ts:18:71\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:24:02.697Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/error-reporting-Error-Repo-695c2-y-error-reporting-interface-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/error-reporting-Error-Repo-695c2-y-error-reporting-interface-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/error-reporting-Error-Repo-695c2-y-error-reporting-interface-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/tan/Documents/augment-projects/rag-interface/frontend/e2e/error-reporting.spec.ts",
+                        "column": 71,
+                        "line": 18
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-c42276d3919ae76da6e2",
+              "file": "error-reporting.spec.ts",
+              "line": 16,
+              "column": 3
+            },
+            {
+              "title": "should support text selection for error reporting",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 5149,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:24:03.053Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-5b38d6dcebc95c6b5f2f",
+              "file": "error-reporting.spec.ts",
+              "line": 24,
+              "column": 3
+            },
+            {
+              "title": "should categorize errors by type",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "interrupted",
+                      "duration": 2625,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:24:05.803Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/error-reporting-Error-Repo-627f9-d-categorize-errors-by-type-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/error-reporting-Error-Repo-627f9-d-categorize-errors-by-type-chromium/video.webm"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-58d1f4ea9d4c3558b95f",
+              "file": "error-reporting.spec.ts",
+              "line": 41,
+              "column": 3
+            },
+            {
+              "title": "should set error severity levels",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 5,
+                      "status": "interrupted",
+                      "duration": 2394,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:24:07.091Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/error-reporting-Error-Repo-82f9e-d-set-error-severity-levels-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/tan/Documents/augment-projects/rag-interface/frontend/test-results/error-reporting-Error-Repo-82f9e-d-set-error-severity-levels-chromium/video.webm"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-2856ef3dbffec6996960",
+              "file": "error-reporting.spec.ts",
+              "line": 59,
+              "column": 3
+            },
+            {
+              "title": "should add error descriptions and comments",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-bb10ec0f6598dbfe9fcf",
+              "file": "error-reporting.spec.ts",
+              "line": 77,
+              "column": 3
+            },
+            {
+              "title": "should submit error reports successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 3,
+                      "status": "interrupted",
+                      "duration": 47,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-28T18:24:08.227Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-dd0ca9f89ec482821014",
+              "file": "error-reporting.spec.ts",
+              "line": 89,
+              "column": 3
+            },
+            {
+              "title": "should validate required fields",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-9d9314df78bb0e4e8cd6",
+              "file": "error-reporting.spec.ts",
+              "line": 124,
+              "column": 3
+            },
+            {
+              "title": "should save error reports as drafts",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-6e42d2ba1068914b1438",
+              "file": "error-reporting.spec.ts",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "should support text highlighting and annotation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-2a7087f415c5912cea29",
+              "file": "error-reporting.spec.ts",
+              "line": 153,
+              "column": 3
+            },
+            {
+              "title": "should display error history and previous reports",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-f632cd3a50782bbf77e5",
+              "file": "error-reporting.spec.ts",
+              "line": 176,
+              "column": 3
+            },
+            {
+              "title": "should support error report filtering and search",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-195b954a8937416ccf1d",
+              "file": "error-reporting.spec.ts",
+              "line": 188,
+              "column": 3
+            },
+            {
+              "title": "should handle file attachments for error context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-f0edb77f86fc07e3e9ab",
+              "file": "error-reporting.spec.ts",
+              "line": 209,
+              "column": 3
+            },
+            {
+              "title": "should provide error reporting analytics",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-15c6d1bd7c31a65e5c2f",
+              "file": "error-reporting.spec.ts",
+              "line": 229,
+              "column": 3
+            },
+            {
+              "title": "should support collaborative error review",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-80de3c8c863e6e8bef22",
+              "file": "error-reporting.spec.ts",
+              "line": 241,
+              "column": 3
+            },
+            {
+              "title": "should handle error reporting in different languages",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0b7dd7967aa4b0178e74-7577b2d745f029cf9573",
+              "file": "error-reporting.spec.ts",
+              "line": 253,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "mt-validation.spec.ts",
+      "file": "mt-validation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "MT Validation Interface",
+          "file": "mt-validation.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should display validation session interface",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9fe048836ada398593e4-365c5017227e3a6ba403",
+              "file": "mt-validation.spec.ts",
+              "line": 16,
+              "column": 3
+            },
+            {
+              "title": "should load and display validation items",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9fe048836ada398593e4-d70b55687a6834529b5b",
+              "file": "mt-validation.spec.ts",
+              "line": 26,
+              "column": 3
+            },
+            {
+              "title": "should support navigation between validation items",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9fe048836ada398593e4-a8719405c8746748c4f4",
+              "file": "mt-validation.spec.ts",
+              "line": 35,
+              "column": 3
+            },
+            {
+              "title": "should support keyboard navigation shortcuts",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9fe048836ada398593e4-0dcb2d7fd9d42d160a99",
+              "file": "mt-validation.spec.ts",
+              "line": 58,
+              "column": 3
+            },
+            {
+              "title": "should allow rating validation items",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9fe048836ada398593e4-809a16a2b4546b89bd5f",
+              "file": "mt-validation.spec.ts",
+              "line": 75,
+              "column": 3
+            },
+            {
+              "title": "should allow adding comments to validation items",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9fe048836ada398593e4-f5b0427d457025837ac6",
+              "file": "mt-validation.spec.ts",
+              "line": 91,
+              "column": 3
+            },
+            {
+              "title": "should save feedback as draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9fe048836ada398593e4-6ef1f08e952a2380c671",
+              "file": "mt-validation.spec.ts",
+              "line": 106,
+              "column": 3
+            },
+            {
+              "title": "should submit final feedback",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9fe048836ada398593e4-8186100c2b9b9f34ea39",
+              "file": "mt-validation.spec.ts",
+              "line": 131,
+              "column": 3
+            },
+            {
+              "title": "should display session summary",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9fe048836ada398593e4-c57487fe6760ae933e5b",
+              "file": "mt-validation.spec.ts",
+              "line": 156,
+              "column": 3
+            },
+            {
+              "title": "should handle validation errors gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9fe048836ada398593e4-c0b08cfa7fb60124bdef",
+              "file": "mt-validation.spec.ts",
+              "line": 169,
+              "column": 3
+            },
+            {
+              "title": "should support text selection and highlighting",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9fe048836ada398593e4-95aab56e9a68616f9985",
+              "file": "mt-validation.spec.ts",
+              "line": 181,
+              "column": 3
+            },
+            {
+              "title": "should maintain progress across page refreshes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9fe048836ada398593e4-0600d93adac9ecc5e0eb",
+              "file": "mt-validation.spec.ts",
+              "line": 197,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "navigation.spec.ts",
+      "file": "navigation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Navigation and Routing",
+          "file": "navigation.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should navigate to dashboard from root",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5d2868f7d23420c27cca-06d3dca8cccee9219200",
+              "file": "navigation.spec.ts",
+              "line": 13,
+              "column": 3
+            },
+            {
+              "title": "should navigate to error reporting page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5d2868f7d23420c27cca-92a67392d47f88395080",
+              "file": "navigation.spec.ts",
+              "line": 19,
+              "column": 3
+            },
+            {
+              "title": "should navigate to verification page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5d2868f7d23420c27cca-3cc6dde083f6147c3394",
+              "file": "navigation.spec.ts",
+              "line": 27,
+              "column": 3
+            },
+            {
+              "title": "should navigate to admin page (role-based)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5d2868f7d23420c27cca-a95bd19b1160831b0c27",
+              "file": "navigation.spec.ts",
+              "line": 35,
+              "column": 3
+            },
+            {
+              "title": "should show 404 page for invalid routes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5d2868f7d23420c27cca-c4122d6c263db4b690d8",
+              "file": "navigation.spec.ts",
+              "line": 43,
+              "column": 3
+            },
+            {
+              "title": "should have working breadcrumb navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5d2868f7d23420c27cca-ff48a04ee1f5395a5fc1",
+              "file": "navigation.spec.ts",
+              "line": 50,
+              "column": 3
+            },
+            {
+              "title": "should have responsive navigation menu",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5d2868f7d23420c27cca-1af83eae9cfd6d34c097",
+              "file": "navigation.spec.ts",
+              "line": 68,
+              "column": 3
+            },
+            {
+              "title": "should highlight active navigation item",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5d2868f7d23420c27cca-7ee32026c7c9f26a1dfd",
+              "file": "navigation.spec.ts",
+              "line": 86,
+              "column": 3
+            },
+            {
+              "title": "should support keyboard navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5d2868f7d23420c27cca-52eb934998b136cb9f52",
+              "file": "navigation.spec.ts",
+              "line": 97,
+              "column": 3
+            },
+            {
+              "title": "should handle back/forward browser navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5d2868f7d23420c27cca-2168340764913ddd46cf",
+              "file": "navigation.spec.ts",
+              "line": 109,
+              "column": 3
+            },
+            {
+              "title": "should load pages within reasonable time",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5d2868f7d23420c27cca-1c71f2679cdd39cead7e",
+              "file": "navigation.spec.ts",
+              "line": 127,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "speaker-management.spec.ts",
+      "file": "speaker-management.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Speaker Management Interface",
+          "file": "speaker-management.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should display speakers list",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8885b2af65a125d28c05-7f8976f912f4523dd390",
+              "file": "speaker-management.spec.ts",
+              "line": 16,
+              "column": 3
+            },
+            {
+              "title": "should support speaker search functionality",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8885b2af65a125d28c05-7fe708fb1e18df66e384",
+              "file": "speaker-management.spec.ts",
+              "line": 28,
+              "column": 3
+            },
+            {
+              "title": "should open speaker details dialog",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8885b2af65a125d28c05-2cd80c4ef987a6d81cf7",
+              "file": "speaker-management.spec.ts",
+              "line": 51,
+              "column": 3
+            },
+            {
+              "title": "should display speaker statistics",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8885b2af65a125d28c05-993e63d192cd5b69bcd3",
+              "file": "speaker-management.spec.ts",
+              "line": 68,
+              "column": 3
+            },
+            {
+              "title": "should support speaker filtering by bucket",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8885b2af65a125d28c05-1ec0f905c137ac0870b9",
+              "file": "speaker-management.spec.ts",
+              "line": 81,
+              "column": 3
+            },
+            {
+              "title": "should support speaker bucket transitions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8885b2af65a125d28c05-d78967fb085104faf207",
+              "file": "speaker-management.spec.ts",
+              "line": 102,
+              "column": 3
+            },
+            {
+              "title": "should display speaker performance metrics",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8885b2af65a125d28c05-e0747557fbd935645acd",
+              "file": "speaker-management.spec.ts",
+              "line": 130,
+              "column": 3
+            },
+            {
+              "title": "should support data grid interactions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8885b2af65a125d28c05-05732f4bdac0160be727",
+              "file": "speaker-management.spec.ts",
+              "line": 144,
+              "column": 3
+            },
+            {
+              "title": "should handle pagination in speaker list",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8885b2af65a125d28c05-0a741dc60308be1211f0",
+              "file": "speaker-management.spec.ts",
+              "line": 171,
+              "column": 3
+            },
+            {
+              "title": "should export speaker data",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8885b2af65a125d28c05-98fb9c69a31ce794fb7b",
+              "file": "speaker-management.spec.ts",
+              "line": 191,
+              "column": 3
+            },
+            {
+              "title": "should validate speaker data integrity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8885b2af65a125d28c05-d1884931d9b9d6128f3e",
+              "file": "speaker-management.spec.ts",
+              "line": 207,
+              "column": 3
+            },
+            {
+              "title": "should handle speaker management errors gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8885b2af65a125d28c05-1dd018167307f55bce75",
+              "file": "speaker-management.spec.ts",
+              "line": 224,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "message": "\u001b[31mTesting stopped early after 10 maximum allowed failures.\u001b[39m"
+    }
+  ],
+  "stats": {
+    "startTime": "2025-08-28T18:23:37.879Z",
+    "duration": 31755.765,
+    "expected": 22,
+    "skipped": 50,
+    "unexpected": 10,
+    "flaky": 0
+  }
+}

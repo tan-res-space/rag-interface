@@ -7,6 +7,4 @@ for testing and demonstration purposes.
 
 from .adapter import InMemoryEventBusAdapter
 
-__all__ = [
-    "InMemoryEventBusAdapter"
-]
+__all__ = ["InMemoryEventBusAdapter"]

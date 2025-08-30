@@ -1,0 +1,701 @@
+<testsuites id="" name="" tests="82" failures="10" skipped="50" errors="0" time="31.755765">
+<testsuite name="accessibility.spec.ts" timestamp="2025-08-28T18:23:38.288Z" hostname="chromium" tests="13" failures="4" skipped="0" time="81.503" errors="0">
+<testcase name="Accessibility Tests › should have proper heading hierarchy" classname="accessibility.spec.ts" time="5.665">
+<failure message="accessibility.spec.ts:13:3 should have proper heading hierarchy" type="FAILURE">
+<![CDATA[  [chromium] › accessibility.spec.ts:13:3 › Accessibility Tests › should have proper heading hierarchy 
+
+    Error: locator._expect: expectedNumber: expected float, got object
+
+      18 |     
+      19 |     // Should have at least one h1
+    > 20 |     await expect(h1).toHaveCount({ min: 1 });
+         |                      ^
+      21 |     
+      22 |     // Headings should be in logical order
+      23 |     if (await h1.count() > 0) {
+        at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts:20:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/accessibility-Accessibilit-30286-ve-proper-heading-hierarchy-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/accessibility-Accessibilit-30286-ve-proper-heading-hierarchy-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/accessibility-Accessibilit-30286-ve-proper-heading-hierarchy-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/accessibility-Accessibilit-30286-ve-proper-heading-hierarchy-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../test-results/accessibility-Accessibilit-30286-ve-proper-heading-hierarchy-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/accessibility-Accessibilit-30286-ve-proper-heading-hierarchy-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Accessibility Tests › should have proper ARIA labels and roles" classname="accessibility.spec.ts" time="5.756">
+</testcase>
+<testcase name="Accessibility Tests › should support keyboard navigation" classname="accessibility.spec.ts" time="9.088">
+<failure message="accessibility.spec.ts:54:3 should support keyboard navigation" type="FAILURE">
+<![CDATA[  [chromium] › accessibility.spec.ts:54:3 › Accessibility Tests › should support keyboard navigation 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  locator(':focus')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator(':focus')
+
+
+      58 |     // Should focus on first focusable element
+      59 |     const focusedElement = page.locator(':focus');
+    > 60 |     await expect(focusedElement).toBeVisible();
+         |                                  ^
+      61 |     
+      62 |     // Continue tabbing through elements
+      63 |     for (let i = 0; i < 5; i++) {
+        at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts:60:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/accessibility-Accessibilit-bf7b3-support-keyboard-navigation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/accessibility-Accessibilit-bf7b3-support-keyboard-navigation-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/accessibility-Accessibilit-bf7b3-support-keyboard-navigation-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/accessibility-Accessibilit-bf7b3-support-keyboard-navigation-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../test-results/accessibility-Accessibilit-bf7b3-support-keyboard-navigation-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/accessibility-Accessibilit-bf7b3-support-keyboard-navigation-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Accessibility Tests › should have sufficient color contrast" classname="accessibility.spec.ts" time="9.255">
+<failure message="accessibility.spec.ts:70:3 should have sufficient color contrast" type="FAILURE">
+<![CDATA[  [chromium] › accessibility.spec.ts:70:3 › Accessibility Tests › should have sufficient color contrast 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /.*\/dashboard/
+    Received string:  "http://localhost:5173/login"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        9 × unexpected value "http://localhost:5173/login"
+
+
+       8 |     await page.locator('input[name="password"]').fill('AdminPassword123!');
+       9 |     await page.locator('button[type="submit"]').click();
+    > 10 |     await expect(page).toHaveURL(/.*\/dashboard/);
+         |                        ^
+      11 |   });
+      12 |
+      13 |   test('should have proper heading hierarchy', async ({ page }) => {
+        at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts:10:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/accessibility-Accessibilit-fff64-e-sufficient-color-contrast-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/accessibility-Accessibilit-fff64-e-sufficient-color-contrast-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/accessibility-Accessibilit-fff64-e-sufficient-color-contrast-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/accessibility-Accessibilit-fff64-e-sufficient-color-contrast-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../test-results/accessibility-Accessibilit-fff64-e-sufficient-color-contrast-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/accessibility-Accessibilit-fff64-e-sufficient-color-contrast-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Accessibility Tests › should have proper form labels" classname="accessibility.spec.ts" time="5.655">
+</testcase>
+<testcase name="Accessibility Tests › should support screen reader announcements" classname="accessibility.spec.ts" time="5.962">
+</testcase>
+<testcase name="Accessibility Tests › should have proper focus management" classname="accessibility.spec.ts" time="6.05">
+</testcase>
+<testcase name="Accessibility Tests › should support high contrast mode" classname="accessibility.spec.ts" time="6.655">
+</testcase>
+<testcase name="Accessibility Tests › should have proper error announcements" classname="accessibility.spec.ts" time="5.205">
+</testcase>
+<testcase name="Accessibility Tests › should support zoom up to 200%" classname="accessibility.spec.ts" time="5.26">
+</testcase>
+<testcase name="Accessibility Tests › should have proper skip links" classname="accessibility.spec.ts" time="5.021">
+</testcase>
+<testcase name="Accessibility Tests › should have descriptive link text" classname="accessibility.spec.ts" time="4.998">
+</testcase>
+<testcase name="Accessibility Tests › should support reduced motion preferences" classname="accessibility.spec.ts" time="6.933">
+<failure message="accessibility.spec.ts:235:3 should support reduced motion preferences" type="FAILURE">
+<![CDATA[  [chromium] › accessibility.spec.ts:235:3 › Accessibility Tests › should support reduced motion preferences 
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator('text=/error.*report/i') resolved to 3 elements:
+        1) <span class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root">Error Reporting</span> aka getByRole('button', { name: 'Error Reporting' })
+        2) <h4 class="MuiTypography-root MuiTypography-h4 MuiTypography-gutterBottom css-wqnmda-MuiTypography-root">Error Reporting Interface</h4> aka getByRole('heading', { name: 'Error Reporting Interface' })
+        3) <div data-testid="selectable-text" class="MuiBox-root css-8jgips">This is a sample transcription text that contains…</div> aka getByTestId('selectable-text')
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('text=/error.*report/i')
+
+
+      243 |     // Navigate between pages to ensure transitions work
+      244 |     await page.goto('/error-reporting');
+    > 245 |     await expect(page.locator('text=/error.*report/i')).toBeVisible();
+          |                                                         ^
+      246 |     
+      247 |     await page.goto('/verification');
+      248 |     await expect(page.locator('text=/verification/i')).toBeVisible();
+        at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/accessibility.spec.ts:245:57
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/accessibility-Accessibilit-ba620--reduced-motion-preferences-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/accessibility-Accessibilit-ba620--reduced-motion-preferences-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/accessibility-Accessibilit-ba620--reduced-motion-preferences-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/accessibility-Accessibilit-ba620--reduced-motion-preferences-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../test-results/accessibility-Accessibilit-ba620--reduced-motion-preferences-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/accessibility-Accessibilit-ba620--reduced-motion-preferences-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="auth-fixed.spec.ts" timestamp="2025-08-28T18:23:38.288Z" hostname="chromium" tests="12" failures="2" skipped="0" time="88.772" errors="0">
+<testcase name="Authentication Flow - Fixed Implementation › should show login page when not authenticated" classname="auth-fixed.spec.ts" time="5.855">
+</testcase>
+<testcase name="Authentication Flow - Fixed Implementation › should show validation errors for empty form" classname="auth-fixed.spec.ts" time="9.517">
+<failure message="auth-fixed.spec.ts:36:3 should show validation errors for empty form" type="FAILURE">
+<![CDATA[  [chromium] › auth-fixed.spec.ts:36:3 › Authentication Flow - Fixed Implementation › should show validation errors for empty form 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  locator('text=/Please enter both username and password/i')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('text=/Please enter both username and password/i')
+
+
+      44 |     
+      45 |     // Should show validation errors
+    > 46 |     await expect(page.locator('text=/Please enter both username and password/i')).toBeVisible();
+         |                                                                                   ^
+      47 |   });
+      48 |
+      49 |   test('should show error for invalid credentials', async ({ page }) => {
+        at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth-fixed.spec.ts:46:83
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/auth-fixed-Authentication--83661-ation-errors-for-empty-form-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/auth-fixed-Authentication--83661-ation-errors-for-empty-form-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/auth-fixed-Authentication--83661-ation-errors-for-empty-form-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/auth-fixed-Authentication--83661-ation-errors-for-empty-form-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../test-results/auth-fixed-Authentication--83661-ation-errors-for-empty-form-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/auth-fixed-Authentication--83661-ation-errors-for-empty-form-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Authentication Flow - Fixed Implementation › should show error for invalid credentials" classname="auth-fixed.spec.ts" time="4.598">
+</testcase>
+<testcase name="Authentication Flow - Fixed Implementation › should login successfully with valid credentials" classname="auth-fixed.spec.ts" time="7.62">
+</testcase>
+<testcase name="Authentication Flow - Fixed Implementation › should handle authentication state properly" classname="auth-fixed.spec.ts" time="11.308">
+</testcase>
+<testcase name="Authentication Flow - Fixed Implementation › should handle session expiration" classname="auth-fixed.spec.ts" time="8.886">
+<failure message="auth-fixed.spec.ts:114:3 should handle session expiration" type="FAILURE">
+<![CDATA[  [chromium] › auth-fixed.spec.ts:114:3 › Authentication Flow - Fixed Implementation › should handle session expiration 
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      127 |     const hasLoginForm = await page.locator('input[name="username"]').count() > 0;
+      128 |     
+    > 129 |     expect(currentUrl.includes('/login') || hasLoginForm).toBeTruthy();
+          |                                                           ^
+      130 |   });
+      131 |
+      132 |   test('should maintain session across page refreshes', async ({ page }) => {
+        at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth-fixed.spec.ts:129:59
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/auth-fixed-Authentication--80565-d-handle-session-expiration-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/auth-fixed-Authentication--80565-d-handle-session-expiration-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/auth-fixed-Authentication--80565-d-handle-session-expiration-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/auth-fixed-Authentication--80565-d-handle-session-expiration-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../test-results/auth-fixed-Authentication--80565-d-handle-session-expiration-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/auth-fixed-Authentication--80565-d-handle-session-expiration-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Authentication Flow - Fixed Implementation › should maintain session across page refreshes" classname="auth-fixed.spec.ts" time="14.683">
+</testcase>
+<testcase name="UI Component Verification › should verify login page renders correctly" classname="auth-fixed.spec.ts" time="5.337">
+<system-out>
+<![CDATA[Username input found: true
+Password input found: true
+Submit button found: true
+]]>
+</system-out>
+</testcase>
+<testcase name="UI Component Verification › should verify dashboard page structure" classname="auth-fixed.spec.ts" time="5.547">
+<system-out>
+<![CDATA[Dashboard page content length: 29752
+]]>
+</system-out>
+</testcase>
+<testcase name="UI Component Verification › should verify error reporting page structure" classname="auth-fixed.spec.ts" time="5.266">
+</testcase>
+<testcase name="UI Component Verification › should verify verification page structure" classname="auth-fixed.spec.ts" time="5.014">
+</testcase>
+<testcase name="UI Component Verification › should verify admin page structure" classname="auth-fixed.spec.ts" time="5.141">
+</testcase>
+</testsuite>
+<testsuite name="auth.spec.ts" timestamp="2025-08-28T18:23:38.288Z" hostname="chromium" tests="7" failures="3" skipped="2" time="44.627" errors="0">
+<testcase name="Authentication Flow › should redirect to login page when not authenticated" classname="auth.spec.ts" time="2.244">
+</testcase>
+<testcase name="Authentication Flow › should show validation errors for invalid login" classname="auth.spec.ts" time="9.173">
+<failure message="auth.spec.ts:20:3 should show validation errors for invalid login" type="FAILURE">
+<![CDATA[  [chromium] › auth.spec.ts:20:3 › Authentication Flow › should show validation errors for invalid login 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  locator('text=/Please enter both username and password/i')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('text=/Please enter both username and password/i')
+
+
+      25 |
+      26 |     // Should show validation errors
+    > 27 |     await expect(page.locator('text=/Please enter both username and password/i')).toBeVisible();
+         |                                                                                   ^
+      28 |   });
+      29 |
+      30 |   test('should show error for invalid credentials', async ({ page }) => {
+        at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts:27:83
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/auth-Authentication-Flow-s-72909-on-errors-for-invalid-login-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/auth-Authentication-Flow-s-72909-on-errors-for-invalid-login-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/auth-Authentication-Flow-s-72909-on-errors-for-invalid-login-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/auth-Authentication-Flow-s-72909-on-errors-for-invalid-login-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../test-results/auth-Authentication-Flow-s-72909-on-errors-for-invalid-login-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/auth-Authentication-Flow-s-72909-on-errors-for-invalid-login-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Authentication Flow › should show error for invalid credentials" classname="auth.spec.ts" time="4.11">
+</testcase>
+<testcase name="Authentication Flow › should login successfully with valid credentials" classname="auth.spec.ts" time="6.787">
+<failure message="auth.spec.ts:44:3 should login successfully with valid credentials" type="FAILURE">
+<![CDATA[  [chromium] › auth.spec.ts:44:3 › Authentication Flow › should login successfully with valid credentials 
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator('text=/dashboard|welcome/i') resolved to 2 elements:
+        1) <span class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root">Dashboard</span> aka getByRole('button', { name: 'Dashboard', exact: true })
+        2) <h1 class="MuiTypography-root MuiTypography-h5 css-109ucu2-MuiTypography-root">Speaker Bucket Management Dashboard</h1> aka getByRole('heading', { name: 'Speaker Bucket Management' })
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('text=/dashboard|welcome/i')
+
+
+      56 |
+      57 |     // Should show authenticated content
+    > 58 |     await expect(page.locator('text=/dashboard|welcome/i')).toBeVisible();
+         |                                                             ^
+      59 |   });
+      60 |
+      61 |   test('should logout successfully', async ({ page }) => {
+        at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts:58:61
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/auth-Authentication-Flow-s-74377-ully-with-valid-credentials-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/auth-Authentication-Flow-s-74377-ully-with-valid-credentials-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/auth-Authentication-Flow-s-74377-ully-with-valid-credentials-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/auth-Authentication-Flow-s-74377-ully-with-valid-credentials-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../test-results/auth-Authentication-Flow-s-74377-ully-with-valid-credentials-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/auth-Authentication-Flow-s-74377-ully-with-valid-credentials-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Authentication Flow › should logout successfully" classname="auth.spec.ts" time="7.785">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should maintain session across page refreshes" classname="auth.spec.ts" time="6.905">
+<failure message="auth.spec.ts:78:3 should maintain session across page refreshes" type="FAILURE">
+<![CDATA[  [chromium] › auth.spec.ts:78:3 › Authentication Flow › should maintain session across page refreshes 
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator('text=/dashboard|welcome/i') resolved to 2 elements:
+        1) <span class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root">Dashboard</span> aka getByRole('button', { name: 'Dashboard', exact: true })
+        2) <h1 class="MuiTypography-root MuiTypography-h5 css-109ucu2-MuiTypography-root">Speaker Bucket Management Dashboard</h1> aka getByRole('heading', { name: 'Speaker Bucket Management' })
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('text=/dashboard|welcome/i')
+
+
+      90 |     // Should still be authenticated
+      91 |     await expect(page).toHaveURL(/.*\/dashboard/);
+    > 92 |     await expect(page.locator('text=/dashboard|welcome/i')).toBeVisible();
+         |                                                             ^
+      93 |   });
+      94 |
+      95 |   test('should handle session expiration', async ({ page }) => {
+        at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/auth.spec.ts:92:61
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/auth-Authentication-Flow-s-e5bd5-ssion-across-page-refreshes-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/auth-Authentication-Flow-s-e5bd5-ssion-across-page-refreshes-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/auth-Authentication-Flow-s-e5bd5-ssion-across-page-refreshes-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/auth-Authentication-Flow-s-e5bd5-ssion-across-page-refreshes-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../test-results/auth-Authentication-Flow-s-e5bd5-ssion-across-page-refreshes-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/auth-Authentication-Flow-s-e5bd5-ssion-across-page-refreshes-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Authentication Flow › should handle session expiration" classname="auth.spec.ts" time="7.623">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="error-reporting.spec.ts" timestamp="2025-08-28T18:23:38.288Z" hostname="chromium" tests="15" failures="1" skipped="13" time="15.634" errors="0">
+<testcase name="Error Reporting Interface › should display error reporting interface" classname="error-reporting.spec.ts" time="5.419">
+<failure message="error-reporting.spec.ts:16:3 should display error reporting interface" type="FAILURE">
+<![CDATA[  [chromium] › error-reporting.spec.ts:16:3 › Error Reporting Interface › should display error reporting interface 
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator('text=/error.*report|report.*error/i') resolved to 3 elements:
+        1) <span class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-pop14n-MuiTypography-root">Error Reporting</span> aka getByRole('button', { name: 'Error Reporting' })
+        2) <h4 class="MuiTypography-root MuiTypography-h4 MuiTypography-gutterBottom css-wqnmda-MuiTypography-root">Error Reporting Interface</h4> aka getByRole('heading', { name: 'Error Reporting Interface' })
+        3) <div data-testid="selectable-text" class="MuiBox-root css-8jgips">This is a sample transcription text that contains…</div> aka getByTestId('selectable-text')
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('text=/error.*report|report.*error/i')
+
+
+      16 |   test('should display error reporting interface', async ({ page }) => {
+      17 |     // Check for error reporting elements
+    > 18 |     await expect(page.locator('text=/error.*report|report.*error/i')).toBeVisible();
+         |                                                                       ^
+      19 |     
+      20 |     // Should show text input areas
+      21 |     await expect(page.locator('textarea, [contenteditable], .text-editor')).toBeVisible();
+        at /home/tan/Documents/augment-projects/rag-interface/frontend/e2e/error-reporting.spec.ts:18:71
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/error-reporting-Error-Repo-695c2-y-error-reporting-interface-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/error-reporting-Error-Repo-695c2-y-error-reporting-interface-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/error-reporting-Error-Repo-695c2-y-error-reporting-interface-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/error-reporting-Error-Repo-695c2-y-error-reporting-interface-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../test-results/error-reporting-Error-Repo-695c2-y-error-reporting-interface-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/error-reporting-Error-Repo-695c2-y-error-reporting-interface-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Reporting Interface › should support text selection for error reporting" classname="error-reporting.spec.ts" time="5.149">
+</testcase>
+<testcase name="Error Reporting Interface › should categorize errors by type" classname="error-reporting.spec.ts" time="2.625">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Error Reporting Interface › should set error severity levels" classname="error-reporting.spec.ts" time="2.394">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Error Reporting Interface › should add error descriptions and comments" classname="error-reporting.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Error Reporting Interface › should submit error reports successfully" classname="error-reporting.spec.ts" time="0.047">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Error Reporting Interface › should validate required fields" classname="error-reporting.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Error Reporting Interface › should save error reports as drafts" classname="error-reporting.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Error Reporting Interface › should support text highlighting and annotation" classname="error-reporting.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Error Reporting Interface › should display error history and previous reports" classname="error-reporting.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Error Reporting Interface › should support error report filtering and search" classname="error-reporting.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Error Reporting Interface › should handle file attachments for error context" classname="error-reporting.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Error Reporting Interface › should provide error reporting analytics" classname="error-reporting.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Error Reporting Interface › should support collaborative error review" classname="error-reporting.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Error Reporting Interface › should handle error reporting in different languages" classname="error-reporting.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="mt-validation.spec.ts" timestamp="2025-08-28T18:23:38.288Z" hostname="chromium" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="MT Validation Interface › should display validation session interface" classname="mt-validation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="MT Validation Interface › should load and display validation items" classname="mt-validation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="MT Validation Interface › should support navigation between validation items" classname="mt-validation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="MT Validation Interface › should support keyboard navigation shortcuts" classname="mt-validation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="MT Validation Interface › should allow rating validation items" classname="mt-validation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="MT Validation Interface › should allow adding comments to validation items" classname="mt-validation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="MT Validation Interface › should save feedback as draft" classname="mt-validation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="MT Validation Interface › should submit final feedback" classname="mt-validation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="MT Validation Interface › should display session summary" classname="mt-validation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="MT Validation Interface › should handle validation errors gracefully" classname="mt-validation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="MT Validation Interface › should support text selection and highlighting" classname="mt-validation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="MT Validation Interface › should maintain progress across page refreshes" classname="mt-validation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="navigation.spec.ts" timestamp="2025-08-28T18:23:38.288Z" hostname="chromium" tests="11" failures="0" skipped="11" time="0" errors="0">
+<testcase name="Navigation and Routing › should navigate to dashboard from root" classname="navigation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Navigation and Routing › should navigate to error reporting page" classname="navigation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Navigation and Routing › should navigate to verification page" classname="navigation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Navigation and Routing › should navigate to admin page (role-based)" classname="navigation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Navigation and Routing › should show 404 page for invalid routes" classname="navigation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Navigation and Routing › should have working breadcrumb navigation" classname="navigation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Navigation and Routing › should have responsive navigation menu" classname="navigation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Navigation and Routing › should highlight active navigation item" classname="navigation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Navigation and Routing › should support keyboard navigation" classname="navigation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Navigation and Routing › should handle back/forward browser navigation" classname="navigation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Navigation and Routing › should load pages within reasonable time" classname="navigation.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="speaker-management.spec.ts" timestamp="2025-08-28T18:23:38.288Z" hostname="chromium" tests="12" failures="0" skipped="12" time="0" errors="0">
+<testcase name="Speaker Management Interface › should display speakers list" classname="speaker-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Speaker Management Interface › should support speaker search functionality" classname="speaker-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Speaker Management Interface › should open speaker details dialog" classname="speaker-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Speaker Management Interface › should display speaker statistics" classname="speaker-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Speaker Management Interface › should support speaker filtering by bucket" classname="speaker-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Speaker Management Interface › should support speaker bucket transitions" classname="speaker-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Speaker Management Interface › should display speaker performance metrics" classname="speaker-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Speaker Management Interface › should support data grid interactions" classname="speaker-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Speaker Management Interface › should handle pagination in speaker list" classname="speaker-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Speaker Management Interface › should export speaker data" classname="speaker-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Speaker Management Interface › should validate speaker data integrity" classname="speaker-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Speaker Management Interface › should handle speaker management errors gracefully" classname="speaker-management.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>

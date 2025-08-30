@@ -7,6 +7,4 @@ for database operations in a technology-agnostic way.
 
 from .database_adapter import IDatabaseAdapter
 
-__all__ = [
-    "IDatabaseAdapter"
-]
+__all__ = ["IDatabaseAdapter"]
