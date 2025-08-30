@@ -26,7 +26,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-dev_password_2025}
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
     ports:
-      - "${DB_PORT:-5432}:5432"
+      - "${DB_PORT:-5433}:5432"
     volumes:
       - postgres_dev_data:/var/lib/postgresql/data
       - ./deployment/database/postgresql/init:/docker-entrypoint-initdb.d:ro
@@ -59,26 +59,22 @@ services:
   # =====================================================
   # Backend Services (Development Mode)
   # =====================================================
-  
+
   error-reporting-service:
-    build:
-      context: .
-      dockerfile: deployment/podman/Dockerfile.error-reporting-service
-      target: development  # Use development stage
+    image: python:3.11-slim
     container_name: ers-dev
     restart: unless-stopped
+    working_dir: /app
     environment:
       - DATABASE_URL=postgresql://${DB_USER:-rag_user}:${DB_PASSWORD:-dev_password_2025}@postgres:5432/${DATABASE_NAME:-rag_interface_dev}?options=-csearch_path%3Derror_reporting
-      - REDIS_URL=redis://:${REDIS_PASSWORD:-dev_redis_2025}@redis:6379/0
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-dev_redis_2025}@redis:6380/0
       - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
       - DEBUG=true
       - PYTHONPATH=/app
       - WATCHFILES_FORCE_POLLING=true  # For hot-reload in containers
     volumes:
-      - ./src/error_reporting_service:/app/src/error_reporting_service:ro
-      - ./tests:/app/tests:ro
-      - ./requirements.txt:/app/requirements.txt:ro
-      - ./requirements-test.txt:/app/requirements-test.txt:ro
+      - .:/app
+      - ers_venv:/app/venv
     ports:
       - "${ERS_PORT:-8000}:8000"
       - "${ERS_DEBUG_PORT:-5678}:5678"  # Debug port
@@ -91,32 +87,35 @@ services:
         condition: service_healthy
     command: >
       sh -c "
-        pip install -e . &&
-        uvicorn src.error_reporting_service.main:app 
-        --host 0.0.0.0 
-        --port 8000 
-        --reload 
+        apt-get update && apt-get install -y gcc &&
+        python -m venv venv &&
+        . venv/bin/activate &&
+        pip install --upgrade pip &&
+        pip install fastapi uvicorn[standard] watchfiles &&
+        pip install -r requirements.txt &&
+        uvicorn src.error_reporting_service.main:app
+        --host 0.0.0.0
+        --port 8000
+        --reload
         --reload-dir /app/src/error_reporting_service
         --log-level debug
       "
 
   user-management-service:
-    build:
-      context: .
-      dockerfile: deployment/podman/Dockerfile.user-management-service
-      target: development
+    image: python:3.11-slim
     container_name: ums-dev
     restart: unless-stopped
+    working_dir: /app
     environment:
       - DATABASE_URL=postgresql://${DB_USER:-rag_user}:${DB_PASSWORD:-dev_password_2025}@postgres:5432/${DATABASE_NAME:-rag_interface_dev}?options=-csearch_path%3Duser_management
-      - REDIS_URL=redis://:${REDIS_PASSWORD:-dev_redis_2025}@redis:6379/1
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-dev_redis_2025}@redis:6380/1
       - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
       - DEBUG=true
       - PYTHONPATH=/app
       - WATCHFILES_FORCE_POLLING=true
     volumes:
-      - ./src/user_management_service:/app/src/user_management_service:ro
-      - ./tests:/app/tests:ro
+      - .:/app
+      - ums_venv:/app/venv
     ports:
       - "${UMS_PORT:-8001}:8001"
       - "${UMS_DEBUG_PORT:-5679}:5679"
@@ -129,25 +128,28 @@ services:
         condition: service_healthy
     command: >
       sh -c "
-        pip install -e . &&
-        uvicorn src.user_management_service.main:app 
-        --host 0.0.0.0 
-        --port 8001 
-        --reload 
+        apt-get update && apt-get install -y gcc &&
+        python -m venv venv &&
+        . venv/bin/activate &&
+        pip install --upgrade pip &&
+        pip install fastapi uvicorn[standard] watchfiles &&
+        pip install -r requirements.txt &&
+        uvicorn src.user_management_service.main:app
+        --host 0.0.0.0
+        --port 8001
+        --reload
         --reload-dir /app/src/user_management_service
         --log-level debug
       "
 
   rag-integration-service:
-    build:
-      context: .
-      dockerfile: deployment/podman/Dockerfile.rag-integration-service
-      target: development
+    image: python:3.11-slim
     container_name: ris-dev
     restart: unless-stopped
+    working_dir: /app
     environment:
       - DATABASE_URL=postgresql://${DB_USER:-rag_user}:${DB_PASSWORD:-dev_password_2025}@postgres:5432/${DATABASE_NAME:-rag_interface_dev}?options=-csearch_path%3Drag_integration
-      - REDIS_URL=redis://:${REDIS_PASSWORD:-dev_redis_2025}@redis:6379/2
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-dev_redis_2025}@redis:6380/2
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - PINECONE_API_KEY=${PINECONE_API_KEY}
       - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
@@ -155,8 +157,8 @@ services:
       - PYTHONPATH=/app
       - WATCHFILES_FORCE_POLLING=true
     volumes:
-      - ./src/rag_integration_service:/app/src/rag_integration_service:ro
-      - ./tests:/app/tests:ro
+      - .:/app
+      - ris_venv:/app/venv
     ports:
       - "${RIS_PORT:-8002}:8002"
       - "${RIS_DEBUG_PORT:-5680}:5680"
@@ -169,11 +171,16 @@ services:
         condition: service_healthy
     command: >
       sh -c "
-        pip install -e . &&
-        uvicorn src.rag_integration_service.main:app 
-        --host 0.0.0.0 
-        --port 8002 
-        --reload 
+        apt-get update && apt-get install -y gcc &&
+        python -m venv venv &&
+        . venv/bin/activate &&
+        pip install --upgrade pip &&
+        pip install fastapi uvicorn[standard] watchfiles &&
+        pip install -r requirements.txt &&
+        uvicorn src.rag_integration_service.main:app
+        --host 0.0.0.0
+        --port 8002
+        --reload
         --reload-dir /app/src/rag_integration_service
         --log-level debug
       "
@@ -181,14 +188,12 @@ services:
   # =====================================================
   # Frontend Service (Development Mode)
   # =====================================================
-  
+
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: ../deployment/podman/Dockerfile.frontend
-      target: development
+    image: node:18-alpine
     container_name: rag-frontend-dev
     restart: unless-stopped
+    working_dir: /app
     environment:
       - NODE_ENV=development
       - VITE_API_BASE_URL=http://localhost:8000
@@ -196,77 +201,23 @@ services:
       - VITE_RIS_API_URL=http://localhost:8002
       - CHOKIDAR_USEPOLLING=true  # For hot-reload in containers
     volumes:
-      - ./frontend/src:/app/src:ro
-      - ./frontend/public:/app/public:ro
-      - ./frontend/index.html:/app/index.html:ro
-      - ./frontend/vite.config.ts:/app/vite.config.ts:ro
-      - ./frontend/tsconfig.json:/app/tsconfig.json:ro
-      - ./frontend/package.json:/app/package.json:ro
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
     ports:
       - "${FRONTEND_PORT:-3000}:3000"
     networks:
       - rag-dev-network
-    command: npm run dev -- --host 0.0.0.0 --port 3000
+    command: >
+      sh -c "
+        npm install &&
+        npm run dev -- --host 0.0.0.0 --port 3000
+      "
 
   # =====================================================
-  # Additional Services
+  # Additional Services (Optional - can be enabled as needed)
   # =====================================================
-
-  correction-engine-service:
-    build:
-      context: .
-      dockerfile: deployment/podman/Dockerfile.correction-engine-service
-      target: development
-    container_name: ces-dev
-    restart: unless-stopped
-    environment:
-      - DATABASE_URL=postgresql://${DB_USER:-rag_user}:${DB_PASSWORD:-dev_password_2025}@postgres:5432/${DATABASE_NAME:-rag_interface_dev}?options=-csearch_path%3Dcorrection_engine
-      - REDIS_URL=redis://:${REDIS_PASSWORD:-dev_redis_2025}@redis:6379/3
-      - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
-      - DEBUG=true
-      - PYTHONPATH=/app
-      - WATCHFILES_FORCE_POLLING=true
-    volumes:
-      - ./src/correction_engine_service:/app/src/correction_engine_service:ro
-      - ./tests:/app/tests:ro
-    ports:
-      - "${CES_PORT:-8003}:8003"
-      - "${CES_DEBUG_PORT:-5681}:5681"
-    networks:
-      - rag-dev-network
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-
-  verification-service:
-    build:
-      context: .
-      dockerfile: deployment/podman/Dockerfile.verification-service
-      target: development
-    container_name: vs-dev
-    restart: unless-stopped
-    environment:
-      - DATABASE_URL=postgresql://${DB_USER:-rag_user}:${DB_PASSWORD:-dev_password_2025}@postgres:5432/${DATABASE_NAME:-rag_interface_dev}?options=-csearch_path%3Dverification
-      - REDIS_URL=redis://:${REDIS_PASSWORD:-dev_redis_2025}@redis:6379/4
-      - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
-      - DEBUG=true
-      - PYTHONPATH=/app
-      - WATCHFILES_FORCE_POLLING=true
-    volumes:
-      - ./src/verification_service:/app/src/verification_service:ro
-      - ./tests:/app/tests:ro
-    ports:
-      - "${VS_PORT:-8004}:8004"
-      - "${VS_DEBUG_PORT:-5682}:5682"
-    networks:
-      - rag-dev-network
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+  # Note: These services are commented out to simplify initial setup
+  # Uncomment and configure as needed for your specific requirements
 
   # =====================================================
   # Development Tools
@@ -320,3 +271,11 @@ volumes:
     name: rag_postgres_dev_data
   redis_dev_data:
     name: rag_redis_dev_data
+  ers_venv:
+    name: rag_ers_venv
+  ums_venv:
+    name: rag_ums_venv
+  ris_venv:
+    name: rag_ris_venv
+  frontend_node_modules:
+    name: rag_frontend_node_modules
