@@ -25,8 +25,8 @@ from src.error_reporting_service.infrastructure.adapters.database.postgresql.mod
     Base,
     ErrorReportModel,
 )
-from src.error_reporting_service.infrastructure.adapters.database.postgresql.repositories import (
-    PostgreSQLErrorReportRepository,
+from src.error_reporting_service.infrastructure.adapters.database.postgresql.adapter import (
+    PostgreSQLAdapter,
 )
 from tests.factories import ErrorReportFactory, create_error_reports_batch
 
@@ -72,7 +72,7 @@ class TestPostgreSQLIntegration:
     @pytest.fixture
     def repository(self, test_session):
         """Create repository instance"""
-        return PostgreSQLErrorReportRepository(test_session)
+        return PostgreSQLAdapter(test_session)
 
     @pytest.mark.asyncio
     async def test_save_error_report_success(self, repository):

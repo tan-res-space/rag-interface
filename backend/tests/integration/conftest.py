@@ -12,12 +12,12 @@ from sqlalchemy.orm import sessionmaker
 from testcontainers.postgres import PostgresContainer
 from testcontainers.redis import RedisContainer
 
-from app.main import app
-from app.core.database import get_db
-from app.core.config import settings
-from app.models.base import Base
-from app.models.speaker import Speaker
-from app.models.historical_asr_data import HistoricalASRData
+# from app.main import app
+# from app.core.database import get_db
+# from app.core.config import settings
+# from app.models.base import Base
+# from app.models.speaker import Speaker
+# from app.models.historical_asr_data import HistoricalASRData
 from app.models.validation_test_data import ValidationTestData
 from app.models.bucket_transition_request import BucketTransitionRequest
 from app.models.mt_validation_session import MTValidationSession
@@ -331,7 +331,7 @@ def sample_asr_texts():
         {
             "original": "The patient complains of chest pain that started 2 hours ago. The pain is described as crushing and radiates to the left arm.",
             "reference": "The patient complains of chest pain that started 2 hours ago. The pain is described as crushing and radiates to the left arm.",
-            "errors": ["crushing" -> "crushing"]
+            "errors": []
         },
         {
             "original": "Physical examination reveals normal vital signs. Heart rate is 72 beats per minute, blood pressure is 120/80 mmHg.",

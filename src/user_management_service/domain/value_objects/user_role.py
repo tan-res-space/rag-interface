@@ -19,6 +19,8 @@ class UserRole(Enum):
 
     ADMIN = "admin"
     QA_PERSONNEL = "qa_personnel"
+    MTS_PERSONNEL = "mts_personnel"
+    SYSTEM_ADMIN = "system_admin"
     DEVELOPER = "developer"
     VIEWER = "viewer"
 
@@ -39,11 +41,30 @@ class UserRole(Enum):
                 "access_analytics",
                 "manage_system_settings",
             ],
+            UserRole.SYSTEM_ADMIN: [
+                "manage_users",
+                "delete_error_reports",
+                "view_all_reports",
+                "submit_error_reports",
+                "verify_corrections",
+                "access_analytics",
+                "manage_system_settings",
+                "system_administration",
+            ],
             UserRole.QA_PERSONNEL: [
                 "submit_error_reports",
                 "view_own_reports",
-                "verify_corrections",
+                "view_all_reports",
+                "edit_error_reports",
                 "access_analytics",
+            ],
+            UserRole.MTS_PERSONNEL: [
+                "view_own_reports",
+                "view_all_reports",
+                "verify_corrections",
+                "export_verification_data",
+                "access_analytics",
+                "medical_transcription",
             ],
             UserRole.DEVELOPER: [
                 "view_all_reports",

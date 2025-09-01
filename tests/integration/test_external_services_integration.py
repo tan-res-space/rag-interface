@@ -25,9 +25,9 @@ from src.error_reporting_service.domain.entities.error_report import (
     ErrorStatus,
     SeverityLevel,
 )
-from src.error_reporting_service.infrastructure.adapters.external.auth_client import (
-    UserManagementServiceClient,
-)
+# from src.error_reporting_service.infrastructure.adapters.external.auth_client import (
+#     UserManagementServiceClient,
+# )
 from src.error_reporting_service.infrastructure.adapters.external.notification_client import (
     NotificationServiceClient,
 )
