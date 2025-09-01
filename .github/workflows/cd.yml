@@ -45,15 +45,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+    - name: Install Podman
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y podman
 
     - name: Log in to Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo ${{ secrets.GITHUB_TOKEN }} | podman login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
 
     - name: Extract metadata
       id: meta
@@ -68,37 +67,22 @@ jobs:
           type=sha,prefix={{branch}}-
 
     - name: Build and push Error Reporting Service
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: deployment/podman/Dockerfile.error-reporting-service
-        push: true
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ers:${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+      run: |
+        podman build -f deployment/podman/Dockerfile.error-reporting-service \
+          -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ers:${{ steps.meta.outputs.tags }} .
+        podman push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ers:${{ steps.meta.outputs.tags }}
 
     - name: Build and push RAG Integration Service
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: deployment/podman/Dockerfile.rag-integration-service
-        push: true
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ris:${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+      run: |
+        podman build -f deployment/podman/Dockerfile.rag-integration-service \
+          -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ris:${{ steps.meta.outputs.tags }} .
+        podman push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ris:${{ steps.meta.outputs.tags }}
 
     - name: Build and push Frontend
-      uses: docker/build-push-action@v5
-      with:
-        context: frontend
-        file: deployment/podman/Dockerfile.frontend
-        push: true
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend:${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+      run: |
+        podman build -f deployment/podman/Dockerfile.frontend \
+          -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend:${{ steps.meta.outputs.tags }} frontend/
+        podman push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend:${{ steps.meta.outputs.tags }}
 
   # =====================================================
   # Deploy to Staging

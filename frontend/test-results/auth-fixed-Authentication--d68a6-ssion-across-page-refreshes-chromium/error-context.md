@@ -22,5 +22,5 @@
           - textbox "Password" [ref=e16]
           - group:
             - generic: Password *
-      - button "Sign In" [ref=e17] [cursor=pointer]: Sign In
+      - button "Sign In" [ref=e17] [cursor=pointer]
 ```

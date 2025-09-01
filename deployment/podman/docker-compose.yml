@@ -1,10 +1,11 @@
 # =====================================================
-# RAG Interface System - Docker Compose Configuration
+# RAG Interface System - Podman Compose Configuration
 # =====================================================
 # Complete deployment configuration for all services
 # Author: RAG Interface Deployment Team
 # Version: 1.0
 # Date: 2025-01-20
+# Updated for Podman compatibility with rootless containers
 # =====================================================
 
 version: '3.8'
@@ -38,7 +39,7 @@ services:
   # Database Services
   # =====================================================
   postgres:
-    image: postgres:15-alpine
+    image: docker.io/library/postgres:15-alpine
     container_name: rag-postgres
     restart: unless-stopped
     environment:
@@ -47,7 +48,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres_secure_2025}
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data:Z
       - ./database/postgresql:/docker-entrypoint-initdb.d:ro
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
@@ -61,12 +62,12 @@ services:
       start_period: 30s
 
   redis:
-    image: redis:7-alpine
+    image: docker.io/library/redis:7-alpine
     container_name: rag-redis
     restart: unless-stopped
     command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis_secure_2025}
     volumes:
-      - redis_data:/data
+      - redis_data:/data:Z
     ports:
       - "${REDIS_PORT:-6379}:6379"
     networks:

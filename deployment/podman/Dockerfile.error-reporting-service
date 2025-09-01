@@ -2,6 +2,7 @@
 # Error Reporting Service - Production Dockerfile
 # =====================================================
 # Multi-stage build for optimized production image
+# Optimized for Podman with rootless containers
 # Author: RAG Interface Deployment Team
 # Version: 1.0
 # Date: 2025-01-20
@@ -10,7 +11,7 @@
 # =====================================================
 # Stage 1: Build Dependencies
 # =====================================================
-FROM python:3.11-slim as builder
+FROM docker.io/library/python:3.11-slim as builder
 
 # Set build arguments
 ARG BUILD_DATE
@@ -50,7 +51,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
 # =====================================================
 # Stage 2: Production Runtime
 # =====================================================
-FROM python:3.11-slim as production
+FROM docker.io/library/python:3.11-slim as production
 
 # Set runtime arguments
 ARG APP_USER=appuser

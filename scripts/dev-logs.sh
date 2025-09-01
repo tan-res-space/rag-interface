@@ -41,14 +41,14 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Determine container command
+# Determine container command (prefer Podman over Docker)
 get_container_cmd() {
-    if command_exists docker && docker info >/dev/null 2>&1; then
-        echo "docker"
-    elif command_exists podman && podman info >/dev/null 2>&1; then
+    if command_exists podman && podman info >/dev/null 2>&1; then
         echo "podman"
+    elif command_exists docker && docker info >/dev/null 2>&1; then
+        echo "docker"
     else
-        log_error "Neither Docker nor Podman is available or running"
+        log_error "Neither Podman nor Docker is available or running"
         exit 1
     fi
 }
@@ -66,16 +66,16 @@ show_service_logs() {
     log_info "Showing logs for service: $service"
     
     if [ "$follow" = "true" ]; then
-        if [ "$CONTAINER_CMD" = "docker" ]; then
-            docker compose -f docker-compose.dev.yml logs -f "$service"
+        if [ "$CONTAINER_CMD" = "podman" ]; then
+            podman-compose -f podman-compose.dev.yml logs -f "$service"
         else
-            podman-compose -f docker-compose.dev.yml logs -f "$service"
+            docker compose -f docker-compose.dev.yml logs -f "$service"
         fi
     else
-        if [ "$CONTAINER_CMD" = "docker" ]; then
-            docker compose -f docker-compose.dev.yml logs --tail=100 "$service"
+        if [ "$CONTAINER_CMD" = "podman" ]; then
+            podman-compose -f podman-compose.dev.yml logs --tail=100 "$service"
         else
-            podman-compose -f docker-compose.dev.yml logs --tail=100 "$service"
+            docker compose -f docker-compose.dev.yml logs --tail=100 "$service"
         fi
     fi
 }
@@ -92,16 +92,16 @@ show_all_logs() {
     log_info "Showing logs for all services"
     
     if [ "$follow" = "true" ]; then
-        if [ "$CONTAINER_CMD" = "docker" ]; then
-            docker compose -f docker-compose.dev.yml logs -f
+        if [ "$CONTAINER_CMD" = "podman" ]; then
+            podman-compose -f podman-compose.dev.yml logs -f
         else
-            podman-compose -f docker-compose.dev.yml logs -f
+            docker compose -f docker-compose.dev.yml logs -f
         fi
     else
-        if [ "$CONTAINER_CMD" = "docker" ]; then
-            docker compose -f docker-compose.dev.yml logs --tail=50
+        if [ "$CONTAINER_CMD" = "podman" ]; then
+            podman-compose -f podman-compose.dev.yml logs --tail=50
         else
-            podman-compose -f docker-compose.dev.yml logs --tail=50
+            docker compose -f docker-compose.dev.yml logs --tail=50
         fi
     fi
 }

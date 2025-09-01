@@ -1,16 +1,16 @@
 # Backend Test Results
 
 ## Test Summary
-- Test Run Date: Fri Aug 29 01:16:40 PM IST 2025
+- Test Run Date: Mon Sep  1 01:26:53 AM IST 2025
 - Python Version: Python 3.12.2
 - Test Framework: pytest
 
 ## Coverage Reports
-- Overall Coverage: Not available
-- HTML Coverage: Not available
+- Overall Coverage: [XML Report](coverage.xml)
+- HTML Coverage Report: [View Report](../htmlcov/index.html)
 
 ## Test Results
-- Unit Tests: Not run
+- Unit Tests: [JUnit XML](backend-unit.xml)
 - Integration Tests: Not run
 
 ## Code Quality

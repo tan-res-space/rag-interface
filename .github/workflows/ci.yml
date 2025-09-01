@@ -344,28 +344,30 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-    - name: Build backend Docker images
+    - name: Install Podman
       run: |
-        docker build -f deployment/podman/Dockerfile.error-reporting-service -t rag-interface/ers:${{ github.sha }} .
-        docker build -f deployment/podman/Dockerfile.rag-integration-service -t rag-interface/ris:${{ github.sha }} .
+        sudo apt-get update
+        sudo apt-get install -y podman
 
-    - name: Build frontend Docker image
+    - name: Build backend Podman images
       run: |
-        docker build -f deployment/podman/Dockerfile.frontend -t rag-interface/frontend:${{ github.sha }} frontend/
+        podman build -f deployment/podman/Dockerfile.error-reporting-service -t rag-interface/ers:${{ github.sha }} .
+        podman build -f deployment/podman/Dockerfile.rag-integration-service -t rag-interface/ris:${{ github.sha }} .
 
-    - name: Save Docker images
+    - name: Build frontend Podman image
       run: |
-        docker save rag-interface/ers:${{ github.sha }} | gzip > ers-image.tar.gz
-        docker save rag-interface/ris:${{ github.sha }} | gzip > ris-image.tar.gz
-        docker save rag-interface/frontend:${{ github.sha }} | gzip > frontend-image.tar.gz
+        podman build -f deployment/podman/Dockerfile.frontend -t rag-interface/frontend:${{ github.sha }} frontend/
 
-    - name: Upload Docker images
+    - name: Save Podman images
+      run: |
+        podman save rag-interface/ers:${{ github.sha }} | gzip > ers-image.tar.gz
+        podman save rag-interface/ris:${{ github.sha }} | gzip > ris-image.tar.gz
+        podman save rag-interface/frontend:${{ github.sha }} | gzip > frontend-image.tar.gz
+
+    - name: Upload Podman images
       uses: actions/upload-artifact@v3
       with:
-        name: docker-images
+        name: podman-images
         path: |
           ers-image.tar.gz
           ris-image.tar.gz

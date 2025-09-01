@@ -42,14 +42,14 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Determine container command
+# Determine container command (prefer Podman over Docker)
 get_container_cmd() {
-    if command_exists docker && docker info >/dev/null 2>&1; then
-        echo "docker"
-    elif command_exists podman && podman info >/dev/null 2>&1; then
+    if command_exists podman && podman info >/dev/null 2>&1; then
         echo "podman"
+    elif command_exists docker && docker info >/dev/null 2>&1; then
+        echo "docker"
     else
-        log_error "Neither Docker nor Podman is available or running"
+        log_error "Neither Podman nor Docker is available or running"
         exit 1
     fi
 }
@@ -97,13 +97,13 @@ start_services() {
     # Determine container command
     CONTAINER_CMD=$(get_container_cmd)
     
-    # Start services with Docker Compose
+    # Start services with Podman/Docker Compose
     log_info "Starting services with $CONTAINER_CMD compose..."
-    
-    if [ "$CONTAINER_CMD" = "docker" ]; then
-        docker compose -f docker-compose.dev.yml up -d --build
+
+    if [ "$CONTAINER_CMD" = "podman" ]; then
+        podman-compose -f podman-compose.dev.yml up -d --build
     else
-        podman-compose -f docker-compose.dev.yml up -d --build
+        docker compose -f docker-compose.dev.yml up -d --build
     fi
     
     log_success "Services started successfully"

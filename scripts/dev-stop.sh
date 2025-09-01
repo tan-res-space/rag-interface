@@ -41,14 +41,14 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Determine container command
+# Determine container command (prefer Podman over Docker)
 get_container_cmd() {
-    if command_exists docker && docker info >/dev/null 2>&1; then
-        echo "docker"
-    elif command_exists podman && podman info >/dev/null 2>&1; then
+    if command_exists podman && podman info >/dev/null 2>&1; then
         echo "podman"
+    elif command_exists docker && docker info >/dev/null 2>&1; then
+        echo "docker"
     else
-        log_error "Neither Docker nor Podman is available or running"
+        log_error "Neither Podman nor Docker is available or running"
         exit 1
     fi
 }
@@ -62,13 +62,13 @@ stop_services() {
     # Determine container command
     CONTAINER_CMD=$(get_container_cmd)
     
-    # Stop services with Docker Compose
+    # Stop services with Podman/Docker Compose
     log_info "Stopping services with $CONTAINER_CMD compose..."
-    
-    if [ "$CONTAINER_CMD" = "docker" ]; then
-        docker compose -f docker-compose.dev.yml down
+
+    if [ "$CONTAINER_CMD" = "podman" ]; then
+        podman-compose -f podman-compose.dev.yml down
     else
-        podman-compose -f docker-compose.dev.yml down
+        docker compose -f docker-compose.dev.yml down
     fi
     
     log_success "Services stopped successfully"
@@ -89,12 +89,12 @@ cleanup() {
     echo
     
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        if [ "$CONTAINER_CMD" = "docker" ]; then
+        if [ "$CONTAINER_CMD" = "podman" ]; then
+            podman-compose -f podman-compose.dev.yml down -v --remove-orphans
+            podman system prune -f
+        else
             docker compose -f docker-compose.dev.yml down -v --remove-orphans
             docker system prune -f
-        else
-            podman-compose -f docker-compose.dev.yml down -v --remove-orphans
-            podman system prune -f
         fi
         log_success "Cleanup completed"
     else

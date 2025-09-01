@@ -21,16 +21,37 @@ This document provides comprehensive instructions for setting up and using the C
 
 - Python 3.11+
 - Node.js 18+
-- Docker or Podman
+- Podman (preferred) or Docker
 - Git
 
 ### 1. Initial Setup
 
 ```bash
+### Clone the repository
 # Clone the repository
 git clone <repository-url>
 cd rag-interface
+```
+### Check the podman containers which are already running
+This is required because of port conflict
+```bash
+# Check all running containers
+podman ps
 
+# Check all containers (including stopped ones)
+podman ps -a
+
+# Check containers with custom formatting
+podman ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+# Check only containers related to your project
+podman ps | grep rag-
+
+# Stop all running containers if required
+podman stop $(podman ps -aq)
+```
+
+```bash
 # Run the setup script
 ./scripts/dev-setup.sh
 ```
@@ -58,6 +79,16 @@ cd rag-interface
 ./scripts/test-backend.sh
 ./scripts/test-frontend.sh
 ```
+
+### 4. Verify Installation
+
+```bash
+# Verify services are running
+curl http://localhost:8000/health  # Backend
+curl http://localhost:3000         # Frontend
+```
+
+### NOTE: If you face any issue in setting up the project, please refer to the troubleshooting section below.
 
 ## Local Development Setup
 
@@ -316,10 +347,10 @@ Jobs:
 
 **Issue**: Services not starting
 ```bash
-# Check Docker/Podman status
-docker ps
-# or
+# Check Podman/Docker status
 podman ps
+# or
+docker ps
 
 # Restart services
 ./scripts/dev-stop.sh
@@ -334,6 +365,21 @@ netstat -tulpn | grep :8000
 # Modify ports in .env.local
 ERS_PORT=8010
 UMS_PORT=8011
+```
+
+**Issue**: CRITICAL: Containers not starting
+```bash 
+# Stop all development services
+podman-compose -f podman-compose.dev.yml down
+
+# Remove all volumes (this will delete data, but it's development environment)
+podman-compose -f podman-compose.dev.yml down -v
+
+# Remove any cached images
+podman system prune -f
+
+# Start everything fresh
+podman-compose -f podman-compose.dev.yml up -d --build
 ```
 
 #### Testing Issues

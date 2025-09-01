@@ -223,13 +223,13 @@ npm run lint -- --fix
 # - Environment variables
 ```
 
-**Problem**: Docker build failures in CI
+**Problem**: Podman build failures in CI
 ```bash
-# Test Docker build locally
-docker build -f deployment/podman/Dockerfile.error-reporting-service .
+# Test Podman build locally
+podman build -f deployment/podman/Dockerfile.error-reporting-service .
 
 # Check for:
-# - Missing files in .dockerignore
+# - Missing files in .containerignore
 # - Path case sensitivity
 # - Architecture differences
 ```

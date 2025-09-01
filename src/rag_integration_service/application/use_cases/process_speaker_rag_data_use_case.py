@@ -29,7 +29,7 @@ from ..dto.responses import (
     SpeakerRAGProcessingResponse,
 )
 from ..ports.secondary.speaker_rag_repository_port import ISpeakerRAGRepositoryPort
-from ..ports.secondary.vector_storage_port import IVectorStoragePort
+from ..ports.secondary.vector_storage_port import VectorStoragePort
 
 
 class ProcessSpeakerRAGDataUseCase:
@@ -43,7 +43,7 @@ class ProcessSpeakerRAGDataUseCase:
     def __init__(
         self,
         speaker_rag_repository: ISpeakerRAGRepositoryPort,
-        vector_storage: IVectorStoragePort,
+        vector_storage: VectorStoragePort,
         rag_processing_service: SpeakerRAGProcessingService,
     ):
         """

@@ -75,9 +75,9 @@ check_requirements() {
         missing_deps+=("npm")
     fi
     
-    # Check Docker or Podman
-    if ! command_exists docker && ! command_exists podman; then
-        missing_deps+=("docker or podman")
+    # Check Podman or Docker (prefer Podman)
+    if ! command_exists podman && ! command_exists docker; then
+        missing_deps+=("podman or docker")
     fi
     
     # Check Git
@@ -177,13 +177,13 @@ setup_database() {
     
     cd "$PROJECT_ROOT"
     
-    # Check if Docker/Podman is running
-    if command_exists docker; then
-        CONTAINER_CMD="docker"
-    elif command_exists podman; then
+    # Check if Podman/Docker is running (prefer Podman)
+    if command_exists podman; then
         CONTAINER_CMD="podman"
+    elif command_exists docker; then
+        CONTAINER_CMD="docker"
     else
-        log_error "Neither Docker nor Podman is available"
+        log_error "Neither Podman nor Docker is available"
         exit 1
     fi
     
