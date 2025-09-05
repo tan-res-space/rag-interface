@@ -95,11 +95,7 @@ services:
         pip install --upgrade pip &&
         pip install fastapi uvicorn[standard] watchfiles debugpy &&
         pip install -r requirements.txt &&
-        uvicorn src.error_reporting_service.main:app
-        --host 0.0.0.0
-        --port 8000
-        --reload
-        --reload-dir /app/src/error_reporting_service
+        uvicorn src.error_reporting_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/error_reporting_service
       "
 
   user-management-service:
@@ -135,11 +131,7 @@ services:
         pip install --upgrade pip &&
         pip install fastapi uvicorn[standard] watchfiles debugpy &&
         pip install -r requirements.txt &&
-        uvicorn src.user_management_service.main:app
-        --host 0.0.0.0
-        --port 8000
-        --reload
-        --reload-dir /app/src/user_management_service
+        uvicorn src.user_management_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/user_management_service
       "
 
   rag-integration-service:
@@ -175,11 +167,7 @@ services:
         pip install --upgrade pip &&
         pip install fastapi uvicorn[standard] watchfiles debugpy &&
         pip install -r requirements.txt &&
-        uvicorn src.rag_integration_service.main:app
-        --host 0.0.0.0
-        --port 8000
-        --reload
-        --reload-dir /app/src/rag_integration_service
+        uvicorn src.rag_integration_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/rag_integration_service
       "
 
   correction-engine-service:
@@ -215,11 +203,7 @@ services:
         pip install --upgrade pip &&
         pip install fastapi uvicorn[standard] watchfiles debugpy &&
         pip install -r requirements.txt &&
-        uvicorn src.correction_engine_service.main:app
-        --host 0.0.0.0
-        --port 8000
-        --reload
-        --reload-dir /app/src/correction_engine_service
+        uvicorn src.correction_engine_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/correction_engine_service
       "
 
   verification-service:
@@ -255,11 +239,7 @@ services:
         pip install --upgrade pip &&
         pip install fastapi uvicorn[standard] watchfiles debugpy &&
         pip install -r requirements.txt &&
-        uvicorn src.verification_service.main:app
-        --host 0.0.0.0
-        --port 8000
-        --reload
-        --reload-dir /app/src/verification_service
+        uvicorn src.verification_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/verification_service
       "
 
   # =====================================================

@@ -117,8 +117,8 @@ services:
       - .:/app
       - ums_venv:/app/venv
     ports:
-      - "${UMS_PORT:-8011}:8001"
-      - "${UMS_DEBUG_PORT:-5689}:5679"
+      - "${UMS_PORT:-8011}:8000"
+      - "${UMS_DEBUG_PORT:-5689}:5678"
     networks:
       - rag-dev-network
     depends_on:
@@ -134,12 +134,7 @@ services:
         pip install --upgrade pip &&
         pip install fastapi uvicorn[standard] watchfiles &&
         pip install -r requirements.txt &&
-        uvicorn src.user_management_service.main:app
-        --host 0.0.0.0
-        --port 8001
-        --reload
-        --reload-dir /app/src/user_management_service
-        --log-level debug
+        uvicorn src.user_management_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/user_management_service --log-level debug
       "
 
   rag-integration-service:
