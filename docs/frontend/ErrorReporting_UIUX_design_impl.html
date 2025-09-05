@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ErrorReporting_UIUX_design_impl.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="error-reporting-uiux-implementation-design">Error Reporting UI/UX Implementation Design</h1>
+<p><strong>Document Version:</strong> 1.0<br>
+<strong>Date:</strong> December 19, 2024<br>
+<strong>Status:</strong> Implementation Ready<br>
+<strong>Technology Stack:</strong> React 18+ with TypeScript + Material-UI + Redux Toolkit<br>
+<strong>Architecture Pattern:</strong> Hexagonal Architecture + Component-Based Design</p>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#executive-summary">Executive Summary</a></li>
+<li><a href="#component-architecture">Component Architecture</a></li>
+<li><a href="#user-interaction-flows">User Interaction Flows</a></li>
+<li><a href="#state-management-design">State Management Design</a></li>
+<li><a href="#api-integration-patterns">API Integration Patterns</a></li>
+<li><a href="#responsive-design-implementation">Responsive Design Implementation</a></li>
+<li><a href="#accessibility-implementation">Accessibility Implementation</a></li>
+<li><a href="#testing-strategy">Testing Strategy</a></li>
+</ol>
+<hr>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<h3 id="11-implementation-overview">1.1 Implementation Overview</h3>
+<p>This document provides detailed UI/UX implementation specifications for the Error Reporting functionality based on the comprehensive requirements in the ASR Error Reporting PRD. The implementation follows Hexagonal Architecture principles with React 18+ and TypeScript, ensuring clean separation between UI components and business logic.</p>
+<h3 id="12-key-features-implementation">1.2 Key Features Implementation</h3>
+<ul>
+<li><strong>Advanced Text Selection (US-1.1)</strong>: Multi-touch and non-contiguous text selection with visual feedback</li>
+<li><strong>Speaker Association (US-1.2)</strong>: Intelligent speaker identification and validation</li>
+<li><strong>Error Categorization (US-1.3)</strong>: AI-assisted categorization with custom category support</li>
+<li><strong>Correction Provision (US-1.4)</strong>: Voice input and real-time validation</li>
+<li><strong>Contextual Metadata (US-1.5)</strong>: Rich metadata capture with audio quality indicators</li>
+<li><strong>Vector Similarity Analysis (US-1.6)</strong>: Real-time similarity search and pattern recognition</li>
+</ul>
+<h3 id="13-technology-integration">1.3 Technology Integration</h3>
+<ul>
+<li><strong>Frontend Framework</strong>: React 18+ with Concurrent Features and Suspense</li>
+<li><strong>State Management</strong>: Redux Toolkit with RTK Query for API integration</li>
+<li><strong>UI Library</strong>: Material-UI v5+ with custom theming and responsive design</li>
+<li><strong>Backend Integration</strong>: Python + FastAPI microservices via Hexagonal adapters</li>
+<li><strong>Testing</strong>: Vitest + React Testing Library + Playwright for E2E</li>
+</ul>
+<hr>
+<h2 id="2-component-architecture">2. Component Architecture</h2>
+<h3 id="21-component-hierarchy">2.1 Component Hierarchy</h3>
+<pre><code class="language-mermaid"><div class="mermaid">graph TB
+    subgraph "Error Reporting Module"
+        ERC[ErrorReportingContainer]
+        ERF[ErrorReportingForm]
+        TSC[TextSelectionContainer]
+        ECC[ErrorCategorizationContainer]
+        CIC[CorrectionInputContainer]
+        MIC[MetadataInputContainer]
+        VSC[VectorSimilarityContainer]
+    end
+    
+    subgraph "Core Components"
+        TS[TextSelection]
+        EC[ErrorCategorization]
+        CI[CorrectionInput]
+        MI[MetadataInput]
+        VS[VectorSimilarity]
+        VF[ValidationFeedback]
+    end
+    
+    subgraph "Shared UI Components"
+        BTN[Button]
+        INP[Input]
+        SEL[Select]
+        MOD[Modal]
+        NOT[Notification]
+        LOA[Loading]
+    end
+    
+    ERC --> ERF
+    ERF --> TSC
+    ERF --> ECC
+    ERF --> CIC
+    ERF --> MIC
+    ERF --> VSC
+    
+    TSC --> TS
+    ECC --> EC
+    CIC --> CI
+    MIC --> MI
+    VSC --> VS
+    
+    TS --> VF
+    EC --> VF
+    CI --> VF
+    
+    TS --> BTN
+    TS --> NOT
+    EC --> SEL
+    CI --> INP
+    VS --> LOA
+</div></code></pre>
+<h3 id="22-container-components">2.2 Container Components</h3>
+<h4 id="221-errorreportingcontainer">2.2.1 ErrorReportingContainer</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">interface</span> ErrorReportingContainerProps {
+  jobId: <span class="hljs-built_in">string</span>;
+  speakerId: <span class="hljs-built_in">string</span>;
+  documentText: <span class="hljs-built_in">string</span>;
+  onSubmit: <span class="hljs-function">(<span class="hljs-params">report: SubmitErrorReportRequest</span>) =&gt;</span> <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
+  onCancel: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-keyword">const</span> ErrorReportingContainer: React.FC&lt;ErrorReportingContainerProps&gt; = ({
+  jobId,
+  speakerId,
+  documentText,
+  onSubmit,
+  onCancel
+}) =&gt; {
+  <span class="hljs-comment">// State management with Redux</span>
+  <span class="hljs-keyword">const</span> dispatch = useAppDispatch();
+  <span class="hljs-keyword">const</span> { 
+    textSelections, 
+    selectedCategories, 
+    correctionText, 
+    metadata,
+    similarPatterns,
+    validationErrors,
+    isSubmitting 
+  } = useAppSelector(selectErrorReportingState);
+  
+  <span class="hljs-comment">// Form validation</span>
+  <span class="hljs-keyword">const</span> { isValid, errors } = useErrorReportValidation({
+    textSelections,
+    selectedCategories,
+    correctionText,
+    metadata
+  });
+  
+  <span class="hljs-comment">// API integration</span>
+  <span class="hljs-keyword">const</span> [submitErrorReport] = useSubmitErrorReportMutation();
+  <span class="hljs-keyword">const</span> { data: similarityResults } = useVectorSimilarityQuery({
+    text: correctionText,
+    speakerId,
+    threshold: <span class="hljs-number">0.8</span>
+  });
+  
+  <span class="hljs-keyword">return</span> (
+    &lt;ErrorReportingForm
+      jobId={jobId}
+      speakerId={speakerId}
+      documentText={documentText}
+      onSubmit={handleSubmit}
+      onCancel={onCancel}
+      isValid={isValid}
+      errors={errors}
+      isSubmitting={isSubmitting}
+    /&gt;
+  );
+};
+</div></code></pre>
+<h4 id="222-textselectioncontainer">2.2.2 TextSelectionContainer</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">interface</span> TextSelectionContainerProps {
+  documentText: <span class="hljs-built_in">string</span>;
+  selections: TextSelection[];
+  onSelectionChange: <span class="hljs-function">(<span class="hljs-params">selections: TextSelection[]</span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  maxSelections?: <span class="hljs-built_in">number</span>;
+  allowOverlapping?: <span class="hljs-built_in">boolean</span>;
+}
+
+<span class="hljs-keyword">const</span> TextSelectionContainer: React.FC&lt;TextSelectionContainerProps&gt; = ({
+  documentText,
+  selections,
+  onSelectionChange,
+  maxSelections = <span class="hljs-number">10</span>,
+  allowOverlapping = <span class="hljs-literal">false</span>
+}) =&gt; {
+  <span class="hljs-comment">// Touch and gesture handling</span>
+  <span class="hljs-keyword">const</span> {
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
+    isSelecting
+  } = useTouchTextSelection({
+    onSelectionComplete: onSelectionChange,
+    maxSelections,
+    allowOverlapping
+  });
+
+  <span class="hljs-comment">// Keyboard navigation</span>
+  <span class="hljs-keyword">const</span> {
+    focusedIndex,
+    handleKeyDown
+  } = useKeyboardNavigation(selections, onSelectionChange);
+
+  <span class="hljs-comment">// Accessibility announcements</span>
+  <span class="hljs-keyword">const</span> { announce } = useScreenReaderAnnouncements();
+
+  <span class="hljs-keyword">return</span> (
+    &lt;TextSelection
+      text={documentText}
+      selections={selections}
+      onSelectionChange={onSelectionChange}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onKeyDown={handleKeyDown}
+      focusedIndex={focusedIndex}
+      announce={announce}
+      maxSelections={maxSelections}
+      allowOverlapping={allowOverlapping}
+    /&gt;
+  );
+};
+</div></code></pre>
+<h3 id="23-presentation-components">2.3 Presentation Components</h3>
+<h4 id="231-enhanced-textselection-component">2.3.1 Enhanced TextSelection Component</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">interface</span> TextSelectionProps {
+  text: <span class="hljs-built_in">string</span>;
+  selections: TextSelection[];
+  onSelectionChange: <span class="hljs-function">(<span class="hljs-params">selections: TextSelection[]</span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  onTouchStart?: <span class="hljs-function">(<span class="hljs-params">event: TouchEvent</span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  onTouchMove?: <span class="hljs-function">(<span class="hljs-params">event: TouchEvent</span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  onTouchEnd?: <span class="hljs-function">(<span class="hljs-params">event: TouchEvent</span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  onKeyDown?: <span class="hljs-function">(<span class="hljs-params">event: KeyboardEvent</span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  focusedIndex?: <span class="hljs-built_in">number</span>;
+  announce?: <span class="hljs-function">(<span class="hljs-params">message: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  maxSelections?: <span class="hljs-built_in">number</span>;
+  allowOverlapping?: <span class="hljs-built_in">boolean</span>;
+  disabled?: <span class="hljs-built_in">boolean</span>;
+}
+
+<span class="hljs-keyword">const</span> TextSelection: React.FC&lt;TextSelectionProps&gt; = ({
+  text,
+  selections,
+  onSelectionChange,
+  onTouchStart,
+  onTouchMove,
+  onTouchEnd,
+  onKeyDown,
+  focusedIndex = <span class="hljs-number">0</span>,
+  announce,
+  maxSelections = <span class="hljs-number">10</span>,
+  allowOverlapping = <span class="hljs-literal">false</span>,
+  disabled = <span class="hljs-literal">false</span>
+}) =&gt; {
+  <span class="hljs-keyword">const</span> theme = useTheme();
+  <span class="hljs-keyword">const</span> isMobile = useMediaQuery(theme.breakpoints.down(<span class="hljs-string">'md'</span>));
+  <span class="hljs-keyword">const</span> containerRef = useRef&lt;HTMLDivElement&gt;(<span class="hljs-literal">null</span>);
+
+  <span class="hljs-comment">// Selection state</span>
+  <span class="hljs-keyword">const</span> [isSelecting, setIsSelecting] = useState(<span class="hljs-literal">false</span>);
+  <span class="hljs-keyword">const</span> [selectionStart, setSelectionStart] = useState&lt;<span class="hljs-built_in">number</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+  <span class="hljs-keyword">const</span> [selectionEnd, setSelectionEnd] = useState&lt;<span class="hljs-built_in">number</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+
+  <span class="hljs-comment">// Multi-touch gesture recognition</span>
+  <span class="hljs-keyword">const</span> [touchPoints, setTouchPoints] = useState&lt;TouchPoint[]&gt;([]);
+  <span class="hljs-keyword">const</span> [gestureType, setGestureType] = useState&lt;GestureType&gt;(<span class="hljs-string">'none'</span>);
+
+  <span class="hljs-comment">// Handle multi-touch selection</span>
+  <span class="hljs-keyword">const</span> handleMultiTouchSelection = useCallback(<span class="hljs-function">(<span class="hljs-params">touches: TouchList</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (touches.length === <span class="hljs-number">2</span>) {
+      <span class="hljs-keyword">const</span> touch1 = touches[<span class="hljs-number">0</span>];
+      <span class="hljs-keyword">const</span> touch2 = touches[<span class="hljs-number">1</span>];
+
+      <span class="hljs-keyword">const</span> startPos = getTextPositionFromPoint(touch1.clientX, touch1.clientY);
+      <span class="hljs-keyword">const</span> endPos = getTextPositionFromPoint(touch2.clientX, touch2.clientY);
+
+      <span class="hljs-keyword">if</span> (startPos !== <span class="hljs-literal">null</span> &amp;&amp; endPos !== <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">const</span> start = <span class="hljs-built_in">Math</span>.min(startPos, endPos);
+        <span class="hljs-keyword">const</span> end = <span class="hljs-built_in">Math</span>.max(startPos, endPos);
+
+        <span class="hljs-keyword">const</span> newSelection: TextSelection = {
+          selectionId: generateSelectionId(),
+          text: text.slice(start, end),
+          startPosition: start,
+          endPosition: end
+        };
+
+        handleNewSelection(newSelection);
+      }
+    }
+  }, [text]);
+
+  <span class="hljs-keyword">return</span> (
+    &lt;Box
+      ref={containerRef}
+      role=<span class="hljs-string">"textbox"</span>
+      aria-label=<span class="hljs-string">"Document text for error selection"</span>
+      aria-describedby=<span class="hljs-string">"selection-instructions"</span>
+      tabIndex={disabled ? <span class="hljs-number">-1</span> : <span class="hljs-number">0</span>}
+      data-testid=<span class="hljs-string">"text-selection-container"</span>
+      className={<span class="hljs-string">`text-selection-container <span class="hljs-subst">${disabled ? <span class="hljs-string">'disabled'</span> : <span class="hljs-string">''</span>}</span>`</span>}
+      onKeyDown={onKeyDown}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+      sx={{
+        position: <span class="hljs-string">'relative'</span>,
+        padding: <span class="hljs-number">2</span>,
+        border: <span class="hljs-string">`1px solid <span class="hljs-subst">${theme.palette.divider}</span>`</span>,
+        borderRadius: <span class="hljs-number">1</span>,
+        backgroundColor: disabled
+          ? theme.palette.action.disabled
+          : theme.palette.background.paper,
+        cursor: disabled ? <span class="hljs-string">'not-allowed'</span> : <span class="hljs-string">'text'</span>,
+        userSelect: disabled ? <span class="hljs-string">'none'</span> : <span class="hljs-string">'text'</span>,
+        <span class="hljs-string">'&amp;:focus'</span>: {
+          outline: <span class="hljs-string">`2px solid <span class="hljs-subst">${theme.palette.primary.main}</span>`</span>,
+          outlineOffset: <span class="hljs-number">2</span>,
+        },
+      }}
+    &gt;
+      {<span class="hljs-comment">/* Selection Instructions */</span>}
+      &lt;Box id=<span class="hljs-string">"selection-instructions"</span> className=<span class="hljs-string">"sr-only"</span>&gt;
+        Use mouse or touch to select text. Hold Ctrl/Cmd <span class="hljs-keyword">for</span> multiple selections.
+        Use arrow keys to navigate selections, Enter to remove focused selection.
+        Maximum {maxSelections} selections allowed.
+      &lt;<span class="hljs-regexp">/Box&gt;
+
+      {/</span>* Selection Controls *<span class="hljs-regexp">/}
+      {selections.length &gt; 0 &amp;&amp; (
+        &lt;SelectionControls
+          selections={selections}
+          onClearAll={() =&gt; {
+            onSelectionChange([]);
+            announce?.('All selections cleared');
+          }}
+          disabled={disabled}
+        /</span>&gt;
+      )}
+
+      {<span class="hljs-comment">/* Selectable Text */</span>}
+      &lt;Box
+        data-testid=<span class="hljs-string">"selectable-text"</span>
+        className={isMobile ? <span class="hljs-string">'touch-selectable'</span> : <span class="hljs-string">''</span>}
+        sx={{
+          lineHeight: <span class="hljs-number">1.6</span>,
+          fontSize: <span class="hljs-string">'1rem'</span>,
+          fontFamily: <span class="hljs-string">'inherit'</span>,
+          whiteSpace: <span class="hljs-string">'pre-wrap'</span>,
+          wordBreak: <span class="hljs-string">'break-word'</span>,
+          minHeight: <span class="hljs-string">'200px'</span>,
+        }}
+      &gt;
+        {<span class="hljs-comment">/* Text content with highlights will be rendered here */</span>}
+      &lt;<span class="hljs-regexp">/Box&gt;
+
+      {/</span>* Touch Indicator *<span class="hljs-regexp">/}
+      {isMobile &amp;&amp; !disabled &amp;&amp; (
+        &lt;TouchIndicator /</span>&gt;
+      )}
+
+      {<span class="hljs-comment">/* Live Region for Announcements */</span>}
+      &lt;Box
+        role=<span class="hljs-string">"status"</span>
+        aria-live=<span class="hljs-string">"polite"</span>
+        aria-atomic=<span class="hljs-string">"true"</span>
+        className=<span class="hljs-string">"sr-only"</span>
+      &gt;
+        {<span class="hljs-comment">/* Announcements will be inserted here */</span>}
+      &lt;<span class="hljs-regexp">/Box&gt;
+    &lt;/</span>Box&gt;
+  );
+};
+</div></code></pre>
+<hr>
+<h2 id="3-user-interaction-flows">3. User Interaction Flows</h2>
+<h3 id="31-error-reporting-workflow">3.1 Error Reporting Workflow</h3>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant User as QA Personnel
+    participant UI as Error Reporting UI
+    participant State as Redux Store
+    participant API as Error Reporting API
+    participant Vector as Vector Similarity API
+
+    User->>UI: Open Error Reporting Interface
+    UI->>State: Initialize error reporting state
+    State-->>UI: Return initial state
+
+    User->>UI: Select error text (multi-touch/mouse)
+    UI->>UI: Validate selection boundaries
+    UI->>State: Update text selections
+    State-->>UI: Confirm selection update
+    UI-->>User: Show visual feedback
+
+    User->>UI: Choose error categories
+    UI->>State: Update selected categories
+    State-->>UI: Confirm category update
+
+    User->>UI: Enter correction text
+    UI->>Vector: Query similar patterns
+    Vector-->>UI: Return similarity results
+    UI->>State: Update correction and similarities
+    State-->>UI: Confirm updates
+    UI-->>User: Show similarity suggestions
+
+    User->>UI: Add contextual metadata
+    UI->>State: Update metadata
+    State-->>UI: Confirm metadata update
+
+    User->>UI: Submit error report
+    UI->>State: Validate complete form
+    State-->>UI: Return validation results
+
+    alt Form Valid
+        UI->>API: Submit error report
+        API-->>UI: Return success response
+        UI->>State: Update submission status
+        State-->>UI: Confirm success
+        UI-->>User: Show success notification
+    else Form Invalid
+        UI-->>User: Show validation errors
+        UI-->>User: Focus first error field
+    end
+</div></code></pre>
+<h3 id="32-touch-interaction-patterns">3.2 Touch Interaction Patterns</h3>
+<h4 id="321-multi-touch-text-selection">3.2.1 Multi-Touch Text Selection</h4>
+<ul>
+<li><strong>Single Touch</strong>: Standard text selection with drag handles</li>
+<li><strong>Two-Finger Touch</strong>: Precise selection between two touch points</li>
+<li><strong>Long Press</strong>: Context menu for selection options</li>
+<li><strong>Pinch Gesture</strong>: Zoom in/out for better text visibility</li>
+</ul>
+<hr>
+<h2 id="4-state-management-design">4. State Management Design</h2>
+<h3 id="41-redux-store-structure">4.1 Redux Store Structure</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">interface</span> ErrorReportingState {
+  textSelections: TextSelection[];
+  selectedCategories: ErrorCategory[];
+  correctionText: <span class="hljs-built_in">string</span>;
+  metadata: ErrorMetadata;
+  isSubmitting: <span class="hljs-built_in">boolean</span>;
+  validationErrors: ValidationError[];
+  currentStep: ErrorReportingStep;
+  similarPatterns: SimilarityResult[];
+  speakerProfiles: SpeakerProfile[];
+  categoryOptions: ErrorCategory[];
+}
+</div></code></pre>
+<hr>
+<h2 id="5-api-integration-patterns">5. API Integration Patterns</h2>
+<h3 id="51-rtk-query-api-slice">5.1 RTK Query API Slice</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> errorReportingApi = createApi({
+  reducerPath: <span class="hljs-string">'errorReportingApi'</span>,
+  baseQuery: fetchBaseQuery({
+    baseUrl: <span class="hljs-string">'/api/v1/errors'</span>,
+    prepareHeaders: <span class="hljs-function">(<span class="hljs-params">headers, { getState }</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> token = (getState() <span class="hljs-keyword">as</span> RootState).auth.token;
+      <span class="hljs-keyword">if</span> (token) {
+        headers.set(<span class="hljs-string">'authorization'</span>, <span class="hljs-string">`Bearer <span class="hljs-subst">${token}</span>`</span>);
+      }
+      <span class="hljs-keyword">return</span> headers;
+    },
+  }),
+  tagTypes: [<span class="hljs-string">'ErrorReport'</span>, <span class="hljs-string">'SimilarityPattern'</span>, <span class="hljs-string">'ErrorCategory'</span>],
+
+  endpoints: <span class="hljs-function">(<span class="hljs-params">builder</span>) =&gt;</span> ({
+    submitErrorReport: builder.mutation&lt;
+      SubmitErrorReportResponse,
+      SubmitErrorReportRequest
+    &gt;({
+      query: <span class="hljs-function">(<span class="hljs-params">errorReport</span>) =&gt;</span> ({
+        url: <span class="hljs-string">'/report'</span>,
+        method: <span class="hljs-string">'POST'</span>,
+        body: errorReport,
+      }),
+      invalidatesTags: [<span class="hljs-string">'ErrorReport'</span>],
+    }),
+
+    searchSimilarPatterns: builder.query&lt;
+      SimilarityResult[],
+      SimilaritySearchRequest
+    &gt;({
+      query: <span class="hljs-function">(<span class="hljs-params">{ text, speakerId, threshold = 0.8 }</span>) =&gt;</span> ({
+        url: <span class="hljs-string">'/similarity/search'</span>,
+        params: { text, speakerId, threshold },
+      }),
+      providesTags: [<span class="hljs-string">'SimilarityPattern'</span>],
+    }),
+  }),
+});
+</div></code></pre>
+<hr>
+<h2 id="6-responsive-design-implementation">6. Responsive Design Implementation</h2>
+<h3 id="61-breakpoint-strategy">6.1 Breakpoint Strategy</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: <span class="hljs-number">0</span>,     <span class="hljs-comment">// Mobile portrait</span>
+      sm: <span class="hljs-number">600</span>,   <span class="hljs-comment">// Mobile landscape</span>
+      md: <span class="hljs-number">900</span>,   <span class="hljs-comment">// Tablet</span>
+      lg: <span class="hljs-number">1200</span>,  <span class="hljs-comment">// Desktop</span>
+      xl: <span class="hljs-number">1536</span>,  <span class="hljs-comment">// Large desktop</span>
+    },
+  },
+});
+
+<span class="hljs-comment">// Responsive component patterns</span>
+<span class="hljs-keyword">const</span> useResponsiveLayout = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-keyword">const</span> theme = useTheme();
+  <span class="hljs-keyword">const</span> isMobile = useMediaQuery(theme.breakpoints.down(<span class="hljs-string">'md'</span>));
+  <span class="hljs-keyword">const</span> isTablet = useMediaQuery(theme.breakpoints.between(<span class="hljs-string">'md'</span>, <span class="hljs-string">'lg'</span>));
+  <span class="hljs-keyword">const</span> isDesktop = useMediaQuery(theme.breakpoints.up(<span class="hljs-string">'lg'</span>));
+
+  <span class="hljs-keyword">return</span> {
+    isMobile,
+    isTablet,
+    isDesktop,
+    columns: isMobile ? <span class="hljs-number">1</span> : isTablet ? <span class="hljs-number">2</span> : <span class="hljs-number">3</span>,
+    spacing: isMobile ? <span class="hljs-number">1</span> : <span class="hljs-number">2</span>,
+    fontSize: isMobile ? <span class="hljs-string">'0.875rem'</span> : <span class="hljs-string">'1rem'</span>,
+  };
+};
+</div></code></pre>
+<hr>
+<h2 id="7-accessibility-implementation">7. Accessibility Implementation</h2>
+<h3 id="71-wcag-21-aa-compliance">7.1 WCAG 2.1 AA Compliance</h3>
+<pre class="hljs"><code><div><span class="hljs-comment">// Screen reader announcements</span>
+<span class="hljs-keyword">const</span> useScreenReaderAnnouncements = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-keyword">const</span> [announcement, setAnnouncement] = useState(<span class="hljs-string">''</span>);
+
+  <span class="hljs-keyword">const</span> announce = useCallback(<span class="hljs-function">(<span class="hljs-params">message: <span class="hljs-built_in">string</span></span>) =&gt;</span> {
+    setAnnouncement(message);
+    setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> setAnnouncement(<span class="hljs-string">''</span>), <span class="hljs-number">1000</span>);
+  }, []);
+
+  <span class="hljs-keyword">return</span> { announcement, announce };
+};
+
+<span class="hljs-comment">// Keyboard navigation</span>
+<span class="hljs-keyword">const</span> useKeyboardNavigation = (
+  selections: TextSelection[],
+  onSelectionChange: <span class="hljs-function">(<span class="hljs-params">selections: TextSelection[]</span>) =&gt;</span> <span class="hljs-built_in">void</span>
+) =&gt; {
+  <span class="hljs-keyword">const</span> [focusedIndex, setFocusedIndex] = useState(<span class="hljs-number">0</span>);
+
+  <span class="hljs-keyword">const</span> handleKeyDown = useCallback(<span class="hljs-function">(<span class="hljs-params">event: KeyboardEvent</span>) =&gt;</span> {
+    <span class="hljs-keyword">switch</span> (event.key) {
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'ArrowLeft'</span>:
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'ArrowUp'</span>:
+        event.preventDefault();
+        setFocusedIndex(<span class="hljs-function"><span class="hljs-params">prev</span> =&gt;</span> <span class="hljs-built_in">Math</span>.max(<span class="hljs-number">0</span>, prev - <span class="hljs-number">1</span>));
+        <span class="hljs-keyword">break</span>;
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'ArrowRight'</span>:
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'ArrowDown'</span>:
+        event.preventDefault();
+        setFocusedIndex(<span class="hljs-function"><span class="hljs-params">prev</span> =&gt;</span> <span class="hljs-built_in">Math</span>.min(selections.length - <span class="hljs-number">1</span>, prev + <span class="hljs-number">1</span>));
+        <span class="hljs-keyword">break</span>;
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'Enter'</span>:
+      <span class="hljs-keyword">case</span> <span class="hljs-string">' '</span>:
+        event.preventDefault();
+        <span class="hljs-keyword">if</span> (selections[focusedIndex]) {
+          <span class="hljs-keyword">const</span> newSelections = selections.filter(<span class="hljs-function">(<span class="hljs-params">_, index</span>) =&gt;</span> index !== focusedIndex);
+          onSelectionChange(newSelections);
+          setFocusedIndex(<span class="hljs-built_in">Math</span>.min(focusedIndex, newSelections.length - <span class="hljs-number">1</span>));
+        }
+        <span class="hljs-keyword">break</span>;
+    }
+  }, [selections, focusedIndex, onSelectionChange]);
+
+  <span class="hljs-keyword">return</span> { focusedIndex, handleKeyDown };
+};
+</div></code></pre>
+<hr>
+<h2 id="8-testing-strategy">8. Testing Strategy</h2>
+<h3 id="81-component-testing-approach">8.1 Component Testing Approach</h3>
+<pre class="hljs"><code><div><span class="hljs-comment">// Test utilities</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> renderWithProviders = (
+  ui: React.ReactElement,
+  {
+    preloadedState = {},
+    store = setupStore(preloadedState),
+    ...renderOptions
+  } = {}
+) =&gt; {
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Wrapper</span>(<span class="hljs-params">{ children }: { children: React.ReactNode }</span>) </span>{
+    <span class="hljs-keyword">return</span> (
+      &lt;Provider store={store}&gt;
+        &lt;ThemeProvider theme={theme}&gt;
+          &lt;BrowserRouter&gt;
+            {children}
+          &lt;<span class="hljs-regexp">/BrowserRouter&gt;
+        &lt;/</span>ThemeProvider&gt;
+      &lt;<span class="hljs-regexp">/Provider&gt;
+    );
+  }
+
+  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+};
+
+/</span><span class="hljs-regexp">/ Mock data factories
+export const createMockTextSelection = (overrides?: Partial&lt;TextSelection&gt;): TextSelection =&gt; ({
+  selectionId: 'test-selection-1',
+  text: 'sample error text',
+  startPosition: 10,
+  endPosition: 27,
+  confidence: 0.95,
+  timestamp: Date.now(),
+  ...overrides,
+});
+
+export const createMockErrorReport = (overrides?: Partial&lt;SubmitErrorReportRequest&gt;): SubmitErrorReportRequest =&gt; ({
+  jobId: 'test-job-1',
+  speakerId: 'speaker-1',
+  textSelections: [createMockTextSelection()],
+  selectedCategories: [{ categoryId: 'pronunciation', name: 'Pronunciation' }],
+  correctionText: 'sample corrected text',
+  metadata: {
+    audioQuality: 'good',
+    backgroundNoise: 'low',
+    speakerClarity: 'clear',
+    contextualNotes: 'Test notes',
+    urgencyLevel: 'medium'
+  },
+  ...overrides,
+});
+</span></div></code></pre>
+<h3 id="82-test-coverage-requirements">8.2 Test Coverage Requirements</h3>
+<ul>
+<li><strong>Unit Tests</strong>: 90%+ coverage for all components and hooks</li>
+<li><strong>Integration Tests</strong>: Complete user workflows</li>
+<li><strong>E2E Tests</strong>: Critical user journeys</li>
+<li><strong>Accessibility Tests</strong>: WCAG 2.1 AA compliance</li>
+<li><strong>Performance Tests</strong>: Interaction responsiveness</li>
+<li><strong>Cross-browser Tests</strong>: Chrome, Firefox, Safari, Edge</li>
+</ul>
+<hr>
+<h2 id="implementation-checklist">Implementation Checklist</h2>
+<h3 id="phase-1-core-components">Phase 1: Core Components</h3>
+<ul>
+<li><input type="checkbox" id="checkbox0"><label for="checkbox0">TextSelection component with multi-touch support</label></li>
+<li><input type="checkbox" id="checkbox1"><label for="checkbox1">ErrorCategorization component with AI assistance</label></li>
+<li><input type="checkbox" id="checkbox2"><label for="checkbox2">CorrectionInput component with voice input</label></li>
+<li><input type="checkbox" id="checkbox3"><label for="checkbox3">MetadataInput component with rich controls</label></li>
+<li><input type="checkbox" id="checkbox4"><label for="checkbox4">VectorSimilarity component with real-time search</label></li>
+</ul>
+<h3 id="phase-2-integration">Phase 2: Integration</h3>
+<ul>
+<li><input type="checkbox" id="checkbox5"><label for="checkbox5">Redux store setup and slices</label></li>
+<li><input type="checkbox" id="checkbox6"><label for="checkbox6">RTK Query API integration</label></li>
+<li><input type="checkbox" id="checkbox7"><label for="checkbox7">Form validation and error handling</label></li>
+<li><input type="checkbox" id="checkbox8"><label for="checkbox8">Responsive design implementation</label></li>
+<li><input type="checkbox" id="checkbox9"><label for="checkbox9">Accessibility features</label></li>
+</ul>
+<h3 id="phase-3-testing">Phase 3: Testing</h3>
+<ul>
+<li><input type="checkbox" id="checkbox10"><label for="checkbox10">Unit tests for all components</label></li>
+<li><input type="checkbox" id="checkbox11"><label for="checkbox11">Integration tests for workflows</label></li>
+<li><input type="checkbox" id="checkbox12"><label for="checkbox12">E2E tests for user journeys</label></li>
+<li><input type="checkbox" id="checkbox13"><label for="checkbox13">Performance optimization</label></li>
+<li><input type="checkbox" id="checkbox14"><label for="checkbox14">Cross-browser compatibility</label></li>
+</ul>
+<h3 id="phase-4-documentation">Phase 4: Documentation</h3>
+<ul>
+<li><input type="checkbox" id="checkbox15"><label for="checkbox15">Component documentation</label></li>
+<li><input type="checkbox" id="checkbox16"><label for="checkbox16">API integration guide</label></li>
+<li><input type="checkbox" id="checkbox17"><label for="checkbox17">Accessibility compliance report</label></li>
+<li><input type="checkbox" id="checkbox18"><label for="checkbox18">Performance benchmarks</label></li>
+</ul>
+<h3 id="32-touch-interaction-patterns">3.2 Touch Interaction Patterns</h3>
+<h4 id="321-multi-touch-text-selection">3.2.1 Multi-Touch Text Selection</h4>
+<ul>
+<li><strong>Single Touch</strong>: Standard text selection with drag handles</li>
+<li><strong>Two-Finger Touch</strong>: Precise selection between two touch points</li>
+<li><strong>Long Press</strong>: Context menu for selection options</li>
+<li><strong>Pinch Gesture</strong>: Zoom in/out for better text visibility</li>
+</ul>
+<h4 id="322-gesture-recognition">3.2.2 Gesture Recognition</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">interface</span> TouchGesture {
+  <span class="hljs-keyword">type</span>: <span class="hljs-string">'single'</span> | <span class="hljs-string">'multi'</span> | <span class="hljs-string">'long-press'</span> | <span class="hljs-string">'pinch'</span>;
+  startTime: <span class="hljs-built_in">number</span>;
+  duration: <span class="hljs-built_in">number</span>;
+  touchPoints: TouchPoint[];
+  velocity: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">const</span> useTouchGestureRecognition = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-keyword">const</span> [currentGesture, setCurrentGesture] = useState&lt;TouchGesture | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+
+  <span class="hljs-keyword">const</span> recognizeGesture = useCallback(<span class="hljs-function">(<span class="hljs-params">touches: TouchList, timeStamp: <span class="hljs-built_in">number</span></span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (touches.length === <span class="hljs-number">1</span>) {
+      <span class="hljs-comment">// Single touch - check for long press</span>
+      <span class="hljs-keyword">const</span> touch = touches[<span class="hljs-number">0</span>];
+      <span class="hljs-keyword">const</span> duration = timeStamp - (currentGesture?.startTime || timeStamp);
+
+      <span class="hljs-keyword">if</span> (duration &gt; <span class="hljs-number">500</span>) { <span class="hljs-comment">// 500ms for long press</span>
+        <span class="hljs-keyword">return</span> { <span class="hljs-keyword">type</span>: <span class="hljs-string">'long-press'</span>, duration, touchPoints: [touch] };
+      }
+
+      <span class="hljs-keyword">return</span> { <span class="hljs-keyword">type</span>: <span class="hljs-string">'single'</span>, duration, touchPoints: [touch] };
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (touches.length === <span class="hljs-number">2</span>) {
+      <span class="hljs-comment">// Multi-touch - check for pinch or selection</span>
+      <span class="hljs-keyword">const</span> touch1 = touches[<span class="hljs-number">0</span>];
+      <span class="hljs-keyword">const</span> touch2 = touches[<span class="hljs-number">1</span>];
+      <span class="hljs-keyword">const</span> distance = calculateDistance(touch1, touch2);
+
+      <span class="hljs-keyword">if</span> (currentGesture?.type === <span class="hljs-string">'multi'</span>) {
+        <span class="hljs-keyword">const</span> previousDistance = calculateDistance(
+          currentGesture.touchPoints[<span class="hljs-number">0</span>],
+          currentGesture.touchPoints[<span class="hljs-number">1</span>]
+        );
+
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Math</span>.abs(distance - previousDistance) &gt; <span class="hljs-number">10</span>) {
+          <span class="hljs-keyword">return</span> { <span class="hljs-keyword">type</span>: <span class="hljs-string">'pinch'</span>, touchPoints: [touch1, touch2] };
+        }
+      }
+
+      <span class="hljs-keyword">return</span> { <span class="hljs-keyword">type</span>: <span class="hljs-string">'multi'</span>, touchPoints: [touch1, touch2] };
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+  }, [currentGesture]);
+
+  <span class="hljs-keyword">return</span> { currentGesture, recognizeGesture };
+};
+</div></code></pre>
+<hr>
+<h2 id="4-state-management-design">4. State Management Design</h2>
+<h3 id="41-redux-store-structure">4.1 Redux Store Structure</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">interface</span> ErrorReportingState {
+  <span class="hljs-comment">// Form data</span>
+  textSelections: TextSelection[];
+  selectedCategories: ErrorCategory[];
+  correctionText: <span class="hljs-built_in">string</span>;
+  metadata: ErrorMetadata;
+
+  <span class="hljs-comment">// UI state</span>
+  isSubmitting: <span class="hljs-built_in">boolean</span>;
+  validationErrors: ValidationError[];
+  currentStep: ErrorReportingStep;
+
+  <span class="hljs-comment">// API data</span>
+  similarPatterns: SimilarityResult[];
+  speakerProfiles: SpeakerProfile[];
+  categoryOptions: ErrorCategory[];
+
+  <span class="hljs-comment">// Performance tracking</span>
+  selectionStartTime: <span class="hljs-built_in">number</span> | <span class="hljs-literal">null</span>;
+  interactionMetrics: InteractionMetric[];
+}
+
+<span class="hljs-keyword">interface</span> TextSelection {
+  selectionId: <span class="hljs-built_in">string</span>;
+  text: <span class="hljs-built_in">string</span>;
+  startPosition: <span class="hljs-built_in">number</span>;
+  endPosition: <span class="hljs-built_in">number</span>;
+  confidence?: <span class="hljs-built_in">number</span>;
+  timestamp: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">interface</span> ErrorMetadata {
+  audioQuality: AudioQualityIndicator;
+  backgroundNoise: NoiseLevel;
+  speakerClarity: ClarityLevel;
+  contextualNotes: <span class="hljs-built_in">string</span>;
+  urgencyLevel: UrgencyLevel;
+}
+
+<span class="hljs-keyword">interface</span> SimilarityResult {
+  patternId: <span class="hljs-built_in">string</span>;
+  similarText: <span class="hljs-built_in">string</span>;
+  confidence: <span class="hljs-built_in">number</span>;
+  frequency: <span class="hljs-built_in">number</span>;
+  suggestedCorrection: <span class="hljs-built_in">string</span>;
+  speakerIds: <span class="hljs-built_in">string</span>[];
+}
+</div></code></pre>
+<h3 id="42-redux-toolkit-slices">4.2 Redux Toolkit Slices</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> errorReportingSlice = createSlice({
+  name: <span class="hljs-string">'errorReporting'</span>,
+  initialState,
+  reducers: {
+    <span class="hljs-comment">// Text selection actions</span>
+    addTextSelection: <span class="hljs-function">(<span class="hljs-params">state, action: PayloadAction&lt;TextSelection&gt;</span>) =&gt;</span> {
+      <span class="hljs-keyword">if</span> (state.textSelections.length &lt; <span class="hljs-number">10</span>) {
+        state.textSelections.push(action.payload);
+        state.selectionStartTime = <span class="hljs-built_in">Date</span>.now();
+      }
+    },
+
+    removeTextSelection: <span class="hljs-function">(<span class="hljs-params">state, action: PayloadAction&lt;<span class="hljs-built_in">string</span>&gt;</span>) =&gt;</span> {
+      state.textSelections = state.textSelections.filter(
+        <span class="hljs-function"><span class="hljs-params">selection</span> =&gt;</span> selection.selectionId !== action.payload
+      );
+    },
+
+    updateTextSelection: (state, action: PayloadAction&lt;{
+      selectionId: <span class="hljs-built_in">string</span>;
+      updates: Partial&lt;TextSelection&gt;;
+    }&gt;) =&gt; {
+      <span class="hljs-keyword">const</span> index = state.textSelections.findIndex(
+        <span class="hljs-function"><span class="hljs-params">selection</span> =&gt;</span> selection.selectionId === action.payload.selectionId
+      );
+      <span class="hljs-keyword">if</span> (index !== <span class="hljs-number">-1</span>) {
+        state.textSelections[index] = {
+          ...state.textSelections[index],
+          ...action.payload.updates
+        };
+      }
+    },
+
+    clearAllSelections: <span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> {
+      state.textSelections = [];
+      state.selectionStartTime = <span class="hljs-literal">null</span>;
+    },
+
+    <span class="hljs-comment">// Category actions</span>
+    toggleCategory: <span class="hljs-function">(<span class="hljs-params">state, action: PayloadAction&lt;ErrorCategory&gt;</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> index = state.selectedCategories.findIndex(
+        <span class="hljs-function"><span class="hljs-params">cat</span> =&gt;</span> cat.categoryId === action.payload.categoryId
+      );
+
+      <span class="hljs-keyword">if</span> (index !== <span class="hljs-number">-1</span>) {
+        state.selectedCategories.splice(index, <span class="hljs-number">1</span>);
+      } <span class="hljs-keyword">else</span> {
+        state.selectedCategories.push(action.payload);
+      }
+    },
+
+    <span class="hljs-comment">// Correction actions</span>
+    updateCorrectionText: <span class="hljs-function">(<span class="hljs-params">state, action: PayloadAction&lt;<span class="hljs-built_in">string</span>&gt;</span>) =&gt;</span> {
+      state.correctionText = action.payload;
+    },
+
+    <span class="hljs-comment">// Metadata actions</span>
+    updateMetadata: <span class="hljs-function">(<span class="hljs-params">state, action: PayloadAction&lt;Partial&lt;ErrorMetadata&gt;&gt;</span>) =&gt;</span> {
+      state.metadata = { ...state.metadata, ...action.payload };
+    },
+
+    <span class="hljs-comment">// Validation actions</span>
+    setValidationErrors: <span class="hljs-function">(<span class="hljs-params">state, action: PayloadAction&lt;ValidationError[]&gt;</span>) =&gt;</span> {
+      state.validationErrors = action.payload;
+    },
+
+    clearValidationErrors: <span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> {
+      state.validationErrors = [];
+    },
+
+    <span class="hljs-comment">// Step navigation</span>
+    setCurrentStep: <span class="hljs-function">(<span class="hljs-params">state, action: PayloadAction&lt;ErrorReportingStep&gt;</span>) =&gt;</span> {
+      state.currentStep = action.payload;
+    },
+
+    <span class="hljs-comment">// Performance tracking</span>
+    addInteractionMetric: <span class="hljs-function">(<span class="hljs-params">state, action: PayloadAction&lt;InteractionMetric&gt;</span>) =&gt;</span> {
+      state.interactionMetrics.push(action.payload);
+    },
+
+    <span class="hljs-comment">// Reset form</span>
+    resetForm: <span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> {
+      <span class="hljs-keyword">return</span> {
+        ...initialState,
+        categoryOptions: state.categoryOptions,
+        speakerProfiles: state.speakerProfiles
+      };
+    }
+  },
+
+  extraReducers: <span class="hljs-function">(<span class="hljs-params">builder</span>) =&gt;</span> {
+    builder
+      <span class="hljs-comment">// Submit error report</span>
+      .addCase(submitErrorReport.pending, <span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> {
+        state.isSubmitting = <span class="hljs-literal">true</span>;
+        state.validationErrors = [];
+      })
+      .addCase(submitErrorReport.fulfilled, <span class="hljs-function">(<span class="hljs-params">state, action</span>) =&gt;</span> {
+        state.isSubmitting = <span class="hljs-literal">false</span>;
+        <span class="hljs-comment">// Reset form after successful submission</span>
+        <span class="hljs-keyword">return</span> {
+          ...initialState,
+          categoryOptions: state.categoryOptions,
+          speakerProfiles: state.speakerProfiles
+        };
+      })
+      .addCase(submitErrorReport.rejected, <span class="hljs-function">(<span class="hljs-params">state, action</span>) =&gt;</span> {
+        state.isSubmitting = <span class="hljs-literal">false</span>;
+        state.validationErrors = action.payload?.validationErrors || [];
+      })
+
+      <span class="hljs-comment">// Vector similarity search</span>
+      .addCase(searchSimilarPatterns.fulfilled, <span class="hljs-function">(<span class="hljs-params">state, action</span>) =&gt;</span> {
+        state.similarPatterns = action.payload;
+      });
+  }
+});
+</div></code></pre>
+<hr>
+<h2 id="5-api-integration-patterns">5. API Integration Patterns</h2>
+<h3 id="51-rtk-query-api-slice">5.1 RTK Query API Slice</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> errorReportingApi = createApi({
+  reducerPath: <span class="hljs-string">'errorReportingApi'</span>,
+  baseQuery: fetchBaseQuery({
+    baseUrl: <span class="hljs-string">'/api/v1/errors'</span>,
+    prepareHeaders: <span class="hljs-function">(<span class="hljs-params">headers, { getState }</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> token = (getState() <span class="hljs-keyword">as</span> RootState).auth.token;
+      <span class="hljs-keyword">if</span> (token) {
+        headers.set(<span class="hljs-string">'authorization'</span>, <span class="hljs-string">`Bearer <span class="hljs-subst">${token}</span>`</span>);
+      }
+      <span class="hljs-keyword">return</span> headers;
+    },
+  }),
+  tagTypes: [<span class="hljs-string">'ErrorReport'</span>, <span class="hljs-string">'SimilarityPattern'</span>, <span class="hljs-string">'ErrorCategory'</span>],
+
+  endpoints: <span class="hljs-function">(<span class="hljs-params">builder</span>) =&gt;</span> ({
+    <span class="hljs-comment">// Submit error report</span>
+    submitErrorReport: builder.mutation&lt;
+      SubmitErrorReportResponse,
+      SubmitErrorReportRequest
+    &gt;({
+      query: <span class="hljs-function">(<span class="hljs-params">errorReport</span>) =&gt;</span> ({
+        url: <span class="hljs-string">'/report'</span>,
+        method: <span class="hljs-string">'POST'</span>,
+        body: errorReport,
+      }),
+      invalidatesTags: [<span class="hljs-string">'ErrorReport'</span>],
+    }),
+
+    <span class="hljs-comment">// Search similar patterns</span>
+    searchSimilarPatterns: builder.query&lt;
+      SimilarityResult[],
+      SimilaritySearchRequest
+    &gt;({
+      query: <span class="hljs-function">(<span class="hljs-params">{ text, speakerId, threshold = 0.8 }</span>) =&gt;</span> ({
+        url: <span class="hljs-string">'/similarity/search'</span>,
+        params: { text, speakerId, threshold },
+      }),
+      providesTags: [<span class="hljs-string">'SimilarityPattern'</span>],
+    }),
+
+    <span class="hljs-comment">// Get error categories</span>
+    getErrorCategories: builder.query&lt;ErrorCategory[], <span class="hljs-built_in">void</span>&gt;({
+      query: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-string">'/categories'</span>,
+      providesTags: [<span class="hljs-string">'ErrorCategory'</span>],
+    }),
+
+    <span class="hljs-comment">// Get speaker profiles</span>
+    getSpeakerProfiles: builder.query&lt;SpeakerProfile[], <span class="hljs-built_in">string</span>&gt;({
+      query: <span class="hljs-function">(<span class="hljs-params">jobId</span>) =&gt;</span> <span class="hljs-string">`/speakers/<span class="hljs-subst">${jobId}</span>`</span>,
+    }),
+
+    <span class="hljs-comment">// Validate error report</span>
+    validateErrorReport: builder.mutation&lt;
+      ValidationResult,
+      SubmitErrorReportRequest
+    &gt;({
+      query: <span class="hljs-function">(<span class="hljs-params">errorReport</span>) =&gt;</span> ({
+        url: <span class="hljs-string">'/validate'</span>,
+        method: <span class="hljs-string">'POST'</span>,
+        body: errorReport,
+      }),
+    }),
+  }),
+});
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> {
+  useSubmitErrorReportMutation,
+  useSearchSimilarPatternsQuery,
+  useGetErrorCategoriesQuery,
+  useGetSpeakerProfilesQuery,
+  useValidateErrorReportMutation,
+} = errorReportingApi;
+</div></code></pre>
+
+</body>
+</html>

@@ -1,8 +1,20 @@
 # Speaker Bucket Management API Documentation
+## Quality-Based Speaker Bucket Management System
 
 ## Overview
 
-The Speaker Bucket Management API provides comprehensive endpoints for managing speaker categorization, quality assessment, and bucket transitions in the ASR Error Reporting System. The API is distributed across multiple microservices following hexagonal architecture principles.
+The Speaker Bucket Management API provides comprehensive endpoints for managing speaker categorization, quality assessment, and bucket management in the ASR Error Reporting System. The system enables quality-based speaker classification, error tracking, performance monitoring, and verification workflows for Medical Transcriptionists and QA personnel.
+
+**Last Updated:** December 19, 2024
+**API Version:** v1
+**Base URL:** `/api/v1/speakers`
+
+### Key Features
+- **Quality-Based Classification**: Speakers categorized by ASR draft quality (No Touch, Low Touch, Medium Touch, High Touch)
+- **Enhanced Metadata Capture**: Extended metadata fields including speaker count, overlapping speech, specialized knowledge requirements
+- **Speaker History Tracking**: Complete error history and performance monitoring for each speaker
+- **Verification Workflow**: Integration with InstaNote Database for error rectification verification
+- **RAG-Based Corrections**: Apply corrections to subsequent drafts for same speakers
 
 ## Service Architecture
 
@@ -105,6 +117,225 @@ Get speakers that need bucket transition based on quality metrics.
 
 #### POST /api/v1/speakers/{speaker_id}/statistics/update
 Update speaker statistics from historical data.
+
+### 1.2. Dynamic Bucket Progression (NEW)
+
+#### GET /api/v1/speakers/{speaker_id}/profile
+Get comprehensive speaker profile with bucket progression data.
+
+**Response:**
+```json
+{
+  "speaker_id": "550e8400-e29b-41d4-a716-446655440001",
+  "current_bucket": "intermediate",
+  "bucket_info": {
+    "label": "Intermediate",
+    "description": "Developing speaker with moderate experience",
+    "color": "#ff9800",
+    "icon": "🌿",
+    "level": 1
+  },
+  "statistics": {
+    "total_reports": 25,
+    "total_errors_found": 18,
+    "total_corrections_made": 22,
+    "average_error_rate": 0.08,
+    "average_correction_accuracy": 0.82,
+    "days_in_current_bucket": 15,
+    "bucket_change_count": 2
+  },
+  "timestamps": {
+    "created_at": "2024-11-01T10:00:00Z",
+    "updated_at": "2024-12-19T14:30:00Z",
+    "last_report_date": "2024-12-19T12:15:00Z"
+  },
+  "metadata": {}
+}
+```
+
+#### GET /api/v1/speakers/{speaker_id}/bucket-history
+Get bucket change history for a speaker.
+
+**Query Parameters:**
+- `limit` (integer, default: 50, max: 100): Maximum number of history entries
+
+**Response:**
+```json
+{
+  "speaker_id": "550e8400-e29b-41d4-a716-446655440001",
+  "total_changes": 3,
+  "history": [
+    {
+      "change_id": "change-uuid-1",
+      "old_bucket": {
+        "type": "beginner",
+        "label": "Beginner",
+        "level": 0
+      },
+      "new_bucket": {
+        "type": "intermediate",
+        "label": "Intermediate",
+        "level": 1
+      },
+      "change_reason": "Excellent performance qualifies for intermediate level: Error rate 7.2%, Accuracy 85.3%, Consistency 78.1%",
+      "changed_at": "2024-11-15T09:30:00Z",
+      "metrics_at_change": {
+        "total_reports": 12,
+        "average_error_rate": 0.072,
+        "average_correction_accuracy": 0.853,
+        "consistency_score": 0.781,
+        "improvement_trend": 0.15
+      },
+      "metadata": {}
+    }
+  ]
+}
+```
+
+#### POST /api/v1/speakers/{speaker_id}/evaluate-progression
+Trigger manual bucket progression evaluation.
+
+**Query Parameters:**
+- `force_evaluation` (boolean, default: false): Force evaluation even if criteria not met
+
+**Response:**
+```json
+{
+  "speaker_id": "550e8400-e29b-41d4-a716-446655440001",
+  "evaluation_performed": true,
+  "bucket_changed": true,
+  "old_bucket": "intermediate",
+  "new_bucket": "advanced",
+  "change_reason": "Excellent performance qualifies for advanced level: Error rate 4.8%, Accuracy 88.7%, Consistency 82.4%",
+  "recommendation": {
+    "recommended_bucket": "advanced",
+    "direction": "promotion",
+    "confidence_score": 0.87,
+    "reason": "Performance consistently exceeds intermediate level requirements"
+  },
+  "evaluation_timestamp": "2024-12-19T14:30:00Z"
+}
+```
+
+#### POST /api/v1/speakers/batch-evaluate
+Trigger batch bucket progression evaluation.
+
+**Query Parameters:**
+- `max_profiles` (integer, default: 100, max: 500): Maximum profiles to evaluate
+- `force_evaluation` (boolean, default: false): Force evaluation for all profiles
+
+**Response:**
+```json
+{
+  "total_profiles_evaluated": 45,
+  "bucket_changes_applied": 8,
+  "evaluation_timestamp": "2024-12-19T14:30:00Z",
+  "results_summary": [
+    {
+      "speaker_id": "speaker-1",
+      "bucket_changed": true,
+      "old_bucket": "beginner",
+      "new_bucket": "intermediate",
+      "confidence_score": 0.85
+    }
+  ]
+}
+```
+
+#### GET /api/v1/speakers/bucket-statistics
+Get global bucket distribution and progression statistics.
+
+**Response:**
+```json
+{
+  "total_profiles": 1250,
+  "bucket_distribution": {
+    "beginner": {
+      "count": 450,
+      "percentage": 36.0,
+      "info": {
+        "label": "Beginner",
+        "description": "New speaker, learning basic transcription patterns",
+        "color": "#f44336",
+        "icon": "🌱"
+      }
+    },
+    "intermediate": {
+      "count": 520,
+      "percentage": 41.6,
+      "info": {
+        "label": "Intermediate",
+        "description": "Developing speaker with moderate experience",
+        "color": "#ff9800",
+        "icon": "🌿"
+      }
+    },
+    "advanced": {
+      "count": 230,
+      "percentage": 18.4,
+      "info": {
+        "label": "Advanced",
+        "description": "Experienced speaker with good transcription skills",
+        "color": "#2196f3",
+        "icon": "🌳"
+      }
+    },
+    "expert": {
+      "count": 50,
+      "percentage": 4.0,
+      "info": {
+        "label": "Expert",
+        "description": "Highly skilled speaker with excellent transcription quality",
+        "color": "#4caf50",
+        "icon": "🏆"
+      }
+    }
+  },
+  "change_statistics": {
+    "total_bucket_changes": 2847,
+    "recent_bucket_changes": 156,
+    "average_changes_per_profile": 2.3
+  },
+  "generated_at": "2024-12-19T14:30:00Z"
+}
+```
+
+#### GET /api/v1/speakers/bucket-types
+Get bucket type definitions and progression information.
+
+**Response:**
+```json
+{
+  "bucket_types": {
+    "beginner": {
+      "label": "Beginner",
+      "description": "New speaker, learning basic transcription patterns",
+      "color": "#f44336",
+      "icon": "🌱"
+    },
+    "intermediate": {
+      "label": "Intermediate",
+      "description": "Developing speaker with moderate experience",
+      "color": "#ff9800",
+      "icon": "🌿"
+    },
+    "advanced": {
+      "label": "Advanced",
+      "description": "Experienced speaker with good transcription skills",
+      "color": "#2196f3",
+      "icon": "🌳"
+    },
+    "expert": {
+      "label": "Expert",
+      "description": "Highly skilled speaker with excellent transcription quality",
+      "color": "#4caf50",
+      "icon": "🏆"
+    }
+  },
+  "progression_order": ["beginner", "intermediate", "advanced", "expert"],
+  "total_levels": 4
+}
+```
 
 ### 2. Bucket Transitions
 

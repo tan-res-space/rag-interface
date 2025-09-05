@@ -1,8 +1,8 @@
-# Speaker Bucket Management System Architecture
+# Quality-Based Speaker Bucket Management System Architecture
 
 ## Overview
 
-The Speaker Bucket Management System is a comprehensive platform designed to categorize speakers based on their speech recognition quality and facilitate continuous improvement through AI-powered corrections and medical transcriptionist validation. The system follows hexagonal architecture principles with clear separation of concerns and domain-driven design.
+The Quality-Based Speaker Bucket Management System is a comprehensive platform designed to categorize speakers based on ASR draft quality and facilitate targeted error correction for Medical Transcriptionists (MTs) and Quality Assurance (QA) personnel. The system follows hexagonal architecture principles with clear separation of concerns and domain-driven design, enabling efficient resource allocation and systematic ASR quality improvement.
 
 ## Architecture Principles
 
@@ -45,9 +45,11 @@ The Speaker Bucket Management System is a comprehensive platform designed to cat
 - **Caching**: Redis
 
 **Key Entities**:
-- `User`: System users (MT users, administrators)
-- `Speaker`: Medical professionals being categorized
-- `SpeakerBucket`: Categorization levels (NO_TOUCH, LOW_TOUCH, MEDIUM_TOUCH, HIGH_TOUCH)
+- `User`: System users (QA personnel, MT users, administrators)
+- `Speaker`: Medical professionals being categorized by ASR draft quality
+- `SpeakerBucket`: Quality-based categorization levels (NO_TOUCH, LOW_TOUCH, MEDIUM_TOUCH, HIGH_TOUCH)
+- `SpeakerHistory`: Complete error history and bucket transitions for each speaker
+- `VerificationJob`: Jobs pulled from InstaNote Database for error rectification verification
 - `BucketTransitionRequest`: Requests for bucket changes
 
 #### 2. Verification Service

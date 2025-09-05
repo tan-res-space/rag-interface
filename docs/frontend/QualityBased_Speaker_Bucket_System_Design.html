@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>QualityBased_Speaker_Bucket_System_Design.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="quality-based-speaker-bucket-management-system---design-documentation">Quality-Based Speaker Bucket Management System - Design Documentation</h1>
+<p><strong>Date:</strong> December 19, 2024<br>
+<strong>Status:</strong> Updated Requirements Implementation<br>
+<strong>Technology Stack:</strong> React 18+ with TypeScript, Material-UI, FastAPI Backend<br>
+<strong>Project:</strong> RAG Interface - Medical Transcription Quality Management System</p>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-system-overview">System Overview</a></li>
+<li><a href="#2-bucket-classification-system">Bucket Classification System</a></li>
+<li><a href="#3-enhanced-metadata-requirements">Enhanced Metadata Requirements</a></li>
+<li><a href="#4-user-workflows">User Workflows</a></li>
+<li><a href="#5-backend-api-design">Backend API Design</a></li>
+<li><a href="#6-frontend-component-design">Frontend Component Design</a></li>
+<li><a href="#7-database-schema-updates">Database Schema Updates</a></li>
+<li><a href="#8-integration-requirements">Integration Requirements</a></li>
+</ol>
+<hr>
+<h2 id="1-system-overview">1. System Overview</h2>
+<h3 id="11-purpose">1.1 Purpose</h3>
+<p>The Quality-Based Speaker Bucket Management System is designed to categorize speakers based on ASR draft quality and enable targeted error correction for Medical Transcriptionists (MTs) and Quality Assurance (QA) personnel.</p>
+<h3 id="12-key-stakeholders">1.2 Key Stakeholders</h3>
+<ul>
+<li><strong>QA Personnel</strong>: Primary users who identify and report speaker-specific errors</li>
+<li><strong>Medical Transcriptionists (MTs)</strong>: Users who perform post-processing corrections</li>
+<li><strong>System Administrators</strong>: Manage system configuration and user access</li>
+</ul>
+<h3 id="13-business-objectives">1.3 Business Objectives</h3>
+<ul>
+<li><strong>Reduce Feedback Loop</strong>: Shorten the time between error reporting and validation</li>
+<li><strong>Improve QA Coverage</strong>: Enable QA team to focus on important errors rather than repetitive ones</li>
+<li><strong>Enhance ASR Quality</strong>: Systematic improvement of ASR output for specific speakers</li>
+<li><strong>Resource Optimization</strong>: Efficient allocation of MT resources based on quality levels</li>
+</ul>
+<hr>
+<h2 id="2-bucket-classification-system">2. Bucket Classification System</h2>
+<h3 id="21-quality-based-bucket-types">2.1 Quality-Based Bucket Types</h3>
+<table>
+<thead>
+<tr>
+<th>Bucket Type</th>
+<th>Icon</th>
+<th>Description</th>
+<th>MT Effort Required</th>
+<th>Quality Level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>No Touch</strong></td>
+<td>🎯</td>
+<td>ASR draft is of very high quality and no corrections are required</td>
+<td>None</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td><strong>Low Touch</strong></td>
+<td>🔧</td>
+<td>ASR draft is of high quality and minimal corrections are required by MTs</td>
+<td>Minimal</td>
+<td>Good</td>
+</tr>
+<tr>
+<td><strong>Medium Touch</strong></td>
+<td>⚙️</td>
+<td>ASR draft is of medium quality and some corrections are required</td>
+<td>Moderate</td>
+<td>Fair</td>
+</tr>
+<tr>
+<td><strong>High Touch</strong></td>
+<td>🛠️</td>
+<td>ASR draft is of low quality and significant corrections are required</td>
+<td>Extensive</td>
+<td>Poor</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22-bucket-assignment-criteria">2.2 Bucket Assignment Criteria</h3>
+<ul>
+<li><strong>QA Assessment</strong>: Based on QA personnel evaluation of ASR draft quality</li>
+<li><strong>Error Frequency</strong>: Number and severity of errors in ASR output</li>
+<li><strong>Correction Complexity</strong>: Level of intervention required by MTs</li>
+<li><strong>Consistency</strong>: Reliability of ASR output quality for the speaker</li>
+</ul>
+<h3 id="23-bucket-transition-logic">2.3 Bucket Transition Logic</h3>
+<ul>
+<li><strong>Quality Improvement</strong>: Speakers can move to better buckets (High → Medium → Low → No Touch)</li>
+<li><strong>Quality Degradation</strong>: Speakers may move to worse buckets if quality declines</li>
+<li><strong>Performance Tracking</strong>: System monitors bucket transitions over time</li>
+<li><strong>Manual Override</strong>: QA personnel can manually adjust bucket assignments</li>
+</ul>
+<hr>
+<h2 id="3-enhanced-metadata-requirements">3. Enhanced Metadata Requirements</h2>
+<h3 id="31-core-metadata-fields">3.1 Core Metadata Fields</h3>
+<ul>
+<li><strong>Speaker ID</strong>: Unique identifier provided by user (required)</li>
+<li><strong>Client ID</strong>: Source system or client identifier (required)</li>
+<li><strong>Speaker Bucket</strong>: Selected from dropdown (no_touch, low_touch, medium_touch, high_touch)</li>
+</ul>
+<h3 id="32-audio-quality-assessment">3.2 Audio Quality Assessment</h3>
+<ul>
+<li><strong>Audio Quality</strong>: User input (good, fair, poor)</li>
+<li><strong>Speaker Clarity</strong>: User input (clear, somewhat clear, unclear, very unclear)</li>
+<li><strong>Background Noise</strong>: User input (none, low, medium, high)</li>
+</ul>
+<h3 id="33-new-enhanced-metadata-fields">3.3 New Enhanced Metadata Fields</h3>
+<ul>
+<li><strong>Number of Speakers</strong>: User input (one, two, three, four, five)</li>
+<li><strong>Overlapping Speech</strong>: User input (yes, no)</li>
+<li><strong>Requires Specialized Knowledge</strong>: User input (yes, no)</li>
+<li><strong>Additional Notes</strong>: Free text field for contextual information</li>
+</ul>
+<h3 id="34-metadata-validation-rules">3.4 Metadata Validation Rules</h3>
+<ul>
+<li>All core metadata fields are required</li>
+<li>Audio quality assessment fields have predefined options</li>
+<li>Enhanced metadata fields provide additional context for error analysis</li>
+<li>Additional notes field supports up to 1000 characters</li>
+</ul>
+<hr>
+<h2 id="4-user-workflows">4. User Workflows</h2>
+<h3 id="41-qa-error-reporting-workflow">4.1 QA Error Reporting Workflow</h3>
+<ol>
+<li><strong>Error Identification</strong>: QA notices specific error for specific speaker in ASR draft</li>
+<li><strong>Speaker Classification</strong>: QA identifies speaker with appropriate bucket type</li>
+<li><strong>Error Selection</strong>: QA selects and highlights error text in ASR draft</li>
+<li><strong>Error Categorization</strong>: QA categorizes error type (pronunciation, medical terminology, etc.)</li>
+<li><strong>Correction Input</strong>: QA provides corrected text for the error</li>
+<li><strong>Metadata Capture</strong>: QA fills in all required and enhanced metadata fields</li>
+<li><strong>Submission</strong>: Error and corrections submitted to vector database with metadata</li>
+</ol>
+<h3 id="42-speaker-history-viewing-workflow">4.2 Speaker History Viewing Workflow</h3>
+<ol>
+<li><strong>Speaker Search</strong>: QA searches for specific speaker by ID</li>
+<li><strong>History Display</strong>: System shows complete error history for speaker</li>
+<li><strong>Performance Trends</strong>: Visual representation of speaker improvement over time</li>
+<li><strong>Bucket Transitions</strong>: Timeline of bucket changes with reasons</li>
+</ol>
+<h3 id="43-verification-workflow">4.3 Verification Workflow</h3>
+<ol>
+<li><strong>Job Retrieval</strong>: System pulls jobs for same speaker from InstaNote Database</li>
+<li><strong>RAG Application</strong>: Apply RAG-based corrections to new drafts</li>
+<li><strong>Verification Check</strong>: QA verifies that reported errors are rectified</li>
+<li><strong>Performance Update</strong>: Update speaker performance metrics based on verification results</li>
+</ol>
+<h3 id="44-dashboard-overview-workflow">4.4 Dashboard Overview Workflow</h3>
+<ol>
+<li><strong>Bucket Distribution</strong>: View current distribution of speakers across buckets</li>
+<li><strong>Performance Metrics</strong>: Monitor overall system performance and trends</li>
+<li><strong>Quality Indicators</strong>: Track improvement in ASR quality over time</li>
+<li><strong>Resource Planning</strong>: Analyze MT workload distribution across bucket types</li>
+</ol>
+<hr>
+<h2 id="5-backend-api-design">5. Backend API Design</h2>
+<h3 id="51-enhanced-error-reporting-api">5.1 Enhanced Error Reporting API</h3>
+<h4 id="post-apiv1errors">POST /api/v1/errors</h4>
+<p><strong>Enhanced Request Body:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"job_id"</span>: <span class="hljs-string">"550e8400-e29b-41d4-a716-446655440010"</span>,
+  <span class="hljs-attr">"speaker_id"</span>: <span class="hljs-string">"speaker-123"</span>,
+  <span class="hljs-attr">"client_id"</span>: <span class="hljs-string">"client-456"</span>,
+  <span class="hljs-attr">"bucket_type"</span>: <span class="hljs-string">"medium_touch"</span>,
+  <span class="hljs-attr">"original_text"</span>: <span class="hljs-string">"The patient has severe hypertension"</span>,
+  <span class="hljs-attr">"corrected_text"</span>: <span class="hljs-string">"The patient has severe high blood pressure"</span>,
+  <span class="hljs-attr">"error_categories"</span>: [<span class="hljs-string">"medical_terminology"</span>],
+  <span class="hljs-attr">"severity_level"</span>: <span class="hljs-string">"medium"</span>,
+  <span class="hljs-attr">"start_position"</span>: <span class="hljs-number">20</span>,
+  <span class="hljs-attr">"end_position"</span>: <span class="hljs-number">32</span>,
+  <span class="hljs-attr">"context_notes"</span>: <span class="hljs-string">"Medical terminology should be simplified"</span>,
+  <span class="hljs-attr">"metadata"</span>: {
+    <span class="hljs-attr">"audio_quality"</span>: <span class="hljs-string">"good"</span>,
+    <span class="hljs-attr">"speaker_clarity"</span>: <span class="hljs-string">"clear"</span>,
+    <span class="hljs-attr">"background_noise"</span>: <span class="hljs-string">"low"</span>,
+    <span class="hljs-attr">"number_of_speakers"</span>: <span class="hljs-string">"one"</span>,
+    <span class="hljs-attr">"overlapping_speech"</span>: <span class="hljs-string">"no"</span>,
+    <span class="hljs-attr">"requires_specialized_knowledge"</span>: <span class="hljs-string">"yes"</span>,
+    <span class="hljs-attr">"additional_notes"</span>: <span class="hljs-string">"Complex medical terminology used throughout"</span>
+  }
+}
+</div></code></pre>
+<h3 id="52-speaker-management-api">5.2 Speaker Management API</h3>
+<h4 id="get-apiv1speakersspeakeridhistory">GET /api/v1/speakers/{speaker_id}/history</h4>
+<p><strong>Response:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"speaker_id"</span>: <span class="hljs-string">"speaker-123"</span>,
+  <span class="hljs-attr">"current_bucket"</span>: <span class="hljs-string">"medium_touch"</span>,
+  <span class="hljs-attr">"bucket_history"</span>: [
+    {
+      <span class="hljs-attr">"bucket_type"</span>: <span class="hljs-string">"high_touch"</span>,
+      <span class="hljs-attr">"assigned_date"</span>: <span class="hljs-string">"2024-11-01T10:00:00Z"</span>,
+      <span class="hljs-attr">"reason"</span>: <span class="hljs-string">"Initial assessment"</span>
+    },
+    {
+      <span class="hljs-attr">"bucket_type"</span>: <span class="hljs-string">"medium_touch"</span>, 
+      <span class="hljs-attr">"assigned_date"</span>: <span class="hljs-string">"2024-12-01T10:00:00Z"</span>,
+      <span class="hljs-attr">"reason"</span>: <span class="hljs-string">"Quality improvement observed"</span>
+    }
+  ],
+  <span class="hljs-attr">"error_history"</span>: [
+    {
+      <span class="hljs-attr">"error_id"</span>: <span class="hljs-string">"error-789"</span>,
+      <span class="hljs-attr">"reported_date"</span>: <span class="hljs-string">"2024-11-15T14:30:00Z"</span>,
+      <span class="hljs-attr">"error_type"</span>: <span class="hljs-string">"medical_terminology"</span>,
+      <span class="hljs-attr">"status"</span>: <span class="hljs-string">"rectified"</span>
+    }
+  ],
+  <span class="hljs-attr">"performance_metrics"</span>: {
+    <span class="hljs-attr">"total_errors_reported"</span>: <span class="hljs-number">15</span>,
+    <span class="hljs-attr">"errors_rectified"</span>: <span class="hljs-number">12</span>,
+    <span class="hljs-attr">"improvement_rate"</span>: <span class="hljs-number">0.8</span>,
+    <span class="hljs-attr">"last_assessment_date"</span>: <span class="hljs-string">"2024-12-15T10:00:00Z"</span>
+  }
+}
+</div></code></pre>
+<h3 id="53-verification-api">5.3 Verification API</h3>
+<h4 id="post-apiv1verificationpull-jobs">POST /api/v1/verification/pull-jobs</h4>
+<p><strong>Request:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"speaker_id"</span>: <span class="hljs-string">"speaker-123"</span>,
+  <span class="hljs-attr">"date_range"</span>: {
+    <span class="hljs-attr">"start_date"</span>: <span class="hljs-string">"2024-12-01T00:00:00Z"</span>,
+    <span class="hljs-attr">"end_date"</span>: <span class="hljs-string">"2024-12-19T23:59:59Z"</span>
+  }
+}
+</div></code></pre>
+<p><strong>Response:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"jobs_found"</span>: <span class="hljs-number">5</span>,
+  <span class="hljs-attr">"jobs"</span>: [
+    {
+      <span class="hljs-attr">"job_id"</span>: <span class="hljs-string">"job-456"</span>,
+      <span class="hljs-attr">"draft_text"</span>: <span class="hljs-string">"Original ASR draft text"</span>,
+      <span class="hljs-attr">"corrected_text"</span>: <span class="hljs-string">"RAG-corrected text"</span>,
+      <span class="hljs-attr">"corrections_applied"</span>: [<span class="hljs-string">"medical_terminology"</span>, <span class="hljs-string">"pronunciation"</span>],
+      <span class="hljs-attr">"verification_status"</span>: <span class="hljs-string">"pending"</span>
+    }
+  ]
+}
+</div></code></pre>
+<hr>
+<h2 id="6-frontend-component-design">6. Frontend Component Design</h2>
+<h3 id="61-enhanced-metadata-input-component">6.1 Enhanced Metadata Input Component</h3>
+<ul>
+<li><strong>Bucket Type Selector</strong>: Dropdown with four quality-based options</li>
+<li><strong>Audio Assessment Section</strong>: Grouped fields for audio quality evaluation</li>
+<li><strong>Enhanced Metadata Section</strong>: New fields for speaker count, overlapping speech, specialized knowledge</li>
+<li><strong>Validation</strong>: Real-time validation with clear error messages</li>
+<li><strong>Accessibility</strong>: WCAG 2.1 AA compliance with screen reader support</li>
+</ul>
+<h3 id="62-speaker-history-dashboard-component">6.2 Speaker History Dashboard Component</h3>
+<ul>
+<li><strong>Search Interface</strong>: Speaker ID search with autocomplete</li>
+<li><strong>History Timeline</strong>: Visual timeline of bucket transitions and error reports</li>
+<li><strong>Performance Charts</strong>: Graphs showing improvement trends over time</li>
+<li><strong>Error Summary</strong>: Categorized view of reported errors and their status</li>
+</ul>
+<h3 id="63-verification-interface-component">6.3 Verification Interface Component</h3>
+<ul>
+<li><strong>Job List</strong>: Display of pulled jobs for verification</li>
+<li><strong>Side-by-side Comparison</strong>: Original vs. RAG-corrected text</li>
+<li><strong>Verification Controls</strong>: Mark as verified/not verified with comments</li>
+<li><strong>Batch Operations</strong>: Verify multiple jobs simultaneously</li>
+</ul>
+<h3 id="64-dashboard-overview-component">6.4 Dashboard Overview Component</h3>
+<ul>
+<li><strong>Bucket Distribution Chart</strong>: Pie chart showing speaker distribution across buckets</li>
+<li><strong>Performance Metrics</strong>: Key performance indicators and trends</li>
+<li><strong>Quality Improvement Tracking</strong>: Visual representation of system-wide improvements</li>
+<li><strong>Resource Allocation</strong>: MT workload distribution across bucket types</li>
+</ul>
+<hr>
+<h2 id="7-database-schema-updates">7. Database Schema Updates</h2>
+<h3 id="71-enhanced-error-reports-table">7.1 Enhanced Error Reports Table</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> error_reports <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">COLUMN</span> number_of_speakers <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">10</span>);
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> error_reports <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">COLUMN</span> overlapping_speech <span class="hljs-built_in">BOOLEAN</span>;
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> error_reports <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">COLUMN</span> requires_specialized_knowledge <span class="hljs-built_in">BOOLEAN</span>;
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> error_reports <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">COLUMN</span> additional_notes <span class="hljs-built_in">TEXT</span>;
+</div></code></pre>
+<h3 id="72-speaker-bucket-history-table">7.2 Speaker Bucket History Table</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> speaker_bucket_history (
+    <span class="hljs-keyword">id</span> <span class="hljs-keyword">UUID</span> PRIMARY <span class="hljs-keyword">KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    speaker_id <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    bucket_type <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    assigned_date <span class="hljs-built_in">TIMESTAMP</span> <span class="hljs-keyword">WITH</span> <span class="hljs-built_in">TIME</span> ZONE <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NOW</span>(),
+    assigned_by <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">255</span>),
+    reason <span class="hljs-built_in">TEXT</span>,
+    previous_bucket <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">50</span>),
+    created_at <span class="hljs-built_in">TIMESTAMP</span> <span class="hljs-keyword">WITH</span> <span class="hljs-built_in">TIME</span> ZONE <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NOW</span>()
+);
+</div></code></pre>
+<h3 id="73-verification-jobs-table">7.3 Verification Jobs Table</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> verification_jobs (
+    <span class="hljs-keyword">id</span> <span class="hljs-keyword">UUID</span> PRIMARY <span class="hljs-keyword">KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    job_id <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    speaker_id <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    original_text <span class="hljs-built_in">TEXT</span> <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>,
+    corrected_text <span class="hljs-built_in">TEXT</span>,
+    corrections_applied JSONB,
+    verification_status <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'pending'</span>,
+    verified_by <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">255</span>),
+    verified_at <span class="hljs-built_in">TIMESTAMP</span> <span class="hljs-keyword">WITH</span> <span class="hljs-built_in">TIME</span> ZONE,
+    created_at <span class="hljs-built_in">TIMESTAMP</span> <span class="hljs-keyword">WITH</span> <span class="hljs-built_in">TIME</span> ZONE <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NOW</span>()
+);
+</div></code></pre>
+<hr>
+<h2 id="8-integration-requirements">8. Integration Requirements</h2>
+<h3 id="81-instanote-database-integration">8.1 InstaNote Database Integration</h3>
+<ul>
+<li><strong>Connection</strong>: Establish secure connection to InstaNote Database</li>
+<li><strong>Job Retrieval</strong>: Query jobs by speaker ID and date range</li>
+<li><strong>Data Mapping</strong>: Map InstaNote job structure to internal format</li>
+<li><strong>Error Handling</strong>: Robust error handling for database connectivity issues</li>
+</ul>
+<h3 id="82-rag-system-integration">8.2 RAG System Integration</h3>
+<ul>
+<li><strong>Correction Application</strong>: Apply RAG-based corrections to retrieved drafts</li>
+<li><strong>Pattern Matching</strong>: Match reported errors with correction patterns</li>
+<li><strong>Quality Assessment</strong>: Evaluate effectiveness of applied corrections</li>
+<li><strong>Feedback Loop</strong>: Update RAG models based on verification results</li>
+</ul>
+<h3 id="83-vector-database-integration">8.3 Vector Database Integration</h3>
+<ul>
+<li><strong>Enhanced Metadata Storage</strong>: Store all new metadata fields in vector database</li>
+<li><strong>Search Optimization</strong>: Optimize search queries for enhanced metadata fields</li>
+<li><strong>Similarity Matching</strong>: Improve similarity matching with additional context</li>
+<li><strong>Performance Monitoring</strong>: Track query performance with expanded metadata</li>
+</ul>
+<hr>
+<h2 id="implementation-priority">Implementation Priority</h2>
+<h3 id="phase-1-core-bucket-system-updates">Phase 1: Core Bucket System Updates</h3>
+<ol>
+<li>Update bucket type definitions and UI components</li>
+<li>Enhance metadata input forms with new fields</li>
+<li>Update API endpoints for enhanced metadata</li>
+</ol>
+<h3 id="phase-2-speaker-history-and-performance-tracking">Phase 2: Speaker History and Performance Tracking</h3>
+<ol>
+<li>Implement speaker history viewing functionality</li>
+<li>Create performance tracking dashboard</li>
+<li>Add bucket transition monitoring</li>
+</ol>
+<h3 id="phase-3-verification-workflow">Phase 3: Verification Workflow</h3>
+<ol>
+<li>Integrate with InstaNote Database</li>
+<li>Implement job retrieval and RAG correction application</li>
+<li>Create verification interface for QA personnel</li>
+</ol>
+<h3 id="phase-4-advanced-analytics-and-reporting">Phase 4: Advanced Analytics and Reporting</h3>
+<ol>
+<li>Implement comprehensive dashboard analytics</li>
+<li>Add performance trend analysis</li>
+<li>Create resource allocation reporting</li>
+</ol>
+
+</body>
+</html>
