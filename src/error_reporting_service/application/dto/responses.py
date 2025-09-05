@@ -14,7 +14,7 @@ from src.error_reporting_service.domain.entities.error_report import ErrorReport
 @dataclass(frozen=True)
 class SubmitErrorReportResponse:
     """
-    Response DTO for error report submission.
+    Response DTO for error report submission with enhanced metadata.
 
     Contains the result of submitting an error report.
     """
@@ -22,6 +22,8 @@ class SubmitErrorReportResponse:
     error_id: str
     status: str
     message: str
+    submission_timestamp: str
+    vector_db_id: Optional[str] = None
     validation_warnings: List[str] = None
 
     def __post_init__(self):
@@ -31,9 +33,24 @@ class SubmitErrorReportResponse:
 
 
 @dataclass(frozen=True)
+class EnhancedMetadataResponse:
+    """
+    Response DTO for enhanced metadata fields.
+    """
+
+    audio_quality: str
+    speaker_clarity: str
+    background_noise: str
+    number_of_speakers: str
+    overlapping_speech: bool
+    requires_specialized_knowledge: bool
+    additional_notes: Optional[str] = None
+
+
+@dataclass(frozen=True)
 class ErrorReportResponse:
     """
-    Response DTO for error report data.
+    Response DTO for error report data with enhanced metadata.
 
     Contains error report information for API responses.
     """
@@ -41,6 +58,7 @@ class ErrorReportResponse:
     error_id: str
     job_id: str
     speaker_id: str
+    client_id: str
     reported_by: str
     original_text: str
     corrected_text: str
@@ -51,7 +69,19 @@ class ErrorReportResponse:
     context_notes: Optional[str]
     error_timestamp: datetime
     reported_at: datetime
+
+    # Quality-based bucket management
+    bucket_type: str
+    bucket_display_name: str
+    bucket_description: str
+
+    # Enhanced metadata
+    enhanced_metadata: EnhancedMetadataResponse
+
+    # System fields
     status: str
+    vector_db_id: Optional[str]
+    complexity_score: float
     metadata: Dict[str, Any]
 
 
@@ -136,6 +166,89 @@ class DeleteErrorReportResponse:
 
     status: str
     message: str
+
+
+@dataclass(frozen=True)
+class SpeakerBucketHistoryResponse:
+    """
+    Response DTO for speaker bucket history.
+    """
+
+    history_id: str
+    speaker_id: str
+    bucket_type: str
+    previous_bucket: Optional[str]
+    assigned_date: datetime
+    assigned_by: str
+    assignment_reason: str
+    assignment_type: str
+    transition_description: str
+    days_since_assignment: int
+    confidence_score: Optional[float] = None
+
+
+@dataclass(frozen=True)
+class SpeakerPerformanceMetricsResponse:
+    """
+    Response DTO for speaker performance metrics.
+    """
+
+    speaker_id: str
+    current_bucket: str
+    performance_score: float
+    rectification_rate: float
+    total_errors_reported: int
+    errors_rectified: int
+    quality_trend: Optional[str]
+    recommended_bucket: str
+    needs_attention: bool
+    should_reassess: bool
+    days_in_current_bucket: int
+    last_assessment_date: Optional[datetime]
+
+
+@dataclass(frozen=True)
+class VerificationJobResponse:
+    """
+    Response DTO for verification job data.
+    """
+
+    verification_id: str
+    job_id: str
+    speaker_id: str
+    verification_status: str
+    verification_result: Optional[str]
+    corrections_count: int
+    average_confidence: float
+    needs_manual_review: bool
+    verified_by: Optional[str]
+    verified_at: Optional[datetime]
+    has_qa_comments: bool
+
+
+@dataclass(frozen=True)
+class DashboardMetricsResponse:
+    """
+    Response DTO for dashboard metrics.
+    """
+
+    metric_type: str
+    time_period: str
+    data: Dict[str, Any]
+    generated_at: datetime
+
+
+@dataclass(frozen=True)
+class BucketDistributionResponse:
+    """
+    Response DTO for bucket distribution statistics.
+    """
+
+    bucket_type: str
+    speaker_count: int
+    percentage: float
+    avg_rectification_rate: float
+    avg_days_in_bucket: float
 
 
 @dataclass(frozen=True)

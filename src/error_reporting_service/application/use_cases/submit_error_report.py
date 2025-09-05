@@ -24,6 +24,12 @@ from src.error_reporting_service.domain.entities.error_report import (
     ErrorReport,
     ErrorStatus,
     SeverityLevel,
+    BucketType,
+    AudioQuality,
+    SpeakerClarity,
+    BackgroundNoise,
+    NumberOfSpeakers,
+    EnhancedMetadata,
 )
 from src.error_reporting_service.domain.events.domain_events import ErrorReportedEvent
 from src.error_reporting_service.domain.services.categorization_service import (
@@ -97,7 +103,9 @@ class SubmitErrorReportUseCase:
         return SubmitErrorReportResponse(
             error_id=str(saved_error.error_id),
             status="success",
-            message="Error report submitted successfully",
+            message="Error report with enhanced metadata submitted successfully",
+            submission_timestamp=saved_error.reported_at.isoformat(),
+            vector_db_id=saved_error.vector_db_id,
             validation_warnings=[],
         )
 
@@ -105,7 +113,7 @@ class SubmitErrorReportUseCase:
         self, request: SubmitErrorReportRequest
     ) -> ErrorReport:
         """
-        Create a domain entity from the request DTO.
+        Create a domain entity from the request DTO with enhanced metadata.
 
         Args:
             request: The error report submission request
@@ -113,10 +121,22 @@ class SubmitErrorReportUseCase:
         Returns:
             ErrorReport domain entity
         """
+        # Create enhanced metadata object
+        enhanced_metadata = EnhancedMetadata(
+            audio_quality=AudioQuality(request.enhanced_metadata.audio_quality),
+            speaker_clarity=SpeakerClarity(request.enhanced_metadata.speaker_clarity),
+            background_noise=BackgroundNoise(request.enhanced_metadata.background_noise),
+            number_of_speakers=NumberOfSpeakers(request.enhanced_metadata.number_of_speakers),
+            overlapping_speech=request.enhanced_metadata.overlapping_speech,
+            requires_specialized_knowledge=request.enhanced_metadata.requires_specialized_knowledge,
+            additional_notes=request.enhanced_metadata.additional_notes,
+        )
+
         return ErrorReport(
             error_id=uuid4(),
             job_id=UUID(request.job_id),
             speaker_id=UUID(request.speaker_id),
+            client_id=UUID(request.client_id),
             reported_by=UUID(request.reported_by),
             original_text=request.original_text,
             corrected_text=request.corrected_text,
@@ -127,7 +147,9 @@ class SubmitErrorReportUseCase:
             context_notes=request.context_notes,
             error_timestamp=datetime.utcnow(),
             reported_at=datetime.utcnow(),
-            status=ErrorStatus.PENDING,
+            bucket_type=BucketType(request.bucket_type),
+            enhanced_metadata=enhanced_metadata,
+            status=ErrorStatus.SUBMITTED,
             metadata=request.metadata or {},
         )
 

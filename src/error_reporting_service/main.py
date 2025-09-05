@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
 
-from src.error_reporting_service.infrastructure.adapters.web.api.v1 import error_reports
+from src.error_reporting_service.infrastructure.adapters.web.api.v1 import error_reports, speaker_profiles
 
 # Application imports
 from src.error_reporting_service.infrastructure.config.settings import settings
@@ -117,6 +117,7 @@ async def root():
 
 # Include API routes
 app.include_router(error_reports.router, prefix="/api/v1", tags=["error-reports"])
+app.include_router(speaker_profiles.router, tags=["speaker-profiles"])
 
 
 # Exception handlers

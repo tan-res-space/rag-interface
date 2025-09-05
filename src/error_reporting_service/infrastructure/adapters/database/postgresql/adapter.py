@@ -16,6 +16,12 @@ from src.error_reporting_service.domain.entities.error_report import (
     ErrorReport,
     ErrorStatus,
     SeverityLevel,
+    BucketType,
+    AudioQuality,
+    SpeakerClarity,
+    BackgroundNoise,
+    NumberOfSpeakers,
+    EnhancedMetadata,
 )
 from src.error_reporting_service.infrastructure.adapters.database.abstract.database_adapter import (
     IDatabaseAdapter,
@@ -53,12 +59,13 @@ class PostgreSQLAdapter(IDatabaseAdapter):
         )
 
     async def save_error_report(self, error_report: ErrorReport) -> ErrorReport:
-        """Save error report to PostgreSQL database"""
+        """Save error report with enhanced metadata to PostgreSQL database"""
         async with self._session_factory() as session:
             model = ErrorReportModel(
                 error_id=error_report.error_id,
                 job_id=error_report.job_id,
                 speaker_id=error_report.speaker_id,
+                client_id=error_report.client_id,
                 reported_by=error_report.reported_by,
                 original_text=error_report.original_text,
                 corrected_text=error_report.corrected_text,
@@ -69,7 +76,22 @@ class PostgreSQLAdapter(IDatabaseAdapter):
                 context_notes=error_report.context_notes,
                 error_timestamp=error_report.error_timestamp,
                 reported_at=error_report.reported_at,
+
+                # Quality-based bucket management
+                bucket_type=error_report.bucket_type.value,
+
+                # Enhanced metadata fields
+                audio_quality=error_report.enhanced_metadata.audio_quality.value,
+                speaker_clarity=error_report.enhanced_metadata.speaker_clarity.value,
+                background_noise=error_report.enhanced_metadata.background_noise.value,
+                number_of_speakers=error_report.enhanced_metadata.number_of_speakers.value,
+                overlapping_speech=error_report.enhanced_metadata.overlapping_speech,
+                requires_specialized_knowledge=error_report.enhanced_metadata.requires_specialized_knowledge,
+                additional_notes=error_report.enhanced_metadata.additional_notes,
+
+                # System fields
                 status=error_report.status.value,
+                vector_db_id=error_report.vector_db_id,
                 error_metadata=error_report.metadata,
             )
 
@@ -105,6 +127,22 @@ class PostgreSQLAdapter(IDatabaseAdapter):
                     )
                 if "status" in filters:
                     stmt = stmt.where(ErrorReportModel.status == filters["status"])
+                if "bucket_type" in filters:
+                    stmt = stmt.where(ErrorReportModel.bucket_type == filters["bucket_type"])
+                if "audio_quality" in filters:
+                    stmt = stmt.where(ErrorReportModel.audio_quality == filters["audio_quality"])
+                if "requires_specialized_knowledge" in filters:
+                    stmt = stmt.where(
+                        ErrorReportModel.requires_specialized_knowledge == filters["requires_specialized_knowledge"]
+                    )
+                if "overlapping_speech" in filters:
+                    stmt = stmt.where(
+                        ErrorReportModel.overlapping_speech == filters["overlapping_speech"]
+                    )
+                if "number_of_speakers" in filters:
+                    stmt = stmt.where(
+                        ErrorReportModel.number_of_speakers == filters["number_of_speakers"]
+                    )
                 if "categories" in filters:
                     # PostgreSQL JSONB contains operation
                     for category in filters["categories"]:
@@ -242,11 +280,23 @@ class PostgreSQLAdapter(IDatabaseAdapter):
         }
 
     def _model_to_entity(self, model: ErrorReportModel) -> ErrorReport:
-        """Convert SQLAlchemy model to domain entity"""
+        """Convert SQLAlchemy model to domain entity with enhanced metadata"""
+        # Create enhanced metadata object
+        enhanced_metadata = EnhancedMetadata(
+            audio_quality=AudioQuality(model.audio_quality),
+            speaker_clarity=SpeakerClarity(model.speaker_clarity),
+            background_noise=BackgroundNoise(model.background_noise),
+            number_of_speakers=NumberOfSpeakers(model.number_of_speakers),
+            overlapping_speech=model.overlapping_speech,
+            requires_specialized_knowledge=model.requires_specialized_knowledge,
+            additional_notes=model.additional_notes,
+        )
+
         return ErrorReport(
             error_id=model.error_id,
             job_id=model.job_id,
             speaker_id=model.speaker_id,
+            client_id=model.client_id,
             reported_by=model.reported_by,
             original_text=model.original_text,
             corrected_text=model.corrected_text,
@@ -257,7 +307,10 @@ class PostgreSQLAdapter(IDatabaseAdapter):
             context_notes=model.context_notes,
             error_timestamp=model.error_timestamp,
             reported_at=model.reported_at,
+            bucket_type=BucketType(model.bucket_type),
+            enhanced_metadata=enhanced_metadata,
             status=ErrorStatus(model.status),
+            vector_db_id=model.vector_db_id,
             metadata=model.error_metadata or {},
         )
 

@@ -24,9 +24,77 @@ class SeverityLevel(str, Enum):
 class ErrorStatus(str, Enum):
     """Enumeration for error report status"""
 
-    PENDING = "pending"
-    PROCESSED = "processed"
-    ARCHIVED = "archived"
+    SUBMITTED = "submitted"
+    PROCESSING = "processing"
+    RECTIFIED = "rectified"
+    VERIFIED = "verified"
+    REJECTED = "rejected"
+
+
+class BucketType(str, Enum):
+    """Quality-based speaker bucket types"""
+
+    NO_TOUCH = "no_touch"
+    LOW_TOUCH = "low_touch"
+    MEDIUM_TOUCH = "medium_touch"
+    HIGH_TOUCH = "high_touch"
+
+
+class AudioQuality(str, Enum):
+    """Audio quality assessment levels"""
+
+    GOOD = "good"
+    FAIR = "fair"
+    POOR = "poor"
+
+
+class SpeakerClarity(str, Enum):
+    """Speaker clarity assessment levels"""
+
+    CLEAR = "clear"
+    SOMEWHAT_CLEAR = "somewhat_clear"
+    UNCLEAR = "unclear"
+    VERY_UNCLEAR = "very_unclear"
+
+
+class BackgroundNoise(str, Enum):
+    """Background noise levels"""
+
+    NONE = "none"
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+
+
+class NumberOfSpeakers(str, Enum):
+    """Number of speakers in audio"""
+
+    ONE = "one"
+    TWO = "two"
+    THREE = "three"
+    FOUR = "four"
+    FIVE = "five"
+
+
+@dataclass(frozen=True)
+class EnhancedMetadata:
+    """Enhanced metadata for error reports"""
+
+    # Core metadata
+    audio_quality: AudioQuality
+    speaker_clarity: SpeakerClarity
+    background_noise: BackgroundNoise
+
+    # Enhanced metadata fields
+    number_of_speakers: NumberOfSpeakers
+    overlapping_speech: bool
+    requires_specialized_knowledge: bool
+    additional_notes: Optional[str] = None
+
+    def __post_init__(self):
+        """Validate enhanced metadata"""
+        if self.additional_notes and len(self.additional_notes) > 1000:
+            raise ValueError("additional_notes cannot exceed 1000 characters")
 
 
 @dataclass(frozen=True)
@@ -34,7 +102,7 @@ class ErrorReport:
     """
     Error Report Domain Entity
 
-    Represents an error report submitted by QA personnel.
+    Represents an error report submitted by QA personnel with enhanced metadata.
     Immutable entity with business rule validation.
     """
 
@@ -42,6 +110,7 @@ class ErrorReport:
     error_id: UUID
     job_id: UUID
     speaker_id: UUID
+    client_id: UUID
     reported_by: UUID
     original_text: str
     corrected_text: str
@@ -52,9 +121,16 @@ class ErrorReport:
     error_timestamp: datetime
     reported_at: datetime
 
+    # Quality-based bucket management
+    bucket_type: BucketType
+
+    # Enhanced metadata
+    enhanced_metadata: EnhancedMetadata
+
     # Optional fields with defaults
     context_notes: Optional[str] = None
-    status: ErrorStatus = ErrorStatus.PENDING
+    status: ErrorStatus = ErrorStatus.SUBMITTED
+    vector_db_id: Optional[str] = None
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self):
@@ -63,6 +139,8 @@ class ErrorReport:
         self._validate_text_difference()
         self._validate_error_categories()
         self._validate_text_fields()
+        self._validate_bucket_type()
+        self._validate_enhanced_metadata()
 
     def _validate_position_range(self) -> None:
         """Validate that end_position is greater than start_position"""
@@ -99,6 +177,20 @@ class ErrorReport:
         # Validate position range against text length
         if self.end_position > len(self.original_text):
             raise ValueError("position range exceeds text length")
+
+    def _validate_bucket_type(self) -> None:
+        """Validate bucket type is a valid quality-based bucket"""
+        if not isinstance(self.bucket_type, BucketType):
+            raise ValueError("bucket_type must be a valid BucketType")
+
+    def _validate_enhanced_metadata(self) -> None:
+        """Validate enhanced metadata fields"""
+        if not isinstance(self.enhanced_metadata, EnhancedMetadata):
+            raise ValueError("enhanced_metadata must be an EnhancedMetadata instance")
+
+        # Additional validation for context notes
+        if self.context_notes and len(self.context_notes) > 2000:
+            raise ValueError("context_notes cannot exceed 2000 characters")
 
     def __eq__(self, other) -> bool:
         """Equality based on error_id (entity identity)"""
@@ -143,12 +235,86 @@ class ErrorReport:
         """Extract the correction portion from corrected text"""
         return self.corrected_text[self.start_position : self.end_position]
 
+    def requires_high_touch(self) -> bool:
+        """Check if error is from a high touch bucket"""
+        return self.bucket_type == BucketType.HIGH_TOUCH
+
+    def is_multi_speaker(self) -> bool:
+        """Check if error involves multiple speakers"""
+        return self.enhanced_metadata.number_of_speakers != NumberOfSpeakers.ONE
+
+    def has_overlapping_speech(self) -> bool:
+        """Check if error has overlapping speech"""
+        return self.enhanced_metadata.overlapping_speech
+
+    def requires_specialized_knowledge(self) -> bool:
+        """Check if error requires specialized knowledge"""
+        return self.enhanced_metadata.requires_specialized_knowledge
+
+    def has_poor_audio_quality(self) -> bool:
+        """Check if error has poor audio quality"""
+        return self.enhanced_metadata.audio_quality == AudioQuality.POOR
+
+    def get_bucket_display_name(self) -> str:
+        """Get human-readable bucket type name"""
+        bucket_names = {
+            BucketType.NO_TOUCH: "No Touch",
+            BucketType.LOW_TOUCH: "Low Touch",
+            BucketType.MEDIUM_TOUCH: "Medium Touch",
+            BucketType.HIGH_TOUCH: "High Touch"
+        }
+        return bucket_names.get(self.bucket_type, self.bucket_type.value)
+
+    def get_bucket_description(self) -> str:
+        """Get bucket type description"""
+        descriptions = {
+            BucketType.NO_TOUCH: "ASR draft is of very high quality and no corrections are required",
+            BucketType.LOW_TOUCH: "ASR draft is of high quality and minimal corrections are required by MTs",
+            BucketType.MEDIUM_TOUCH: "ASR draft is of medium quality and some corrections are required",
+            BucketType.HIGH_TOUCH: "ASR draft is of low quality and significant corrections are required"
+        }
+        return descriptions.get(self.bucket_type, "Unknown bucket type")
+
+    def calculate_complexity_score(self) -> float:
+        """Calculate error complexity score based on metadata"""
+        score = 0.0
+
+        # Base score from bucket type
+        bucket_scores = {
+            BucketType.NO_TOUCH: 1.0,
+            BucketType.LOW_TOUCH: 2.0,
+            BucketType.MEDIUM_TOUCH: 3.0,
+            BucketType.HIGH_TOUCH: 4.0
+        }
+        score += bucket_scores.get(self.bucket_type, 2.0)
+
+        # Audio quality impact
+        if self.enhanced_metadata.audio_quality == AudioQuality.POOR:
+            score += 1.0
+        elif self.enhanced_metadata.audio_quality == AudioQuality.FAIR:
+            score += 0.5
+
+        # Multiple speakers complexity
+        if self.is_multi_speaker():
+            score += 0.5
+
+        # Overlapping speech complexity
+        if self.has_overlapping_speech():
+            score += 0.5
+
+        # Specialized knowledge requirement
+        if self.requires_specialized_knowledge():
+            score += 0.5
+
+        return min(score, 5.0)  # Cap at 5.0
+
     def with_status(self, new_status: ErrorStatus) -> "ErrorReport":
         """Create a new ErrorReport with updated status (immutable update)"""
         return ErrorReport(
             error_id=self.error_id,
             job_id=self.job_id,
             speaker_id=self.speaker_id,
+            client_id=self.client_id,
             reported_by=self.reported_by,
             original_text=self.original_text,
             corrected_text=self.corrected_text,
@@ -159,6 +325,33 @@ class ErrorReport:
             context_notes=self.context_notes,
             error_timestamp=self.error_timestamp,
             reported_at=self.reported_at,
+            bucket_type=self.bucket_type,
+            enhanced_metadata=self.enhanced_metadata,
             status=new_status,
+            vector_db_id=self.vector_db_id,
+            metadata=self.metadata,
+        )
+
+    def with_vector_db_id(self, vector_db_id: str) -> "ErrorReport":
+        """Create a new ErrorReport with vector database ID (immutable update)"""
+        return ErrorReport(
+            error_id=self.error_id,
+            job_id=self.job_id,
+            speaker_id=self.speaker_id,
+            client_id=self.client_id,
+            reported_by=self.reported_by,
+            original_text=self.original_text,
+            corrected_text=self.corrected_text,
+            error_categories=self.error_categories,
+            severity_level=self.severity_level,
+            start_position=self.start_position,
+            end_position=self.end_position,
+            context_notes=self.context_notes,
+            error_timestamp=self.error_timestamp,
+            reported_at=self.reported_at,
+            bucket_type=self.bucket_type,
+            enhanced_metadata=self.enhanced_metadata,
+            status=self.status,
+            vector_db_id=vector_db_id,
             metadata=self.metadata,
         )

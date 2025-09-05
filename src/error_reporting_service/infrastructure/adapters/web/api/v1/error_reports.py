@@ -20,40 +20,142 @@ from src.error_reporting_service.application.dto.responses import (
     SearchErrorsResponse,
     SubmitErrorReportResponse,
 )
+from src.error_reporting_service.application.use_cases.submit_error_report import (
+    SubmitErrorReportUseCase,
+)
+from src.error_reporting_service.infrastructure.adapters.database.postgresql.adapter import (
+    PostgreSQLAdapter,
+)
+from src.error_reporting_service.infrastructure.adapters.events.mock_event_publisher import (
+    MockEventPublisher,
+)
+
+# Import bucket progression components
+from src.error_reporting_service.infrastructure.adapters.database.in_memory.speaker_profile_adapter import InMemorySpeakerProfileAdapter
+from src.error_reporting_service.application.use_cases.evaluate_bucket_progression_use_case import (
+    EvaluateBucketProgressionUseCase,
+    EvaluateBucketProgressionRequest
+)
+from src.error_reporting_service.domain.services.bucket_progression_service import BucketProgressionService
+from src.error_reporting_service.domain.services.validation_service import (
+    ErrorValidationService,
+)
+from src.error_reporting_service.domain.services.categorization_service import (
+    ErrorCategorizationService,
+)
 
 # Create router
 router = APIRouter()
 
+# Simple in-memory storage for testing
+_error_reports_storage = []
+
+# Initialize bucket progression components
+speaker_profile_adapter = InMemorySpeakerProfileAdapter()
+progression_service = BucketProgressionService()
+bucket_evaluation_use_case = EvaluateBucketProgressionUseCase(
+    speaker_profile_repository=speaker_profile_adapter,
+    error_reports_repository=None,  # Will be integrated later
+    progression_service=progression_service
+)
 
 # Placeholder dependency for authentication
 async def get_current_user():
     """Get current authenticated user (placeholder)"""
     return {"user_id": str(uuid.uuid4()), "username": "test_user"}
 
+# Helper function to generate error report ID
+def generate_error_id():
+    """Generate a unique error report ID"""
+    return str(uuid.uuid4())
+
 
 @router.post("/errors", status_code=status.HTTP_201_CREATED)
 async def submit_error_report(
-    request: SubmitErrorReportRequest, current_user: dict = Depends(get_current_user)
-) -> SubmitErrorReportResponse:
+    request_data: dict,  # Accept raw dict to handle frontend format
+    current_user: dict = Depends(get_current_user)
+) -> dict:
     """
     Submit a new error report.
 
     Args:
-        request: Error report submission request
+        request_data: Error report submission data (raw dict from frontend)
         current_user: Current authenticated user
 
     Returns:
         Response with error report ID and status
     """
-    # Placeholder implementation
-    error_id = str(uuid.uuid4())
+    try:
+        # Generate error ID
+        error_id = generate_error_id()
 
-    return SubmitErrorReportResponse(
-        error_id=error_id,
-        status="success",
-        message="Error report submitted successfully",
-        validation_warnings=[],
-    )
+        # Create error report record
+        error_report = {
+            "id": error_id,
+            "job_id": request_data.get("job_id"),
+            "speaker_id": request_data.get("speaker_id"),
+            "client_id": request_data.get("metadata", {}).get("client_id", "unknown"),
+            "bucket_type": request_data.get("bucket_type", "intermediate"),
+            "reported_by": current_user["user_id"],
+            "original_text": request_data.get("original_text"),
+            "corrected_text": request_data.get("corrected_text"),
+            "error_categories": request_data.get("error_categories", []),
+            "severity_level": request_data.get("severity_level", "medium"),
+            "start_position": request_data.get("start_position", 0),
+            "end_position": request_data.get("end_position", 0),
+            "context_notes": request_data.get("context_notes"),
+            "error_timestamp": "2024-12-19T10:30:00Z",
+            "status": "pending",
+            "created_at": "2024-12-19T10:30:00Z",
+            "updated_at": "2024-12-19T10:30:00Z",
+            "metadata": request_data.get("metadata", {})
+        }
+
+        # Store in memory
+        _error_reports_storage.append(error_report)
+
+        # Trigger bucket progression evaluation for the speaker
+        try:
+            speaker_id = request_data.get("speaker_id")
+            if speaker_id:
+                eval_request = EvaluateBucketProgressionRequest(
+                    speaker_id=speaker_id,
+                    trigger_event="new_report_submitted",
+                    force_evaluation=False
+                )
+
+                # Execute bucket evaluation asynchronously (don't block response)
+                eval_response = await bucket_evaluation_use_case.execute(eval_request)
+
+                # Add bucket progression info to response if bucket changed
+                response_data = {
+                    "errorId": error_id,
+                    "status": "success",
+                    "message": "Error report submitted successfully"
+                }
+
+                if eval_response.bucket_changed:
+                    response_data["bucket_progression"] = {
+                        "bucket_changed": True,
+                        "old_bucket": eval_response.old_bucket.value,
+                        "new_bucket": eval_response.new_bucket.value,
+                        "change_reason": eval_response.change_reason
+                    }
+
+                return response_data
+
+        except Exception as e:
+            # Log bucket evaluation error but don't fail the submission
+            print(f"Bucket evaluation error: {str(e)}")
+
+        # Return standard response if bucket evaluation fails
+        return {
+            "errorId": error_id,
+            "status": "success",
+            "message": "Error report submitted successfully"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 
 @router.get("/errors/{error_id}")
@@ -80,15 +182,36 @@ async def get_error_report(
     if error_id == "00000000-0000-0000-0000-000000000000":
         raise HTTPException(status_code=404, detail="Error report not found")
 
+    # Find report in storage
+    for report in _error_reports_storage:
+        if report["id"] == error_id:
+            return report
+
+    # If not found in storage, return mock data
     return {
         "id": error_id,
-        "original_text": "Sample original text",
-        "corrected_text": "Sample corrected text",
+        "job_id": str(uuid.uuid4()),
+        "speaker_id": "speaker-456",
+        "client_id": "client-789",
+        "bucket_type": "intermediate",
+        "reported_by": str(uuid.uuid4()),
+        "original_text": "The patient has a history of hypertension and diabetes. The doctor prescribed medication for the condition.",
+        "corrected_text": "The patient has a history of high blood pressure and diabetes. The doctor prescribed medication for the condition.",
+        "error_categories": ["medical_terminology"],
         "severity_level": "medium",
-        "error_categories": ["grammar"],
+        "start_position": 29,
+        "end_position": 41,
+        "context_notes": "Medical terminology correction - hypertension should be high blood pressure for patient understanding",
+        "error_timestamp": "2024-12-19T10:30:00Z",
         "status": "pending",
-        "created_at": "2023-01-01T00:00:00Z",
-        "updated_at": "2023-01-01T00:00:00Z",
+        "created_at": "2024-12-19T10:30:00Z",
+        "updated_at": "2024-12-19T10:30:00Z",
+        "metadata": {
+            "audio_quality": "good",
+            "background_noise": "low",
+            "speaker_clarity": "clear",
+            "urgency_level": "medium"
+        }
     }
 
 
@@ -164,7 +287,12 @@ async def search_errors(
     categories: Optional[str] = None,
     job_id: Optional[str] = None,
     speaker_id: Optional[str] = None,
+    client_id: Optional[str] = None,
+    bucket_type: Optional[str] = None,
     status: Optional[str] = None,
+    search: Optional[str] = None,
+    date_from: Optional[str] = None,
+    date_to: Optional[str] = None,
     current_user: dict = Depends(get_current_user),
 ) -> dict:
     """
@@ -183,27 +311,39 @@ async def search_errors(
     Returns:
         Search results with pagination
     """
-    # Placeholder implementation
+    # Validate pagination parameters
     if page <= 0 or size <= 0:
         raise HTTPException(status_code=400, detail="Invalid pagination parameters")
 
-    # Simulate search results
-    items = []
-    for i in range(min(size, 5)):  # Return up to 5 items
-        items.append(
-            {
-                "id": str(uuid.uuid4()),
-                "original_text": f"Sample original text {i}",
-                "corrected_text": f"Sample corrected text {i}",
-                "severity_level": severity_level or "medium",
-                "error_categories": [categories] if categories else ["grammar"],
-                "status": status or "pending",
-                "created_at": "2023-01-01T00:00:00Z",
-                "updated_at": "2023-01-01T00:00:00Z",
-            }
-        )
+    # Filter stored reports
+    filtered_reports = _error_reports_storage.copy()
 
-    total = len(items)
+    # Apply filters
+    if speaker_id:
+        filtered_reports = [r for r in filtered_reports if r.get("speaker_id") == speaker_id]
+    if job_id:
+        filtered_reports = [r for r in filtered_reports if r.get("job_id") == job_id]
+    if client_id:
+        filtered_reports = [r for r in filtered_reports if r.get("client_id") == client_id]
+    if bucket_type:
+        filtered_reports = [r for r in filtered_reports if r.get("bucket_type") == bucket_type]
+    if severity_level:
+        filtered_reports = [r for r in filtered_reports if r.get("severity_level") == severity_level]
+    if status:
+        filtered_reports = [r for r in filtered_reports if r.get("status") == status]
+    if search:
+        search_lower = search.lower()
+        filtered_reports = [r for r in filtered_reports
+                          if search_lower in r.get("original_text", "").lower()
+                          or search_lower in r.get("corrected_text", "").lower()
+                          or search_lower in r.get("id", "").lower()]
+
+    # Apply pagination
+    total = len(filtered_reports)
+    start_idx = (page - 1) * size
+    end_idx = start_idx + size
+    items = filtered_reports[start_idx:end_idx]
+
     pages = (total + size - 1) // size if size > 0 else 0
 
     return {"items": items, "total": total, "page": page, "size": size, "pages": pages}
