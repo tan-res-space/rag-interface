@@ -34,7 +34,7 @@ export const errorReportApi = createApi({
     // Submit error report
     submitErrorReport: builder.mutation<{ errorId: string }, SubmitErrorReportRequest>({
       query: (errorReport) => ({
-        url: `${SERVICE_ENDPOINTS.ERROR_REPORTING}`,
+        url: '/api/v1/errors',
         method: 'POST',
         body: errorReport,
       }),
@@ -44,9 +44,9 @@ export const errorReportApi = createApi({
     // Search error reports
     searchErrorReports: builder.query<PaginatedResponse<ErrorReport>, SearchErrorsRequest>({
       query: (searchRequest) => ({
-        url: `${SERVICE_ENDPOINTS.ERROR_REPORTING}/search`,
-        method: 'POST',
-        body: searchRequest,
+        url: '/api/v1/errors',
+        method: 'GET',
+        params: searchRequest,
       }),
       providesTags: ['ErrorReport'],
     }),
@@ -54,7 +54,7 @@ export const errorReportApi = createApi({
     // Get error report by ID
     getErrorReport: builder.query<ErrorReport, string>({
       query: (errorId) => ({
-        url: `${SERVICE_ENDPOINTS.ERROR_REPORTING}/${errorId}`,
+        url: `/api/v1/errors/${errorId}`,
         method: 'GET',
       }),
       providesTags: ['ErrorReport'],

@@ -311,4 +311,5 @@ const TroubleshootingPanel: React.FC<TroubleshootingPanelProps> = ({
   );
 };
 
+export { TroubleshootingPanel };
 export default TroubleshootingPanel;

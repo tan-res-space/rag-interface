@@ -297,4 +297,5 @@ const HealthOverview: React.FC<HealthOverviewProps> = ({
   );
 };
 
+export { HealthOverview };
 export default HealthOverview;

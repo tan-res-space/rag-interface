@@ -13,6 +13,9 @@ import { UserRole } from '@domain/types';
 const LoginPage = React.lazy(() => import('@features/auth/pages/LoginPage'));
 const DashboardPage = React.lazy(() => import('@features/dashboard/pages/DashboardPage'));
 const ErrorReportingPage = React.lazy(() => import('@features/error-reporting/pages/ErrorReportingPage'));
+const ErrorReportSuccessPage = React.lazy(() => import('@features/error-reporting/pages/ErrorReportSuccessPage'));
+const ErrorReportsListPage = React.lazy(() => import('@features/error-reporting/pages/ErrorReportsListPage'));
+const ErrorReportDetailPage = React.lazy(() => import('@features/error-reporting/pages/ErrorReportDetailPage'));
 const VerificationPage = React.lazy(() => import('@features/verification/pages/VerificationDashboardPage'));
 const SystemHealthPage = React.lazy(() => import('@features/system-health/pages/SystemHealthPage'));
 const AdminPage = React.lazy(() => import('@features/admin/pages/AdminPage'));
@@ -52,6 +55,12 @@ export const AppRoutes: React.FC = () => {
           
           {/* Error Reporting */}
           <Route path="error-reporting" element={<ErrorReportingPage />} />
+          <Route path="error-reporting/success" element={<ErrorReportSuccessPage />} />
+
+          {/* Reports Management */}
+          <Route path="reports" element={<ErrorReportsListPage />} />
+          <Route path="error-reporting/reports" element={<ErrorReportsListPage />} />
+          <Route path="error-reporting/reports/:reportId" element={<ErrorReportDetailPage />} />
           
           {/* Verification */}
           <Route path="verification" element={<VerificationPage />} />

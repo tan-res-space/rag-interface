@@ -275,4 +275,5 @@ const ServiceStatusCard: React.FC<ServiceStatusCardProps> = ({
   );
 };
 
+export { ServiceStatusCard };
 export default ServiceStatusCard;

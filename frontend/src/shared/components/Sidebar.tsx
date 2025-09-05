@@ -16,6 +16,7 @@ import {
 import {
   Dashboard as DashboardIcon,
   ReportProblem as ErrorIcon,
+  Assignment as ReportsIcon,
   VerifiedUser as VerificationIcon,
   AdminPanelSettings as AdminIcon,
   Analytics as AnalyticsIcon,
@@ -45,6 +46,13 @@ const navigationItems: NavigationItem[] = [
     label: 'Error Reporting',
     path: '/error-reporting',
     icon: <ErrorIcon />,
+    requiredRoles: [UserRole.QA_PERSONNEL, UserRole.QA_SUPERVISOR, UserRole.ADMIN],
+  },
+  {
+    id: 'reports',
+    label: 'My Reports',
+    path: '/reports',
+    icon: <ReportsIcon />,
     requiredRoles: [UserRole.QA_PERSONNEL, UserRole.QA_SUPERVISOR, UserRole.ADMIN],
   },
   {

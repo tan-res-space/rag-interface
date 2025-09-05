@@ -14,7 +14,7 @@ import type {
 
 // Base query for auth API
 const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000',
+  baseUrl: import.meta.env.VITE_UMS_API_URL || 'http://localhost:8011',
   prepareHeaders: (headers) => {
     headers.set('content-type', 'application/json');
     return headers;

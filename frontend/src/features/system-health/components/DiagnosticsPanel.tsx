@@ -409,4 +409,5 @@ const DiagnosticsPanel: React.FC<DiagnosticsPanelProps> = ({
   );
 };
 
+export { DiagnosticsPanel };
 export default DiagnosticsPanel;
