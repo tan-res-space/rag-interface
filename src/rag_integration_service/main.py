@@ -3,6 +3,12 @@ Main FastAPI application for the RAG Integration Service.
 
 This module sets up the FastAPI application with all necessary middleware,
 routes, and dependency injection following Hexagonal Architecture principles.
+
+Documentation:
+- Architecture Design: docs/architecture/02_RAG_Integration_Service_Design.md
+- Implementation Guide: docs/development/rag-integration-service-implementation.md
+- Vector Database Model: docs/architecture/vector_db_data_model.md
+- Development Guide: docs/development/DEVELOPMENT_GUIDE.md
 """
 
 import asyncio

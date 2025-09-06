@@ -3,6 +3,11 @@ Main FastAPI application for the User Management Service.
 
 This module sets up the FastAPI application with all necessary middleware,
 routes, and dependency injection following Hexagonal Architecture principles.
+
+Documentation:
+- Architecture Design: docs/architecture/05_User_Management_Service_Design.md
+- Development Guide: docs/development/DEVELOPMENT_GUIDE.md
+- SOLID Principles: docs/development/SOLID_Principles_Implementation_Guide.md
 """
 
 import logging

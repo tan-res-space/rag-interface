@@ -3,6 +3,12 @@ Main FastAPI application for the Error Reporting Service.
 
 This module sets up the FastAPI application with all necessary middleware,
 routes, and dependency injection following Hexagonal Architecture principles.
+
+Documentation:
+- Architecture Design: docs/architecture/01_Error_Reporting_Service_Design.md
+- API Reference: docs/api/enhanced_error_reporting_api.md
+- User Guide: docs/user-guides/ASR_Error_Reporting_PRD.md
+- Development Guide: docs/development/DEVELOPMENT_GUIDE.md
 """
 
 import logging

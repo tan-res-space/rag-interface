@@ -1,5 +1,11 @@
 /**
  * Main App component with theme provider, routing, and global providers
+ *
+ * Documentation:
+ * - Frontend Architecture: docs/frontend/UI_UX_Architecture_Design.md
+ * - Error Reporting UI: docs/frontend/ErrorReporting_Complete_Design_Documentation.md
+ * - User Experience Workflows: docs/frontend/User_Experience_Workflows_Design.md
+ * - Development Guide: docs/development/DEVELOPMENT_GUIDE.md
  */
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
