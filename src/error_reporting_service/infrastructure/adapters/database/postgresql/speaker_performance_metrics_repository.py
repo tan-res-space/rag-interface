@@ -9,15 +9,15 @@ from uuid import UUID
 from sqlalchemy import select, func, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.error_reporting_service.domain.entities.speaker_performance_metrics import (
+from error_reporting_service.domain.entities.speaker_performance_metrics import (
     SpeakerPerformanceMetrics,
     QualityTrend,
 )
-from src.error_reporting_service.domain.entities.error_report import BucketType
-from src.error_reporting_service.domain.ports.speaker_performance_metrics_repository import (
+from error_reporting_service.domain.entities.error_report import BucketType
+from error_reporting_service.domain.ports.speaker_performance_metrics_repository import (
     SpeakerPerformanceMetricsRepository,
 )
-from src.error_reporting_service.infrastructure.adapters.database.postgresql.models import (
+from error_reporting_service.infrastructure.adapters.database.postgresql.models import (
     SpeakerPerformanceMetricsModel,
 )
 

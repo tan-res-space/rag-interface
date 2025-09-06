@@ -8,7 +8,7 @@ by infrastructure adapters.
 
 from abc import ABC, abstractmethod
 
-from src.error_reporting_service.domain.events.domain_events import (
+from error_reporting_service.domain.events.domain_events import (
     ErrorDeletedEvent,
     ErrorReportedEvent,
     ErrorUpdatedEvent,

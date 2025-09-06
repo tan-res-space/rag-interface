@@ -8,11 +8,11 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional
 import logging
 
-from src.error_reporting_service.domain.entities.speaker_profile import SpeakerProfile, BucketProgressionRecommendation
-from src.error_reporting_service.domain.repositories.speaker_profile_repository import SpeakerProfileRepository
-from src.error_reporting_service.domain.services.bucket_progression_service import BucketProgressionService, BucketProgressionCriteria
-from src.error_reporting_service.domain.value_objects.bucket_type import BucketType
-from src.error_reporting_service.domain.value_objects.speaker_metrics import SpeakerMetrics
+from error_reporting_service.domain.entities.speaker_profile import SpeakerProfile, BucketProgressionRecommendation
+from error_reporting_service.domain.repositories.speaker_profile_repository import SpeakerProfileRepository
+from error_reporting_service.domain.services.bucket_progression_service import BucketProgressionService, BucketProgressionCriteria
+from error_reporting_service.domain.value_objects.bucket_type import BucketType
+from error_reporting_service.domain.value_objects.speaker_metrics import SpeakerMetrics
 
 
 @dataclass

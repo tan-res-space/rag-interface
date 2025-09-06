@@ -8,19 +8,19 @@ It orchestrates domain validation, persistence, and event publishing.
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from src.error_reporting_service.application.dto.requests import (
+from error_reporting_service.application.dto.requests import (
     SubmitErrorReportRequest,
 )
-from src.error_reporting_service.application.dto.responses import (
+from error_reporting_service.application.dto.responses import (
     SubmitErrorReportResponse,
 )
-from src.error_reporting_service.application.ports.secondary.event_publisher_port import (
+from error_reporting_service.application.ports.secondary.event_publisher_port import (
     EventPublisher,
 )
-from src.error_reporting_service.application.ports.secondary.repository_port import (
+from error_reporting_service.application.ports.secondary.repository_port import (
     ErrorReportRepository,
 )
-from src.error_reporting_service.domain.entities.error_report import (
+from error_reporting_service.domain.entities.error_report import (
     ErrorReport,
     ErrorStatus,
     SeverityLevel,
@@ -31,11 +31,11 @@ from src.error_reporting_service.domain.entities.error_report import (
     NumberOfSpeakers,
     EnhancedMetadata,
 )
-from src.error_reporting_service.domain.events.domain_events import ErrorReportedEvent
-from src.error_reporting_service.domain.services.categorization_service import (
+from error_reporting_service.domain.events.domain_events import ErrorReportedEvent
+from error_reporting_service.domain.services.categorization_service import (
     ErrorCategorizationService,
 )
-from src.error_reporting_service.domain.services.validation_service import (
+from error_reporting_service.domain.services.validation_service import (
     ErrorValidationService,
 )
 

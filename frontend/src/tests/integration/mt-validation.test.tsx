@@ -10,7 +10,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { theme } from '@/app/theme';
+import theme from '@/shared/theme/theme';
 import mtValidationReducer from '@/features/mt-validation/mt-validation-slice';
 import uiReducer from '@/shared/slices/ui-slice';
 import { MTValidationPage } from '@/features/mt-validation';

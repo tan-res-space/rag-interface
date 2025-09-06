@@ -6,7 +6,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from '@mui/material/styles';
-import { theme } from '@/shared/theme/theme';
+import theme from '@/shared/theme/theme';
 import { InteractiveDataGrid } from '@/features/verification/components/InteractiveDataGrid';
 import { ErrorReport, ErrorStatus, ErrorSeverity } from '@/domain/types/error-reporting';
 

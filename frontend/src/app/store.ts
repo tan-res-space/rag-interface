@@ -4,6 +4,7 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { errorHandlingMiddleware } from '@shared/middleware/errorHandlingMiddleware';
 import { authApi } from '@infrastructure/api/auth-api';
 import { errorReportApi } from '@infrastructure/api/error-report-api';
 import { verificationApi } from '@infrastructure/api/verification-api';
@@ -38,6 +39,22 @@ export const store = configureStore({
           // Ignore these action types
           'persist/PERSIST',
           'persist/REHYDRATE',
+          // Ignore error actions that contain non-serializable data
+          'ui/addError',
+        ],
+        ignoredPaths: [
+          // Ignore error objects in state (they contain non-serializable data)
+          'ui.errors.errors',
+          'ui.errors.activeError',
+        ],
+        ignoredActionPaths: [
+          // Ignore non-serializable data in error actions
+          'payload.timestamp',
+          'payload.originalError',
+          'payload.context.environment',
+          // Ignore RTK Query non-serializable data
+          'meta.baseQueryMeta.request',
+          'meta.baseQueryMeta.response',
         ],
       },
     })
@@ -45,7 +62,8 @@ export const store = configureStore({
       .concat(errorReportApi.middleware)
       .concat(verificationApi.middleware)
       .concat(userApi.middleware)
-      .concat(healthApi.middleware),
+      .concat(healthApi.middleware)
+      .concat(errorHandlingMiddleware),
   devTools: process.env.NODE_ENV !== 'production',
 });
 

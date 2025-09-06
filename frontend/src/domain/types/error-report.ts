@@ -16,10 +16,10 @@ export enum ErrorStatus {
 }
 
 export enum BucketType {
-  BEGINNER = 'beginner',
-  INTERMEDIATE = 'intermediate',
-  ADVANCED = 'advanced',
-  EXPERT = 'expert',
+  NO_TOUCH = 'no_touch',
+  LOW_TOUCH = 'low_touch',
+  MEDIUM_TOUCH = 'medium_touch',
+  HIGH_TOUCH = 'high_touch',
 }
 
 export interface ErrorReport {

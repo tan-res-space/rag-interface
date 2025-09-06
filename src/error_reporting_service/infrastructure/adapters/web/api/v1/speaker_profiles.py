@@ -8,15 +8,15 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime
 import uuid
 
-from src.error_reporting_service.infrastructure.adapters.database.in_memory.speaker_profile_adapter import InMemorySpeakerProfileAdapter
-from src.error_reporting_service.application.use_cases.evaluate_bucket_progression_use_case import (
+from error_reporting_service.infrastructure.adapters.database.in_memory.speaker_profile_adapter import InMemorySpeakerProfileAdapter
+from error_reporting_service.application.use_cases.evaluate_bucket_progression_use_case import (
     EvaluateBucketProgressionUseCase,
     EvaluateBucketProgressionRequest,
     BatchEvaluateBucketProgressionUseCase,
     BatchEvaluateBucketProgressionRequest
 )
-from src.error_reporting_service.domain.services.bucket_progression_service import BucketProgressionService
-from src.error_reporting_service.domain.value_objects.bucket_type import BucketType
+from error_reporting_service.domain.services.bucket_progression_service import BucketProgressionService
+from error_reporting_service.domain.value_objects.bucket_type import BucketType
 
 # Mock authentication dependency
 async def get_current_user():

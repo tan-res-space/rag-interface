@@ -304,10 +304,10 @@ const ErrorReportsListPage: React.FC = () => {
                   onChange={(e) => handleFilterChange('bucketType', e.target.value)}
                 >
                   <MenuItem value="">All Types</MenuItem>
-                  <MenuItem value="beginner">Beginner</MenuItem>
-                  <MenuItem value="intermediate">Intermediate</MenuItem>
-                  <MenuItem value="advanced">Advanced</MenuItem>
-                  <MenuItem value="expert">Expert</MenuItem>
+                  <MenuItem value="no_touch">No Touch</MenuItem>
+                  <MenuItem value="low_touch">Low Touch</MenuItem>
+                  <MenuItem value="medium_touch">Medium Touch</MenuItem>
+                  <MenuItem value="high_touch">High Touch</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

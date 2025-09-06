@@ -5,10 +5,10 @@ This module contains the factory for creating event bus adapters
 based on configuration.
 """
 
-from src.error_reporting_service.infrastructure.adapters.messaging.abstract.event_bus_adapter import (
+from error_reporting_service.infrastructure.adapters.messaging.abstract.event_bus_adapter import (
     IEventBusAdapter,
 )
-from src.error_reporting_service.infrastructure.config.messaging_config import (
+from error_reporting_service.infrastructure.config.messaging_config import (
     EventBusConfig,
     EventBusType,
 )

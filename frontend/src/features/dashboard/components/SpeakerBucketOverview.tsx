@@ -12,7 +12,7 @@ import {
   CardContent,
   Typography,
   Box,
-  Grid,
+
   Chip,
   LinearProgress,
   Alert,
@@ -20,6 +20,7 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {
   PieChart,
   Pie,

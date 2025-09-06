@@ -14,10 +14,10 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
-from src.error_reporting_service.application.use_cases.verification_workflow_use_case import (
+from error_reporting_service.application.use_cases.verification_workflow_use_case import (
     VerificationWorkflowUseCase,
 )
-from src.error_reporting_service.application.dto.requests import (
+from error_reporting_service.application.dto.requests import (
     PullVerificationJobsRequest,
     VerifyCorrectionRequest,
 )

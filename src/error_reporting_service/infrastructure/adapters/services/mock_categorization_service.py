@@ -5,7 +5,7 @@ Simple mock implementation for testing and development.
 """
 
 from typing import List
-from src.error_reporting_service.application.ports.secondary.categorization_service_port import ErrorCategorizationService
+from error_reporting_service.application.ports.secondary.categorization_service_port import ErrorCategorizationService
 
 
 class MockErrorCategorizationService(ErrorCategorizationService):

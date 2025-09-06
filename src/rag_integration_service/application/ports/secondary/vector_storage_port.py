@@ -9,10 +9,10 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from src.rag_integration_service.domain.entities.similarity_result import (
+from rag_integration_service.domain.entities.similarity_result import (
     SimilarityResult,
 )
-from src.rag_integration_service.domain.entities.vector_embedding import VectorEmbedding
+from rag_integration_service.domain.entities.vector_embedding import VectorEmbedding
 
 
 class VectorStoragePort(ABC):

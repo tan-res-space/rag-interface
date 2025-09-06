@@ -7,9 +7,9 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime, timedelta
 import copy
 
-from src.error_reporting_service.domain.repositories.speaker_profile_repository import SpeakerProfileRepository
-from src.error_reporting_service.domain.entities.speaker_profile import SpeakerProfile, BucketChangeLog
-from src.error_reporting_service.domain.value_objects.bucket_type import BucketType
+from error_reporting_service.domain.repositories.speaker_profile_repository import SpeakerProfileRepository
+from error_reporting_service.domain.entities.speaker_profile import SpeakerProfile, BucketChangeLog
+from error_reporting_service.domain.value_objects.bucket_type import BucketType
 
 
 class InMemorySpeakerProfileAdapter(SpeakerProfileRepository):

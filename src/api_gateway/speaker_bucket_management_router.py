@@ -22,9 +22,9 @@ router = APIRouter(
 )
 
 # Service URLs - these would be configured via environment variables
-USER_MANAGEMENT_SERVICE_URL = "http://user-management-service:8000"
-VERIFICATION_SERVICE_URL = "http://verification-service:8001"
-RAG_INTEGRATION_SERVICE_URL = "http://rag-integration-service:8002"
+USER_MANAGEMENT_SERVICE_URL = "http://ums-dev:8000"
+VERIFICATION_SERVICE_URL = "http://verification-service:8000"
+RAG_INTEGRATION_SERVICE_URL = "http://ris-dev:8002"
 
 
 class ServiceClient:

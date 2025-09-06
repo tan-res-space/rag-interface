@@ -14,7 +14,7 @@ import {
   Button,
   Box,
   Typography,
-  Grid,
+
   FormControl,
   InputLabel,
   Select,
@@ -27,6 +27,7 @@ import {
   IconButton,
   Divider,
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {
   Close as CloseIcon,
   CalendarToday as CalendarIcon,

@@ -16,6 +16,7 @@ import {
   Alert,
   CircularProgress,
   Divider,
+  TextField,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
@@ -28,7 +29,7 @@ import {
 import { TextSelection } from './TextSelection';
 import { ErrorCategorization } from './ErrorCategorization';
 import { CorrectionInput } from './CorrectionInput';
-import { MetadataInput } from './MetadataInput';
+import { EnhancedMetadataInput } from './EnhancedMetadataInput';
 import { VectorSimilarity } from './VectorSimilarity';
 import { ReviewSubmit } from './ReviewSubmit';
 import type {
@@ -40,6 +41,7 @@ import type {
   ValidationError,
   BucketType
 } from '@domain/types';
+import type { EnhancedMetadata } from './EnhancedMetadataInput';
 
 export interface ErrorReportingFormProps {
   jobId: string;
@@ -59,10 +61,10 @@ interface FormData {
   textSelections: TextSelectionType[];
   selectedCategories: string[];
   correctionText: string;
-  metadata: ErrorMetadata;
+  metadata: EnhancedMetadata;
   speakerId: string;
   clientId: string;
-  bucketType: BucketType | '';
+  bucketType: string;
 }
 
 const steps = [
@@ -119,8 +121,10 @@ export const ErrorReportingForm: React.FC<ErrorReportingFormProps> = ({
       audioQuality: 'good',
       backgroundNoise: 'low',
       speakerClarity: 'clear',
-      contextualNotes: '',
-      urgencyLevel: 'medium',
+      numberOfSpeakers: 'one',
+      overlappingSpeech: false,
+      requiresSpecializedKnowledge: false,
+      additionalNotes: '',
     },
     speakerId: speakerId || '',
     clientId: '',
@@ -258,19 +262,44 @@ export const ErrorReportingForm: React.FC<ErrorReportingFormProps> = ({
 
       case 3:
         return (
-          <MetadataInput
-            value={formData.metadata}
-            onChange={(metadata) => updateFormData('metadata', metadata)}
-            disabled={isSubmitting}
-            required
-            showAdvanced
-            speakerId={formData.speakerId}
-            clientId={formData.clientId}
-            bucketType={formData.bucketType}
-            onSpeakerIdChange={(speakerId) => updateFormData('speakerId', speakerId)}
-            onClientIdChange={(clientId) => updateFormData('clientId', clientId)}
-            onBucketTypeChange={(bucketType) => updateFormData('bucketType', bucketType)}
-          />
+          <Box>
+            {/* Speaker and Client Information */}
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="h6" gutterBottom>
+                Speaker Information
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                <TextField
+                  label="Speaker ID"
+                  value={formData.speakerId}
+                  onChange={(e) => updateFormData('speakerId', e.target.value)}
+                  disabled={isSubmitting}
+                  required
+                  fullWidth
+                  size="small"
+                />
+                <TextField
+                  label="Client ID"
+                  value={formData.clientId}
+                  onChange={(e) => updateFormData('clientId', e.target.value)}
+                  disabled={isSubmitting}
+                  required
+                  fullWidth
+                  size="small"
+                />
+              </Box>
+            </Box>
+
+            {/* Enhanced Metadata Input */}
+            <EnhancedMetadataInput
+              metadata={formData.metadata}
+              onChange={(metadata) => updateFormData('metadata', metadata)}
+              bucketType={formData.bucketType}
+              onBucketTypeChange={(bucketType) => updateFormData('bucketType', bucketType)}
+              disabled={isSubmitting}
+              showBucketRecommendation={true}
+            />
+          </Box>
         );
 
       case 4:

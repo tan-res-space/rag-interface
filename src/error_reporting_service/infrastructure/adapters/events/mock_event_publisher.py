@@ -4,8 +4,8 @@ Mock Event Publisher Implementation
 Simple mock implementation of the EventPublisher interface for testing and development.
 """
 
-from src.error_reporting_service.application.ports.secondary.event_publisher_port import EventPublisher
-from src.error_reporting_service.domain.events.domain_events import (
+from error_reporting_service.application.ports.secondary.event_publisher_port import EventPublisher
+from error_reporting_service.domain.events.domain_events import (
     ErrorDeletedEvent,
     ErrorReportedEvent,
     ErrorUpdatedEvent,

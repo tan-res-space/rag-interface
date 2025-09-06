@@ -5,10 +5,10 @@ This module contains the factory for creating database adapters
 based on configuration.
 """
 
-from src.error_reporting_service.infrastructure.adapters.database.abstract.database_adapter import (
+from error_reporting_service.infrastructure.adapters.database.abstract.database_adapter import (
     IDatabaseAdapter,
 )
-from src.error_reporting_service.infrastructure.config.database_config import (
+from error_reporting_service.infrastructure.config.database_config import (
     DatabaseConfig,
     DatabaseType,
 )

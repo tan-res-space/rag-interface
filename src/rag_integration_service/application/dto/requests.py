@@ -8,10 +8,10 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from src.rag_integration_service.domain.entities.speaker_rag_processing_job import (
+from rag_integration_service.domain.entities.speaker_rag_processing_job import (
     JobType,
 )
-from src.rag_integration_service.domain.value_objects.embedding_type import (
+from rag_integration_service.domain.value_objects.embedding_type import (
     EmbeddingType,
 )
 

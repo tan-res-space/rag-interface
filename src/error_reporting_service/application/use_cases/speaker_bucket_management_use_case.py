@@ -8,22 +8,22 @@ import uuid
 from datetime import datetime
 from typing import List, Optional
 
-from src.error_reporting_service.domain.entities.speaker_bucket_history import (
+from error_reporting_service.domain.entities.speaker_bucket_history import (
     SpeakerBucketHistory,
     AssignmentType,
 )
-from src.error_reporting_service.domain.entities.error_report import BucketType
-from src.error_reporting_service.domain.ports.speaker_bucket_history_repository import (
+from error_reporting_service.domain.entities.error_report import BucketType
+from error_reporting_service.domain.ports.speaker_bucket_history_repository import (
     SpeakerBucketHistoryRepository,
 )
-from src.error_reporting_service.domain.ports.speaker_performance_metrics_repository import (
+from error_reporting_service.domain.ports.speaker_performance_metrics_repository import (
     SpeakerPerformanceMetricsRepository,
 )
-from src.error_reporting_service.application.dto.requests import (
+from error_reporting_service.application.dto.requests import (
     AssignSpeakerBucketRequest,
     GetSpeakerHistoryRequest,
 )
-from src.error_reporting_service.application.dto.responses import (
+from error_reporting_service.application.dto.responses import (
     SpeakerBucketHistoryResponse,
     BucketDistributionResponse,
 )

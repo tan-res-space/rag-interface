@@ -14,16 +14,16 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
-from src.error_reporting_service.application.use_cases.submit_error_report import (
+from error_reporting_service.application.use_cases.submit_error_report import (
     SubmitErrorReportUseCase,
 )
-from src.error_reporting_service.application.use_cases.speaker_bucket_management_use_case import (
+from error_reporting_service.application.use_cases.speaker_bucket_management_use_case import (
     SpeakerBucketManagementUseCase,
 )
-from src.error_reporting_service.application.use_cases.dashboard_analytics_use_case import (
+from error_reporting_service.application.use_cases.dashboard_analytics_use_case import (
     DashboardAnalyticsUseCase,
 )
-from src.error_reporting_service.application.dto.requests import (
+from error_reporting_service.application.dto.requests import (
     SubmitErrorReportRequest,
     EnhancedMetadataRequest,
     AssignSpeakerBucketRequest,

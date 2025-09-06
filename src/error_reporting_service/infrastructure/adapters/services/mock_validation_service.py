@@ -4,8 +4,8 @@ Mock Error Validation Service Implementation
 Simple mock implementation for testing and development.
 """
 
-from src.error_reporting_service.application.ports.secondary.validation_service_port import ErrorValidationService
-from src.error_reporting_service.domain.entities.error_report import ErrorReport
+from error_reporting_service.application.ports.secondary.validation_service_port import ErrorValidationService
+from error_reporting_service.domain.entities.error_report import ErrorReport
 
 
 class MockErrorValidationService(ErrorValidationService):

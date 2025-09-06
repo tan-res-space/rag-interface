@@ -8,23 +8,23 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 from uuid import UUID
 
-from src.error_reporting_service.domain.entities.error_report import BucketType
-from src.error_reporting_service.domain.ports.error_report_repository import (
+from error_reporting_service.domain.entities.error_report import BucketType
+from error_reporting_service.domain.ports.error_report_repository import (
     ErrorReportRepository,
 )
-from src.error_reporting_service.domain.ports.speaker_bucket_history_repository import (
+from error_reporting_service.domain.ports.speaker_bucket_history_repository import (
     SpeakerBucketHistoryRepository,
 )
-from src.error_reporting_service.domain.ports.speaker_performance_metrics_repository import (
+from error_reporting_service.domain.ports.speaker_performance_metrics_repository import (
     SpeakerPerformanceMetricsRepository,
 )
-from src.error_reporting_service.domain.ports.verification_job_repository import (
+from error_reporting_service.domain.ports.verification_job_repository import (
     VerificationJobRepository,
 )
-from src.error_reporting_service.application.dto.requests import (
+from error_reporting_service.application.dto.requests import (
     GetDashboardMetricsRequest,
 )
-from src.error_reporting_service.application.dto.responses import (
+from error_reporting_service.application.dto.responses import (
     DashboardMetricsResponse,
     BucketDistributionResponse,
 )

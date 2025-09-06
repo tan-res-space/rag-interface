@@ -10,13 +10,13 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from src.correction_engine_service.application.dto.requests import (
+from correction_engine_service.application.dto.requests import (
     ApplyCorrectionRequest,
     BatchCorrectionRequest,
     CorrectionRequest,
     RejectCorrectionRequest,
 )
-from src.correction_engine_service.domain.value_objects.correction_mode import (
+from correction_engine_service.domain.value_objects.correction_mode import (
     CorrectionMode,
 )
 

@@ -12,7 +12,7 @@ import {
   CardContent,
   Typography,
   Box,
-  Grid,
+
   Chip,
   LinearProgress,
   Alert,
@@ -23,6 +23,7 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {
   CheckCircle as HealthyIcon,
   Warning as WarningIcon,

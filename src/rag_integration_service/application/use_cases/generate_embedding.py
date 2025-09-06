@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Optional
 from uuid import uuid4
 
-from src.rag_integration_service.domain.entities.vector_embedding import VectorEmbedding
+from rag_integration_service.domain.entities.vector_embedding import VectorEmbedding
 
 from ..dto.requests import EmbeddingRequest
 from ..dto.responses import EmbeddingResponse

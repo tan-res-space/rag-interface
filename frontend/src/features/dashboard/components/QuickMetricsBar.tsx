@@ -9,12 +9,12 @@ import React from 'react';
 import {
   Box,
   Paper,
-  Grid,
   Typography,
   Chip,
   Skeleton,
   Icon,
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {
   TrendingUp as TrendUpIcon,
   TrendingDown as TrendDownIcon,

@@ -9,19 +9,19 @@ import hashlib
 import json
 from typing import Any, Dict, List
 
-from src.error_reporting_service.application.dto.requests import SearchErrorsRequest
-from src.error_reporting_service.application.dto.responses import (
+from error_reporting_service.application.dto.requests import SearchErrorsRequest
+from error_reporting_service.application.dto.responses import (
     PaginatedErrorReports,
     SearchErrorsResponse,
 )
-from src.error_reporting_service.application.ports.secondary.authorization_port import (
+from error_reporting_service.application.ports.secondary.authorization_port import (
     AuthorizationPort,
 )
-from src.error_reporting_service.application.ports.secondary.cache_port import CachePort
-from src.error_reporting_service.application.ports.secondary.repository_port import (
+from error_reporting_service.application.ports.secondary.cache_port import CachePort
+from error_reporting_service.application.ports.secondary.repository_port import (
     ErrorReportRepository,
 )
-from src.error_reporting_service.domain.entities.error_report import ErrorReport
+from error_reporting_service.domain.entities.error_report import ErrorReport
 
 
 class SearchErrorsUseCase:
@@ -331,7 +331,7 @@ class SearchErrorsUseCase:
         from datetime import datetime
         from uuid import UUID
 
-        from src.error_reporting_service.domain.entities.error_report import (
+        from error_reporting_service.domain.entities.error_report import (
             ErrorStatus,
             SeverityLevel,
         )

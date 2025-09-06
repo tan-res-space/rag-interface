@@ -8,10 +8,10 @@ from abc import ABC, abstractmethod
 from typing import List, Optional
 from uuid import UUID
 
-from src.error_reporting_service.domain.entities.speaker_performance_metrics import (
+from error_reporting_service.domain.entities.speaker_performance_metrics import (
     SpeakerPerformanceMetrics,
 )
-from src.error_reporting_service.domain.entities.error_report import BucketType
+from error_reporting_service.domain.entities.error_report import BucketType
 
 
 class SpeakerPerformanceMetricsRepository(ABC):

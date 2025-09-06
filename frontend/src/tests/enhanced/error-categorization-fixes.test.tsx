@@ -6,7 +6,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from '@mui/material/styles';
-import { theme } from '@/shared/theme/theme';
+import theme from '@/shared/theme/theme';
 import { ErrorCategorization } from '@/features/error-reporting/components/ErrorCategorization';
 import { ErrorCategory } from '@/domain/types/error-reporting';
 

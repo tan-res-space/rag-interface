@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from src.correction_engine_service.domain.entities.correction_suggestion import (
+from correction_engine_service.domain.entities.correction_suggestion import (
     CorrectionSuggestion,
 )
 

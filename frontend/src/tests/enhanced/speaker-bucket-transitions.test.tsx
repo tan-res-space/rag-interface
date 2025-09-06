@@ -10,7 +10,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { theme } from '@/shared/theme/theme';
+import theme from '@/shared/theme/theme';
 import speakerReducer from '@/features/speaker-management/speaker-slice';
 import uiReducer from '@/shared/slices/ui-slice';
 import { SpeakerManagementPage } from '@/features/speaker-management';

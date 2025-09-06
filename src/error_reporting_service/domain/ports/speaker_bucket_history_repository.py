@@ -9,11 +9,11 @@ from datetime import datetime
 from typing import List, Optional
 from uuid import UUID
 
-from src.error_reporting_service.domain.entities.speaker_bucket_history import (
+from error_reporting_service.domain.entities.speaker_bucket_history import (
     SpeakerBucketHistory,
     AssignmentType,
 )
-from src.error_reporting_service.domain.entities.error_report import BucketType
+from error_reporting_service.domain.entities.error_report import BucketType
 
 
 class SpeakerBucketHistoryRepository(ABC):

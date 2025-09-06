@@ -154,11 +154,22 @@ export const ErrorCategorization: React.FC<ErrorCategorizationProps> = ({
           icon={isSelected ? <CheckIcon /> : undefined}
           size={isChild ? 'small' : 'medium'}
           sx={{
-            margin: 0.5,
+            margin: 0,
+            minWidth: isChild ? '80px' : '100px',
+            height: isChild ? '28px' : '32px',
+            '& .MuiChip-label': {
+              px: isChild ? 1 : 1.5,
+              fontSize: isChild ? '0.75rem' : '0.875rem',
+              fontWeight: isSelected ? 600 : 500,
+            },
             ...(isChild && {
-              marginLeft: 2,
-              opacity: 0.8,
+              opacity: 0.9,
             }),
+            '&:hover': {
+              transform: 'translateY(-1px)',
+              boxShadow: 2,
+            },
+            transition: 'all 0.2s ease-in-out',
           }}
           aria-pressed={isSelected}
           role="button"
@@ -234,27 +245,114 @@ export const ErrorCategorization: React.FC<ErrorCategorizationProps> = ({
       )}
 
       {/* Categories Display */}
-      <Box sx={{ minHeight: 100 }}>
+      <Box sx={{ minHeight: 120 }}>
         {filteredCategories.length === 0 ? (
-          <Typography variant="body2" color="text.secondary" sx={{ p: 2, textAlign: 'center' }}>
-            No categories found
-          </Typography>
+          <Box sx={{
+            p: 4,
+            textAlign: 'center',
+            border: '1px dashed',
+            borderColor: 'divider',
+            borderRadius: 2,
+            backgroundColor: 'grey.50'
+          }}>
+            <Typography variant="body2" color="text.secondary">
+              No categories found matching your search
+            </Typography>
+          </Box>
         ) : showHierarchy ? (
-          // Hierarchical display
-          categorizedGroups.map(({ parent, children }) => (
-            <Box key={parent.id} data-testid={`category-group-${parent.id}`} sx={{ mb: 2 }}>
-              {renderCategoryChip(parent)}
-              {children.length > 0 && (
-                <Box sx={{ ml: 2, mt: 1 }}>
-                  {children.map(child => renderCategoryChip(child, true))}
+          // Hierarchical display - organized in horizontal grid
+          <Box sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: 2,
+            width: '100%'
+          }}>
+            {categorizedGroups.map(({ parent, children }) => (
+              <Box
+                key={parent.id}
+                data-testid={`category-group-${parent.id}`}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 1,
+                  p: 2,
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  borderRadius: 2,
+                  backgroundColor: 'background.paper',
+                  boxShadow: 1,
+                  '&:hover': {
+                    boxShadow: 2,
+                  }
+                }}
+              >
+                {/* Parent category header */}
+                <Box sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  mb: 1,
+                  pb: 1,
+                  borderBottom: '1px solid',
+                  borderColor: 'divider'
+                }}>
+                  <Typography
+                    variant="subtitle2"
+                    color="primary"
+                    sx={{
+                      fontWeight: 600,
+                      minWidth: 'fit-content'
+                    }}
+                  >
+                    {parent.name}
+                  </Typography>
+                  {renderCategoryChip(parent)}
                 </Box>
-              )}
-            </Box>
-          ))
+
+                {/* Child categories in horizontal layout */}
+                {children.length > 0 && (
+                  <Box>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{
+                        display: 'block',
+                        mb: 1,
+                        fontWeight: 500
+                      }}
+                    >
+                      Subcategories:
+                    </Typography>
+                    <Box sx={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: 0.75,
+                      alignItems: 'center'
+                    }}>
+                      {children.map(child => renderCategoryChip(child, true))}
+                    </Box>
+                  </Box>
+                )}
+              </Box>
+            ))}
+          </Box>
         ) : (
-          // Flat display
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-            {filteredCategories.map(category => renderCategoryChip(category))}
+          // Flat display - organized horizontally
+          <Box sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+            gap: 1.5,
+            p: 2,
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 2,
+            backgroundColor: 'background.paper'
+          }}>
+            {filteredCategories.map(category => (
+              <Box key={category.id} sx={{ display: 'flex', justifyContent: 'center' }}>
+                {renderCategoryChip(category)}
+              </Box>
+            ))}
           </Box>
         )}
       </Box>

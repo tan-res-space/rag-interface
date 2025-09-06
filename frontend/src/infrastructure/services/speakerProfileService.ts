@@ -153,10 +153,10 @@ export const bucketProgressionHelpers = {
    */
   getBucketColor(bucketType: BucketType): string {
     const colors = {
-      beginner: '#f44336',    // Red
-      intermediate: '#ff9800', // Orange
-      advanced: '#2196f3',    // Blue
-      expert: '#4caf50'       // Green
+      high_touch: '#f44336',    // Red
+      medium_touch: '#ff9800',  // Orange
+      low_touch: '#2196f3',     // Blue
+      no_touch: '#4caf50'       // Green
     };
     return colors[bucketType] || '#757575';
   },
@@ -166,10 +166,10 @@ export const bucketProgressionHelpers = {
    */
   getBucketIcon(bucketType: BucketType): string {
     const icons = {
-      beginner: '🌱',
-      intermediate: '🌿',
-      advanced: '🌳',
-      expert: '🏆'
+      high_touch: '🔧',
+      medium_touch: '⚡',
+      low_touch: '🌟',
+      no_touch: '🏆'
     };
     return icons[bucketType] || '📊';
   },
@@ -179,10 +179,10 @@ export const bucketProgressionHelpers = {
    */
   getBucketDisplayName(bucketType: BucketType): string {
     const names = {
-      beginner: 'Beginner',
-      intermediate: 'Intermediate',
-      advanced: 'Advanced',
-      expert: 'Expert'
+      high_touch: 'High Touch',
+      medium_touch: 'Medium Touch',
+      low_touch: 'Low Touch',
+      no_touch: 'No Touch'
     };
     return names[bucketType] || bucketType;
   },
@@ -192,10 +192,10 @@ export const bucketProgressionHelpers = {
    */
   getBucketLevel(bucketType: BucketType): number {
     const levels = {
-      beginner: 0,
-      intermediate: 1,
-      advanced: 2,
-      expert: 3
+      high_touch: 0,
+      medium_touch: 1,
+      low_touch: 2,
+      no_touch: 3
     };
     return levels[bucketType] || 0;
   },

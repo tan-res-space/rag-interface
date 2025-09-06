@@ -11,7 +11,7 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
+
   Tabs,
   Tab,
   Select,
@@ -29,6 +29,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {
   BarChart,
   Bar,

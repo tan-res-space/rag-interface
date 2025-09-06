@@ -73,29 +73,38 @@ export const ReviewSubmit: React.FC<ReviewSubmitProps> = ({
 }) => {
   // Format metadata for display
   const formatMetadataValue = (key: string, value: any): string => {
+    // Handle null, undefined, or empty values
+    if (value === null || value === undefined || value === '') {
+      return 'Not specified';
+    }
+
+    const stringValue = String(value);
+
     switch (key) {
       case 'audioQuality':
-        return value.charAt(0).toUpperCase() + value.slice(1);
+        return stringValue.charAt(0).toUpperCase() + stringValue.slice(1);
       case 'backgroundNoise':
-        return `${value.charAt(0).toUpperCase() + value.slice(1)} noise level`;
+        return `${stringValue.charAt(0).toUpperCase() + stringValue.slice(1)} noise level`;
       case 'speakerClarity':
-        return value.replace('_', ' ').charAt(0).toUpperCase() + value.slice(1).replace('_', ' ');
+        return stringValue.replace('_', ' ').charAt(0).toUpperCase() + stringValue.slice(1).replace('_', ' ');
       case 'urgencyLevel':
-        return `${value.charAt(0).toUpperCase() + value.slice(1)} priority`;
+        return `${stringValue.charAt(0).toUpperCase() + stringValue.slice(1)} priority`;
       case 'speechRate':
-        return `${value}/10`;
+        return `${stringValue}/10`;
       case 'confidenceRating':
-        return `${value}/5 stars`;
+        return `${stringValue}/5 stars`;
       case 'contextualTags':
         return Array.isArray(value) ? value.join(', ') : 'None';
       default:
-        return String(value);
+        return stringValue;
     }
   };
 
   // Get priority color
-  const getPriorityColor = (level: string) => {
-    switch (level) {
+  const getPriorityColor = (level: string | undefined | null) => {
+    if (!level) return 'default';
+
+    switch (level.toLowerCase()) {
       case 'high': return 'error';
       case 'medium': return 'warning';
       case 'low': return 'success';
@@ -199,52 +208,52 @@ export const ReviewSubmit: React.FC<ReviewSubmitProps> = ({
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
                     <Typography variant="body2">
-                      <strong>Audio Quality:</strong> {formatMetadataValue('audioQuality', metadata.audioQuality)}
+                      <strong>Audio Quality:</strong> {formatMetadataValue('audioQuality', metadata?.audioQuality)}
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
                     <Typography variant="body2">
-                      <strong>Background Noise:</strong> {formatMetadataValue('backgroundNoise', metadata.backgroundNoise)}
+                      <strong>Background Noise:</strong> {formatMetadataValue('backgroundNoise', metadata?.backgroundNoise)}
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
                     <Typography variant="body2">
-                      <strong>Speaker Clarity:</strong> {formatMetadataValue('speakerClarity', metadata.speakerClarity)}
+                      <strong>Speaker Clarity:</strong> {formatMetadataValue('speakerClarity', metadata?.speakerClarity)}
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
                     <Typography variant="body2">
                       <strong>Priority:</strong>{' '}
                       <Chip
-                        label={formatMetadataValue('urgencyLevel', metadata.urgencyLevel)}
+                        label={formatMetadataValue('urgencyLevel', metadata?.urgencyLevel)}
                         size="small"
-                        color={getPriorityColor(metadata.urgencyLevel) as any}
+                        color={getPriorityColor(metadata?.urgencyLevel) as any}
                         variant="outlined"
                       />
                     </Typography>
                   </Grid>
-                  {metadata.speechRate && (
+                  {metadata?.speechRate && (
                     <Grid item xs={6}>
                       <Typography variant="body2">
                         <strong>Speech Rate:</strong> {formatMetadataValue('speechRate', metadata.speechRate)}
                       </Typography>
                     </Grid>
                   )}
-                  {metadata.confidenceRating && (
+                  {metadata?.confidenceRating && (
                     <Grid item xs={6}>
                       <Typography variant="body2">
                         <strong>Confidence:</strong> {formatMetadataValue('confidenceRating', metadata.confidenceRating)}
                       </Typography>
                     </Grid>
                   )}
-                  {metadata.contextualTags && metadata.contextualTags.length > 0 && (
+                  {metadata?.contextualTags && metadata.contextualTags.length > 0 && (
                     <Grid item xs={12}>
                       <Typography variant="body2">
                         <strong>Tags:</strong> {formatMetadataValue('contextualTags', metadata.contextualTags)}
                       </Typography>
                     </Grid>
                   )}
-                  {metadata.contextualNotes && (
+                  {metadata?.contextualNotes && (
                     <Grid item xs={12}>
                       <Typography variant="body2">
                         <strong>Notes:</strong> {metadata.contextualNotes}

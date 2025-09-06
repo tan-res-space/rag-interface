@@ -69,6 +69,8 @@ import ServicesHealthPanel from '../components/ServicesHealthPanel';
 import DashboardFilters from '../components/DashboardFilters';
 import AlertsPanel from '../components/AlertsPanel';
 import DashboardSettings from '../components/DashboardSettings';
+import ErrorBoundaryDemo from '@shared/components/ErrorBoundaryDemo';
+import ErrorTestComponent from '@shared/components/ErrorTestComponent';
 
 export const DashboardPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -253,6 +255,12 @@ export const DashboardPage: React.FC = () => {
             Some services are experiencing issues. Check the Services Health panel for details.
           </Alert>
         )}
+
+        {/* Error Boundary Demo (Development Only) */}
+        {import.meta.env.DEV && <ErrorBoundaryDemo />}
+
+        {/* Error Handling Test Component (Development Only) */}
+        {import.meta.env.DEV && <ErrorTestComponent />}
 
         {/* Dashboard Grid */}
         <Grid container spacing={3}>

@@ -12,7 +12,7 @@ import {
   CardContent,
   Typography,
   Box,
-  Grid,
+
   Chip,
   ToggleButton,
   ToggleButtonGroup,
@@ -21,6 +21,7 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {
   LineChart,
   Line,

@@ -8,7 +8,7 @@ This service is stateless and contains pure business logic.
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Set
 
-from src.error_reporting_service.domain.entities.error_report import (
+from error_reporting_service.domain.entities.error_report import (
     ErrorReport,
     SeverityLevel,
 )

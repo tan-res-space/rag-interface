@@ -9,7 +9,7 @@ from datetime import datetime
 from typing import List, Optional
 from uuid import UUID
 
-from src.error_reporting_service.domain.entities.verification_job import (
+from error_reporting_service.domain.entities.verification_job import (
     VerificationJob,
     VerificationStatus,
     VerificationResult,

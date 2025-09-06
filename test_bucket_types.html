@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bucket Types Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .bucket-card {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 12px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid;
+        }
+        .no-touch { border-left-color: #4caf50; }
+        .low-touch { border-left-color: #2196f3; }
+        .medium-touch { border-left-color: #ff9800; }
+        .high-touch { border-left-color: #f44336; }
+        .bucket-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .bucket-description {
+            color: #666;
+            margin-bottom: 8px;
+        }
+        .bucket-icon {
+            font-size: 24px;
+            margin-right: 8px;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .success {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        .error {
+            color: #f44336;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 ASR Output Quality Bucket Types Test</h1>
+    
+    <div class="test-section">
+        <h2>✅ Updated Bucket Types (New Implementation)</h2>
+        <p>These are the new ASR output quality-based bucket types that should now be displayed in the Error Reporting page:</p>
+        
+        <div class="bucket-card no-touch">
+            <div class="bucket-title">
+                <span class="bucket-icon">🏆</span>
+                No Touch
+            </div>
+            <div class="bucket-description">
+                Very high quality ASR draft, no corrections needed
+            </div>
+            <div><strong>Value:</strong> no_touch</div>
+        </div>
+        
+        <div class="bucket-card low-touch">
+            <div class="bucket-title">
+                <span class="bucket-icon">🌟</span>
+                Low Touch
+            </div>
+            <div class="bucket-description">
+                High quality ASR draft, minimal corrections required
+            </div>
+            <div><strong>Value:</strong> low_touch</div>
+        </div>
+        
+        <div class="bucket-card medium-touch">
+            <div class="bucket-title">
+                <span class="bucket-icon">⚡</span>
+                Medium Touch
+            </div>
+            <div class="bucket-description">
+                Medium quality ASR draft, some corrections needed
+            </div>
+            <div><strong>Value:</strong> medium_touch</div>
+        </div>
+        
+        <div class="bucket-card high-touch">
+            <div class="bucket-title">
+                <span class="bucket-icon">🔧</span>
+                High Touch
+            </div>
+            <div class="bucket-description">
+                Low quality ASR draft, significant corrections required
+            </div>
+            <div><strong>Value:</strong> high_touch</div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>❌ Old Bucket Types (Should No Longer Appear)</h2>
+        <p>These old speaker proficiency-based bucket types should no longer appear in the application:</p>
+        
+        <div style="opacity: 0.5; text-decoration: line-through;">
+            <div>🌱 Beginner (beginner)</div>
+            <div>🌿 Intermediate (intermediate)</div>
+            <div>🌳 Advanced (advanced)</div>
+            <div>🏆 Expert (expert)</div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🔍 Changes Made</h2>
+        <ul>
+            <li class="success">✅ Updated ErrorReportingForm to use EnhancedMetadataInput</li>
+            <li class="success">✅ Updated BucketType enum in frontend types</li>
+            <li class="success">✅ Updated MetadataInput component bucket options</li>
+            <li class="success">✅ Updated ErrorReportsListPage filter options</li>
+            <li class="success">✅ Updated backend BucketType value object</li>
+            <li class="success">✅ Updated speaker profile service helpers</li>
+            <li class="success">✅ Updated bucket progression service</li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h2>🧪 Test Instructions</h2>
+        <ol>
+            <li>Navigate to the Error Reporting page</li>
+            <li>Go to Step 4 (Add Context)</li>
+            <li>Look for the "Quality-Based Bucket Assignment" section</li>
+            <li>Verify that the bucket options show the new quality-based types</li>
+            <li>Confirm that old proficiency-based options are not visible</li>
+        </ol>
+    </div>
+</body>
+</html>

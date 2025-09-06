@@ -24,16 +24,16 @@ class BucketProgressionCriteria:
     evaluation_window_days: int = 30
     
     # Error rate thresholds for each bucket
-    beginner_max_error_rate: float = 0.15
-    intermediate_max_error_rate: float = 0.10
-    advanced_max_error_rate: float = 0.05
-    expert_max_error_rate: float = 0.02
-    
+    high_touch_max_error_rate: float = 0.15
+    medium_touch_max_error_rate: float = 0.10
+    low_touch_max_error_rate: float = 0.05
+    no_touch_max_error_rate: float = 0.02
+
     # Correction accuracy thresholds
-    beginner_min_accuracy: float = 0.60
-    intermediate_min_accuracy: float = 0.75
-    advanced_min_accuracy: float = 0.85
-    expert_min_accuracy: float = 0.95
+    high_touch_min_accuracy: float = 0.60
+    medium_touch_min_accuracy: float = 0.75
+    low_touch_min_accuracy: float = 0.85
+    no_touch_min_accuracy: float = 0.95
     
     # Consistency requirements
     min_consistency_score: float = 0.70
@@ -296,30 +296,30 @@ class BucketProgressionService:
     def _get_accuracy_threshold(self, bucket: BucketType) -> float:
         """Get accuracy threshold for bucket"""
         thresholds = {
-            BucketType.BEGINNER: self.criteria.beginner_min_accuracy,
-            BucketType.INTERMEDIATE: self.criteria.intermediate_min_accuracy,
-            BucketType.ADVANCED: self.criteria.advanced_min_accuracy,
-            BucketType.EXPERT: self.criteria.expert_min_accuracy
+            BucketType.HIGH_TOUCH: self.criteria.high_touch_min_accuracy,
+            BucketType.MEDIUM_TOUCH: self.criteria.medium_touch_min_accuracy,
+            BucketType.LOW_TOUCH: self.criteria.low_touch_min_accuracy,
+            BucketType.NO_TOUCH: self.criteria.no_touch_min_accuracy
         }
         return thresholds.get(bucket, 0.7)
     
     def _get_next_bucket(self, current: BucketType) -> Optional[BucketType]:
-        """Get next bucket level for promotion"""
+        """Get next bucket level for promotion (better quality)"""
         progression = {
-            BucketType.BEGINNER: BucketType.INTERMEDIATE,
-            BucketType.INTERMEDIATE: BucketType.ADVANCED,
-            BucketType.ADVANCED: BucketType.EXPERT,
-            BucketType.EXPERT: None
+            BucketType.HIGH_TOUCH: BucketType.MEDIUM_TOUCH,
+            BucketType.MEDIUM_TOUCH: BucketType.LOW_TOUCH,
+            BucketType.LOW_TOUCH: BucketType.NO_TOUCH,
+            BucketType.NO_TOUCH: None
         }
         return progression.get(current)
     
     def _get_previous_bucket(self, current: BucketType) -> Optional[BucketType]:
-        """Get previous bucket level for demotion"""
+        """Get previous bucket level for demotion (lower quality)"""
         regression = {
-            BucketType.EXPERT: BucketType.ADVANCED,
-            BucketType.ADVANCED: BucketType.INTERMEDIATE,
-            BucketType.INTERMEDIATE: BucketType.BEGINNER,
-            BucketType.BEGINNER: None
+            BucketType.NO_TOUCH: BucketType.LOW_TOUCH,
+            BucketType.LOW_TOUCH: BucketType.MEDIUM_TOUCH,
+            BucketType.MEDIUM_TOUCH: BucketType.HIGH_TOUCH,
+            BucketType.HIGH_TOUCH: None
         }
         return regression.get(current)
     

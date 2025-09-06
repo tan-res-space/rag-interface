@@ -9,7 +9,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from src.rag_integration_service.domain.entities.vector_embedding import VectorEmbedding
+from rag_integration_service.domain.entities.vector_embedding import VectorEmbedding
 
 
 class CachePort(ABC):

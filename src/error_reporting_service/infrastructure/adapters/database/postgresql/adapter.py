@@ -12,7 +12,7 @@ from sqlalchemy import delete, select, text, update
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import selectinload
 
-from src.error_reporting_service.domain.entities.error_report import (
+from error_reporting_service.domain.entities.error_report import (
     ErrorReport,
     ErrorStatus,
     SeverityLevel,
@@ -23,7 +23,7 @@ from src.error_reporting_service.domain.entities.error_report import (
     NumberOfSpeakers,
     EnhancedMetadata,
 )
-from src.error_reporting_service.infrastructure.adapters.database.abstract.database_adapter import (
+from error_reporting_service.infrastructure.adapters.database.abstract.database_adapter import (
     IDatabaseAdapter,
 )
 

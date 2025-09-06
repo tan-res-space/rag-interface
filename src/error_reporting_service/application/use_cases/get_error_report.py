@@ -8,16 +8,16 @@ It includes authorization checks, caching, and error handling.
 from typing import Optional
 from uuid import UUID
 
-from src.error_reporting_service.application.dto.requests import GetErrorReportRequest
-from src.error_reporting_service.application.dto.responses import GetErrorReportResponse
-from src.error_reporting_service.application.ports.secondary.authorization_port import (
+from error_reporting_service.application.dto.requests import GetErrorReportRequest
+from error_reporting_service.application.dto.responses import GetErrorReportResponse
+from error_reporting_service.application.ports.secondary.authorization_port import (
     AuthorizationPort,
 )
-from src.error_reporting_service.application.ports.secondary.cache_port import CachePort
-from src.error_reporting_service.application.ports.secondary.repository_port import (
+from error_reporting_service.application.ports.secondary.cache_port import CachePort
+from error_reporting_service.application.ports.secondary.repository_port import (
     ErrorReportRepository,
 )
-from src.error_reporting_service.domain.entities.error_report import ErrorReport
+from error_reporting_service.domain.entities.error_report import ErrorReport
 
 
 class GetErrorReportUseCase:
@@ -171,7 +171,7 @@ class GetErrorReportUseCase:
         """
         from datetime import datetime
 
-        from src.error_reporting_service.domain.entities.error_report import (
+        from error_reporting_service.domain.entities.error_report import (
             ErrorStatus,
             SeverityLevel,
         )

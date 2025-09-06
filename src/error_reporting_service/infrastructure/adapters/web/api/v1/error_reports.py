@@ -10,37 +10,37 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from src.error_reporting_service.application.dto.requests import (
+from error_reporting_service.application.dto.requests import (
     GetErrorReportRequest,
     SearchErrorsRequest,
     SubmitErrorReportRequest,
 )
-from src.error_reporting_service.application.dto.responses import (
+from error_reporting_service.application.dto.responses import (
     GetErrorReportResponse,
     SearchErrorsResponse,
     SubmitErrorReportResponse,
 )
-from src.error_reporting_service.application.use_cases.submit_error_report import (
+from error_reporting_service.application.use_cases.submit_error_report import (
     SubmitErrorReportUseCase,
 )
-from src.error_reporting_service.infrastructure.adapters.database.postgresql.adapter import (
+from error_reporting_service.infrastructure.adapters.database.postgresql.adapter import (
     PostgreSQLAdapter,
 )
-from src.error_reporting_service.infrastructure.adapters.events.mock_event_publisher import (
+from error_reporting_service.infrastructure.adapters.events.mock_event_publisher import (
     MockEventPublisher,
 )
 
 # Import bucket progression components
-from src.error_reporting_service.infrastructure.adapters.database.in_memory.speaker_profile_adapter import InMemorySpeakerProfileAdapter
-from src.error_reporting_service.application.use_cases.evaluate_bucket_progression_use_case import (
+from error_reporting_service.infrastructure.adapters.database.in_memory.speaker_profile_adapter import InMemorySpeakerProfileAdapter
+from error_reporting_service.application.use_cases.evaluate_bucket_progression_use_case import (
     EvaluateBucketProgressionUseCase,
     EvaluateBucketProgressionRequest
 )
-from src.error_reporting_service.domain.services.bucket_progression_service import BucketProgressionService
-from src.error_reporting_service.domain.services.validation_service import (
+from error_reporting_service.domain.services.bucket_progression_service import BucketProgressionService
+from error_reporting_service.domain.services.validation_service import (
     ErrorValidationService,
 )
-from src.error_reporting_service.domain.services.categorization_service import (
+from error_reporting_service.domain.services.categorization_service import (
     ErrorCategorizationService,
 )
 
@@ -48,7 +48,104 @@ from src.error_reporting_service.domain.services.categorization_service import (
 router = APIRouter()
 
 # Simple in-memory storage for testing
-_error_reports_storage = []
+_error_reports_storage = [
+    {
+        "id": "sample-report-1",
+        "job_id": "job-123",
+        "speaker_id": "speaker-456",
+        "client_id": "client-789",
+        "bucket_type": "medium_touch",
+        "reported_by": "user-123",
+        "original_text": "The patient has a history of hypertension and diabetes.",
+        "corrected_text": "The patient has a history of high blood pressure and diabetes.",
+        "error_categories": ["medical_terminology"],
+        "severity_level": "medium",
+        "start_position": 29,
+        "end_position": 41,
+        "context_notes": "Medical terminology should be simplified for patient understanding",
+        "error_timestamp": "2024-12-19T10:30:00Z",
+        "status": "pending",
+        "created_at": "2024-12-19T10:30:00Z",
+        "updated_at": "2024-12-19T10:30:00Z",
+        "metadata": {
+            "audio_quality": "good",
+            "background_noise": "low",
+            "speaker_clarity": "clear"
+        }
+    },
+    {
+        "id": "sample-report-2",
+        "job_id": "job-456",
+        "speaker_id": "speaker-789",
+        "client_id": "client-123",
+        "bucket_type": "high_touch",
+        "reported_by": "user-456",
+        "original_text": "The medication dosage is 10mg twice daily.",
+        "corrected_text": "The medication dosage is 10 milligrams twice daily.",
+        "error_categories": ["abbreviation"],
+        "severity_level": "low",
+        "start_position": 25,
+        "end_position": 29,
+        "context_notes": "Abbreviations should be spelled out for clarity",
+        "error_timestamp": "2024-12-19T11:15:00Z",
+        "status": "processed",
+        "created_at": "2024-12-19T11:15:00Z",
+        "updated_at": "2024-12-19T11:45:00Z",
+        "metadata": {
+            "audio_quality": "fair",
+            "background_noise": "medium",
+            "speaker_clarity": "somewhat_clear"
+        }
+    },
+    {
+        "id": "sample-report-3",
+        "job_id": "job-789",
+        "speaker_id": "speaker-123",
+        "client_id": "client-456",
+        "bucket_type": "low_touch",
+        "reported_by": "user-789",
+        "original_text": "Patient exhibits symptoms of acute myocardial infarction.",
+        "corrected_text": "Patient exhibits symptoms of acute heart attack.",
+        "error_categories": ["medical_terminology"],
+        "severity_level": "high",
+        "start_position": 32,
+        "end_position": 56,
+        "context_notes": "Complex medical terms should be simplified",
+        "error_timestamp": "2024-12-19T12:00:00Z",
+        "status": "archived",
+        "created_at": "2024-12-19T12:00:00Z",
+        "updated_at": "2024-12-19T12:30:00Z",
+        "metadata": {
+            "audio_quality": "excellent",
+            "background_noise": "none",
+            "speaker_clarity": "clear"
+        }
+    },
+    {
+        "id": "sample-report-4",
+        "job_id": "job-101",
+        "speaker_id": "speaker-202",
+        "client_id": "client-303",
+        "bucket_type": "no_touch",
+        "reported_by": "user-404",
+        "original_text": "The patient's vital signs are stable.",
+        "corrected_text": "The patient's vital signs are stable.",
+        "error_categories": ["pronunciation"],
+        "severity_level": "low",
+        "start_position": 0,
+        "end_position": 37,
+        "context_notes": "Minor pronunciation issue, no text change needed",
+        "error_timestamp": "2024-12-19T13:30:00Z",
+        "status": "rejected",
+        "created_at": "2024-12-19T13:30:00Z",
+        "updated_at": "2024-12-19T14:00:00Z",
+        "metadata": {
+            "audio_quality": "excellent",
+            "background_noise": "none",
+            "speaker_clarity": "clear"
+        }
+    }
+]
 
 # Initialize bucket progression components
 speaker_profile_adapter = InMemorySpeakerProfileAdapter()
@@ -95,7 +192,7 @@ async def submit_error_report(
             "job_id": request_data.get("job_id"),
             "speaker_id": request_data.get("speaker_id"),
             "client_id": request_data.get("metadata", {}).get("client_id", "unknown"),
-            "bucket_type": request_data.get("bucket_type", "intermediate"),
+            "bucket_type": request_data.get("bucket_type", "medium_touch"),
             "reported_by": current_user["user_id"],
             "original_text": request_data.get("original_text"),
             "corrected_text": request_data.get("corrected_text"),
@@ -193,7 +290,7 @@ async def get_error_report(
         "job_id": str(uuid.uuid4()),
         "speaker_id": "speaker-456",
         "client_id": "client-789",
-        "bucket_type": "intermediate",
+        "bucket_type": "medium_touch",
         "reported_by": str(uuid.uuid4()),
         "original_text": "The patient has a history of hypertension and diabetes. The doctor prescribed medication for the condition.",
         "corrected_text": "The patient has a history of high blood pressure and diabetes. The doctor prescribed medication for the condition.",

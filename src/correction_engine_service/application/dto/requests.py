@@ -7,7 +7,7 @@ These DTOs define the structure of requests to use cases and API endpoints.
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
-from src.correction_engine_service.domain.value_objects.correction_mode import (
+from correction_engine_service.domain.value_objects.correction_mode import (
     CorrectionMode,
 )
 

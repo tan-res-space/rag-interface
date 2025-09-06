@@ -1,6 +1,6 @@
 """
 Bucket Type Value Object
-Defines speaker proficiency levels and bucket classifications
+Defines ASR output quality-based bucket classifications
 """
 
 from enum import Enum
@@ -9,12 +9,12 @@ from typing import Dict, List
 
 class BucketType(Enum):
     """
-    Speaker bucket classification levels
+    Quality-based speaker bucket classification levels
     """
-    BEGINNER = "beginner"
-    INTERMEDIATE = "intermediate"
-    ADVANCED = "advanced"
-    EXPERT = "expert"
+    NO_TOUCH = "no_touch"
+    LOW_TOUCH = "low_touch"
+    MEDIUM_TOUCH = "medium_touch"
+    HIGH_TOUCH = "high_touch"
     
     @classmethod
     def get_all_values(cls) -> List[str]:
@@ -23,36 +23,36 @@ class BucketType(Enum):
     
     @classmethod
     def get_progression_order(cls) -> List['BucketType']:
-        """Get bucket types in progression order"""
-        return [cls.BEGINNER, cls.INTERMEDIATE, cls.ADVANCED, cls.EXPERT]
+        """Get bucket types in progression order (from lowest to highest quality)"""
+        return [cls.HIGH_TOUCH, cls.MEDIUM_TOUCH, cls.LOW_TOUCH, cls.NO_TOUCH]
     
     @classmethod
     def get_bucket_info(cls) -> Dict[str, Dict[str, str]]:
         """Get detailed information about each bucket type"""
         return {
-            cls.BEGINNER.value: {
-                "label": "Beginner",
-                "description": "New speaker, learning basic transcription patterns",
-                "color": "#f44336",  # Red
-                "icon": "🌱"
-            },
-            cls.INTERMEDIATE.value: {
-                "label": "Intermediate", 
-                "description": "Developing speaker with moderate experience",
-                "color": "#ff9800",  # Orange
-                "icon": "🌿"
-            },
-            cls.ADVANCED.value: {
-                "label": "Advanced",
-                "description": "Experienced speaker with good transcription skills", 
-                "color": "#2196f3",  # Blue
-                "icon": "🌳"
-            },
-            cls.EXPERT.value: {
-                "label": "Expert",
-                "description": "Highly skilled speaker with excellent transcription quality",
+            cls.NO_TOUCH.value: {
+                "label": "No Touch",
+                "description": "Very high quality ASR draft, no corrections needed",
                 "color": "#4caf50",  # Green
                 "icon": "🏆"
+            },
+            cls.LOW_TOUCH.value: {
+                "label": "Low Touch",
+                "description": "High quality ASR draft, minimal corrections required",
+                "color": "#2196f3",  # Blue
+                "icon": "🌟"
+            },
+            cls.MEDIUM_TOUCH.value: {
+                "label": "Medium Touch",
+                "description": "Medium quality ASR draft, some corrections needed",
+                "color": "#ff9800",  # Orange
+                "icon": "⚡"
+            },
+            cls.HIGH_TOUCH.value: {
+                "label": "High Touch",
+                "description": "Low quality ASR draft, significant corrections required",
+                "color": "#f44336",  # Red
+                "icon": "🔧"
             }
         }
     
@@ -79,10 +79,10 @@ class BucketType(Enum):
     def get_level(self) -> int:
         """Get numeric level (0-3) for comparison"""
         levels = {
-            self.BEGINNER: 0,
-            self.INTERMEDIATE: 1,
-            self.ADVANCED: 2,
-            self.EXPERT: 3
+            self.HIGH_TOUCH: 0,
+            self.MEDIUM_TOUCH: 1,
+            self.LOW_TOUCH: 2,
+            self.NO_TOUCH: 3
         }
         return levels[self]
     

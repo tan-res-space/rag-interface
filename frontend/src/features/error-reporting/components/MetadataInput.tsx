@@ -78,10 +78,10 @@ const urgencyLevelOptions: { value: UrgencyLevel; label: string; color: 'success
 ];
 
 const bucketTypeOptions: { value: BucketType; label: string; description: string }[] = [
-  { value: 'beginner', label: 'Beginner', description: 'New speaker, learning basic transcription patterns' },
-  { value: 'intermediate', label: 'Intermediate', description: 'Developing speaker with moderate experience' },
-  { value: 'advanced', label: 'Advanced', description: 'Experienced speaker with good transcription skills' },
-  { value: 'expert', label: 'Expert', description: 'Highly skilled speaker with excellent transcription quality' },
+  { value: 'no_touch', label: 'No Touch', description: 'Very high quality ASR draft, no corrections needed' },
+  { value: 'low_touch', label: 'Low Touch', description: 'High quality ASR draft, minimal corrections required' },
+  { value: 'medium_touch', label: 'Medium Touch', description: 'Medium quality ASR draft, some corrections needed' },
+  { value: 'high_touch', label: 'High Touch', description: 'Low quality ASR draft, significant corrections required' },
 ];
 
 export const MetadataInput: React.FC<MetadataInputProps> = ({
@@ -240,7 +240,7 @@ export const MetadataInput: React.FC<MetadataInputProps> = ({
                   displayEmpty
                 >
                   <MenuItem value="" disabled>
-                    <em>Select speaker proficiency level</em>
+                    <em>Select ASR output quality bucket</em>
                   </MenuItem>
                   {bucketTypeOptions.map((option) => (
                     <MenuItem key={option.value} value={option.value}>

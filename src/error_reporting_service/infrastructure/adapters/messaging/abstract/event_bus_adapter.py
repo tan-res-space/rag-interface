@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Dict, Optional
 
-from src.error_reporting_service.domain.events.domain_events import BaseEvent
+from error_reporting_service.domain.events.domain_events import BaseEvent
 
 
 class MessageDeliveryMode(str, Enum):

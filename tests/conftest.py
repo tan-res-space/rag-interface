@@ -145,10 +145,27 @@ def sample_error_report(
     sample_user_id: uuid.UUID,
 ) -> ErrorReport:
     """Create a sample error report for testing."""
+    from src.error_reporting_service.domain.entities.error_report import (
+        BucketType, EnhancedMetadata, AudioQuality, SpeakerClarity,
+        BackgroundNoise, NumberOfSpeakers
+    )
+
+    # Create enhanced metadata
+    enhanced_metadata = EnhancedMetadata(
+        audio_quality=AudioQuality.GOOD,
+        speaker_clarity=SpeakerClarity.CLEAR,
+        background_noise=BackgroundNoise.LOW,
+        number_of_speakers=NumberOfSpeakers.ONE,
+        overlapping_speech=False,
+        requires_specialized_knowledge=True,
+        additional_notes="Common misspelling in medical terminology"
+    )
+
     return ErrorReport(
         error_id=sample_error_id,
         job_id=sample_job_id,
         speaker_id=sample_speaker_id,
+        client_id=uuid.uuid4(),  # Add required client_id
         reported_by=sample_user_id,
         original_text="The patient has diabetis",
         corrected_text="The patient has diabetes",
@@ -159,7 +176,9 @@ def sample_error_report(
         context_notes="Common misspelling in medical terminology",
         error_timestamp=datetime.utcnow(),
         reported_at=datetime.utcnow(),
-        status=ErrorStatus.PENDING,
+        bucket_type=BucketType.MEDIUM_TOUCH,  # Add required bucket_type
+        enhanced_metadata=enhanced_metadata,  # Add required enhanced_metadata
+        status=ErrorStatus.SUBMITTED,  # Use correct status enum value
         metadata={"audio_quality": "good", "confidence_score": 0.95},
     )
 

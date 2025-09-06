@@ -8,7 +8,7 @@ This is a driven port that defines the contract for ML model adapters.
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 
-from src.rag_integration_service.domain.value_objects.embedding_type import (
+from rag_integration_service.domain.value_objects.embedding_type import (
     EmbeddingType,
 )
 

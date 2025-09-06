@@ -10,8 +10,8 @@ from collections import defaultdict
 from copy import deepcopy
 from typing import Any, Callable, Dict, List, Optional
 
-from src.error_reporting_service.domain.events.domain_events import BaseEvent
-from src.error_reporting_service.infrastructure.adapters.messaging.abstract.event_bus_adapter import (
+from error_reporting_service.domain.events.domain_events import BaseEvent
+from error_reporting_service.infrastructure.adapters.messaging.abstract.event_bus_adapter import (
     EventMetadata,
     IEventBusAdapter,
 )

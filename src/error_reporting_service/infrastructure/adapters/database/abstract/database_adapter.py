@@ -10,7 +10,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from src.error_reporting_service.domain.entities.error_report import ErrorReport
+from error_reporting_service.domain.entities.error_report import ErrorReport
 
 
 class IDatabaseAdapter(ABC):

@@ -10,12 +10,12 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from src.rag_integration_service.application.dto.requests import (
+from rag_integration_service.application.dto.requests import (
     BatchEmbeddingRequest,
     EmbeddingRequest,
     SimilaritySearchRequest,
 )
-from src.rag_integration_service.application.dto.responses import (
+from rag_integration_service.application.dto.responses import (
     BatchEmbeddingResponse,
     EmbeddingResponse,
     SimilaritySearchResponse,

@@ -20,6 +20,7 @@ const VerificationPage = React.lazy(() => import('@features/verification/pages/V
 const SystemHealthPage = React.lazy(() => import('@features/system-health/pages/SystemHealthPage'));
 const AdminPage = React.lazy(() => import('@features/admin/pages/AdminPage'));
 const NotFoundPage = React.lazy(() => import('@shared/pages/NotFoundPage'));
+const ErrorTestPage = React.lazy(() => import('@shared/pages/ErrorTestPage'));
 
 // Loading component
 const LoadingFallback = () => (
@@ -39,6 +40,7 @@ export const AppRoutes: React.FC = () => {
       <Routes>
         {/* Public routes */}
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/error-test" element={<ErrorTestPage />} />
         
         {/* Protected routes with layout */}
         <Route

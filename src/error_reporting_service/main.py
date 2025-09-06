@@ -15,10 +15,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
 
-from src.error_reporting_service.infrastructure.adapters.web.api.v1 import error_reports, speaker_profiles
+from error_reporting_service.infrastructure.adapters.web.api.v1 import error_reports, speaker_profiles
 
 # Application imports
-from src.error_reporting_service.infrastructure.config.settings import settings
+from error_reporting_service.infrastructure.config.settings import settings
 
 # Configure logging
 logging.basicConfig(
@@ -118,6 +118,23 @@ async def root():
 # Include API routes
 app.include_router(error_reports.router, prefix="/api/v1", tags=["error-reports"])
 app.include_router(speaker_profiles.router, tags=["speaker-profiles"])
+
+# Mock auth endpoint for development
+@app.get("/api/v1/auth/me")
+async def get_current_user():
+    """Mock auth endpoint for development"""
+    return {
+        "id": "dev-user-123",
+        "username": "dev-user",
+        "email": "dev@example.com",
+        "role": "QA_ANALYST",
+        "roles": ["QA_ANALYST", "USER"],  # Add roles array
+        "firstName": "Dev",
+        "lastName": "User",
+        "isActive": True,
+        "createdAt": datetime.utcnow().isoformat(),
+        "updatedAt": datetime.utcnow().isoformat()
+    }
 
 
 # Exception handlers

@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from src.error_reporting_service.domain.entities.error_report import ErrorReport
+from error_reporting_service.domain.entities.error_report import ErrorReport
 
 
 @dataclass(frozen=True)

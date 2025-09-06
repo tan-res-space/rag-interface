@@ -14,7 +14,7 @@ import {
   Button,
   Box,
   Typography,
-  Grid,
+
   FormControl,
   InputLabel,
   Select,
@@ -29,6 +29,7 @@ import {
   Tab,
   Alert,
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {
   Close as CloseIcon,
   Settings as SettingsIcon,

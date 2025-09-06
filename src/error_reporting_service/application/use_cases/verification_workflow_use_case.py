@@ -8,20 +8,20 @@ import uuid
 from datetime import datetime
 from typing import List, Optional
 
-from src.error_reporting_service.domain.entities.verification_job import (
+from error_reporting_service.domain.entities.verification_job import (
     VerificationJob,
     VerificationStatus,
     VerificationResult,
     CorrectionApplied,
 )
-from src.error_reporting_service.domain.ports.verification_job_repository import (
+from error_reporting_service.domain.ports.verification_job_repository import (
     VerificationJobRepository,
 )
-from src.error_reporting_service.application.dto.requests import (
+from error_reporting_service.application.dto.requests import (
     PullVerificationJobsRequest,
     VerifyCorrectionRequest,
 )
-from src.error_reporting_service.application.dto.responses import (
+from error_reporting_service.application.dto.responses import (
     VerificationJobResponse,
 )
 
