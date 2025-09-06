@@ -8,16 +8,11 @@ following FastAPI best practices and async patterns.
 import pytest
 import asyncio
 import time
-import aiohttp
-from typing import List, Dict
-from concurrent.futures import ThreadPoolExecutor
-from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 
 from src.error_reporting_service.main import app
-from tests.factories import ErrorReportFactory
 
 
 class TestAPIPerformance:

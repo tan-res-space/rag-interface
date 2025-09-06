@@ -6,18 +6,15 @@ including authentication, validation, business logic, and data persistence.
 Following TDD principles and testing real API behavior.
 """
 
-import json
-from datetime import datetime, timedelta
-from typing import Any, Dict
+from datetime import datetime
 from uuid import uuid4
 
 import pytest
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 
-from src.error_reporting_service.infrastructure.config.settings import Settings
 from src.error_reporting_service.main import app
-from tests.factories import ErrorReportFactory, SubmitErrorReportRequestFactory
+from tests.factories import SubmitErrorReportRequestFactory
 
 
 @pytest.mark.e2e

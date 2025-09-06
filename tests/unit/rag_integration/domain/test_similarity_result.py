@@ -4,8 +4,7 @@ Unit tests for SimilarityResult domain entity.
 Tests focus on similarity scoring, ranking, and threshold validation.
 """
 
-from typing import Any, Dict
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 import pytest
 

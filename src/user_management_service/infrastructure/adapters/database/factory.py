@@ -6,7 +6,6 @@ Follows the same pattern as the Error Reporting Service.
 """
 
 import logging
-from typing import Union
 
 from ....application.ports.user_repository_port import IUserRepositoryPort
 from ...config.settings import DatabaseConfig

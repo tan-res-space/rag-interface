@@ -7,14 +7,11 @@ that could occur in production environments.
 
 import pytest
 import asyncio
-from datetime import datetime, timedelta
-from uuid import uuid4, UUID
-from unittest.mock import Mock, patch, AsyncMock
-from typing import List, Dict, Any
+from datetime import datetime
+from uuid import uuid4
+from unittest.mock import Mock, AsyncMock
 
-from fastapi import HTTPException
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-from pydantic import ValidationError
 
 from src.error_reporting_service.domain.entities.error_report import ErrorReport, SeverityLevel
 from src.error_reporting_service.application.use_cases.submit_error_report import SubmitErrorReportUseCase
@@ -330,10 +327,10 @@ class TestConcurrencyEdgeCases:
     @pytest.mark.asyncio
     async def test_concurrent_access_to_same_resource(self):
         """Test concurrent access to the same resource"""
-        mock_adapter = AsyncMock()
+        AsyncMock()
         
         # Simulate concurrent operations on same resource
-        resource_id = str(uuid4())
+        str(uuid4())
         
         async def concurrent_operation(operation_id):
             await asyncio.sleep(0.1)  # Simulate processing time
@@ -430,7 +427,7 @@ class TestMemoryAndResourceLeaks:
             large_objects.append(error_report)
         
         # Get reference count
-        initial_refs = sys.getrefcount(large_objects[0])
+        sys.getrefcount(large_objects[0])
         
         # Clear references
         large_objects.clear()

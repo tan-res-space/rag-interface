@@ -6,7 +6,6 @@ Defines the contract for MT validation repository implementations.
 """
 
 from abc import ABC, abstractmethod
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
@@ -79,7 +78,6 @@ class IMTValidationRepositoryPort(ABC):
         Raises:
             RepositoryError: If creation fails
         """
-        pass
 
     @abstractmethod
     async def get_validation_session_by_id(
@@ -94,7 +92,6 @@ class IMTValidationRepositoryPort(ABC):
         Returns:
             Validation session or None if not found
         """
-        pass
 
     @abstractmethod
     async def update_validation_session(
@@ -112,7 +109,6 @@ class IMTValidationRepositoryPort(ABC):
         Raises:
             ValueError: If session not found
         """
-        pass
 
     @abstractmethod
     async def get_validation_sessions_by_speaker(
@@ -128,7 +124,6 @@ class IMTValidationRepositoryPort(ABC):
         Returns:
             List of validation sessions
         """
-        pass
 
     @abstractmethod
     async def get_validation_sessions_by_mt_user(
@@ -144,7 +139,6 @@ class IMTValidationRepositoryPort(ABC):
         Returns:
             List of validation sessions
         """
-        pass
 
     @abstractmethod
     async def delete_validation_session(self, session_id: UUID) -> bool:
@@ -157,7 +151,6 @@ class IMTValidationRepositoryPort(ABC):
         Returns:
             True if deleted, False if not found
         """
-        pass
 
     # Test Data operations
 
@@ -175,7 +168,6 @@ class IMTValidationRepositoryPort(ABC):
         Returns:
             Number of items linked
         """
-        pass
 
     @abstractmethod
     async def get_session_test_data(
@@ -191,7 +183,6 @@ class IMTValidationRepositoryPort(ABC):
         Returns:
             List of validation test data items
         """
-        pass
 
     @abstractmethod
     async def get_historical_data_for_comparison(
@@ -207,7 +198,6 @@ class IMTValidationRepositoryPort(ABC):
         Returns:
             List of historical data comparison items
         """
-        pass
 
     # MT Feedback operations
 
@@ -245,7 +235,6 @@ class IMTValidationRepositoryPort(ABC):
         Returns:
             Created feedback identifier
         """
-        pass
 
     @abstractmethod
     async def get_mt_feedback_by_session(
@@ -260,7 +249,6 @@ class IMTValidationRepositoryPort(ABC):
         Returns:
             List of feedback entries
         """
-        pass
 
     @abstractmethod
     async def get_session_feedback_count(self, session_id: UUID) -> int:
@@ -273,7 +261,6 @@ class IMTValidationRepositoryPort(ABC):
         Returns:
             Number of feedback entries
         """
-        pass
 
     @abstractmethod
     async def get_mt_feedback_by_speaker(
@@ -289,7 +276,6 @@ class IMTValidationRepositoryPort(ABC):
         Returns:
             List of feedback entries
         """
-        pass
 
     # Statistics and analytics operations
 
@@ -304,7 +290,6 @@ class IMTValidationRepositoryPort(ABC):
         Returns:
             Dictionary with session statistics
         """
-        pass
 
     @abstractmethod
     async def get_mt_user_statistics(self, mt_user_id: UUID) -> Dict[str, Any]:
@@ -317,7 +302,6 @@ class IMTValidationRepositoryPort(ABC):
         Returns:
             Dictionary with MT user statistics
         """
-        pass
 
     @abstractmethod
     async def get_speaker_validation_statistics(
@@ -332,4 +316,3 @@ class IMTValidationRepositoryPort(ABC):
         Returns:
             Dictionary with speaker validation statistics
         """
-        pass

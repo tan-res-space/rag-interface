@@ -25,8 +25,8 @@ Welcome to the comprehensive documentation for the RAG Interface System. This do
 
 ### 📊 For QA & Testing
 - **[Test Strategy](../tests/TEST_STRATEGY.md)** - Testing approach and methodologies
-- **[Test Results](../test-results/)** - Latest test reports and coverage
-- **[Quality Reports](../quality-reports/)** - Code quality and security reports
+- **[Test Results](../reports/test-results/)** - Latest test reports and coverage
+- **[Quality Reports](../reports/quality/)** - Code quality and security reports
 
 ## 🏗️ System Architecture Overview
 

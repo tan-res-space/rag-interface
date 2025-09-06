@@ -7,8 +7,7 @@ pagination, sorting, and performance requirements.
 """
 
 from datetime import datetime, timedelta
-from typing import List
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import AsyncMock
 from uuid import uuid4
 
 import pytest
@@ -20,7 +19,6 @@ from src.error_reporting_service.application.dto.requests import (
     SortParams,
 )
 from src.error_reporting_service.application.dto.responses import (
-    PaginatedErrorReports,
     SearchErrorsResponse,
 )
 from src.error_reporting_service.application.ports.secondary.authorization_port import (
@@ -34,8 +32,6 @@ from src.error_reporting_service.application.use_cases.search_errors import (
     SearchErrorsUseCase,
 )
 from src.error_reporting_service.domain.entities.error_report import (
-    ErrorReport,
-    ErrorStatus,
     SeverityLevel,
 )
 from tests.factories import ErrorReportFactory, create_error_reports_batch
@@ -339,7 +335,7 @@ class TestSearchErrorsUseCase:
         self.mock_authorization.can_search_errors.return_value = True
 
         # Mock cache hit
-        cache_key = self.use_case._generate_cache_key(request)
+        self.use_case._generate_cache_key(request)
         self.mock_cache.get.return_value = cached_results
 
         # Act

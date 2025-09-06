@@ -29,7 +29,6 @@ class AuthorizationPort(ABC):
         Returns:
             True if access is allowed, False otherwise
         """
-        pass
 
     @abstractmethod
     async def can_create_error_report(self, user_id: str) -> bool:
@@ -42,7 +41,6 @@ class AuthorizationPort(ABC):
         Returns:
             True if creation is allowed, False otherwise
         """
-        pass
 
     @abstractmethod
     async def can_update_error_report(self, user_id: str, error_id: str) -> bool:
@@ -56,7 +54,6 @@ class AuthorizationPort(ABC):
         Returns:
             True if update is allowed, False otherwise
         """
-        pass
 
     @abstractmethod
     async def can_delete_error_report(self, user_id: str, error_id: str) -> bool:
@@ -70,7 +67,6 @@ class AuthorizationPort(ABC):
         Returns:
             True if deletion is allowed, False otherwise
         """
-        pass
 
     @abstractmethod
     async def can_search_errors(self, user_id: str) -> bool:
@@ -83,7 +79,6 @@ class AuthorizationPort(ABC):
         Returns:
             True if search is allowed, False otherwise
         """
-        pass
 
     @abstractmethod
     async def get_user_permissions(self, user_id: str) -> List[str]:
@@ -96,7 +91,6 @@ class AuthorizationPort(ABC):
         Returns:
             List of permission strings
         """
-        pass
 
     @abstractmethod
     async def has_permission(self, user_id: str, permission: str) -> bool:
@@ -110,7 +104,6 @@ class AuthorizationPort(ABC):
         Returns:
             True if user has permission, False otherwise
         """
-        pass
 
     @abstractmethod
     async def get_user_roles(self, user_id: str) -> List[str]:
@@ -123,7 +116,6 @@ class AuthorizationPort(ABC):
         Returns:
             List of role strings
         """
-        pass
 
     @abstractmethod
     async def has_role(self, user_id: str, role: str) -> bool:
@@ -137,7 +129,6 @@ class AuthorizationPort(ABC):
         Returns:
             True if user has role, False otherwise
         """
-        pass
 
     @abstractmethod
     async def get_accessible_error_reports(
@@ -153,7 +144,6 @@ class AuthorizationPort(ABC):
         Returns:
             List of accessible error report IDs
         """
-        pass
 
     @abstractmethod
     async def can_access_speaker_data(self, user_id: str, speaker_id: str) -> bool:
@@ -167,7 +157,6 @@ class AuthorizationPort(ABC):
         Returns:
             True if access is allowed, False otherwise
         """
-        pass
 
     @abstractmethod
     async def can_access_job_data(self, user_id: str, job_id: str) -> bool:
@@ -181,7 +170,6 @@ class AuthorizationPort(ABC):
         Returns:
             True if access is allowed, False otherwise
         """
-        pass
 
     @abstractmethod
     async def get_organization_id(self, user_id: str) -> Optional[str]:
@@ -194,7 +182,6 @@ class AuthorizationPort(ABC):
         Returns:
             Organization ID if found, None otherwise
         """
-        pass
 
     @abstractmethod
     async def can_access_organization_data(
@@ -210,7 +197,6 @@ class AuthorizationPort(ABC):
         Returns:
             True if access is allowed, False otherwise
         """
-        pass
 
     @abstractmethod
     async def validate_token(self, token: str) -> Dict[str, Any]:
@@ -226,7 +212,6 @@ class AuthorizationPort(ABC):
         Raises:
             AuthenticationError: If token is invalid
         """
-        pass
 
     @abstractmethod
     async def check_rate_limit(self, user_id: str, action: str) -> bool:
@@ -240,7 +225,6 @@ class AuthorizationPort(ABC):
         Returns:
             True if within rate limits, False if exceeded
         """
-        pass
 
     @abstractmethod
     async def log_access_attempt(
@@ -255,4 +239,3 @@ class AuthorizationPort(ABC):
             action: The action being performed
             success: Whether the access was successful
         """
-        pass

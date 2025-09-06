@@ -9,15 +9,12 @@ import pytest
 import asyncio
 import time
 from typing import List
-from uuid import uuid4
 from datetime import datetime, timedelta
 
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
 
 from src.error_reporting_service.infrastructure.adapters.database.postgresql.adapter import PostgreSQLAdapter
 from src.error_reporting_service.infrastructure.adapters.database.postgresql.models import ErrorReportModel
-from src.error_reporting_service.domain.entities.error_report import ErrorReport, SeverityLevel, ErrorStatus
+from src.error_reporting_service.domain.entities.error_report import ErrorReport, SeverityLevel
 from tests.factories import ErrorReportFactory
 
 
@@ -108,8 +105,8 @@ class TestDatabasePerformance:
     async def test_connection_pool_efficiency(self, db_adapter):
         """Test database connection pool efficiency"""
         # Monitor connection pool usage
-        initial_pool_size = db_adapter.engine.pool.size()
-        initial_checked_out = db_adapter.engine.pool.checkedout()
+        db_adapter.engine.pool.size()
+        db_adapter.engine.pool.checkedout()
         
         async def db_operation():
             error_report = ErrorReportFactory.create()

@@ -7,20 +7,13 @@ Following TDD principles and Hexagonal Architecture patterns.
 """
 
 import asyncio
-import json
-from datetime import datetime, timedelta
-from typing import Any, Dict, Optional
-from unittest.mock import AsyncMock, Mock, patch
+from datetime import datetime
+from unittest.mock import patch
 from uuid import uuid4
 
 import fakeredis.aioredis
 import pytest
 
-from src.error_reporting_service.domain.entities.error_report import (
-    ErrorReport,
-    ErrorStatus,
-    SeverityLevel,
-)
 from src.error_reporting_service.infrastructure.adapters.cache.redis_adapter import (
     RedisErrorCacheAdapter,
 )

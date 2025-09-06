@@ -5,10 +5,8 @@ Provides analytics and insights for the enhanced error reporting dashboard.
 """
 
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional
-from uuid import UUID
+from typing import Dict, List
 
-from error_reporting_service.domain.entities.error_report import BucketType
 from error_reporting_service.domain.ports.error_report_repository import (
     ErrorReportRepository,
 )
@@ -26,7 +24,6 @@ from error_reporting_service.application.dto.requests import (
 )
 from error_reporting_service.application.dto.responses import (
     DashboardMetricsResponse,
-    BucketDistributionResponse,
 )
 
 

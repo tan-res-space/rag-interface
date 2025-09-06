@@ -11,7 +11,6 @@ from typing import Any, Dict, List, Optional, Tuple
 from uuid import UUID
 
 from ..entities.speaker_error_correction_pair import SpeakerErrorCorrectionPair
-from ..entities.speaker_rag_processing_job import JobType, SpeakerRAGProcessingJob
 
 
 class SpeakerRAGProcessingService:
@@ -24,7 +23,6 @@ class SpeakerRAGProcessingService:
 
     def __init__(self):
         """Initialize the speaker RAG processing service."""
-        pass
 
     def extract_error_correction_pairs(
         self,

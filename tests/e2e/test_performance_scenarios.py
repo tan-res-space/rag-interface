@@ -10,8 +10,6 @@ import asyncio
 import statistics
 import time
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timedelta
-from typing import Any, Dict, List
 from uuid import uuid4
 
 import pytest
@@ -355,7 +353,7 @@ class TestPerformanceScenarios:
                     "/api/v1/errors", json=error_data, headers=auth_headers
                 )
                 return response.status_code
-            except Exception as e:
+            except Exception:
                 return 500
 
         start_time = time.time()

@@ -341,7 +341,6 @@ class TestUMSIntegration:
     async def test_event_publisher_operations(self, event_publisher):
         """Test event publisher operations"""
 
-        from datetime import datetime
 
         from src.user_management_service.domain.events.domain_events import (
             UserCreatedEvent,

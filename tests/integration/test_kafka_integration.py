@@ -6,24 +6,19 @@ including event publishing, serialization, and error handling.
 Following TDD principles and Hexagonal Architecture patterns.
 """
 
-import asyncio
-import json
 from datetime import datetime
-from typing import Any, Dict
-from unittest.mock import AsyncMock, Mock, patch
+from unittest.mock import AsyncMock, patch
 from uuid import uuid4
 
 import pytest
 
 from src.error_reporting_service.domain.events.domain_events import (
     ErrorDeletedEvent,
-    ErrorReportedEvent,
     ErrorUpdatedEvent,
 )
 from src.error_reporting_service.infrastructure.adapters.messaging.kafka_producer import (
     KafkaErrorEventPublisher,
 )
-from src.error_reporting_service.infrastructure.config.settings import Settings
 from tests.factories import ErrorReportedEventFactory
 
 

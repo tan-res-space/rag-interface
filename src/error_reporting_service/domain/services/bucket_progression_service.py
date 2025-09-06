@@ -4,7 +4,7 @@ Implements the algorithm for automatic bucket classification updates
 """
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import List, Dict, Any, Optional
 import logging
 

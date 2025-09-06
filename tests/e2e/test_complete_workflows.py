@@ -7,9 +7,7 @@ Following TDD principles and testing real-world usage patterns.
 """
 
 import asyncio
-import json
-from datetime import datetime, timedelta
-from typing import Any, Dict, List
+from datetime import datetime
 from uuid import uuid4
 
 import pytest

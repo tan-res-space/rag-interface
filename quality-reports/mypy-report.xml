@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<testsuite errors="0" failures="1" name="mypy" skips="0" tests="1" time="0.184">
-  <testcase classname="mypy" file="mypy" line="1" name="mypy-py3_11-linux" time="0.184">
-    <failure message="mypy produced messages">src/correction_engine_service/domain/value_objects/correction_mode.py: error: Source file found twice under different module names: "correction_engine_service.domain.value_objects.correction_mode" and "src.correction_engine_service.domain.value_objects.correction_mode"
-src/correction_engine_service/domain/value_objects/correction_mode.py: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#mapping-file-paths-to-modules for more info
-src/correction_engine_service/domain/value_objects/correction_mode.py: note: Common resolutions include: a) adding `__init__.py` somewhere, b) using `--explicit-package-bases` or adjusting MYPYPATH</failure>
-  </testcase>
-</testsuite>

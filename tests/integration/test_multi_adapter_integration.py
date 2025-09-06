@@ -24,7 +24,6 @@ from src.error_reporting_service.application.use_cases.submit_error_report impor
 )
 from src.error_reporting_service.domain.entities.error_report import (
     ErrorReport,
-    ErrorStatus,
     SeverityLevel,
 )
 from src.error_reporting_service.domain.services.categorization_service import (
@@ -41,7 +40,6 @@ from src.error_reporting_service.infrastructure.adapters.messaging.factory impor
 )
 from src.error_reporting_service.infrastructure.config.database_config import (
     DatabaseConfig,
-    DatabaseType,
 )
 from src.error_reporting_service.infrastructure.config.messaging_config import (
     EventBusConfig,

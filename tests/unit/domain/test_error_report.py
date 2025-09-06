@@ -6,9 +6,8 @@ This test suite covers all business rules, validation logic, and edge cases
 as specified in the design document.
 """
 
-from datetime import datetime, timedelta
-from typing import Any, Dict, List
-from uuid import UUID, uuid4
+from datetime import datetime
+from uuid import uuid4
 
 import pytest
 
@@ -236,7 +235,6 @@ class TestSeverityLevel:
     def test_severity_level_ordering(self):
         """Test severity level ordering for comparison"""
         # This will be implemented if we add ordering to the enum
-        pass
 
 
 class TestErrorStatus:

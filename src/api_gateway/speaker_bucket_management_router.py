@@ -7,12 +7,11 @@ Provides a unified interface for the complete speaker bucket management workflow
 
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 from uuid import UUID
 
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, Path, Query
-from fastapi.responses import JSONResponse
 
 logger = logging.getLogger(__name__)
 

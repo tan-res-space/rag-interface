@@ -7,7 +7,7 @@ Defines the contract for speaker repository implementations.
 
 from abc import ABC, abstractmethod
 from decimal import Decimal
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 from uuid import UUID
 
 from ...domain.entities.bucket_transition_request import BucketTransitionRequest
@@ -39,7 +39,6 @@ class ISpeakerRepositoryPort(ABC):
             ValueError: If speaker already exists
             RepositoryError: If creation fails
         """
-        pass
 
     @abstractmethod
     async def get_speaker_by_id(self, speaker_id: UUID) -> Optional[Speaker]:
@@ -52,7 +51,6 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             Speaker entity or None if not found
         """
-        pass
 
     @abstractmethod
     async def get_speaker_by_identifier(
@@ -67,7 +65,6 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             Speaker entity or None if not found
         """
-        pass
 
     @abstractmethod
     async def update_speaker(self, speaker: Speaker) -> Speaker:
@@ -84,7 +81,6 @@ class ISpeakerRepositoryPort(ABC):
             ValueError: If speaker not found
             RepositoryError: If update fails
         """
-        pass
 
     @abstractmethod
     async def delete_speaker(self, speaker_id: UUID) -> bool:
@@ -100,7 +96,6 @@ class ISpeakerRepositoryPort(ABC):
         Raises:
             RepositoryError: If deletion fails
         """
-        pass
 
     @abstractmethod
     async def search_speakers(
@@ -128,7 +123,6 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             List of matching speakers
         """
-        pass
 
     @abstractmethod
     async def get_speakers_by_bucket(self, bucket: SpeakerBucket) -> List[Speaker]:
@@ -141,7 +135,6 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             List of speakers in the bucket
         """
-        pass
 
     @abstractmethod
     async def get_speakers_needing_transition(self) -> List[Speaker]:
@@ -151,7 +144,6 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             List of speakers needing transition
         """
-        pass
 
     @abstractmethod
     async def count_speakers_by_bucket(self) -> Dict[str, int]:
@@ -161,7 +153,6 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             Dictionary with bucket counts
         """
-        pass
 
     @abstractmethod
     async def update_speaker_statistics(self, speaker_id: UUID) -> Speaker:
@@ -177,7 +168,6 @@ class ISpeakerRepositoryPort(ABC):
         Raises:
             ValueError: If speaker not found
         """
-        pass
 
     # Historical ASR Data operations
 
@@ -194,7 +184,6 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             Created historical data entity
         """
-        pass
 
     @abstractmethod
     async def get_historical_asr_data_by_speaker(
@@ -214,7 +203,6 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             List of historical ASR data
         """
-        pass
 
     @abstractmethod
     async def get_test_data_for_speaker(
@@ -229,7 +217,6 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             List of test data entries
         """
-        pass
 
     @abstractmethod
     async def mark_data_as_test(self, data_ids: List[UUID]) -> int:
@@ -242,7 +229,6 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             Number of records updated
         """
-        pass
 
     # Bucket Transition operations
 
@@ -259,7 +245,6 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             Created transition request
         """
-        pass
 
     @abstractmethod
     async def get_bucket_transition_request_by_id(
@@ -274,7 +259,6 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             Transition request or None if not found
         """
-        pass
 
     @abstractmethod
     async def get_pending_transition_requests(self) -> List[BucketTransitionRequest]:
@@ -284,7 +268,6 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             List of pending transition requests
         """
-        pass
 
     @abstractmethod
     async def update_bucket_transition_request(
@@ -299,7 +282,6 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             Updated transition request
         """
-        pass
 
     @abstractmethod
     async def get_transition_history_for_speaker(
@@ -314,4 +296,3 @@ class ISpeakerRepositoryPort(ABC):
         Returns:
             List of transition requests for the speaker
         """
-        pass

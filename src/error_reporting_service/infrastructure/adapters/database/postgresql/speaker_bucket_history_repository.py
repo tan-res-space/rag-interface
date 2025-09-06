@@ -7,13 +7,12 @@ from typing import List, Optional
 from uuid import UUID
 
 from sqlalchemy import select, desc
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from error_reporting_service.domain.entities.speaker_bucket_history import (
     SpeakerBucketHistory,
     AssignmentType,
 )
-from error_reporting_service.domain.entities.error_report import BucketType
+from src.shared.domain.value_objects import BucketType
 from error_reporting_service.domain.ports.speaker_bucket_history_repository import (
     SpeakerBucketHistoryRepository,
 )

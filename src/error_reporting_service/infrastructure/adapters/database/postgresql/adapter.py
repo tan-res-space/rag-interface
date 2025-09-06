@@ -10,7 +10,6 @@ from uuid import UUID
 
 from sqlalchemy import delete, select, text, update
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import selectinload
 
 from error_reporting_service.domain.entities.error_report import (
     ErrorReport,

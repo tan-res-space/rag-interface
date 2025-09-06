@@ -7,7 +7,7 @@ Follows the same pattern as other services for consistency.
 
 import os
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 
 @dataclass

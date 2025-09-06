@@ -6,11 +6,9 @@ input validation, and protection against common vulnerabilities.
 """
 
 import pytest
-import jwt
 from datetime import datetime, timedelta
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 from fastapi.testclient import TestClient
-from fastapi import HTTPException
 
 from src.user_management_service.main import app
 from src.user_management_service.infrastructure.adapters.auth.token_service import TokenService

@@ -5,13 +5,11 @@ Provides integration with vector database for enhanced similarity search,
 error pattern matching, and speaker profiling.
 """
 
-import asyncio
 import logging
 from datetime import datetime
 from typing import Dict, List, Optional, Any, Tuple
-from uuid import UUID, uuid4
+from uuid import uuid4
 
-import numpy as np
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 from qdrant_client.http.models import Distance, VectorParams, PointStruct, Filter, FieldCondition, MatchValue

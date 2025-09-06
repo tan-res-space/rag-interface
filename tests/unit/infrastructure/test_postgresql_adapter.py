@@ -12,7 +12,6 @@ import pytest
 
 from src.error_reporting_service.domain.entities.error_report import (
     ErrorReport,
-    ErrorStatus,
     SeverityLevel,
 )
 from src.error_reporting_service.infrastructure.adapters.database.postgresql.adapter import (

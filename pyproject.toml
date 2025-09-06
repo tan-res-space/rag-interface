@@ -247,7 +247,7 @@ skip_covered = false
 skip_empty = true
 
 [tool.coverage.html]
-directory = "htmlcov"
+directory = "reports/coverage"
 
 [tool.coverage.xml]
-output = "coverage.xml"
+output = "reports/coverage.xml"

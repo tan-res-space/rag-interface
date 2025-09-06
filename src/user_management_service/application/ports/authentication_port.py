@@ -53,7 +53,6 @@ class IAuthenticationPort(ABC):
             AccountLockedException: If account is locked
             InactiveAccountException: If account is inactive
         """
-        pass
 
     @abstractmethod
     async def validate_token(
@@ -78,7 +77,6 @@ class IAuthenticationPort(ABC):
             InvalidTokenException: If token is invalid or expired
             InsufficientPermissionsException: If user lacks required permissions
         """
-        pass
 
     @abstractmethod
     async def refresh_token(self, request: RefreshTokenRequest) -> TokenRefreshResponse:
@@ -101,7 +99,6 @@ class IAuthenticationPort(ABC):
             InvalidTokenException: If refresh token is invalid
             InactiveAccountException: If account is inactive
         """
-        pass
 
     @abstractmethod
     async def logout(self, user_id: str, token: str) -> None:
@@ -121,7 +118,6 @@ class IAuthenticationPort(ABC):
         Raises:
             InvalidTokenException: If token is invalid
         """
-        pass
 
     @abstractmethod
     async def change_password(
@@ -149,7 +145,6 @@ class IAuthenticationPort(ABC):
             InvalidPasswordException: If current password is incorrect
             WeakPasswordException: If new password doesn't meet policy
         """
-        pass
 
     @abstractmethod
     async def reset_password(
@@ -178,7 +173,6 @@ class IAuthenticationPort(ABC):
             InsufficientPermissionsException: If reset_by lacks permissions
             WeakPasswordException: If new password doesn't meet policy
         """
-        pass
 
     @abstractmethod
     async def lock_account(
@@ -202,7 +196,6 @@ class IAuthenticationPort(ABC):
         Raises:
             UserNotFoundException: If user doesn't exist
         """
-        pass
 
     @abstractmethod
     async def unlock_account(self, user_id: str, unlocked_by: str) -> None:
@@ -223,7 +216,6 @@ class IAuthenticationPort(ABC):
             UserNotFoundException: If user doesn't exist
             InsufficientPermissionsException: If unlocked_by lacks permissions
         """
-        pass
 
     @abstractmethod
     async def get_user_sessions(self, user_id: str) -> list:
@@ -239,7 +231,6 @@ class IAuthenticationPort(ABC):
         Raises:
             UserNotFoundException: If user doesn't exist
         """
-        pass
 
     @abstractmethod
     async def revoke_user_sessions(self, user_id: str, revoked_by: str) -> int:
@@ -263,4 +254,3 @@ class IAuthenticationPort(ABC):
             UserNotFoundException: If user doesn't exist
             InsufficientPermissionsException: If revoked_by lacks permissions
         """
-        pass

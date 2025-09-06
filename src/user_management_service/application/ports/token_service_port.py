@@ -5,7 +5,6 @@ This module defines the port interface for token operations.
 """
 
 from abc import ABC, abstractmethod
-from datetime import datetime
 from typing import Dict, List, Optional
 
 
@@ -40,7 +39,6 @@ class ITokenServicePort(ABC):
         Raises:
             TokenServiceException: If token creation fails
         """
-        pass
 
     @abstractmethod
     async def create_refresh_token(self, user_id: str) -> str:
@@ -56,7 +54,6 @@ class ITokenServicePort(ABC):
         Raises:
             TokenServiceException: If token creation fails
         """
-        pass
 
     @abstractmethod
     async def validate_access_token(self, token: str) -> Dict[str, any]:
@@ -72,7 +69,6 @@ class ITokenServicePort(ABC):
         Raises:
             InvalidTokenException: If token is invalid or expired
         """
-        pass
 
     @abstractmethod
     async def validate_refresh_token(self, token: str) -> Dict[str, any]:
@@ -88,7 +84,6 @@ class ITokenServicePort(ABC):
         Raises:
             InvalidTokenException: If token is invalid or expired
         """
-        pass
 
     @abstractmethod
     async def refresh_access_token(self, refresh_token: str) -> tuple:
@@ -104,7 +99,6 @@ class ITokenServicePort(ABC):
         Raises:
             InvalidTokenException: If refresh token is invalid
         """
-        pass
 
     @abstractmethod
     async def revoke_token(self, token: str) -> bool:
@@ -120,7 +114,6 @@ class ITokenServicePort(ABC):
         Raises:
             TokenServiceException: If revocation fails
         """
-        pass
 
     @abstractmethod
     async def revoke_user_tokens(self, user_id: str) -> int:
@@ -136,7 +129,6 @@ class ITokenServicePort(ABC):
         Raises:
             TokenServiceException: If revocation fails
         """
-        pass
 
     @abstractmethod
     async def is_token_revoked(self, token: str) -> bool:
@@ -149,7 +141,6 @@ class ITokenServicePort(ABC):
         Returns:
             True if token is revoked, False otherwise
         """
-        pass
 
     @abstractmethod
     async def get_token_expiry_seconds(self) -> int:
@@ -159,7 +150,6 @@ class ITokenServicePort(ABC):
         Returns:
             Token expiry time in seconds
         """
-        pass
 
     @abstractmethod
     async def decode_token_claims(self, token: str) -> Dict[str, any]:
@@ -175,7 +165,6 @@ class ITokenServicePort(ABC):
         Raises:
             TokenServiceException: If token cannot be decoded
         """
-        pass
 
     @abstractmethod
     async def get_user_active_sessions(self, user_id: str) -> List[Dict[str, any]]:
@@ -188,4 +177,3 @@ class ITokenServicePort(ABC):
         Returns:
             List of active session information
         """
-        pass

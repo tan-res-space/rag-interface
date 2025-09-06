@@ -7,7 +7,6 @@ as specified in the ASR System Architecture Design document.
 
 from abc import ABC, abstractmethod
 from typing import List, Optional
-from uuid import UUID
 
 from ..dto.requests import (
     ChangeUserRolesRequest,
@@ -61,7 +60,6 @@ class IUserManagementPort(ABC):
             WeakPasswordException: If password doesn't meet policy
             InsufficientPermissionsException: If creator lacks permissions
         """
-        pass
 
     @abstractmethod
     async def get_user(self, user_id: str) -> UserResponse:
@@ -77,7 +75,6 @@ class IUserManagementPort(ABC):
         Raises:
             UserNotFoundException: If user doesn't exist
         """
-        pass
 
     @abstractmethod
     async def get_user_by_username(self, username: str) -> UserResponse:
@@ -93,7 +90,6 @@ class IUserManagementPort(ABC):
         Raises:
             UserNotFoundException: If user doesn't exist
         """
-        pass
 
     @abstractmethod
     async def get_user_by_email(self, email: str) -> UserResponse:
@@ -109,7 +105,6 @@ class IUserManagementPort(ABC):
         Raises:
             UserNotFoundException: If user doesn't exist
         """
-        pass
 
     @abstractmethod
     async def get_users(self, request: GetUsersRequest) -> PaginatedUsersResponse:
@@ -122,7 +117,6 @@ class IUserManagementPort(ABC):
         Returns:
             Paginated list of users
         """
-        pass
 
     @abstractmethod
     async def update_user(
@@ -148,7 +142,6 @@ class IUserManagementPort(ABC):
             DuplicateEmailException: If new email already exists
             InsufficientPermissionsException: If updater lacks permissions
         """
-        pass
 
     @abstractmethod
     async def change_user_roles(
@@ -173,7 +166,6 @@ class IUserManagementPort(ABC):
             InvalidRoleCombinationException: If role combination is invalid
             InsufficientPermissionsException: If changer lacks permissions
         """
-        pass
 
     @abstractmethod
     async def change_user_status(
@@ -198,7 +190,6 @@ class IUserManagementPort(ABC):
             InvalidStatusTransitionException: If status transition is invalid
             InsufficientPermissionsException: If changer lacks permissions
         """
-        pass
 
     @abstractmethod
     async def activate_user(self, user_id: str, activated_by: str) -> bool:
@@ -222,7 +213,6 @@ class IUserManagementPort(ABC):
             InvalidStatusException: If user is not pending activation
             InsufficientPermissionsException: If activator lacks permissions
         """
-        pass
 
     @abstractmethod
     async def suspend_user(self, user_id: str, reason: str, suspended_by: str) -> bool:
@@ -246,7 +236,6 @@ class IUserManagementPort(ABC):
             UserNotFoundException: If user doesn't exist
             InsufficientPermissionsException: If suspender lacks permissions
         """
-        pass
 
     @abstractmethod
     async def delete_user(
@@ -274,7 +263,6 @@ class IUserManagementPort(ABC):
             CannotDeleteAdminException: If trying to delete system admin
             InsufficientPermissionsException: If deleter lacks permissions
         """
-        pass
 
     @abstractmethod
     async def get_user_audit_log(
@@ -292,7 +280,6 @@ class IUserManagementPort(ABC):
         Raises:
             InsufficientPermissionsException: If requester lacks VIEW_AUDIT_LOGS permission
         """
-        pass
 
     @abstractmethod
     async def get_user_security_status(
@@ -310,7 +297,6 @@ class IUserManagementPort(ABC):
         Raises:
             UserNotFoundException: If user doesn't exist
         """
-        pass
 
     @abstractmethod
     async def search_users(
@@ -326,7 +312,6 @@ class IUserManagementPort(ABC):
         Returns:
             List of matching users
         """
-        pass
 
     @abstractmethod
     async def get_user_statistics(self) -> dict:
@@ -339,7 +324,6 @@ class IUserManagementPort(ABC):
         Raises:
             InsufficientPermissionsException: If requester lacks VIEW_SYSTEM_METRICS permission
         """
-        pass
 
     @abstractmethod
     async def bulk_update_users(
@@ -364,4 +348,3 @@ class IUserManagementPort(ABC):
         Raises:
             InsufficientPermissionsException: If updater lacks permissions
         """
-        pass

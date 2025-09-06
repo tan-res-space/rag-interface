@@ -6,7 +6,7 @@ This is a driving port that defines the contract for embedding generation use ca
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 from uuid import UUID
 
 from ...dto.requests import (
@@ -44,7 +44,6 @@ class EmbeddingGenerationPort(ABC):
             ValueError: If request is invalid
             EmbeddingGenerationError: If embedding generation fails
         """
-        pass
 
     @abstractmethod
     async def generate_batch_embeddings(
@@ -63,7 +62,6 @@ class EmbeddingGenerationPort(ABC):
             ValueError: If request is invalid
             EmbeddingGenerationError: If batch generation fails
         """
-        pass
 
     @abstractmethod
     async def get_embedding(self, embedding_id: UUID) -> EmbeddingResponse:
@@ -79,7 +77,6 @@ class EmbeddingGenerationPort(ABC):
         Raises:
             EmbeddingNotFoundError: If embedding doesn't exist
         """
-        pass
 
     @abstractmethod
     async def search_similar_embeddings(
@@ -98,7 +95,6 @@ class EmbeddingGenerationPort(ABC):
             ValueError: If request is invalid
             SimilaritySearchError: If search fails
         """
-        pass
 
     @abstractmethod
     async def delete_embedding(self, embedding_id: UUID) -> bool:
@@ -114,7 +110,6 @@ class EmbeddingGenerationPort(ABC):
         Raises:
             EmbeddingNotFoundError: If embedding doesn't exist
         """
-        pass
 
     @abstractmethod
     async def get_embedding_statistics(
@@ -129,4 +124,3 @@ class EmbeddingGenerationPort(ABC):
         Returns:
             Dictionary containing embedding statistics
         """
-        pass

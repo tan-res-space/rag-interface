@@ -7,7 +7,6 @@ from typing import List, Optional
 from uuid import UUID
 
 from sqlalchemy import select, func, desc
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from error_reporting_service.domain.entities.speaker_performance_metrics import (
     SpeakerPerformanceMetrics,

@@ -8,11 +8,9 @@ corrections and improving transcription quality.
 import asyncio
 import logging
 from datetime import datetime
-from typing import Dict, List, Optional, Any, Tuple
-from uuid import UUID
+from typing import Dict, List, Optional, Any
 
 import aiohttp
-import numpy as np
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)

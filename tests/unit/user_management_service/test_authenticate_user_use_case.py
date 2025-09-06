@@ -5,7 +5,7 @@ Tests the authentication workflow and business logic.
 """
 
 from datetime import datetime, timedelta
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import AsyncMock
 from uuid import uuid4
 
 import pytest

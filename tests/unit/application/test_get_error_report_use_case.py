@@ -6,8 +6,7 @@ This test suite covers all scenarios for retrieving error reports
 including authorization, caching, and error handling.
 """
 
-from datetime import datetime
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import AsyncMock
 from uuid import uuid4
 
 import pytest
@@ -23,11 +22,6 @@ from src.error_reporting_service.application.ports.secondary.repository_port imp
 )
 from src.error_reporting_service.application.use_cases.get_error_report import (
     GetErrorReportUseCase,
-)
-from src.error_reporting_service.domain.entities.error_report import (
-    ErrorReport,
-    ErrorStatus,
-    SeverityLevel,
 )
 from tests.factories import ErrorReportFactory
 

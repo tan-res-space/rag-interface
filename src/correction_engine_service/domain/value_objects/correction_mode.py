@@ -6,7 +6,6 @@ Immutable value object following domain-driven design principles.
 """
 
 from enum import Enum
-from typing import ClassVar
 
 
 class CorrectionMode(Enum):

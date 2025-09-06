@@ -22,15 +22,13 @@ from error_reporting_service.application.ports.secondary.repository_port import 
 )
 from error_reporting_service.domain.entities.error_report import (
     ErrorReport,
-    ErrorStatus,
-    SeverityLevel,
-    BucketType,
     AudioQuality,
     SpeakerClarity,
     BackgroundNoise,
     NumberOfSpeakers,
     EnhancedMetadata,
 )
+from src.shared.domain.value_objects import BucketType, ErrorStatus, SeverityLevel
 from error_reporting_service.domain.events.domain_events import ErrorReportedEvent
 from error_reporting_service.domain.services.categorization_service import (
     ErrorCategorizationService,

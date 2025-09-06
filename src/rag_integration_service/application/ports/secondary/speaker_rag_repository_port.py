@@ -6,7 +6,6 @@ Defines the contract for speaker RAG repository implementations.
 """
 
 from abc import ABC, abstractmethod
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
@@ -44,7 +43,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Raises:
             RepositoryError: If creation fails
         """
-        pass
 
     @abstractmethod
     async def get_error_correction_pair_by_id(
@@ -59,7 +57,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             Error-correction pair or None if not found
         """
-        pass
 
     @abstractmethod
     async def get_error_correction_pairs_by_speaker(
@@ -81,7 +78,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             List of error-correction pairs
         """
-        pass
 
     @abstractmethod
     async def get_error_correction_pairs_by_historical_data(
@@ -96,7 +92,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             List of error-correction pairs
         """
-        pass
 
     @abstractmethod
     async def update_error_correction_pair(
@@ -114,7 +109,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Raises:
             ValueError: If pair not found
         """
-        pass
 
     @abstractmethod
     async def delete_error_correction_pair(self, pair_id: UUID) -> bool:
@@ -127,7 +121,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             True if deleted, False if not found
         """
-        pass
 
     @abstractmethod
     async def batch_create_error_correction_pairs(
@@ -142,7 +135,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             List of created error-correction pairs
         """
-        pass
 
     # Processing Job operations
 
@@ -159,7 +151,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             Created processing job
         """
-        pass
 
     @abstractmethod
     async def get_processing_job_by_id(
@@ -174,7 +165,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             Processing job or None if not found
         """
-        pass
 
     @abstractmethod
     async def get_processing_jobs_by_speaker(
@@ -194,7 +184,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             List of processing jobs
         """
-        pass
 
     @abstractmethod
     async def get_pending_processing_jobs(self) -> List[SpeakerRAGProcessingJob]:
@@ -204,7 +193,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             List of pending processing jobs
         """
-        pass
 
     @abstractmethod
     async def get_running_processing_jobs(self) -> List[SpeakerRAGProcessingJob]:
@@ -214,7 +202,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             List of running processing jobs
         """
-        pass
 
     @abstractmethod
     async def update_processing_job(
@@ -229,7 +216,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             Updated processing job
         """
-        pass
 
     @abstractmethod
     async def delete_processing_job(self, job_id: UUID) -> bool:
@@ -242,7 +228,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             True if deleted, False if not found
         """
-        pass
 
     # Speaker-specific embedding operations
 
@@ -264,7 +249,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             True if linked successfully
         """
-        pass
 
     @abstractmethod
     async def get_speaker_embeddings(
@@ -280,7 +264,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             List of embedding IDs
         """
-        pass
 
     @abstractmethod
     async def get_embeddings_by_error_correction_pair(
@@ -295,7 +278,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             List of embedding IDs
         """
-        pass
 
     # Statistics and analytics operations
 
@@ -310,7 +292,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             Dictionary with error statistics
         """
-        pass
 
     @abstractmethod
     async def get_error_type_distribution(
@@ -325,7 +306,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             Dictionary mapping error types to counts
         """
-        pass
 
     @abstractmethod
     async def get_processing_job_statistics(self) -> Dict[str, Any]:
@@ -335,7 +315,6 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             Dictionary with job statistics
         """
-        pass
 
     @abstractmethod
     async def cleanup_old_jobs(
@@ -351,4 +330,3 @@ class ISpeakerRAGRepositoryPort(ABC):
         Returns:
             Number of jobs deleted
         """
-        pass

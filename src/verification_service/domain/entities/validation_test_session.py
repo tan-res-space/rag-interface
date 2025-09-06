@@ -8,7 +8,7 @@ Core domain entity for the medical transcriptionist validation workflow.
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 from uuid import UUID
 
 

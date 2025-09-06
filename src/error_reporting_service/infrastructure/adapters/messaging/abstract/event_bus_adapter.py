@@ -60,7 +60,6 @@ class IEventBusAdapter(ABC):
         Raises:
             EventBusError: If the publish operation fails
         """
-        pass
 
     @abstractmethod
     async def subscribe_to_topic(
@@ -77,7 +76,6 @@ class IEventBusAdapter(ABC):
         Raises:
             EventBusError: If the subscription fails
         """
-        pass
 
     @abstractmethod
     async def create_topic(
@@ -96,7 +94,6 @@ class IEventBusAdapter(ABC):
         Raises:
             EventBusError: If topic creation fails
         """
-        pass
 
     @abstractmethod
     async def delete_topic(self, topic: str) -> bool:
@@ -112,7 +109,6 @@ class IEventBusAdapter(ABC):
         Raises:
             EventBusError: If topic deletion fails
         """
-        pass
 
     @abstractmethod
     async def health_check(self) -> bool:
@@ -122,7 +118,6 @@ class IEventBusAdapter(ABC):
         Returns:
             True if event bus is healthy, False otherwise
         """
-        pass
 
     @abstractmethod
     async def get_connection_info(self) -> Dict[str, Any]:
@@ -132,7 +127,6 @@ class IEventBusAdapter(ABC):
         Returns:
             Dictionary containing connection information
         """
-        pass
 
     @abstractmethod
     async def start(self) -> None:
@@ -142,7 +136,6 @@ class IEventBusAdapter(ABC):
         Raises:
             EventBusError: If startup fails
         """
-        pass
 
     @abstractmethod
     async def stop(self) -> None:
@@ -152,4 +145,3 @@ class IEventBusAdapter(ABC):
         Raises:
             EventBusError: If shutdown fails
         """
-        pass

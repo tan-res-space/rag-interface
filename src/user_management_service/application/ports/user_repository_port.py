@@ -35,7 +35,6 @@ class IUserRepositoryPort(ABC):
             DuplicateEmailException: If email already exists
             RepositoryException: If save operation fails
         """
-        pass
 
     @abstractmethod
     async def get_by_id(self, user_id: UUID) -> Optional[User]:
@@ -51,7 +50,6 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If query operation fails
         """
-        pass
 
     @abstractmethod
     async def get_by_username(self, username: str) -> Optional[User]:
@@ -67,7 +65,6 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If query operation fails
         """
-        pass
 
     @abstractmethod
     async def get_by_email(self, email: str) -> Optional[User]:
@@ -83,7 +80,6 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If query operation fails
         """
-        pass
 
     @abstractmethod
     async def find_by_roles(
@@ -102,7 +98,6 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If query operation fails
         """
-        pass
 
     @abstractmethod
     async def find_by_status(self, status: UserStatus, limit: int = 100) -> List[User]:
@@ -119,7 +114,6 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If query operation fails
         """
-        pass
 
     @abstractmethod
     async def find_by_department(self, department: str, limit: int = 100) -> List[User]:
@@ -136,7 +130,6 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If query operation fails
         """
-        pass
 
     @abstractmethod
     async def search_users(self, search_term: str, limit: int = 20) -> List[User]:
@@ -153,7 +146,6 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If query operation fails
         """
-        pass
 
     @abstractmethod
     async def get_users_paginated(
@@ -186,7 +178,6 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If query operation fails
         """
-        pass
 
     @abstractmethod
     async def delete(self, user_id: UUID) -> bool:
@@ -202,7 +193,6 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If delete operation fails
         """
-        pass
 
     @abstractmethod
     async def exists_by_username(self, username: str) -> bool:
@@ -218,7 +208,6 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If query operation fails
         """
-        pass
 
     @abstractmethod
     async def exists_by_email(self, email: str) -> bool:
@@ -234,7 +223,6 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If query operation fails
         """
-        pass
 
     @abstractmethod
     async def get_user_count(self) -> int:
@@ -247,7 +235,6 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If query operation fails
         """
-        pass
 
     @abstractmethod
     async def get_user_count_by_status(self, status: UserStatus) -> int:
@@ -263,7 +250,6 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If query operation fails
         """
-        pass
 
     @abstractmethod
     async def get_user_count_by_role(self, role: UserRole) -> int:
@@ -279,7 +265,6 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If query operation fails
         """
-        pass
 
     @abstractmethod
     async def bulk_update_status(self, user_ids: List[UUID], status: UserStatus) -> int:
@@ -296,4 +281,3 @@ class IUserRepositoryPort(ABC):
         Raises:
             RepositoryException: If update operation fails
         """
-        pass

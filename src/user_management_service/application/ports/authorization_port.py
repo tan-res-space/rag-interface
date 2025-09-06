@@ -7,7 +7,6 @@ as specified in the ASR System Architecture Design document.
 
 from abc import ABC, abstractmethod
 from typing import List, Set
-from uuid import UUID
 
 from ...domain.entities.user import Permission, UserRole
 
@@ -40,7 +39,6 @@ class IAuthorizationPort(ABC):
         Raises:
             UserNotFoundException: If user doesn't exist
         """
-        pass
 
     @abstractmethod
     async def check_permissions(
@@ -59,7 +57,6 @@ class IAuthorizationPort(ABC):
         Raises:
             UserNotFoundException: If user doesn't exist
         """
-        pass
 
     @abstractmethod
     async def get_user_permissions(self, user_id: str) -> Set[Permission]:
@@ -75,7 +72,6 @@ class IAuthorizationPort(ABC):
         Raises:
             UserNotFoundException: If user doesn't exist
         """
-        pass
 
     @abstractmethod
     async def get_user_roles(self, user_id: str) -> Set[UserRole]:
@@ -91,7 +87,6 @@ class IAuthorizationPort(ABC):
         Raises:
             UserNotFoundException: If user doesn't exist
         """
-        pass
 
     @abstractmethod
     async def assign_role(self, user_id: str, role: UserRole, assigned_by: str) -> bool:
@@ -116,7 +111,6 @@ class IAuthorizationPort(ABC):
             InsufficientPermissionsException: If assigned_by lacks permissions
             InvalidRoleCombinationException: If role combination is invalid
         """
-        pass
 
     @abstractmethod
     async def revoke_role(self, user_id: str, role: UserRole, revoked_by: str) -> bool:
@@ -141,7 +135,6 @@ class IAuthorizationPort(ABC):
             InsufficientPermissionsException: If revoked_by lacks permissions
             LastRoleException: If this would remove the user's last role
         """
-        pass
 
     @abstractmethod
     async def update_user_roles(
@@ -170,7 +163,6 @@ class IAuthorizationPort(ABC):
             InvalidRoleCombinationException: If role combination is invalid
             EmptyRolesException: If new_roles is empty
         """
-        pass
 
     @abstractmethod
     async def can_access_resource(
@@ -196,7 +188,6 @@ class IAuthorizationPort(ABC):
         Raises:
             UserNotFoundException: If user doesn't exist
         """
-        pass
 
     @abstractmethod
     async def get_accessible_resources(
@@ -216,7 +207,6 @@ class IAuthorizationPort(ABC):
         Raises:
             UserNotFoundException: If user doesn't exist
         """
-        pass
 
     @abstractmethod
     async def create_permission_context(self, user_id: str) -> dict:
@@ -235,7 +225,6 @@ class IAuthorizationPort(ABC):
         Raises:
             UserNotFoundException: If user doesn't exist
         """
-        pass
 
     @abstractmethod
     async def validate_role_hierarchy(self, roles: Set[UserRole]) -> bool:
@@ -252,7 +241,6 @@ class IAuthorizationPort(ABC):
         Returns:
             True if role combination is valid, False otherwise
         """
-        pass
 
     @abstractmethod
     async def get_role_permissions(self, role: UserRole) -> Set[Permission]:
@@ -265,7 +253,6 @@ class IAuthorizationPort(ABC):
         Returns:
             Set of permissions for the role
         """
-        pass
 
     @abstractmethod
     async def audit_permission_check(
@@ -280,4 +267,3 @@ class IAuthorizationPort(ABC):
             granted: Whether the permission was granted
             context: Additional context about the check
         """
-        pass

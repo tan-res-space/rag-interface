@@ -6,10 +6,10 @@ This service is stateless and contains pure business logic.
 """
 
 import re
-from datetime import datetime, timedelta
-from typing import List, Optional
+from datetime import datetime
+from typing import List
 
-from ..entities.user import Permission, User, UserRole, UserStatus
+from ..entities.user import Permission, User, UserRole
 
 
 class UserValidationService:

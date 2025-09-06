@@ -11,33 +11,8 @@ from enum import Enum
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-
-class SeverityLevel(str, Enum):
-    """Enumeration for error severity levels"""
-
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-    CRITICAL = "critical"
-
-
-class ErrorStatus(str, Enum):
-    """Enumeration for error report status"""
-
-    SUBMITTED = "submitted"
-    PROCESSING = "processing"
-    RECTIFIED = "rectified"
-    VERIFIED = "verified"
-    REJECTED = "rejected"
-
-
-class BucketType(str, Enum):
-    """Quality-based speaker bucket types"""
-
-    NO_TOUCH = "no_touch"
-    LOW_TOUCH = "low_touch"
-    MEDIUM_TOUCH = "medium_touch"
-    HIGH_TOUCH = "high_touch"
+# Import shared enums from shared components
+from src.shared.domain.value_objects import BucketType, ErrorStatus, SeverityLevel
 
 
 class AudioQuality(str, Enum):

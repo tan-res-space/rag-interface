@@ -6,10 +6,9 @@ to increase infrastructure layer test coverage.
 """
 
 import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import patch
 from uuid import uuid4
 from fastapi.testclient import TestClient
-from fastapi import HTTPException
 
 from src.rag_integration_service.infrastructure.adapters.http.controllers import router
 

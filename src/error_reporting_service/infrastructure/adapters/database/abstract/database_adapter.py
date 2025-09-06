@@ -35,7 +35,6 @@ class IDatabaseAdapter(ABC):
         Raises:
             DatabaseError: If the save operation fails
         """
-        pass
 
     @abstractmethod
     async def find_error_by_id(self, error_id: UUID) -> Optional[ErrorReport]:
@@ -51,7 +50,6 @@ class IDatabaseAdapter(ABC):
         Raises:
             DatabaseError: If the find operation fails
         """
-        pass
 
     @abstractmethod
     async def find_errors_by_speaker(
@@ -70,7 +68,6 @@ class IDatabaseAdapter(ABC):
         Raises:
             DatabaseError: If the find operation fails
         """
-        pass
 
     @abstractmethod
     async def find_errors_by_job(
@@ -89,7 +86,6 @@ class IDatabaseAdapter(ABC):
         Raises:
             DatabaseError: If the find operation fails
         """
-        pass
 
     @abstractmethod
     async def update_error_report(
@@ -109,7 +105,6 @@ class IDatabaseAdapter(ABC):
             DatabaseError: If the update operation fails
             NotFoundError: If the error report is not found
         """
-        pass
 
     @abstractmethod
     async def delete_error_report(self, error_id: UUID) -> bool:
@@ -125,7 +120,6 @@ class IDatabaseAdapter(ABC):
         Raises:
             DatabaseError: If the delete operation fails
         """
-        pass
 
     @abstractmethod
     async def search_errors(self, query: Dict[str, Any]) -> List[ErrorReport]:
@@ -141,7 +135,6 @@ class IDatabaseAdapter(ABC):
         Raises:
             DatabaseError: If the search operation fails
         """
-        pass
 
     @abstractmethod
     async def begin_transaction(self) -> Any:
@@ -154,7 +147,6 @@ class IDatabaseAdapter(ABC):
         Raises:
             DatabaseError: If transaction creation fails
         """
-        pass
 
     @abstractmethod
     async def commit_transaction(self, transaction: Any) -> None:
@@ -167,7 +159,6 @@ class IDatabaseAdapter(ABC):
         Raises:
             DatabaseError: If commit fails
         """
-        pass
 
     @abstractmethod
     async def rollback_transaction(self, transaction: Any) -> None:
@@ -180,7 +171,6 @@ class IDatabaseAdapter(ABC):
         Raises:
             DatabaseError: If rollback fails
         """
-        pass
 
     @abstractmethod
     async def health_check(self) -> bool:
@@ -190,7 +180,6 @@ class IDatabaseAdapter(ABC):
         Returns:
             True if database is healthy, False otherwise
         """
-        pass
 
     @abstractmethod
     async def get_connection_info(self) -> Dict[str, Any]:
@@ -200,4 +189,3 @@ class IDatabaseAdapter(ABC):
         Returns:
             Dictionary containing connection information
         """
-        pass

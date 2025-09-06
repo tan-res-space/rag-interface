@@ -1,0 +1,1738 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>RAG_Interface_System_Complete_Reference.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="rag-interface-system---complete-project-reference">RAG Interface System - Complete Project Reference</h1>
+<p><strong>Document Version:</strong> 2.0<br>
+<strong>Date:</strong> September 6, 2025<br>
+<strong>Status:</strong> Comprehensive Reference<br>
+<strong>Technology Stack:</strong> Python + FastAPI + PostgreSQL + Vector Database + Redis + React + TypeScript<br>
+<strong>Architecture Pattern:</strong> Hexagonal Architecture (Ports and Adapters) + SOLID Principles + TDD</p>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-executive-summary">Executive Summary</a></li>
+<li><a href="#2-system-architecture-overview">System Architecture Overview</a></li>
+<li><a href="#3-service-architecture-details">Service Architecture Details</a></li>
+<li><a href="#4-api-documentation">API Documentation</a></li>
+<li><a href="#5-frontend-architecture">Frontend Architecture</a></li>
+<li><a href="#6-development-guidelines">Development Guidelines</a></li>
+<li><a href="#7-deployment--operations">Deployment &amp; Operations</a></li>
+<li><a href="#8-user-guides">User Guides</a></li>
+<li><a href="#9-quality-assurance">Quality Assurance</a></li>
+<li><a href="#10-reference-materials">Reference Materials</a></li>
+</ol>
+<hr>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<h3 id="11-project-overview">1.1 Project Overview</h3>
+<p>The RAG Interface System is a comprehensive ASR (Automatic Speech Recognition) Error Reporting and Quality Management platform designed to improve transcription accuracy through systematic error tracking, speaker bucket management, and AI-powered correction suggestions.</p>
+<p><strong>Key Capabilities:</strong></p>
+<ul>
+<li>🎯 <strong>Error Reporting</strong>: Comprehensive error tracking and categorization</li>
+<li>🔄 <strong>Speaker Bucket Management</strong>: Quality-based speaker classification system</li>
+<li>🤖 <strong>RAG Integration</strong>: AI-powered correction suggestions using Retrieval-Augmented Generation</li>
+<li>✅ <strong>Quality Verification</strong>: MT validation workflows and quality assurance</li>
+<li>📊 <strong>Analytics</strong>: Performance monitoring and improvement tracking</li>
+</ul>
+<h3 id="12-business-value">1.2 Business Value</h3>
+<ul>
+<li><strong>Quality Improvement</strong>: Systematic error tracking leads to 25-40% reduction in transcription errors</li>
+<li><strong>Resource Optimization</strong>: Efficient allocation of MT resources based on speaker quality levels</li>
+<li><strong>Cost Reduction</strong>: Automated correction suggestions reduce manual review time by 30-50%</li>
+<li><strong>Compliance</strong>: Comprehensive audit trails for regulatory requirements</li>
+<li><strong>Scalability</strong>: Microservices architecture supports enterprise-scale deployments</li>
+</ul>
+<h3 id="13-technology-stack">1.3 Technology Stack</h3>
+<pre><code class="language-mermaid"><div class="mermaid">graph TB
+    subgraph "Frontend Layer"
+        A[React + TypeScript]
+        B[Vite Build System]
+        C[React Query]
+    end
+    
+    subgraph "Backend Services"
+        D[API Gateway - FastAPI]
+        E[Error Reporting Service]
+        F[RAG Integration Service]
+        G[Verification Service]
+        H[User Management Service]
+        I[Correction Engine Service]
+    end
+    
+    subgraph "Data Layer"
+        J[PostgreSQL]
+        K[Vector Database]
+        L[Redis Cache]
+        M[Message Queue]
+    end
+    
+    A --> D
+    D --> E
+    D --> F
+    D --> G
+    D --> H
+    D --> I
+    E --> J
+    F --> K
+    G --> J
+    H --> J
+    I --> J
+    E --> L
+    F --> M
+</div></code></pre>
+<hr>
+<h2 id="2-system-architecture-overview">2. System Architecture Overview</h2>
+<h3 id="21-hexagonal-architecture-pattern">2.1 Hexagonal Architecture Pattern</h3>
+<p>The system follows <strong>Hexagonal Architecture (Ports and Adapters)</strong> combined with <strong>SOLID Principles</strong> and <strong>Test-Driven Development (TDD)</strong>:</p>
+<pre><code class="language-mermaid"><div class="mermaid">graph TB
+    subgraph "Domain Layer (Core Business Logic)"
+        A[Entities]
+        B[Value Objects]
+        C[Domain Services]
+        D[Use Cases]
+    end
+    
+    subgraph "Application Layer"
+        E[Application Services]
+        F[Ports/Interfaces]
+    end
+    
+    subgraph "Infrastructure Layer"
+        G[Database Adapters]
+        H[External API Adapters]
+        I[Message Queue Adapters]
+        J[Cache Adapters]
+    end
+    
+    subgraph "Presentation Layer"
+        K[REST API Controllers]
+        L[GraphQL Resolvers]
+        M[Event Handlers]
+    end
+    
+    D --> F
+    F --> G
+    F --> H
+    F --> I
+    F --> J
+    K --> E
+    L --> E
+    M --> E
+    E --> D
+</div></code></pre>
+<h3 id="22-service-architecture">2.2 Service Architecture</h3>
+<p><strong>Five Core Microservices:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Port</th>
+<th>Responsibility</th>
+<th>Technology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>API Gateway</strong></td>
+<td>8000</td>
+<td>Request routing, authentication, rate limiting</td>
+<td>FastAPI + Redis</td>
+</tr>
+<tr>
+<td><strong>Error Reporting Service</strong></td>
+<td>8003</td>
+<td>Error tracking, categorization, reporting</td>
+<td>FastAPI + PostgreSQL</td>
+</tr>
+<tr>
+<td><strong>RAG Integration Service</strong></td>
+<td>8002</td>
+<td>AI corrections, vector search, ML processing</td>
+<td>FastAPI + Vector DB</td>
+</tr>
+<tr>
+<td><strong>Verification Service</strong></td>
+<td>8001</td>
+<td>Quality assurance, MT validation workflows</td>
+<td>FastAPI + PostgreSQL</td>
+</tr>
+<tr>
+<td><strong>User Management Service</strong></td>
+<td>8004</td>
+<td>Authentication, authorization, speaker management</td>
+<td>FastAPI + PostgreSQL</td>
+</tr>
+<tr>
+<td><strong>Correction Engine Service</strong></td>
+<td>8005</td>
+<td>Correction algorithms, quality scoring</td>
+<td>FastAPI + PostgreSQL</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-complete-system-architecture-diagram">2.3 Complete System Architecture Diagram</h3>
+<pre><code class="language-mermaid"><div class="mermaid">graph TB
+    subgraph "Frontend Layer"
+        ERROR_UI[Error Reporting UI<br/>React/TypeScript]
+        VERIFY_UI[Verification Dashboard<br/>React/TypeScript]
+        ADMIN_UI[Admin Dashboard<br/>React/TypeScript]
+    end
+
+    subgraph "API Gateway Layer"
+        API_GW[API Gateway<br/>Rate Limiting<br/>Authentication<br/>Request Routing]
+    end
+
+    subgraph "Microservices Layer"
+        UMS[User Management Service<br/>Authentication & Authorization]
+        ERS[Error Reporting Service<br/>Error Processing & Validation]
+        RIS[RAG Integration Service<br/>Vector Processing & ML]
+        CES[Correction Engine Service<br/>Real-time Corrections]
+        VS[Verification Service<br/>Analytics & Quality Assurance]
+    end
+
+    subgraph "Data Layer"
+        POSTGRES[(PostgreSQL<br/>Relational Data)]
+        VECTOR_DB[(Vector Database<br/>Embeddings & Patterns)]
+        REDIS[(Redis<br/>Cache & Sessions)]
+        KAFKA[(Kafka<br/>Event Streaming)]
+    end
+
+    subgraph "External Systems"
+        ASR_SYS[ASR Processing Pipeline]
+        INSTANOTE[InstaNote Database]
+        OAUTH[OAuth Providers]
+        EMAIL[Email Service]
+    end
+
+    %% Frontend to Gateway
+    ERROR_UI --> API_GW
+    VERIFY_UI --> API_GW
+    ADMIN_UI --> API_GW
+
+    %% Gateway to Services
+    API_GW --> UMS
+    API_GW --> ERS
+    API_GW --> RIS
+    API_GW --> CES
+    API_GW --> VS
+
+    %% Service Interactions
+    ERS --> RIS
+    ERS --> VS
+    RIS --> CES
+    VS --> UMS
+    CES --> RIS
+
+    %% Data Connections
+    UMS --> POSTGRES
+    ERS --> POSTGRES
+    VS --> POSTGRES
+    RIS --> VECTOR_DB
+    CES --> REDIS
+
+    %% Event Streaming
+    ERS --> KAFKA
+    RIS --> KAFKA
+    CES --> KAFKA
+    VS --> KAFKA
+
+    %% External Integrations
+    UMS --> OAUTH
+    VS --> INSTANOTE
+    CES --> ASR_SYS
+    VS --> EMAIL
+</div></code></pre>
+<h3 id="24-error-processing-data-flow">2.4 Error Processing Data Flow</h3>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart TD
+    START([QA Personnel Identifies Error])
+
+    SUBMIT[Submit Error Report<br/>via Error Reporting UI]
+    VALIDATE[Validate Error Data<br/>in Error Reporting Service]
+    STORE[Store Error Report<br/>in PostgreSQL]
+    VECTORIZE[Generate Embeddings<br/>in RAG Integration Service]
+    PATTERN[Store Pattern<br/>in Vector Database]
+    PUBLISH[Publish Error Event<br/>to Kafka]
+
+    PATTERN_EVENT[Pattern Learning Event]
+    CES_CONSUME[Correction Engine<br/>Consumes Event]
+    UPDATE_CACHE[Update Speaker Patterns<br/>in Redis Cache]
+
+    VERIFY_TRIGGER[Trigger Verification<br/>Workflow]
+    INSTANOTE_PULL[Pull Related Jobs<br/>from InstaNote]
+    QUALITY_CHECK[Quality Assurance<br/>Validation]
+
+    FEEDBACK[Generate Feedback<br/>for QA Personnel]
+
+    START --> SUBMIT
+    SUBMIT --> VALIDATE
+    VALIDATE --> STORE
+    STORE --> VECTORIZE
+    VECTORIZE --> PATTERN
+    PATTERN --> PUBLISH
+
+    PUBLISH --> PATTERN_EVENT
+    PATTERN_EVENT --> CES_CONSUME
+    CES_CONSUME --> UPDATE_CACHE
+
+    STORE --> VERIFY_TRIGGER
+    VERIFY_TRIGGER --> INSTANOTE_PULL
+    INSTANOTE_PULL --> QUALITY_CHECK
+    QUALITY_CHECK --> FEEDBACK
+</div></code></pre>
+<h3 id="25-real-time-correction-flow">2.5 Real-time Correction Flow</h3>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant ASR as ASR System
+    participant CES as Correction Engine
+    participant CACHE as Redis Cache
+    participant RIS as RAG Integration
+    participant DB as PostgreSQL
+    participant VS as Verification
+
+    ASR->>CES: New Draft Text
+    CES->>CACHE: Check Speaker Patterns
+
+    alt Cache Hit
+        CACHE-->>CES: Return Cached Patterns
+    else Cache Miss
+        CES->>RIS: Request Pattern Analysis
+        RIS->>DB: Query Historical Data
+        DB-->>RIS: Return Error Patterns
+        RIS-->>CES: Return Analysis
+        CES->>CACHE: Cache Results
+    end
+
+    CES->>CES: Apply Corrections
+    CES->>VS: Log Correction Applied
+    CES-->>ASR: Return Corrected Text
+
+    Note over ASR,VS: Correction completed in < 5 seconds
+</div></code></pre>
+<hr>
+<h2 id="3-service-architecture-details">3. Service Architecture Details</h2>
+<h3 id="31-error-reporting-service-ers">3.1 Error Reporting Service (ERS)</h3>
+<p><strong>Purpose</strong>: Core error tracking and management functionality</p>
+<p><strong>Key Components:</strong></p>
+<ul>
+<li><strong>Error Report Entity</strong>: Comprehensive error data model</li>
+<li><strong>Speaker Profile Management</strong>: Quality-based bucket classification</li>
+<li><strong>Error Categorization</strong>: Systematic error type classification</li>
+<li><strong>Audit Trail</strong>: Complete change history tracking</li>
+</ul>
+<p><strong>Domain Model:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-meta">@dataclass</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorReport</span>:</span>
+    error_id: UUID
+    job_id: UUID
+    speaker_id: UUID
+    reported_by: UUID
+    original_text: str
+    corrected_text: str
+    error_categories: List[str]
+    severity_level: SeverityLevel
+    confidence_score: float
+    status: ErrorStatus
+    created_at: datetime
+    metadata: Dict[str, Any]
+</div></code></pre>
+<p><strong>Bucket Classification System:</strong></p>
+<ul>
+<li>🏆 <strong>Expert</strong>: Highest quality, minimal intervention needed</li>
+<li>🌟 <strong>Advanced</strong>: High quality, occasional corrections</li>
+<li>⚡ <strong>Intermediate</strong>: Moderate quality, regular corrections needed</li>
+<li>🔧 <strong>Beginner</strong>: Lower quality, significant intervention required</li>
+</ul>
+<h3 id="32-rag-integration-service-ris">3.2 RAG Integration Service (RIS)</h3>
+<p><strong>Purpose</strong>: AI-powered correction suggestions using Retrieval-Augmented Generation</p>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li><strong>Vector Search</strong>: Semantic similarity matching for error patterns</li>
+<li><strong>Context-Aware Corrections</strong>: Speaker-specific correction suggestions</li>
+<li><strong>Learning Pipeline</strong>: Continuous improvement from validated corrections</li>
+<li><strong>Multi-Model Support</strong>: Integration with various LLM providers</li>
+</ul>
+<p><strong>RAG Pipeline:</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">graph LR
+    A[Error Text] --> B[Text Preprocessing]
+    B --> C[Vector Embedding]
+    C --> D[Similarity Search]
+    D --> E[Context Retrieval]
+    E --> F[LLM Generation]
+    F --> G[Correction Suggestions]
+    G --> H[Confidence Scoring]
+</div></code></pre>
+<h3 id="33-verification-service-vs">3.3 Verification Service (VS)</h3>
+<p><strong>Purpose</strong>: Quality assurance and MT validation workflows</p>
+<p><strong>Key Workflows:</strong></p>
+<ul>
+<li><strong>SER Calculation</strong>: Sentence Error Rate computation</li>
+<li><strong>MT Validation</strong>: Medical Transcriptionist review process</li>
+<li><strong>Quality Metrics</strong>: Performance tracking and analytics</li>
+<li><strong>Feedback Loop</strong>: Continuous improvement integration</li>
+</ul>
+<h3 id="34-user-management-service-ums">3.4 User Management Service (UMS)</h3>
+<p><strong>Purpose</strong>: Authentication, authorization, and user profile management</p>
+<p><strong>Features:</strong></p>
+<ul>
+<li><strong>JWT Authentication</strong>: Secure token-based authentication</li>
+<li><strong>Role-Based Access Control</strong>: Granular permission management</li>
+<li><strong>Speaker Profile Management</strong>: Comprehensive speaker data</li>
+<li><strong>Bucket Progression</strong>: Automated quality-based progression</li>
+</ul>
+<h3 id="35-correction-engine-service-ces">3.5 Correction Engine Service (CES)</h3>
+<p><strong>Purpose</strong>: Advanced correction algorithms and quality scoring</p>
+<p><strong>Capabilities:</strong></p>
+<ul>
+<li><strong>Multi-Algorithm Support</strong>: Various correction strategies</li>
+<li><strong>Quality Scoring</strong>: Comprehensive correction quality assessment</li>
+<li><strong>Pattern Recognition</strong>: Error pattern identification and learning</li>
+<li><strong>Performance Optimization</strong>: Efficient correction processing</li>
+</ul>
+<hr>
+<h2 id="4-api-documentation">4. API Documentation</h2>
+<h3 id="41-error-reporting-api">4.1 Error Reporting API</h3>
+<p><strong>Base URL</strong>: <code>http://localhost:8000/api/v1/errors</code></p>
+<p><strong>Key Endpoints:</strong></p>
+<h4 id="post-apiv1errors">POST /api/v1/errors</h4>
+<p>Create a new error report with comprehensive validation and processing.</p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"job_id"</span>: <span class="hljs-string">"uuid"</span>,
+  <span class="hljs-attr">"speaker_id"</span>: <span class="hljs-string">"uuid"</span>, 
+  <span class="hljs-attr">"original_text"</span>: <span class="hljs-string">"The patient has chest pain"</span>,
+  <span class="hljs-attr">"corrected_text"</span>: <span class="hljs-string">"The patient has chest pain and shortness of breath"</span>,
+  <span class="hljs-attr">"error_categories"</span>: [<span class="hljs-string">"medical_terminology"</span>, <span class="hljs-string">"clinical_context"</span>],
+  <span class="hljs-attr">"severity_level"</span>: <span class="hljs-string">"medium"</span>,
+  <span class="hljs-attr">"confidence_score"</span>: <span class="hljs-number">0.85</span>,
+  <span class="hljs-attr">"metadata"</span>: {
+    <span class="hljs-attr">"note_type"</span>: <span class="hljs-string">"progress_note"</span>,
+    <span class="hljs-attr">"specialty"</span>: <span class="hljs-string">"cardiology"</span>
+  }
+}
+</div></code></pre>
+<h4 id="get-apiv1errorserrorid">GET /api/v1/errors/{error_id}</h4>
+<p>Retrieve detailed error report information.</p>
+<h4 id="get-apiv1errorsspeakerspeakerid">GET /api/v1/errors/speaker/{speaker_id}</h4>
+<p>Get all error reports for a specific speaker with filtering options.</p>
+<h3 id="42-speaker-bucket-management-api">4.2 Speaker Bucket Management API</h3>
+<p><strong>Base URL</strong>: <code>http://localhost:8000/api/v1/speakers</code></p>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Quality-based speaker classification</li>
+<li>Automated bucket progression</li>
+<li>Performance analytics</li>
+<li>Comprehensive speaker profiles</li>
+</ul>
+<h4 id="get-apiv1speakersspeakeridprofile">GET /api/v1/speakers/{speaker_id}/profile</h4>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"speaker_id"</span>: <span class="hljs-string">"uuid"</span>,
+  <span class="hljs-attr">"current_bucket"</span>: <span class="hljs-string">"intermediate"</span>,
+  <span class="hljs-attr">"bucket_info"</span>: {
+    <span class="hljs-attr">"label"</span>: <span class="hljs-string">"Intermediate"</span>,
+    <span class="hljs-attr">"description"</span>: <span class="hljs-string">"Developing speaker with moderate experience"</span>,
+    <span class="hljs-attr">"color"</span>: <span class="hljs-string">"#ff9800"</span>,
+    <span class="hljs-attr">"icon"</span>: <span class="hljs-string">"🌿"</span>,
+    <span class="hljs-attr">"level"</span>: <span class="hljs-number">1</span>
+  },
+  <span class="hljs-attr">"statistics"</span>: {
+    <span class="hljs-attr">"total_reports"</span>: <span class="hljs-number">25</span>,
+    <span class="hljs-attr">"average_error_rate"</span>: <span class="hljs-number">0.08</span>,
+    <span class="hljs-attr">"average_correction_accuracy"</span>: <span class="hljs-number">0.82</span>,
+    <span class="hljs-attr">"days_in_current_bucket"</span>: <span class="hljs-number">15</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h2 id="5-frontend-architecture">5. Frontend Architecture</h2>
+<h3 id="51-technology-stack">5.1 Technology Stack</h3>
+<ul>
+<li><strong>Framework</strong>: React 18 with TypeScript</li>
+<li><strong>Build Tool</strong>: Vite for fast development and optimized builds</li>
+<li><strong>State Management</strong>: React Query for server state, Context API for client state</li>
+<li><strong>Styling</strong>: Tailwind CSS with custom component library</li>
+<li><strong>Testing</strong>: Vitest + React Testing Library + Playwright E2E</li>
+</ul>
+<h3 id="52-component-architecture">5.2 Component Architecture</h3>
+<pre><code class="language-mermaid"><div class="mermaid">graph TB
+    subgraph "Application Layer"
+        A[App.tsx]
+        B[Router Configuration]
+        C[Global State Providers]
+    end
+    
+    subgraph "Feature Modules"
+        D[Error Reporting Module]
+        E[Speaker Management Module]
+        F[Analytics Module]
+        G[User Management Module]
+    end
+    
+    subgraph "Shared Components"
+        H[UI Component Library]
+        I[Form Components]
+        J[Data Visualization]
+        K[Navigation Components]
+    end
+    
+    subgraph "Services Layer"
+        L[API Client]
+        M[Authentication Service]
+        N[Notification Service]
+        O[Cache Management]
+    end
+    
+    A --> B
+    A --> C
+    B --> D
+    B --> E
+    B --> F
+    B --> G
+    D --> H
+    E --> H
+    F --> J
+    G --> I
+    D --> L
+    E --> L
+    F --> L
+    G --> M
+</div></code></pre>
+<h3 id="53-key-user-interfaces">5.3 Key User Interfaces</h3>
+<h4 id="error-reporting-interface">Error Reporting Interface</h4>
+<ul>
+<li><strong>Intuitive Form Design</strong>: Step-by-step error reporting workflow</li>
+<li><strong>Real-time Validation</strong>: Immediate feedback on form inputs</li>
+<li><strong>Speaker Bucket Display</strong>: Current speaker quality level indication</li>
+<li><strong>Correction Suggestions</strong>: AI-powered correction recommendations</li>
+</ul>
+<h4 id="speaker-management-dashboard">Speaker Management Dashboard</h4>
+<ul>
+<li><strong>Bucket Progression Visualization</strong>: Clear progression indicators</li>
+<li><strong>Performance Analytics</strong>: Comprehensive performance metrics</li>
+<li><strong>Historical Tracking</strong>: Complete progression history</li>
+<li><strong>Manual Override Controls</strong>: Administrative bucket management</li>
+</ul>
+<h4 id="analytics-dashboard">Analytics Dashboard</h4>
+<ul>
+<li><strong>Real-time Metrics</strong>: Live system performance indicators</li>
+<li><strong>Trend Analysis</strong>: Historical performance trends</li>
+<li><strong>Quality Insights</strong>: Error pattern analysis</li>
+<li><strong>Export Capabilities</strong>: Data export for reporting</li>
+</ul>
+<hr>
+<h2 id="6-development-guidelines">6. Development Guidelines</h2>
+<h3 id="61-solid-principles-implementation">6.1 SOLID Principles Implementation</h3>
+<p><strong>Single Responsibility Principle (SRP)</strong></p>
+<ul>
+<li>Each service has one well-defined responsibility</li>
+<li>Domain entities focus solely on business logic</li>
+<li>Adapters handle only infrastructure concerns</li>
+</ul>
+<p><strong>Open/Closed Principle (OCP)</strong></p>
+<ul>
+<li>Services extensible through new adapters</li>
+<li>New error categories added without modifying existing logic</li>
+<li>ML models swappable through adapter interfaces</li>
+</ul>
+<p><strong>Liskov Substitution Principle (LSP)</strong></p>
+<ul>
+<li>All adapter implementations fully substitutable</li>
+<li>Database adapters (PostgreSQL, MongoDB) interchangeable</li>
+<li>Authentication providers substitutable</li>
+</ul>
+<p><strong>Interface Segregation Principle (ISP)</strong></p>
+<ul>
+<li>Focused, specific port interfaces</li>
+<li>Clients depend only on methods they use</li>
+<li>Separate interfaces for read vs. write operations</li>
+</ul>
+<p><strong>Dependency Inversion Principle (DIP)</strong></p>
+<ul>
+<li>High-level modules independent of low-level modules</li>
+<li>Both depend on abstractions (ports/interfaces)</li>
+<li>Concrete implementations injected at runtime</li>
+</ul>
+<h3 id="62-test-driven-development-tdd">6.2 Test-Driven Development (TDD)</h3>
+<p><strong>Mandatory TDD Cycle:</strong></p>
+<ol>
+<li><strong>Red</strong>: Write failing test defining desired behavior</li>
+<li><strong>Green</strong>: Write minimal code to make test pass</li>
+<li><strong>Refactor</strong>: Improve code while maintaining test coverage</li>
+</ol>
+<p><strong>Coverage Requirements:</strong></p>
+<ul>
+<li><strong>70% Unit Tests</strong>: Domain logic and business rules</li>
+<li><strong>20% Integration Tests</strong>: Service interactions</li>
+<li><strong>10% E2E Tests</strong>: Complete user workflows</li>
+</ul>
+<p><strong>Example TDD Implementation:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 1. RED - Write failing test first</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test_error_report_creation</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-comment"># Arrange</span>
+    error_data = {
+        <span class="hljs-string">"original_text"</span>: <span class="hljs-string">"The patient has chest pain"</span>,
+        <span class="hljs-string">"corrected_text"</span>: <span class="hljs-string">"The patient has chest pain and dyspnea"</span>,
+        <span class="hljs-string">"speaker_id"</span>: <span class="hljs-string">"speaker-123"</span>,
+        <span class="hljs-string">"error_categories"</span>: [<span class="hljs-string">"medical_terminology"</span>]
+    }
+
+    <span class="hljs-comment"># Act &amp; Assert</span>
+    <span class="hljs-keyword">with</span> pytest.raises(ValidationError):
+        ErrorReport.create(error_data)  <span class="hljs-comment"># Should fail initially</span>
+
+<span class="hljs-comment"># 2. GREEN - Implement minimal code to pass</span>
+<span class="hljs-meta">@dataclass</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorReport</span>:</span>
+    original_text: str
+    corrected_text: str
+    speaker_id: str
+    error_categories: List[str]
+
+<span class="hljs-meta">    @classmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span><span class="hljs-params">(cls, data: Dict[str, Any])</span> -&gt; 'ErrorReport':</span>
+        <span class="hljs-comment"># Minimal validation</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> data.get(<span class="hljs-string">"original_text"</span>):
+            <span class="hljs-keyword">raise</span> ValidationError(<span class="hljs-string">"Original text required"</span>)
+        <span class="hljs-keyword">return</span> cls(**data)
+
+<span class="hljs-comment"># 3. REFACTOR - Improve while maintaining tests</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorReport</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__post_init__</span><span class="hljs-params">(self)</span>:</span>
+        self._validate_text_content()
+        self._validate_speaker_exists()
+        self._validate_error_categories()
+</div></code></pre>
+<h3 id="63-code-quality-standards">6.3 Code Quality Standards</h3>
+<p><strong>Hexagonal Architecture Implementation:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Domain Layer - Pure business logic</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorReportEntity</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, original_text: str, corrected_text: str)</span>:</span>
+        self.original_text = original_text
+        self.corrected_text = corrected_text
+        self.confidence_score = self._calculate_confidence()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_calculate_confidence</span><span class="hljs-params">(self)</span> -&gt; float:</span>
+        <span class="hljs-comment"># Pure business logic - no dependencies</span>
+        <span class="hljs-keyword">return</span> calculate_text_similarity(self.original_text, self.corrected_text)
+
+<span class="hljs-comment"># Application Layer - Use cases and ports</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorReportingUseCase</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, repository: ErrorRepositoryPort)</span>:</span>
+        self._repository = repository
+
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_error_report</span><span class="hljs-params">(self, command: CreateErrorReportCommand)</span> -&gt; ErrorReport:</span>
+        error_report = ErrorReportEntity(command.original_text, command.corrected_text)
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> self._repository.save(error_report)
+
+<span class="hljs-comment"># Infrastructure Layer - Adapters</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PostgreSQLErrorRepository</span><span class="hljs-params">(ErrorRepositoryPort)</span>:</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">save</span><span class="hljs-params">(self, error_report: ErrorReportEntity)</span> -&gt; ErrorReport:</span>
+        <span class="hljs-comment"># Database-specific implementation</span>
+        <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> self.db_session() <span class="hljs-keyword">as</span> session:
+            db_record = ErrorReportModel.from_entity(error_report)
+            session.add(db_record)
+            <span class="hljs-keyword">await</span> session.commit()
+            <span class="hljs-keyword">return</span> db_record.to_entity()
+</div></code></pre>
+<p><strong>Code Organization:</strong></p>
+<pre class="hljs"><code><div>src/
+├── error_reporting_service/
+│   ├── domain/
+│   │   ├── entities/
+│   │   │   ├── error_report.py
+│   │   │   └── speaker_profile.py
+│   │   ├── value_objects/
+│   │   │   ├── bucket_type.py
+│   │   │   └── speaker_metrics.py
+│   │   └── services/
+│   │       └── bucket_progression_service.py
+│   ├── application/
+│   │   ├── use_cases/
+│   │   │   ├── create_error_report.py
+│   │   │   └── evaluate_bucket_progression.py
+│   │   └── ports/
+│   │       ├── error_repository_port.py
+│   │       └── notification_port.py
+│   ├── infrastructure/
+│   │   ├── adapters/
+│   │   │   ├── database/
+│   │   │   │   └── postgresql_error_repository.py
+│   │   │   └── messaging/
+│   │   │       └── kafka_event_publisher.py
+│   │   └── config/
+│   │       └── settings.py
+│   └── presentation/
+│       └── api/
+│           ├── error_reporting_controller.py
+│           └── speaker_management_controller.py
+</div></code></pre>
+<p><strong>Quality Gates:</strong></p>
+<ul>
+<li>All code must pass linting (flake8, mypy)</li>
+<li>100% test coverage for domain logic</li>
+<li>Security scanning (bandit)</li>
+<li>Performance benchmarks</li>
+<li>Code review approval required</li>
+</ul>
+<p><strong>Example Quality Checks:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Linting and type checking</span>
+flake8 src/ tests/ --max-line-length=88
+mypy src/ --strict
+
+<span class="hljs-comment"># Security scanning</span>
+bandit -r src/ -f json
+
+<span class="hljs-comment"># Test coverage</span>
+pytest --cov=src --cov-report=html --cov-fail-under=90
+
+<span class="hljs-comment"># Performance testing</span>
+pytest tests/performance/ --benchmark-only
+</div></code></pre>
+<hr>
+<h2 id="7-deployment--operations">7. Deployment &amp; Operations</h2>
+<h3 id="71-container-architecture">7.1 Container Architecture</h3>
+<p><strong>Podman-based Deployment:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># podman-compose.dev.yml</span>
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">api-gateway:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">rag-interface/api-gateway:latest</span>
+    <span class="hljs-attr">ports:</span> <span class="hljs-string">["8000:8000"]</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">DATABASE_URL=postgresql://...</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_URL=redis://...</span>
+  
+  <span class="hljs-attr">error-reporting-service:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">rag-interface/error-reporting:latest</span>
+    <span class="hljs-attr">ports:</span> <span class="hljs-string">["8003:8003"]</span>
+    <span class="hljs-attr">depends_on:</span> <span class="hljs-string">[postgres,</span> <span class="hljs-string">redis]</span>
+  
+  <span class="hljs-attr">postgres:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">postgres:15</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-attr">POSTGRES_DB:</span> <span class="hljs-string">rag_interface</span>
+      <span class="hljs-attr">POSTGRES_USER:</span> <span class="hljs-string">rag_user</span>
+      <span class="hljs-attr">POSTGRES_PASSWORD:</span> <span class="hljs-string">secure_password</span>
+  
+  <span class="hljs-attr">redis:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">redis:7-alpine</span>
+    <span class="hljs-attr">ports:</span> <span class="hljs-string">["6379:6379"]</span>
+</div></code></pre>
+<h3 id="72-environment-configuration">7.2 Environment Configuration</h3>
+<p><strong>Development Environment Setup:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Complete development environment setup</span>
+./tools/scripts/dev-setup.sh
+
+<span class="hljs-comment"># This script performs:</span>
+<span class="hljs-comment"># - Python virtual environment creation</span>
+<span class="hljs-comment"># - Dependency installation (requirements.txt, requirements-dev.txt)</span>
+<span class="hljs-comment"># - Node.js dependencies installation</span>
+<span class="hljs-comment"># - Environment file configuration</span>
+<span class="hljs-comment"># - Pre-commit hooks installation</span>
+<span class="hljs-comment"># - Database initialization</span>
+
+<span class="hljs-comment"># Start all services</span>
+./tools/scripts/dev-start.sh
+
+<span class="hljs-comment"># Monitor logs in real-time</span>
+./tools/scripts/dev-logs.sh -f
+
+<span class="hljs-comment"># Run comprehensive tests</span>
+./tools/scripts/<span class="hljs-built_in">test</span>-all.sh
+
+<span class="hljs-comment"># Stop all services</span>
+./tools/scripts/dev-stop.sh
+</div></code></pre>
+<p><strong>Environment Variables:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Database Configuration</span>
+DATABASE_URL=postgresql://rag_user:password@localhost:5432/rag_interface
+REDIS_URL=redis://localhost:6379/0
+
+<span class="hljs-comment"># Vector Database</span>
+VECTOR_DB_URL=http://localhost:8080
+VECTOR_DB_API_KEY=your_api_key
+
+<span class="hljs-comment"># Authentication</span>
+JWT_SECRET_KEY=your_jwt_secret
+JWT_ALGORITHM=HS256
+JWT_EXPIRATION_HOURS=24
+
+<span class="hljs-comment"># External Services</span>
+INSTANOTE_API_URL=https://api.instanote.com
+INSTANOTE_API_KEY=your_instanote_key
+
+<span class="hljs-comment"># Monitoring</span>
+PROMETHEUS_ENABLED=<span class="hljs-literal">true</span>
+JAEGER_ENABLED=<span class="hljs-literal">true</span>
+LOG_LEVEL=INFO
+</div></code></pre>
+<p><strong>Production Deployment Architecture:</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">graph TB
+    subgraph "Load Balancer Layer"
+        LB[Load Balancer<br/>NGINX/HAProxy]
+    end
+
+    subgraph "Application Layer"
+        API1[API Gateway Instance 1]
+        API2[API Gateway Instance 2]
+        ERS1[Error Reporting Service 1]
+        ERS2[Error Reporting Service 2]
+        RIS1[RAG Integration Service 1]
+        RIS2[RAG Integration Service 2]
+    end
+
+    subgraph "Data Layer"
+        PG_PRIMARY[(PostgreSQL Primary)]
+        PG_REPLICA[(PostgreSQL Replica)]
+        REDIS_CLUSTER[(Redis Cluster)]
+        VECTOR_CLUSTER[(Vector DB Cluster)]
+    end
+
+    subgraph "Monitoring"
+        PROMETHEUS[Prometheus]
+        GRAFANA[Grafana]
+        JAEGER[Jaeger]
+        ELK[ELK Stack]
+    end
+
+    LB --> API1
+    LB --> API2
+    API1 --> ERS1
+    API1 --> RIS1
+    API2 --> ERS2
+    API2 --> RIS2
+
+    ERS1 --> PG_PRIMARY
+    ERS2 --> PG_REPLICA
+    RIS1 --> VECTOR_CLUSTER
+    RIS2 --> VECTOR_CLUSTER
+
+    API1 --> REDIS_CLUSTER
+    API2 --> REDIS_CLUSTER
+</div></code></pre>
+<p><strong>Kubernetes Deployment:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># deployment.yaml</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">error-reporting-service</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">replicas:</span> <span class="hljs-number">3</span>
+  <span class="hljs-attr">selector:</span>
+    <span class="hljs-attr">matchLabels:</span>
+      <span class="hljs-attr">app:</span> <span class="hljs-string">error-reporting-service</span>
+  <span class="hljs-attr">template:</span>
+    <span class="hljs-attr">metadata:</span>
+      <span class="hljs-attr">labels:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">error-reporting-service</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">error-reporting</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">rag-interface/error-reporting:latest</span>
+        <span class="hljs-attr">ports:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">containerPort:</span> <span class="hljs-number">8003</span>
+        <span class="hljs-attr">env:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">DATABASE_URL</span>
+          <span class="hljs-attr">valueFrom:</span>
+            <span class="hljs-attr">secretKeyRef:</span>
+              <span class="hljs-attr">name:</span> <span class="hljs-string">db-secret</span>
+              <span class="hljs-attr">key:</span> <span class="hljs-string">url</span>
+        <span class="hljs-attr">resources:</span>
+          <span class="hljs-attr">requests:</span>
+            <span class="hljs-attr">memory:</span> <span class="hljs-string">"256Mi"</span>
+            <span class="hljs-attr">cpu:</span> <span class="hljs-string">"250m"</span>
+          <span class="hljs-attr">limits:</span>
+            <span class="hljs-attr">memory:</span> <span class="hljs-string">"512Mi"</span>
+            <span class="hljs-attr">cpu:</span> <span class="hljs-string">"500m"</span>
+        <span class="hljs-attr">livenessProbe:</span>
+          <span class="hljs-attr">httpGet:</span>
+            <span class="hljs-attr">path:</span> <span class="hljs-string">/health</span>
+            <span class="hljs-attr">port:</span> <span class="hljs-number">8003</span>
+          <span class="hljs-attr">initialDelaySeconds:</span> <span class="hljs-number">30</span>
+          <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">10</span>
+        <span class="hljs-attr">readinessProbe:</span>
+          <span class="hljs-attr">httpGet:</span>
+            <span class="hljs-attr">path:</span> <span class="hljs-string">/ready</span>
+            <span class="hljs-attr">port:</span> <span class="hljs-number">8003</span>
+          <span class="hljs-attr">initialDelaySeconds:</span> <span class="hljs-number">5</span>
+          <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">5</span>
+</div></code></pre>
+<h3 id="73-monitoring--observability">7.3 Monitoring &amp; Observability</h3>
+<p><strong>Comprehensive Monitoring Stack:</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">graph TB
+    subgraph "Application Metrics"
+        APP[Application Services]
+        METRICS[Custom Metrics]
+        HEALTH[Health Checks]
+    end
+
+    subgraph "Infrastructure Metrics"
+        NODES[Kubernetes Nodes]
+        PODS[Pod Metrics]
+        NETWORK[Network Metrics]
+    end
+
+    subgraph "Data Collection"
+        PROMETHEUS[Prometheus Server]
+        JAEGER[Jaeger Tracing]
+        FLUENTD[Fluentd Log Collector]
+    end
+
+    subgraph "Visualization & Alerting"
+        GRAFANA[Grafana Dashboards]
+        ALERTMANAGER[Alert Manager]
+        KIBANA[Kibana Logs]
+    end
+
+    subgraph "Notification Channels"
+        SLACK[Slack Notifications]
+        EMAIL[Email Alerts]
+        PAGERDUTY[PagerDuty]
+    end
+
+    APP --> PROMETHEUS
+    METRICS --> PROMETHEUS
+    HEALTH --> PROMETHEUS
+    NODES --> PROMETHEUS
+    PODS --> PROMETHEUS
+    NETWORK --> PROMETHEUS
+
+    APP --> JAEGER
+    APP --> FLUENTD
+
+    PROMETHEUS --> GRAFANA
+    PROMETHEUS --> ALERTMANAGER
+    FLUENTD --> KIBANA
+
+    ALERTMANAGER --> SLACK
+    ALERTMANAGER --> EMAIL
+    ALERTMANAGER --> PAGERDUTY
+</div></code></pre>
+<p><strong>Key Performance Indicators (KPIs):</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Custom Prometheus Metrics</span>
+<span class="hljs-keyword">from</span> prometheus_client <span class="hljs-keyword">import</span> Counter, Histogram, Gauge
+
+<span class="hljs-comment"># Business Metrics</span>
+error_reports_total = Counter(
+    <span class="hljs-string">'error_reports_total'</span>,
+    <span class="hljs-string">'Total number of error reports submitted'</span>,
+    [<span class="hljs-string">'speaker_bucket'</span>, <span class="hljs-string">'error_category'</span>]
+)
+
+correction_accuracy = Histogram(
+    <span class="hljs-string">'correction_accuracy_score'</span>,
+    <span class="hljs-string">'Distribution of correction accuracy scores'</span>,
+    buckets=[<span class="hljs-number">0.1</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">0.7</span>, <span class="hljs-number">0.8</span>, <span class="hljs-number">0.9</span>, <span class="hljs-number">0.95</span>, <span class="hljs-number">1.0</span>]
+)
+
+active_speakers = Gauge(
+    <span class="hljs-string">'active_speakers_total'</span>,
+    <span class="hljs-string">'Number of active speakers by bucket'</span>,
+    [<span class="hljs-string">'bucket_type'</span>]
+)
+
+<span class="hljs-comment"># Technical Metrics</span>
+api_request_duration = Histogram(
+    <span class="hljs-string">'api_request_duration_seconds'</span>,
+    <span class="hljs-string">'API request duration'</span>,
+    [<span class="hljs-string">'method'</span>, <span class="hljs-string">'endpoint'</span>, <span class="hljs-string">'status_code'</span>]
+)
+
+database_connections = Gauge(
+    <span class="hljs-string">'database_connections_active'</span>,
+    <span class="hljs-string">'Number of active database connections'</span>,
+    [<span class="hljs-string">'service'</span>, <span class="hljs-string">'database'</span>]
+)
+</div></code></pre>
+<p><strong>Health Check Implementation:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Health check endpoint</span>
+<span class="hljs-meta">@router.get("/health")</span>
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">health_check</span><span class="hljs-params">()</span>:</span>
+    health_status = {
+        <span class="hljs-string">"status"</span>: <span class="hljs-string">"healthy"</span>,
+        <span class="hljs-string">"timestamp"</span>: datetime.utcnow().isoformat(),
+        <span class="hljs-string">"version"</span>: <span class="hljs-string">"1.0.0"</span>,
+        <span class="hljs-string">"checks"</span>: {}
+    }
+
+    <span class="hljs-comment"># Database connectivity</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">await</span> database.execute(<span class="hljs-string">"SELECT 1"</span>)
+        health_status[<span class="hljs-string">"checks"</span>][<span class="hljs-string">"database"</span>] = <span class="hljs-string">"healthy"</span>
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        health_status[<span class="hljs-string">"checks"</span>][<span class="hljs-string">"database"</span>] = <span class="hljs-string">f"unhealthy: <span class="hljs-subst">{str(e)}</span>"</span>
+        health_status[<span class="hljs-string">"status"</span>] = <span class="hljs-string">"unhealthy"</span>
+
+    <span class="hljs-comment"># Redis connectivity</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">await</span> redis.ping()
+        health_status[<span class="hljs-string">"checks"</span>][<span class="hljs-string">"redis"</span>] = <span class="hljs-string">"healthy"</span>
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        health_status[<span class="hljs-string">"checks"</span>][<span class="hljs-string">"redis"</span>] = <span class="hljs-string">f"unhealthy: <span class="hljs-subst">{str(e)}</span>"</span>
+        health_status[<span class="hljs-string">"status"</span>] = <span class="hljs-string">"unhealthy"</span>
+
+    <span class="hljs-comment"># Vector database connectivity</span>
+    <span class="hljs-keyword">try</span>:
+        vector_db_status = <span class="hljs-keyword">await</span> vector_db.health_check()
+        health_status[<span class="hljs-string">"checks"</span>][<span class="hljs-string">"vector_db"</span>] = <span class="hljs-string">"healthy"</span>
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        health_status[<span class="hljs-string">"checks"</span>][<span class="hljs-string">"vector_db"</span>] = <span class="hljs-string">f"unhealthy: <span class="hljs-subst">{str(e)}</span>"</span>
+        health_status[<span class="hljs-string">"status"</span>] = <span class="hljs-string">"unhealthy"</span>
+
+    status_code = <span class="hljs-number">200</span> <span class="hljs-keyword">if</span> health_status[<span class="hljs-string">"status"</span>] == <span class="hljs-string">"healthy"</span> <span class="hljs-keyword">else</span> <span class="hljs-number">503</span>
+    <span class="hljs-keyword">return</span> JSONResponse(content=health_status, status_code=status_code)
+</div></code></pre>
+<p><strong>Alerting Rules:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># prometheus-alerts.yml</span>
+<span class="hljs-attr">groups:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">rag-interface-alerts</span>
+  <span class="hljs-attr">rules:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">alert:</span> <span class="hljs-string">HighErrorRate</span>
+    <span class="hljs-attr">expr:</span> <span class="hljs-string">rate(api_request_duration_seconds_count{status_code=~"5.."}[5m])</span> <span class="hljs-string">&gt;</span> <span class="hljs-number">0.1</span>
+    <span class="hljs-attr">for:</span> <span class="hljs-string">2m</span>
+    <span class="hljs-attr">labels:</span>
+      <span class="hljs-attr">severity:</span> <span class="hljs-string">critical</span>
+    <span class="hljs-attr">annotations:</span>
+      <span class="hljs-attr">summary:</span> <span class="hljs-string">"High error rate detected"</span>
+      <span class="hljs-attr">description:</span> <span class="hljs-string">"Error rate is <span class="hljs-template-variable">{{ $value }}</span> errors per second"</span>
+
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">alert:</span> <span class="hljs-string">DatabaseConnectionsHigh</span>
+    <span class="hljs-attr">expr:</span> <span class="hljs-string">database_connections_active</span> <span class="hljs-string">&gt;</span> <span class="hljs-number">80</span>
+    <span class="hljs-attr">for:</span> <span class="hljs-string">5m</span>
+    <span class="hljs-attr">labels:</span>
+      <span class="hljs-attr">severity:</span> <span class="hljs-string">warning</span>
+    <span class="hljs-attr">annotations:</span>
+      <span class="hljs-attr">summary:</span> <span class="hljs-string">"High database connection usage"</span>
+      <span class="hljs-attr">description:</span> <span class="hljs-string">"Database connections: <span class="hljs-template-variable">{{ $value }}</span>"</span>
+
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">alert:</span> <span class="hljs-string">ServiceDown</span>
+    <span class="hljs-attr">expr:</span> <span class="hljs-string">up{job="rag-interface"}</span> <span class="hljs-string">==</span> <span class="hljs-number">0</span>
+    <span class="hljs-attr">for:</span> <span class="hljs-string">1m</span>
+    <span class="hljs-attr">labels:</span>
+      <span class="hljs-attr">severity:</span> <span class="hljs-string">critical</span>
+    <span class="hljs-attr">annotations:</span>
+      <span class="hljs-attr">summary:</span> <span class="hljs-string">"Service is down"</span>
+      <span class="hljs-attr">description:</span> <span class="hljs-string">"<span class="hljs-template-variable">{{ $labels.instance }}</span> has been down for more than 1 minute"</span>
+</div></code></pre>
+<hr>
+<h2 id="8-user-guides">8. User Guides</h2>
+<h3 id="81-end-user-workflows">8.1 End User Workflows</h3>
+<h4 id="error-reporting-workflow">Error Reporting Workflow</h4>
+<ol>
+<li><strong>Access System</strong>: Login with credentials</li>
+<li><strong>Select Speaker</strong>: Choose speaker from dropdown</li>
+<li><strong>Enter Error Details</strong>: Original and corrected text</li>
+<li><strong>Categorize Error</strong>: Select appropriate error categories</li>
+<li><strong>Set Severity</strong>: Choose severity level</li>
+<li><strong>Submit Report</strong>: Review and submit for processing</li>
+<li><strong>Track Progress</strong>: Monitor report status and verification</li>
+</ol>
+<h4 id="quality-assurance-workflow">Quality Assurance Workflow</h4>
+<ol>
+<li><strong>Review Queue</strong>: Access pending error reports</li>
+<li><strong>Validate Corrections</strong>: Review suggested corrections</li>
+<li><strong>Approve/Reject</strong>: Make validation decisions</li>
+<li><strong>Provide Feedback</strong>: Add comments and recommendations</li>
+<li><strong>Update Speaker Bucket</strong>: Trigger bucket progression if needed</li>
+</ol>
+<h3 id="82-administrative-functions">8.2 Administrative Functions</h3>
+<h4 id="speaker-management">Speaker Management</h4>
+<ul>
+<li><strong>Bucket Assignment</strong>: Manual bucket assignment and overrides</li>
+<li><strong>Performance Monitoring</strong>: Track speaker improvement over time</li>
+<li><strong>Bulk Operations</strong>: Batch processing for multiple speakers</li>
+<li><strong>Analytics Review</strong>: Comprehensive performance analytics</li>
+</ul>
+<h4 id="system-configuration">System Configuration</h4>
+<ul>
+<li><strong>User Management</strong>: Add/remove users and assign roles</li>
+<li><strong>System Settings</strong>: Configure thresholds and parameters</li>
+<li><strong>Integration Setup</strong>: Configure external system connections</li>
+<li><strong>Backup Management</strong>: Schedule and monitor data backups</li>
+</ul>
+<hr>
+<h2 id="9-quality-assurance">9. Quality Assurance</h2>
+<h3 id="91-testing-strategy">9.1 Testing Strategy</h3>
+<p><strong>Test Pyramid:</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">graph TB
+    A[E2E Tests - 10%<br/>Complete User Journeys]
+    B[Integration Tests - 20%<br/>Service Interactions]
+    C[Unit Tests - 70%<br/>Business Logic]
+    
+    A --> B
+    B --> C
+</div></code></pre>
+<p><strong>Testing Tools:</strong></p>
+<ul>
+<li><strong>Backend</strong>: pytest, pytest-asyncio, factory-boy</li>
+<li><strong>Frontend</strong>: Vitest, React Testing Library, Playwright</li>
+<li><strong>API</strong>: Postman collections, automated API testing</li>
+<li><strong>Performance</strong>: Load testing with locust</li>
+</ul>
+<h3 id="92-quality-metrics">9.2 Quality Metrics</h3>
+<p><strong>Code Quality:</strong></p>
+<ul>
+<li><strong>Coverage</strong>: Minimum 90% overall coverage</li>
+<li><strong>Complexity</strong>: Cyclomatic complexity &lt; 10</li>
+<li><strong>Maintainability</strong>: Code Climate maintainability score &gt; B</li>
+<li><strong>Security</strong>: Zero high-severity security vulnerabilities</li>
+</ul>
+<p><strong>Performance Benchmarks:</strong></p>
+<ul>
+<li><strong>API Response Time</strong>: &lt; 200ms for 95th percentile</li>
+<li><strong>Database Queries</strong>: &lt; 100ms average query time</li>
+<li><strong>Memory Usage</strong>: &lt; 512MB per service instance</li>
+<li><strong>CPU Utilization</strong>: &lt; 70% under normal load</li>
+</ul>
+<hr>
+<h2 id="10-business-requirements--specifications">10. Business Requirements &amp; Specifications</h2>
+<h3 id="101-product-requirements-overview">10.1 Product Requirements Overview</h3>
+<p><strong>Primary Business Goals:</strong></p>
+<ul>
+<li><strong>Reduce Feedback Loop</strong>: From days to real-time error correction validation</li>
+<li><strong>Improve QA Efficiency</strong>: Focus on critical errors rather than repetitive issues</li>
+<li><strong>Enhanced Accuracy</strong>: Speaker-specific error learning and correction</li>
+<li><strong>Time Savings</strong>: Automated correction of known speaker-specific errors</li>
+</ul>
+<p><strong>Key Performance Indicators:</strong></p>
+<ul>
+<li>25-40% reduction in transcription errors</li>
+<li>30-50% reduction in manual review time</li>
+<li>90%+ user satisfaction with error reporting workflow</li>
+<li>&lt;200ms API response time for 95th percentile</li>
+</ul>
+<h3 id="102-user-personas--workflows">10.2 User Personas &amp; Workflows</h3>
+<h4 id="medical-transcriptionist-mt">Medical Transcriptionist (MT)</h4>
+<p><strong>Primary Tasks:</strong></p>
+<ul>
+<li>Review ASR drafts for accuracy</li>
+<li>Submit error reports with corrections</li>
+<li>Validate suggested corrections</li>
+<li>Track speaker performance improvements</li>
+</ul>
+<p><strong>Workflow:</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">graph LR
+    A[Access ASR Draft] --> B[Identify Error]
+    B --> C[Select Error Text]
+    C --> D[Categorize Error]
+    D --> E[Provide Correction]
+    E --> F[Submit Report]
+    F --> G[Track Status]
+</div></code></pre>
+<h4 id="quality-assurance-qa-personnel">Quality Assurance (QA) Personnel</h4>
+<p><strong>Primary Tasks:</strong></p>
+<ul>
+<li>Validate error reports and corrections</li>
+<li>Manage speaker bucket assignments</li>
+<li>Monitor system performance</li>
+<li>Generate quality reports</li>
+</ul>
+<p><strong>Workflow:</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">graph LR
+    A[Review Error Queue] --> B[Validate Correction]
+    B --> C[Approve/Reject]
+    C --> D[Update Speaker Bucket]
+    D --> E[Generate Reports]
+</div></code></pre>
+<h3 id="103-functional-requirements">10.3 Functional Requirements</h3>
+<h4 id="error-reporting-requirements">Error Reporting Requirements</h4>
+<ul>
+<li><strong>FR-001</strong>: System shall support multi-touch text selection</li>
+<li><strong>FR-002</strong>: System shall provide real-time error categorization</li>
+<li><strong>FR-003</strong>: System shall generate AI-powered correction suggestions</li>
+<li><strong>FR-004</strong>: System shall maintain complete audit trail</li>
+<li><strong>FR-005</strong>: System shall support voice input/output capabilities</li>
+</ul>
+<h4 id="speaker-management-requirements">Speaker Management Requirements</h4>
+<ul>
+<li><strong>FR-006</strong>: System shall classify speakers into quality-based buckets</li>
+<li><strong>FR-007</strong>: System shall automatically progress speakers based on performance</li>
+<li><strong>FR-008</strong>: System shall provide comprehensive speaker analytics</li>
+<li><strong>FR-009</strong>: System shall support manual bucket overrides</li>
+<li><strong>FR-010</strong>: System shall enforce cooldown periods between bucket changes</li>
+</ul>
+<h4 id="quality-assurance-requirements">Quality Assurance Requirements</h4>
+<ul>
+<li><strong>FR-011</strong>: System shall provide MT validation workflows</li>
+<li><strong>FR-012</strong>: System shall calculate SER (Sentence Error Rate) metrics</li>
+<li><strong>FR-013</strong>: System shall support batch processing operations</li>
+<li><strong>FR-014</strong>: System shall generate quality reports and analytics</li>
+<li><strong>FR-015</strong>: System shall integrate with InstaNote Database for verification</li>
+</ul>
+<h3 id="104-non-functional-requirements">10.4 Non-Functional Requirements</h3>
+<h4 id="performance-requirements">Performance Requirements</h4>
+<ul>
+<li><strong>NFR-001</strong>: API response time &lt; 200ms for 95th percentile</li>
+<li><strong>NFR-002</strong>: System shall support 1000+ concurrent users</li>
+<li><strong>NFR-003</strong>: Database queries &lt; 100ms average response time</li>
+<li><strong>NFR-004</strong>: System uptime &gt; 99.9%</li>
+</ul>
+<h4 id="security-requirements">Security Requirements</h4>
+<ul>
+<li><strong>NFR-005</strong>: All data transmission encrypted with TLS 1.3</li>
+<li><strong>NFR-006</strong>: JWT-based authentication with role-based access control</li>
+<li><strong>NFR-007</strong>: Comprehensive audit logging for all operations</li>
+<li><strong>NFR-008</strong>: Data retention policies compliant with healthcare regulations</li>
+</ul>
+<h4 id="scalability-requirements">Scalability Requirements</h4>
+<ul>
+<li><strong>NFR-009</strong>: Horizontal scaling support for all services</li>
+<li><strong>NFR-010</strong>: Auto-scaling based on load metrics</li>
+<li><strong>NFR-011</strong>: Database sharding support for large datasets</li>
+<li><strong>NFR-012</strong>: CDN integration for global content delivery</li>
+</ul>
+<hr>
+<h2 id="11-data-models--database-design">11. Data Models &amp; Database Design</h2>
+<h3 id="111-core-entity-relationships">11.1 Core Entity Relationships</h3>
+<pre><code class="language-mermaid"><div class="mermaid">erDiagram
+    SPEAKER ||--o{ ERROR_REPORT : reports
+    SPEAKER ||--o{ BUCKET_CHANGE_LOG : has
+    SPEAKER {
+        uuid speaker_id PK
+        string speaker_identifier
+        string speaker_name
+        enum current_bucket
+        datetime created_at
+        datetime updated_at
+        json metadata
+    }
+
+    ERROR_REPORT ||--o{ CORRECTION_SUGGESTION : has
+    ERROR_REPORT {
+        uuid error_id PK
+        uuid job_id
+        uuid speaker_id FK
+        uuid reported_by FK
+        text original_text
+        text corrected_text
+        string[] error_categories
+        enum severity_level
+        float confidence_score
+        enum status
+        datetime created_at
+        json metadata
+    }
+
+    BUCKET_CHANGE_LOG {
+        uuid change_id PK
+        uuid speaker_id FK
+        enum old_bucket
+        enum new_bucket
+        string change_reason
+        datetime changed_at
+        json metrics_at_change
+        json metadata
+    }
+
+    CORRECTION_SUGGESTION {
+        uuid suggestion_id PK
+        uuid error_report_id FK
+        text suggested_correction
+        float confidence_score
+        string source_model
+        datetime created_at
+        json metadata
+    }
+</div></code></pre>
+<h3 id="112-vector-database-schema">11.2 Vector Database Schema</h3>
+<p><strong>Error Pattern Embeddings:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"id"</span>: <span class="hljs-string">"error_pattern_uuid"</span>,
+  <span class="hljs-attr">"vector"</span>: [<span class="hljs-number">1536</span>-dimensional embedding],
+  <span class="hljs-attr">"metadata"</span>: {
+    <span class="hljs-attr">"speaker_id"</span>: <span class="hljs-string">"uuid"</span>,
+    <span class="hljs-attr">"original_text"</span>: <span class="hljs-string">"text with error"</span>,
+    <span class="hljs-attr">"corrected_text"</span>: <span class="hljs-string">"corrected text"</span>,
+    <span class="hljs-attr">"error_categories"</span>: [<span class="hljs-string">"category1"</span>, <span class="hljs-string">"category2"</span>],
+    <span class="hljs-attr">"severity_level"</span>: <span class="hljs-string">"medium"</span>,
+    <span class="hljs-attr">"context"</span>: <span class="hljs-string">"medical_terminology"</span>,
+    <span class="hljs-attr">"timestamp"</span>: <span class="hljs-string">"2025-09-06T10:00:00Z"</span>
+  }
+}
+</div></code></pre>
+<h3 id="113-cache-strategy">11.3 Cache Strategy</h3>
+<p><strong>Redis Cache Structure:</strong></p>
+<pre class="hljs"><code><div>speaker_profiles:{speaker_id} → Speaker profile data (TTL: 1 hour)
+error_patterns:{speaker_id} → Recent error patterns (TTL: 24 hours)
+correction_suggestions:{text_hash} → Cached suggestions (TTL: 7 days)
+session_data:{session_id} → User session data (TTL: 8 hours)
+</div></code></pre>
+<hr>
+<h2 id="12-security--compliance">12. Security &amp; Compliance</h2>
+<h3 id="121-authentication--authorization">12.1 Authentication &amp; Authorization</h3>
+<p><strong>JWT Token Structure:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"sub"</span>: <span class="hljs-string">"user_id"</span>,
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"user@example.com"</span>,
+  <span class="hljs-attr">"roles"</span>: [<span class="hljs-string">"qa_personnel"</span>, <span class="hljs-string">"mt_user"</span>],
+  <span class="hljs-attr">"permissions"</span>: [<span class="hljs-string">"error_report:create"</span>, <span class="hljs-string">"speaker:read"</span>],
+  <span class="hljs-attr">"exp"</span>: <span class="hljs-number">1693987200</span>,
+  <span class="hljs-attr">"iat"</span>: <span class="hljs-number">1693900800</span>
+}
+</div></code></pre>
+<p><strong>Role-Based Access Control:</strong></p>
+<ul>
+<li><strong>Admin</strong>: Full system access, user management, configuration</li>
+<li><strong>QA Personnel</strong>: Error validation, speaker management, reporting</li>
+<li><strong>MT User</strong>: Error reporting, correction submission, basic analytics</li>
+<li><strong>Read-Only</strong>: View-only access to reports and analytics</li>
+</ul>
+<h3 id="122-data-protection">12.2 Data Protection</h3>
+<p><strong>Encryption Standards:</strong></p>
+<ul>
+<li><strong>Data in Transit</strong>: TLS 1.3 for all communications</li>
+<li><strong>Data at Rest</strong>: AES-256 encryption for database storage</li>
+<li><strong>API Keys</strong>: Encrypted storage with rotation policies</li>
+<li><strong>Sensitive Data</strong>: Field-level encryption for PII</li>
+</ul>
+<p><strong>Privacy Controls:</strong></p>
+<ul>
+<li><strong>Data Minimization</strong>: Collect only necessary data</li>
+<li><strong>Retention Policies</strong>: Automated data purging after retention period</li>
+<li><strong>Access Logging</strong>: Comprehensive audit trails for all data access</li>
+<li><strong>Anonymization</strong>: Speaker data anonymization for analytics</li>
+</ul>
+<h3 id="123-compliance-framework">12.3 Compliance Framework</h3>
+<p><strong>Healthcare Compliance:</strong></p>
+<ul>
+<li><strong>HIPAA</strong>: Healthcare data protection standards</li>
+<li><strong>SOC 2</strong>: Security and availability controls</li>
+<li><strong>ISO 27001</strong>: Information security management</li>
+<li><strong>GDPR</strong>: Data protection and privacy rights</li>
+</ul>
+<hr>
+<h2 id="13-performance--monitoring">13. Performance &amp; Monitoring</h2>
+<h3 id="131-performance-benchmarks">13.1 Performance Benchmarks</h3>
+<p><strong>API Performance Targets:</strong></p>
+<pre class="hljs"><code><div>Endpoint                    | Target Response Time | SLA
+---------------------------|---------------------|-----
+POST /api/v1/errors        | &lt; 150ms            | 95%
+GET /api/v1/speakers       | &lt; 100ms            | 99%
+POST /api/v1/corrections   | &lt; 300ms            | 90%
+GET /api/v1/analytics      | &lt; 500ms            | 95%
+</div></code></pre>
+<p><strong>System Resource Targets:</strong></p>
+<ul>
+<li><strong>CPU Utilization</strong>: &lt; 70% under normal load</li>
+<li><strong>Memory Usage</strong>: &lt; 512MB per service instance</li>
+<li><strong>Database Connections</strong>: &lt; 80% of connection pool</li>
+<li><strong>Cache Hit Rate</strong>: &gt; 90% for frequently accessed data</li>
+</ul>
+<h3 id="132-monitoring-stack">13.2 Monitoring Stack</h3>
+<p><strong>Infrastructure Monitoring:</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">graph TB
+    A[Application Metrics] --> B[Prometheus]
+    B --> C[Grafana Dashboards]
+    D[System Logs] --> E[ELK Stack]
+    F[Distributed Tracing] --> G[Jaeger]
+    H[Health Checks] --> I[Alertmanager]
+    I --> J[PagerDuty/Slack]
+</div></code></pre>
+<p><strong>Key Metrics:</strong></p>
+<ul>
+<li><strong>Business Metrics</strong>: Error report volume, correction accuracy, user engagement</li>
+<li><strong>Technical Metrics</strong>: Response times, error rates, resource utilization</li>
+<li><strong>Security Metrics</strong>: Failed authentication attempts, suspicious activities</li>
+<li><strong>Quality Metrics</strong>: Test coverage, deployment success rate, bug resolution time</li>
+</ul>
+<h3 id="133-alerting-strategy">13.3 Alerting Strategy</h3>
+<p><strong>Alert Severity Levels:</strong></p>
+<ul>
+<li><strong>Critical</strong>: Service down, data loss, security breach</li>
+<li><strong>High</strong>: Performance degradation, high error rates</li>
+<li><strong>Medium</strong>: Resource utilization warnings, slow queries</li>
+<li><strong>Low</strong>: Informational alerts, maintenance reminders</li>
+</ul>
+<hr>
+<h2 id="14-reference-materials">14. Reference Materials</h2>
+<h3 id="141-architecture-documents">14.1 Architecture Documents</h3>
+<ul>
+<li><strong><a href="docs/architecture/00_Master_Architecture_Summary.md">Master Architecture Summary</a></strong>: Complete system overview</li>
+<li><strong><a href="docs/architecture/">Service Design Documents</a></strong>: Individual service architectures</li>
+<li><strong><a href="docs/architecture/database_schema_design.md">Database Schema</a></strong>: Data model specifications</li>
+<li><strong><a href="docs/architecture/system_integration_design.md">System Integration</a></strong>: Service interaction patterns</li>
+</ul>
+<h3 id="142-api-references">14.2 API References</h3>
+<ul>
+<li><strong><a href="docs/api/enhanced_error_reporting_api.md">Error Reporting API</a></strong>: Complete API documentation</li>
+<li><strong><a href="docs/api/speaker_bucket_management_api.md">Speaker Bucket API</a></strong>: Bucket management endpoints</li>
+</ul>
+<h3 id="143-development-resources">14.3 Development Resources</h3>
+<ul>
+<li><strong><a href="docs/development/DEVELOPMENT_GUIDE.md">Development Guide</a></strong>: Complete development workflows</li>
+<li><strong><a href="docs/development/SOLID_Principles_Implementation_Guide.md">SOLID Principles Guide</a></strong>: Architecture principles</li>
+<li><strong><a href="docs/development/Technology_Stack_Standards.md">Technology Standards</a></strong>: Tech stack guidelines</li>
+</ul>
+<h3 id="144-deployment-resources">14.4 Deployment Resources</h3>
+<ul>
+<li><strong><a href="docs/deployment/README.md">Deployment Guide</a></strong>: Production deployment procedures</li>
+<li><strong><a href="docs/deployment/MAINTENANCE_GUIDE.md">Maintenance Guide</a></strong>: Operations and maintenance</li>
+<li><strong><a href="docs/deployment/TROUBLESHOOTING_GUIDE.md">Troubleshooting Guide</a></strong>: Issue resolution</li>
+</ul>
+<hr>
+<p><strong>Document Maintained By</strong>: Development Team
+<strong>Last Updated</strong>: September 6, 2025
+<strong>Next Review</strong>: October 6, 2025
+<strong>Version Control</strong>: This document is version-controlled alongside the codebase</p>
+
+</body>
+</html>

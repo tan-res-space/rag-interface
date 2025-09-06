@@ -9,7 +9,6 @@ import asyncio
 import logging
 from datetime import datetime
 from typing import Dict, List, Optional, Any
-from uuid import UUID
 
 import aiohttp
 from pydantic import BaseModel, Field

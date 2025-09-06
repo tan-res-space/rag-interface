@@ -5,12 +5,10 @@ Application use case for managing speaker bucket transition requests.
 Orchestrates transition request creation, approval workflow, and history tracking.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 from uuid import UUID, uuid4
 
 from ...domain.entities.bucket_transition_request import BucketTransitionRequest
-from ...domain.entities.speaker import Speaker
-from ...domain.value_objects.speaker_bucket import SpeakerBucket
 from ..dto.requests import (
     ApproveBucketTransitionRequest,
     CreateBucketTransitionRequest,

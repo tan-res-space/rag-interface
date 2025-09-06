@@ -12,7 +12,7 @@ from error_reporting_service.domain.entities.speaker_bucket_history import (
     SpeakerBucketHistory,
     AssignmentType,
 )
-from error_reporting_service.domain.entities.error_report import BucketType
+from src.shared.domain.value_objects import BucketType
 from error_reporting_service.domain.ports.speaker_bucket_history_repository import (
     SpeakerBucketHistoryRepository,
 )

@@ -18,7 +18,6 @@ class ErrorCategorizationService:
 
     def __init__(self):
         """Initialize the categorization service"""
-        pass
 
     def suggest_categories(self, original_text: str, corrected_text: str) -> List[str]:
         """

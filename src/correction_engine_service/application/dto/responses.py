@@ -6,7 +6,7 @@ These DTOs define the structure of responses from use cases and API endpoints.
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from correction_engine_service.domain.entities.correction_suggestion import (
     CorrectionSuggestion,

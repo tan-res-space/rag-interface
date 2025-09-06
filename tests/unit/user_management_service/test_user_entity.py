@@ -7,7 +7,6 @@ Tests the User domain entity business logic and validation rules.
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-import pytest
 
 from src.user_management_service.domain.entities.user import (
     Permission,

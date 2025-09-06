@@ -7,7 +7,6 @@ This is a driven port that defines the contract for cache adapters.
 
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
-from uuid import UUID
 
 from rag_integration_service.domain.entities.vector_embedding import VectorEmbedding
 
@@ -31,7 +30,6 @@ class CachePort(ABC):
         Returns:
             The cached value if found, None otherwise
         """
-        pass
 
     @abstractmethod
     async def set(self, key: str, value: Any, ttl: Optional[int] = None) -> bool:
@@ -46,7 +44,6 @@ class CachePort(ABC):
         Returns:
             True if successful, False otherwise
         """
-        pass
 
     @abstractmethod
     async def delete(self, key: str) -> bool:
@@ -59,7 +56,6 @@ class CachePort(ABC):
         Returns:
             True if successful, False otherwise
         """
-        pass
 
     @abstractmethod
     async def exists(self, key: str) -> bool:
@@ -72,7 +68,6 @@ class CachePort(ABC):
         Returns:
             True if key exists, False otherwise
         """
-        pass
 
     @abstractmethod
     async def get_embedding(self, text_hash: str) -> Optional[VectorEmbedding]:
@@ -85,7 +80,6 @@ class CachePort(ABC):
         Returns:
             VectorEmbedding if found, None otherwise
         """
-        pass
 
     @abstractmethod
     async def set_embedding(
@@ -102,7 +96,6 @@ class CachePort(ABC):
         Returns:
             True if successful, False otherwise
         """
-        pass
 
     @abstractmethod
     async def get_search_results(self, query_hash: str) -> Optional[Dict[str, Any]]:
@@ -115,7 +108,6 @@ class CachePort(ABC):
         Returns:
             Search results if found, None otherwise
         """
-        pass
 
     @abstractmethod
     async def set_search_results(
@@ -132,7 +124,6 @@ class CachePort(ABC):
         Returns:
             True if successful, False otherwise
         """
-        pass
 
     @abstractmethod
     async def invalidate_by_pattern(self, pattern: str) -> int:
@@ -145,7 +136,6 @@ class CachePort(ABC):
         Returns:
             Number of keys invalidated
         """
-        pass
 
     @abstractmethod
     async def get_batch(self, keys: List[str]) -> List[Optional[Any]]:
@@ -158,7 +148,6 @@ class CachePort(ABC):
         Returns:
             List of values (None for missing keys)
         """
-        pass
 
     @abstractmethod
     async def set_batch(self, items: List[tuple], ttl: Optional[int] = None) -> bool:
@@ -172,7 +161,6 @@ class CachePort(ABC):
         Returns:
             True if successful, False otherwise
         """
-        pass
 
     @abstractmethod
     async def health_check(self) -> bool:
@@ -182,7 +170,6 @@ class CachePort(ABC):
         Returns:
             True if cache is healthy, False otherwise
         """
-        pass
 
     @abstractmethod
     async def get_statistics(self) -> Dict[str, Any]:
@@ -192,7 +179,6 @@ class CachePort(ABC):
         Returns:
             Dictionary containing cache statistics
         """
-        pass
 
     @abstractmethod
     async def clear_all(self) -> bool:
@@ -202,7 +188,6 @@ class CachePort(ABC):
         Returns:
             True if successful, False otherwise
         """
-        pass
 
     @abstractmethod
     async def get_ttl(self, key: str) -> Optional[int]:
@@ -215,7 +200,6 @@ class CachePort(ABC):
         Returns:
             TTL in seconds if key exists, None otherwise
         """
-        pass
 
     @abstractmethod
     async def extend_ttl(self, key: str, ttl: int) -> bool:
@@ -229,7 +213,6 @@ class CachePort(ABC):
         Returns:
             True if successful, False otherwise
         """
-        pass
 
     @abstractmethod
     async def increment(self, key: str, amount: int = 1) -> int:
@@ -243,7 +226,6 @@ class CachePort(ABC):
         Returns:
             New value after increment
         """
-        pass
 
     @abstractmethod
     async def decrement(self, key: str, amount: int = 1) -> int:
@@ -257,4 +239,3 @@ class CachePort(ABC):
         Returns:
             New value after decrement
         """
-        pass

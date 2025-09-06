@@ -33,8 +33,8 @@ This guide outlines the recommended development workflows for the RAG Interface 
 2. **Automated Setup**
    ```bash
    # Run comprehensive setup
-   ./scripts/dev-setup.sh
-   
+   ./tool./tools/scripts/dev-setup.sh
+
    # This script will:
    # - Create Python virtual environment
    # - Install Python dependencies
@@ -47,14 +47,14 @@ This guide outlines the recommended development workflows for the RAG Interface 
 3. **Verification**
    ```bash
    # Start development environment
-   ./scripts/dev-start.sh
-   
+   ./tool./tools/scripts/dev-start.sh
+
    # Verify services are running
    curl http://localhost:8000/health  # Backend
    curl http://localhost:3000         # Frontend
-   
+
    # Run quick tests
-   ./scripts/test-all.sh --quick
+   ./tool./tools/scripts/test-all.sh --quick
    ```
 
 4. **IDE Configuration**
@@ -89,10 +89,10 @@ git checkout -b feature/RAG-123-implement-vector-search
 
 ```bash
 # Start development environment
-./scripts/dev-start.sh
+./tool./tools/scripts/dev-start.sh
 
 # Monitor logs during development
-./scripts/dev-logs.sh -f
+./tool./tools/scripts/dev-logs.sh -f
 
 # Development cycle:
 # 1. Write failing test
@@ -115,7 +115,7 @@ mkdir -p src/rag_integration_service/infrastructure/adapters
 # tests/integration/rag_integration_service/test_vector_search_integration.py
 
 # Run tests in watch mode during development
-./scripts/test-backend.sh --service rag_integration_service
+./tools/scripts/test-backend.sh --service rag_integration_service
 ```
 
 #### Frontend Development
@@ -137,13 +137,13 @@ cd frontend && npm run test:watch
 
 ```bash
 # Run comprehensive quality checks
-./scripts/quality-check.sh --all
+./tools/scripts/quality-check.sh --all
 
 # Auto-fix common issues
-./scripts/quality-check.sh --fix-all
+./tools/scripts/quality-check.sh --fix-all
 
 # Run full test suite
-./scripts/test-all.sh
+./tools/scripts/test-all.sh
 
 # Check coverage
 open htmlcov/index.html  # Backend coverage
@@ -154,7 +154,7 @@ open frontend/coverage/index.html  # Frontend coverage
 
 ```bash
 # Pre-commit hooks will run automatically, but you can test manually:
-./scripts/setup-pre-commit.sh --test
+./tools/scripts/setup-pre-commit.sh --test
 
 # If hooks fail, fix issues and try again:
 git add .
@@ -207,7 +207,7 @@ Closes RAG-123"
 4. **Refactor and Improve**
    ```bash
    # Run tests to ensure refactoring doesn't break functionality
-   ./scripts/test-backend.sh --service rag_integration_service
+   ./tools/scripts/test-backend.sh --service rag_integration_service
    ```
 
 ### Testing Levels
@@ -215,8 +215,8 @@ Closes RAG-123"
 #### Unit Tests
 ```bash
 # Test individual components in isolation
-./scripts/test-backend.sh --unit
-./scripts/test-frontend.sh --unit
+./tool./tools/scripts/test-backend.sh --unit
+./tool./tools/scripts/test-frontend.sh --unit
 
 # Focus on business logic and domain entities
 # Mock external dependencies
@@ -225,7 +225,7 @@ Closes RAG-123"
 #### Integration Tests
 ```bash
 # Test service interactions
-./scripts/test-backend.sh --integration
+./tool./tools/scripts/test-backend.sh --integration
 
 # Test with real database and external services
 # Use test containers when possible
@@ -234,11 +234,11 @@ Closes RAG-123"
 #### End-to-End Tests
 ```bash
 # Test complete user workflows
-./scripts/test-frontend.sh --e2e
+./tool./tools/scripts/test-frontend.sh --e2e
 
 # Start full environment for E2E tests
-./scripts/dev-start.sh
-./scripts/test-all.sh --e2e
+./tool./tools/scripts/dev-start.sh
+./tool./tools/scripts/test-all.sh --e2e
 ```
 
 ## Code Review Workflow
@@ -253,8 +253,8 @@ git checkout feature/RAG-123-implement-vector-search
 git rebase develop
 
 # Run final checks
-./scripts/test-all.sh
-./scripts/quality-check.sh --all
+./tools/scripts/test-all.sh
+./tools/scripts/quality-check.sh --all
 
 # Push feature branch
 git push origin feature/RAG-123-implement-vector-search
@@ -283,10 +283,10 @@ git fetch origin
 git checkout feature/RAG-123-implement-vector-search
 
 # Run tests locally
-./scripts/test-all.sh
+./tools/scripts/test-all.sh
 
 # Check code quality
-./scripts/quality-check.sh --all
+./tools/scripts/quality-check.sh --all
 
 # Review checklist:
 # - Code follows architecture patterns
@@ -341,13 +341,13 @@ git checkout -b release/v1.2.0
 
 ```bash
 # Run comprehensive test suite
-./scripts/test-all.sh --integration --e2e
+./tools/scripts/test-all.sh --integration --e2e
 
 # Performance testing
-./scripts/test-performance.sh
+./tools/scripts/test-performance.sh
 
 # Security scanning
-./scripts/security-scan.sh
+./tools/scripts/security-scan.sh
 
 # Build and test Docker images
 docker build -f deployment/podman/Dockerfile.error-reporting-service .
@@ -393,7 +393,7 @@ git checkout -b hotfix/v1.2.1-critical-security-fix
 ```bash
 # Make minimal changes to fix the issue
 # Add tests to prevent regression
-./scripts/test-all.sh
+./tools/scripts/test-all.sh
 
 # Update version number
 # Update CHANGELOG.md
@@ -426,24 +426,24 @@ pip list --outdated
 cd frontend && npm outdated
 
 # Run security scans
-./scripts/security-scan.sh
+./tools/scripts/security-scan.sh
 
 # Check system health
-./scripts/health-check.sh
+./tools/scripts/health-check.sh
 ```
 
 ### Weekly Maintenance
 
 ```bash
 # Update pre-commit hooks
-./scripts/setup-pre-commit.sh --update
+./tool./tools/scripts/setup-pre-commit.sh --update
 
 # Review and update documentation
 # Check for broken links
 # Update API documentation
 
 # Performance monitoring
-./scripts/performance-report.sh
+./tool./tools/scripts/performance-report.sh
 ```
 
 ### Monthly Maintenance
@@ -458,7 +458,7 @@ npm audit
 pip-audit
 
 # Database maintenance
-./scripts/db-maintenance.sh
+./tool./tools/scripts/db-maintenance.sh
 
 # Clean up old branches
 git branch -d $(git branch --merged | grep -v main | grep -v develop)
@@ -477,14 +477,14 @@ git branch -d $(git branch --merged | grep -v main | grep -v develop)
 
 ## Tools and Scripts Reference
 
-- `./scripts/dev-setup.sh` - Initial environment setup
-- `./scripts/dev-start.sh` - Start development environment
-- `./scripts/test-all.sh` - Run comprehensive tests
-- `./scripts/quality-check.sh` - Code quality checks
-- `./scripts/local-ci.sh` - Local CI testing
-- `./scripts/setup-pre-commit.sh` - Pre-commit hook management
+- `./tool./tools/scripts/dev-setup.sh` - Initial environment setup
+- `./tool./tools/scripts/dev-start.sh` - Start development environment
+- `./tool./tools/scripts/test-all.sh` - Run comprehensive tests
+- `./tool./tools/scripts/quality-check.sh` - Code quality checks
+- `./tool./tools/scripts/local-ci.sh` - Local CI testing
+- `./tool./tools/scripts/setup-pre-commit.sh` - Pre-commit hook management
 
 For more detailed information, refer to the individual script help:
 ```bash
-./scripts/[script-name].sh --help
+./tool./tools/scripts/[script-name].sh --help
 ```

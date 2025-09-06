@@ -7,11 +7,10 @@ Implements REST API for SER metrics calculation and analysis.
 
 import logging
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Path, Query
-from fastapi.responses import JSONResponse
 
 from ....application.dto.requests import (
     BatchCalculateSERRequest,

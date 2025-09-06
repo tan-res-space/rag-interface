@@ -37,7 +37,6 @@ class VectorStoragePort(ABC):
         Raises:
             VectorStorageError: If storage operation fails
         """
-        pass
 
     @abstractmethod
     async def store_batch_embeddings(self, embeddings: List[VectorEmbedding]) -> bool:
@@ -53,7 +52,6 @@ class VectorStoragePort(ABC):
         Raises:
             VectorStorageError: If batch storage operation fails
         """
-        pass
 
     @abstractmethod
     async def find_embedding(self, embedding_id: UUID) -> Optional[VectorEmbedding]:
@@ -66,7 +64,6 @@ class VectorStoragePort(ABC):
         Returns:
             Vector embedding if found, None otherwise
         """
-        pass
 
     @abstractmethod
     async def find_similar(
@@ -91,7 +88,6 @@ class VectorStoragePort(ABC):
         Raises:
             VectorSearchError: If search operation fails
         """
-        pass
 
     @abstractmethod
     async def find_similar_by_text(
@@ -118,7 +114,6 @@ class VectorStoragePort(ABC):
         Raises:
             VectorSearchError: If search operation fails
         """
-        pass
 
     @abstractmethod
     async def find_by_speaker(
@@ -140,7 +135,6 @@ class VectorStoragePort(ABC):
         Returns:
             List of similarity results for the speaker
         """
-        pass
 
     @abstractmethod
     async def find_by_job(
@@ -162,7 +156,6 @@ class VectorStoragePort(ABC):
         Returns:
             List of similarity results for the job
         """
-        pass
 
     @abstractmethod
     async def find_by_category(
@@ -184,7 +177,6 @@ class VectorStoragePort(ABC):
         Returns:
             List of similarity results for the category
         """
-        pass
 
     @abstractmethod
     async def delete_embedding(self, embedding_id: UUID) -> bool:
@@ -200,7 +192,6 @@ class VectorStoragePort(ABC):
         Raises:
             VectorStorageError: If deletion operation fails
         """
-        pass
 
     @abstractmethod
     async def delete_embeddings_by_job(self, job_id: str) -> int:
@@ -213,7 +204,6 @@ class VectorStoragePort(ABC):
         Returns:
             Number of embeddings deleted
         """
-        pass
 
     @abstractmethod
     async def get_embedding_count(
@@ -228,7 +218,6 @@ class VectorStoragePort(ABC):
         Returns:
             Number of embeddings matching filters
         """
-        pass
 
     @abstractmethod
     async def get_statistics(self) -> Dict[str, Any]:
@@ -238,7 +227,6 @@ class VectorStoragePort(ABC):
         Returns:
             Dictionary containing database statistics
         """
-        pass
 
     @abstractmethod
     async def health_check(self) -> bool:
@@ -248,7 +236,6 @@ class VectorStoragePort(ABC):
         Returns:
             True if database is healthy, False otherwise
         """
-        pass
 
     @abstractmethod
     async def create_index(self, index_config: Dict[str, Any]) -> bool:
@@ -264,4 +251,3 @@ class VectorStoragePort(ABC):
         Raises:
             VectorStorageError: If index creation fails
         """
-        pass

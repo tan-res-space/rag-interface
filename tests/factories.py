@@ -6,8 +6,8 @@ the Factory Boy pattern for consistent and maintainable test data creation.
 """
 
 import uuid
-from datetime import datetime, timedelta
-from typing import Any, Dict, List
+from datetime import datetime
+from typing import List
 
 import factory
 from faker import Faker

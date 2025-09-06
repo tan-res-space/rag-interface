@@ -6,13 +6,10 @@ These DTOs define the structure of data returned by the service.
 """
 
 from datetime import datetime
-from typing import Dict, List, Optional, Set
-from uuid import UUID
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
-from ...domain.entities.user import Permission, UserRole, UserStatus
-from ...domain.value_objects.speaker_bucket import SpeakerBucket
 
 
 class UserResponse(BaseModel):

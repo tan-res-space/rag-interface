@@ -7,7 +7,7 @@ Adapted from reference implementation with enhanced features for speaker bucket 
 
 import re
 from decimal import Decimal
-from typing import Any, Dict, List, Set, Tuple
+from typing import Any, Dict, List, Tuple
 
 from ..value_objects.ser_metrics import SERMetrics
 
@@ -22,7 +22,6 @@ class SERCalculationService:
 
     def __init__(self):
         """Initialize SER calculation service."""
-        pass
 
     def calculate_ser(self, asr_text: str, reference_text: str) -> SERMetrics:
         """

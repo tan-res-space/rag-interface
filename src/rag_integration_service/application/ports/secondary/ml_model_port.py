@@ -6,7 +6,7 @@ This is a driven port that defines the contract for ML model adapters.
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from rag_integration_service.domain.value_objects.embedding_type import (
     EmbeddingType,
@@ -39,7 +39,6 @@ class MLModelPort(ABC):
             MLModelError: If embedding generation fails
             TextTooLongError: If text exceeds model limits
         """
-        pass
 
     @abstractmethod
     async def generate_batch_embeddings(
@@ -59,7 +58,6 @@ class MLModelPort(ABC):
             MLModelError: If batch generation fails
             BatchSizeExceededError: If batch size exceeds limits
         """
-        pass
 
     @abstractmethod
     def get_embedding_dimension(self) -> int:
@@ -69,7 +67,6 @@ class MLModelPort(ABC):
         Returns:
             Embedding dimension (e.g., 1536 for OpenAI ada-002)
         """
-        pass
 
     @abstractmethod
     def get_model_name(self) -> str:
@@ -79,7 +76,6 @@ class MLModelPort(ABC):
         Returns:
             Model name string
         """
-        pass
 
     @abstractmethod
     def get_model_version(self) -> str:
@@ -89,7 +85,6 @@ class MLModelPort(ABC):
         Returns:
             Model version string
         """
-        pass
 
     @abstractmethod
     def get_max_sequence_length(self) -> int:
@@ -99,7 +94,6 @@ class MLModelPort(ABC):
         Returns:
             Maximum sequence length in tokens
         """
-        pass
 
     @abstractmethod
     def get_max_batch_size(self) -> int:
@@ -109,7 +103,6 @@ class MLModelPort(ABC):
         Returns:
             Maximum batch size
         """
-        pass
 
     @abstractmethod
     async def preprocess_text(self, text: str) -> str:
@@ -122,7 +115,6 @@ class MLModelPort(ABC):
         Returns:
             Preprocessed text ready for embedding
         """
-        pass
 
     @abstractmethod
     async def validate_text(self, text: str) -> bool:
@@ -135,7 +127,6 @@ class MLModelPort(ABC):
         Returns:
             True if text is valid, False otherwise
         """
-        pass
 
     @abstractmethod
     async def estimate_tokens(self, text: str) -> int:
@@ -148,7 +139,6 @@ class MLModelPort(ABC):
         Returns:
             Estimated token count
         """
-        pass
 
     @abstractmethod
     async def health_check(self) -> bool:
@@ -158,7 +148,6 @@ class MLModelPort(ABC):
         Returns:
             True if model is healthy, False otherwise
         """
-        pass
 
     @abstractmethod
     async def get_model_info(self) -> Dict[str, Any]:
@@ -168,7 +157,6 @@ class MLModelPort(ABC):
         Returns:
             Dictionary containing model information
         """
-        pass
 
     @abstractmethod
     async def warm_up(self) -> bool:
@@ -178,7 +166,6 @@ class MLModelPort(ABC):
         Returns:
             True if warm-up was successful
         """
-        pass
 
 
 class EmbeddingModelManagerPort(ABC):
@@ -203,7 +190,6 @@ class EmbeddingModelManagerPort(ABC):
         Raises:
             ModelNotFoundError: If model is not available
         """
-        pass
 
     @abstractmethod
     async def get_default_model(self) -> MLModelPort:
@@ -213,7 +199,6 @@ class EmbeddingModelManagerPort(ABC):
         Returns:
             Default ML model port instance
         """
-        pass
 
     @abstractmethod
     async def list_available_models(self) -> List[str]:
@@ -223,7 +208,6 @@ class EmbeddingModelManagerPort(ABC):
         Returns:
             List of available model names
         """
-        pass
 
     @abstractmethod
     async def load_model(self, model_name: str, config: Dict[str, Any]) -> bool:
@@ -240,7 +224,6 @@ class EmbeddingModelManagerPort(ABC):
         Raises:
             ModelLoadError: If model loading fails
         """
-        pass
 
     @abstractmethod
     async def unload_model(self, model_name: str) -> bool:
@@ -253,7 +236,6 @@ class EmbeddingModelManagerPort(ABC):
         Returns:
             True if model was unloaded successfully
         """
-        pass
 
     @abstractmethod
     async def get_model_statistics(self) -> Dict[str, Any]:
@@ -263,4 +245,3 @@ class EmbeddingModelManagerPort(ABC):
         Returns:
             Dictionary containing model statistics
         """
-        pass

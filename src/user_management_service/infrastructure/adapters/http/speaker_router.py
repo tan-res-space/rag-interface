@@ -11,21 +11,13 @@ from typing import List, Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Path, Query
-from fastapi.responses import JSONResponse
 
 from ....application.dto.requests import (
-    ApproveBucketTransitionRequest,
-    CreateBucketTransitionRequest,
-    CreateHistoricalASRDataRequest,
     CreateSpeakerRequest,
-    MarkTestDataRequest,
-    RejectBucketTransitionRequest,
     SearchSpeakersRequest,
     UpdateSpeakerRequest,
 )
 from ....application.dto.responses import (
-    BucketTransitionRequestResponse,
-    HistoricalASRDataResponse,
     SpeakerBucketStatsResponse,
     SpeakerListResponse,
     SpeakerResponse,

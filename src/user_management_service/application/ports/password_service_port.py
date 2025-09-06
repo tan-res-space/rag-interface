@@ -30,7 +30,6 @@ class IPasswordServicePort(ABC):
         Raises:
             PasswordServiceException: If hashing fails
         """
-        pass
 
     @abstractmethod
     async def verify_password(self, user_id: str, password: str) -> bool:
@@ -47,7 +46,6 @@ class IPasswordServicePort(ABC):
         Raises:
             PasswordServiceException: If verification fails
         """
-        pass
 
     @abstractmethod
     async def store_password_hash(self, user_id: str, password_hash: str) -> bool:
@@ -64,7 +62,6 @@ class IPasswordServicePort(ABC):
         Raises:
             PasswordServiceException: If storage fails
         """
-        pass
 
     @abstractmethod
     async def validate_password_policy(self, password: str) -> List[str]:
@@ -77,7 +74,6 @@ class IPasswordServicePort(ABC):
         Returns:
             List of validation errors (empty if valid)
         """
-        pass
 
     @abstractmethod
     async def calculate_password_strength(self, password: str) -> float:
@@ -90,7 +86,6 @@ class IPasswordServicePort(ABC):
         Returns:
             Strength score between 0.0 and 1.0
         """
-        pass
 
     @abstractmethod
     async def is_password_compromised(self, password: str) -> bool:
@@ -103,7 +98,6 @@ class IPasswordServicePort(ABC):
         Returns:
             True if password is compromised, False otherwise
         """
-        pass
 
     @abstractmethod
     async def generate_secure_password(self, length: int = 16) -> str:
@@ -116,4 +110,3 @@ class IPasswordServicePort(ABC):
         Returns:
             Generated secure password
         """
-        pass

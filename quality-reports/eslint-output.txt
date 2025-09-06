@@ -1,4 +1,0 @@
-
-> rag-interface-frontend@1.0.0 lint
-> eslint . --format=json --output-file=../quality-reports/eslint-report.json
-

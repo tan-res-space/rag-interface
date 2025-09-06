@@ -6,7 +6,7 @@ Orchestrates SER calculation workflow and data persistence.
 """
 
 from decimal import Decimal
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 from uuid import UUID
 
 from ...domain.services.ser_calculation_service import SERCalculationService

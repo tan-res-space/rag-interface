@@ -5,13 +5,11 @@ Application use case for processing speaker-specific RAG data.
 Orchestrates error-correction pair generation, vectorization, and speaker-specific training data preparation.
 """
 
-import asyncio
 from typing import Any, Dict, List, Optional
 from uuid import UUID, uuid4
 
 from ...domain.entities.speaker_error_correction_pair import SpeakerErrorCorrectionPair
 from ...domain.entities.speaker_rag_processing_job import (
-    JobStatus,
     JobType,
     SpeakerRAGProcessingJob,
 )
@@ -332,7 +330,7 @@ class ProcessSpeakerRAGDataUseCase:
         """
         for pair in pairs:
             # Create training example
-            training_example = pair.get_training_example()
+            pair.get_training_example()
 
             # Generate embedding for the input context
             # Note: This would integrate with the existing embedding generation

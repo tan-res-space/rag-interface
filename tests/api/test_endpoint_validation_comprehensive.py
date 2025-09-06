@@ -7,9 +7,7 @@ and response formatting following FastAPI best practices.
 
 import pytest
 import json
-from datetime import datetime, timedelta
 from uuid import uuid4
-from typing import Dict, Any
 
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
@@ -388,7 +386,7 @@ class TestErrorReportEndpointValidation:
         
         # Check for CORS headers in regular response
         get_response = client.get("/api/v1/health")
-        headers = get_response.headers
+        get_response.headers
         
         # CORS headers should be present (if CORS is configured)
         # This test would verify CORS configuration

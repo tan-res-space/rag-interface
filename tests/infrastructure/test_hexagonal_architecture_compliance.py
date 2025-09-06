@@ -8,7 +8,7 @@ principles with proper separation of concerns and dependency inversion.
 import pytest
 import inspect
 import importlib
-from typing import List, Set, Dict
+from typing import List, Set
 from pathlib import Path
 
 from src.error_reporting_service.domain.entities.error_report import ErrorReport

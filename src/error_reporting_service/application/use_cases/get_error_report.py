@@ -208,8 +208,8 @@ class GetErrorReportUseCase:
             GetErrorReportResponse DTO
         """
         # Filter metadata if requested
-        metadata = error_report.metadata
+        error_report.metadata
         if hasattr(request, "include_metadata") and not request.include_metadata:
-            metadata = {}
+            pass
 
         return GetErrorReportResponse(error_report=error_report, status="success")

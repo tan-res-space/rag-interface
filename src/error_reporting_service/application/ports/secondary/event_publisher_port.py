@@ -34,7 +34,6 @@ class EventPublisher(ABC):
         Raises:
             EventPublishingError: If the publish operation fails
         """
-        pass
 
     @abstractmethod
     async def publish_error_updated(self, event: ErrorUpdatedEvent) -> None:
@@ -47,7 +46,6 @@ class EventPublisher(ABC):
         Raises:
             EventPublishingError: If the publish operation fails
         """
-        pass
 
     @abstractmethod
     async def publish_error_deleted(self, event: ErrorDeletedEvent) -> None:
@@ -60,4 +58,3 @@ class EventPublisher(ABC):
         Raises:
             EventPublishingError: If the publish operation fails
         """
-        pass

@@ -7,16 +7,13 @@ to increase infrastructure layer test coverage.
 
 import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
-from uuid import uuid4, UUID
-from datetime import datetime, timedelta
+from uuid import uuid4
+from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy.exc import SQLAlchemyError
 
 from src.error_reporting_service.infrastructure.adapters.database.postgresql.adapter import (
     PostgreSQLAdapter,
-)
-from src.error_reporting_service.infrastructure.adapters.database.postgresql.models import (
-    ErrorReportModel,
 )
 from src.error_reporting_service.domain.entities.error_report import (
     ErrorReport,

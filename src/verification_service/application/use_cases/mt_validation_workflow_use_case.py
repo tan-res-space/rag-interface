@@ -10,11 +10,9 @@ from typing import Any, Dict, List, Optional
 from uuid import UUID, uuid4
 
 from ...domain.entities.validation_test_session import (
-    SessionStatus,
     ValidationTestSession,
 )
 from ...domain.services.ser_calculation_service import SERCalculationService
-from ...domain.value_objects.ser_metrics import SERMetrics
 from ..dto.requests import (
     CompleteValidationSessionRequest,
     GetSERComparisonRequest,

@@ -8,11 +8,9 @@ Following TDD principles and Hexagonal Architecture patterns.
 
 import asyncio
 from datetime import datetime, timedelta
-from typing import List
 from uuid import uuid4
 
 import pytest
-import sqlalchemy as sa
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.pool import StaticPool
 
@@ -23,12 +21,11 @@ from src.error_reporting_service.domain.entities.error_report import (
 )
 from src.error_reporting_service.infrastructure.adapters.database.postgresql.models import (
     Base,
-    ErrorReportModel,
 )
 from src.error_reporting_service.infrastructure.adapters.database.postgresql.adapter import (
     PostgreSQLAdapter,
 )
-from tests.factories import ErrorReportFactory, create_error_reports_batch
+from tests.factories import ErrorReportFactory
 
 
 @pytest.mark.integration

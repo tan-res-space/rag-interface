@@ -11,7 +11,6 @@ from typing import List, Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Path, Query
-from fastapi.responses import JSONResponse
 
 from ....application.dto.requests import (
     CreateSpeakerRAGJobRequest,
@@ -26,7 +25,6 @@ from ....application.dto.responses import (
     SpeakerErrorPatternsResponse,
     SpeakerRAGProcessingResponse,
     SpeakerRAGStatsResponse,
-    VectorizationResponse,
 )
 from ....application.use_cases.process_speaker_rag_data_use_case import (
     ProcessSpeakerRAGDataUseCase,

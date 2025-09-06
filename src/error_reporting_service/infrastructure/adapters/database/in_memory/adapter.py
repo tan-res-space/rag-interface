@@ -5,7 +5,6 @@ This module contains an in-memory implementation of the IDatabaseAdapter interfa
 for testing and demonstration purposes.
 """
 
-import asyncio
 from copy import deepcopy
 from typing import Any, Dict, List, Optional
 from uuid import UUID

@@ -6,7 +6,6 @@ Handles HTTP requests and responses for correction operations.
 """
 
 import uuid
-from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
@@ -15,9 +14,6 @@ from correction_engine_service.application.dto.requests import (
     BatchCorrectionRequest,
     CorrectionRequest,
     RejectCorrectionRequest,
-)
-from correction_engine_service.domain.value_objects.correction_mode import (
-    CorrectionMode,
 )
 
 # Create router

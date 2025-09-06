@@ -6,29 +6,10 @@ Handles HTTP requests and responses for error reporting operations.
 """
 
 import uuid
-from typing import List, Optional
+from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from error_reporting_service.application.dto.requests import (
-    GetErrorReportRequest,
-    SearchErrorsRequest,
-    SubmitErrorReportRequest,
-)
-from error_reporting_service.application.dto.responses import (
-    GetErrorReportResponse,
-    SearchErrorsResponse,
-    SubmitErrorReportResponse,
-)
-from error_reporting_service.application.use_cases.submit_error_report import (
-    SubmitErrorReportUseCase,
-)
-from error_reporting_service.infrastructure.adapters.database.postgresql.adapter import (
-    PostgreSQLAdapter,
-)
-from error_reporting_service.infrastructure.adapters.events.mock_event_publisher import (
-    MockEventPublisher,
-)
 
 # Import bucket progression components
 from error_reporting_service.infrastructure.adapters.database.in_memory.speaker_profile_adapter import InMemorySpeakerProfileAdapter
@@ -37,12 +18,6 @@ from error_reporting_service.application.use_cases.evaluate_bucket_progression_u
     EvaluateBucketProgressionRequest
 )
 from error_reporting_service.domain.services.bucket_progression_service import BucketProgressionService
-from error_reporting_service.domain.services.validation_service import (
-    ErrorValidationService,
-)
-from error_reporting_service.domain.services.categorization_service import (
-    ErrorCategorizationService,
-)
 
 # Create router
 router = APIRouter()

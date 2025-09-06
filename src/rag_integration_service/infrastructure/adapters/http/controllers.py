@@ -6,7 +6,6 @@ Handles HTTP requests and responses for RAG integration operations.
 """
 
 import uuid
-from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
@@ -14,11 +13,6 @@ from rag_integration_service.application.dto.requests import (
     BatchEmbeddingRequest,
     EmbeddingRequest,
     SimilaritySearchRequest,
-)
-from rag_integration_service.application.dto.responses import (
-    BatchEmbeddingResponse,
-    EmbeddingResponse,
-    SimilaritySearchResponse,
 )
 
 # Create main router

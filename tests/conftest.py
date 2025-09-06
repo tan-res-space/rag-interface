@@ -8,14 +8,13 @@ following TDD principles and the design specification requirements.
 import asyncio
 import os
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, AsyncGenerator, Dict, Generator
 from unittest.mock import AsyncMock, Mock
 
 import pytest
 
 # Test database imports
-import sqlalchemy as sa
 
 # FastAPI testing imports
 from fastapi.testclient import TestClient

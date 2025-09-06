@@ -8,11 +8,9 @@ between bounded contexts and for maintaining audit trails.
 
 from datetime import datetime
 from typing import Dict, List, Literal, Optional
-from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from ..entities.user import UserRole, UserStatus
 
 
 class BaseDomainEvent(BaseModel):

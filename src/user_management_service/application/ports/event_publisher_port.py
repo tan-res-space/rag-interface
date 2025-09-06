@@ -39,7 +39,6 @@ class IEventPublisherPort(ABC):
         Raises:
             EventPublishingException: If event publishing fails
         """
-        pass
 
     @abstractmethod
     async def publish_user_activated(self, event: UserActivatedEvent) -> None:
@@ -52,7 +51,6 @@ class IEventPublisherPort(ABC):
         Raises:
             EventPublishingException: If event publishing fails
         """
-        pass
 
     @abstractmethod
     async def publish_user_suspended(self, event: UserSuspendedEvent) -> None:
@@ -65,7 +63,6 @@ class IEventPublisherPort(ABC):
         Raises:
             EventPublishingException: If event publishing fails
         """
-        pass
 
     @abstractmethod
     async def publish_user_role_changed(self, event: UserRoleChangedEvent) -> None:
@@ -78,7 +75,6 @@ class IEventPublisherPort(ABC):
         Raises:
             EventPublishingException: If event publishing fails
         """
-        pass
 
     @abstractmethod
     async def publish_user_login_success(self, event: UserLoginSuccessEvent) -> None:
@@ -91,7 +87,6 @@ class IEventPublisherPort(ABC):
         Raises:
             EventPublishingException: If event publishing fails
         """
-        pass
 
     @abstractmethod
     async def publish_user_login_failure(self, event: UserLoginFailureEvent) -> None:
@@ -104,7 +99,6 @@ class IEventPublisherPort(ABC):
         Raises:
             EventPublishingException: If event publishing fails
         """
-        pass
 
     @abstractmethod
     async def publish_user_account_locked(self, event: UserAccountLockedEvent) -> None:
@@ -117,7 +111,6 @@ class IEventPublisherPort(ABC):
         Raises:
             EventPublishingException: If event publishing fails
         """
-        pass
 
     @abstractmethod
     async def publish_user_password_changed(
@@ -132,7 +125,6 @@ class IEventPublisherPort(ABC):
         Raises:
             EventPublishingException: If event publishing fails
         """
-        pass
 
     @abstractmethod
     async def publish_user_profile_updated(
@@ -147,7 +139,6 @@ class IEventPublisherPort(ABC):
         Raises:
             EventPublishingException: If event publishing fails
         """
-        pass
 
     @abstractmethod
     async def publish_user_deleted(self, event: UserDeletedEvent) -> None:
@@ -160,4 +151,3 @@ class IEventPublisherPort(ABC):
         Raises:
             EventPublishingException: If event publishing fails
         """
-        pass

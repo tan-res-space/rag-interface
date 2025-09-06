@@ -7,8 +7,6 @@ as specified in the design document.
 """
 
 from datetime import datetime, timedelta
-from typing import Any, Dict, List
-from unittest.mock import AsyncMock, Mock, patch
 from uuid import uuid4
 
 import pytest
@@ -18,13 +16,10 @@ from src.error_reporting_service.application.dto.requests import (
 )
 from src.error_reporting_service.domain.entities.error_report import (
     ErrorReport,
-    ErrorStatus,
     SeverityLevel,
 )
 from src.error_reporting_service.domain.services.validation_service import (
     ErrorValidationService,
-    ValidationError,
-    ValidationResult,
 )
 from tests.factories import (
     ErrorReportFactory,

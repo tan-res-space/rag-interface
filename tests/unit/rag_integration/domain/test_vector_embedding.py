@@ -6,8 +6,7 @@ Tests focus on contracts and mathematical properties rather than exact values.
 """
 
 from datetime import datetime
-from typing import Any, Dict, List
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 import pytest
 

@@ -6,26 +6,17 @@ Orchestrates speaker CRUD operations, bucket management, and statistics.
 """
 
 from decimal import Decimal
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 from uuid import UUID, uuid4
 
-from ...domain.entities.bucket_transition_request import BucketTransitionRequest
-from ...domain.entities.historical_asr_data import HistoricalASRData
 from ...domain.entities.speaker import Speaker
 from ...domain.value_objects.speaker_bucket import SpeakerBucket
 from ..dto.requests import (
-    ApproveBucketTransitionRequest,
-    CreateBucketTransitionRequest,
-    CreateHistoricalASRDataRequest,
     CreateSpeakerRequest,
-    MarkTestDataRequest,
-    RejectBucketTransitionRequest,
     SearchSpeakersRequest,
     UpdateSpeakerRequest,
 )
 from ..dto.responses import (
-    BucketTransitionRequestResponse,
-    HistoricalASRDataResponse,
     SpeakerBucketStatsResponse,
     SpeakerListResponse,
     SpeakerResponse,

@@ -5,7 +5,6 @@ Defines contract for speaker profile data access
 
 from abc import ABC, abstractmethod
 from typing import List, Optional, Dict, Any
-from datetime import datetime
 
 from ..entities.speaker_profile import SpeakerProfile, BucketChangeLog
 from ..value_objects.bucket_type import BucketType
@@ -19,37 +18,30 @@ class SpeakerProfileRepository(ABC):
     @abstractmethod
     async def get_by_speaker_id(self, speaker_id: str) -> Optional[SpeakerProfile]:
         """Get speaker profile by speaker ID"""
-        pass
     
     @abstractmethod
     async def save(self, speaker_profile: SpeakerProfile) -> SpeakerProfile:
         """Save or update speaker profile"""
-        pass
     
     @abstractmethod
     async def create_if_not_exists(self, speaker_id: str, initial_bucket: BucketType) -> SpeakerProfile:
         """Create speaker profile if it doesn't exist"""
-        pass
     
     @abstractmethod
     async def get_all_profiles(self, limit: int = 100, offset: int = 0) -> List[SpeakerProfile]:
         """Get all speaker profiles with pagination"""
-        pass
     
     @abstractmethod
     async def get_profiles_by_bucket(self, bucket_type: BucketType) -> List[SpeakerProfile]:
         """Get all speaker profiles in a specific bucket"""
-        pass
     
     @abstractmethod
     async def get_profiles_for_evaluation(self, days_since_last_change: int = 7) -> List[SpeakerProfile]:
         """Get profiles that are eligible for bucket evaluation"""
-        pass
     
     @abstractmethod
     async def save_bucket_change_log(self, change_log: BucketChangeLog) -> BucketChangeLog:
         """Save bucket change log entry"""
-        pass
     
     @abstractmethod
     async def get_bucket_change_history(
@@ -58,7 +50,6 @@ class SpeakerProfileRepository(ABC):
         limit: int = 50
     ) -> List[BucketChangeLog]:
         """Get bucket change history for a speaker"""
-        pass
     
     @abstractmethod
     async def get_recent_bucket_changes(
@@ -67,14 +58,11 @@ class SpeakerProfileRepository(ABC):
         days: int = 30
     ) -> List[BucketChangeLog]:
         """Get recent bucket changes for a speaker within specified days"""
-        pass
     
     @abstractmethod
     async def get_bucket_statistics(self) -> Dict[str, Any]:
         """Get overall bucket distribution statistics"""
-        pass
     
     @abstractmethod
     async def delete_profile(self, speaker_id: str) -> bool:
         """Delete speaker profile and associated data"""
-        pass

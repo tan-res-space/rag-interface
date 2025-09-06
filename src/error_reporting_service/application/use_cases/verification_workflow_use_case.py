@@ -10,7 +10,6 @@ from typing import List, Optional
 
 from error_reporting_service.domain.entities.verification_job import (
     VerificationJob,
-    VerificationStatus,
     VerificationResult,
     CorrectionApplied,
 )
@@ -253,7 +252,7 @@ class VerificationWorkflowUseCase:
             VerificationResult.NOT_APPLICABLE: "verified",
         }
         
-        new_status = status_mapping.get(verification_job.verification_result, "processing")
+        status_mapping.get(verification_job.verification_result, "processing")
         
         # Update error report status through repository
         # This would require access to error report repository

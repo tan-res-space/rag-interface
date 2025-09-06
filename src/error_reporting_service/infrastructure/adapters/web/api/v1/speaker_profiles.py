@@ -4,7 +4,6 @@ Handles speaker profile management and bucket progression
 """
 
 from fastapi import APIRouter, Depends, HTTPException, status, Query
-from typing import List, Optional, Dict, Any
 from datetime import datetime
 import uuid
 

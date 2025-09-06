@@ -5,7 +5,6 @@ These DTOs define the structure of requests to use cases and API endpoints.
 """
 
 from dataclasses import dataclass
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from rag_integration_service.domain.entities.speaker_rag_processing_job import (

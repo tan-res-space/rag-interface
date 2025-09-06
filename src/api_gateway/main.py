@@ -11,7 +11,6 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 
 from .speaker_bucket_management_router import router as speaker_bucket_router
 # from .enhanced_error_reporting_router import router as error_reporting_router
