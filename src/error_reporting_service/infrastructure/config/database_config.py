@@ -56,3 +56,12 @@ class DatabaseConfig:
             return "in-memory://localhost"
         else:
             raise ValueError(f"Unsupported database type: {self.type}")
+
+    @classmethod
+    def from_dict(cls, config_dict: dict) -> "DatabaseConfig":
+        """Create DatabaseConfig from dictionary."""
+        # Convert string database type to enum
+        if "type" in config_dict and isinstance(config_dict["type"], str):
+            config_dict["type"] = DatabaseType(config_dict["type"])
+
+        return cls(**config_dict)

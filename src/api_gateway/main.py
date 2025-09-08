@@ -13,8 +13,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .speaker_bucket_management_router import router as speaker_bucket_router
-# from .enhanced_error_reporting_router import router as error_reporting_router
-# from .verification_workflow_router import router as verification_router
+from .enhanced_error_reporting_router import router as error_reporting_router
+from .verification_workflow_router import router as verification_router
 
 # Configure logging
 logging.basicConfig(
@@ -41,18 +41,19 @@ app = FastAPI(
 )
 
 # Configure CORS
+cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:3001").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001"],
+    allow_origins=cors_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
 # Include routers
 app.include_router(speaker_bucket_router)
-# app.include_router(error_reporting_router)
-# app.include_router(verification_router)
+app.include_router(error_reporting_router)
+app.include_router(verification_router)
 
 
 @app.get("/")

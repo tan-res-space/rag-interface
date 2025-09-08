@@ -206,19 +206,50 @@ async def initialize_analytics():
 async def initialize_database():
     """Initialize database connections"""
     logger.info("Initializing database...")
-    # TODO: Implement database initialization
+    try:
+        # For now, use in-memory storage
+        # In production, this would connect to actual database
+        app.state.database = {
+            "type": "in_memory",
+            "status": "connected",
+            "verification_jobs": {},
+            "analytics_data": {}
+        }
+        logger.info("Database initialized successfully (in-memory implementation)")
+    except Exception as e:
+        logger.error(f"Failed to initialize database: {e}")
+        app.state.database = {"status": "failed"}
 
 
 async def initialize_cache():
     """Initialize cache connection"""
     logger.info("Initializing cache...")
-    # TODO: Implement cache initialization
+    try:
+        app.state.cache = {
+            "verification_results": {},
+            "analytics_cache": {},
+            "status": "initialized"
+        }
+        logger.info("Cache initialized successfully")
+    except Exception as e:
+        logger.error(f"Failed to initialize cache: {e}")
+        app.state.cache = {"status": "failed"}
 
 
 async def cleanup_resources():
     """Cleanup resources during shutdown"""
     logger.info("Cleaning up resources...")
-    # TODO: Implement resource cleanup
+    try:
+        if hasattr(app.state, 'database'):
+            app.state.database["status"] = "disconnected"
+            logger.info("Database disconnected")
+
+        if hasattr(app.state, 'cache'):
+            app.state.cache.clear()
+            logger.info("Cache cleared")
+
+    except Exception as e:
+        logger.error(f"Error during resource cleanup: {e}")
 
 
 if __name__ == "__main__":

@@ -29,7 +29,7 @@ class Settings:
     cors_origins: List[str] = field(default_factory=lambda: ["*"])
 
     # Security settings
-    secret_key: str = "your-secret-key-here"
+    secret_key: str = "dev-secret-key-change-in-production"  # Will be overridden by from_env()
     access_token_expire_minutes: int = 30
 
     @classmethod
@@ -76,7 +76,7 @@ class Settings:
             event_bus=event_bus_config,
             api_prefix=os.getenv("API_PREFIX", "/api/v1"),
             cors_origins=os.getenv("CORS_ORIGINS", "*").split(","),
-            secret_key=os.getenv("SECRET_KEY", "your-secret-key-here"),
+            secret_key=os.getenv("SECRET_KEY", "dev-secret-key-change-in-production"),
             access_token_expire_minutes=int(
                 os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30")
             ),

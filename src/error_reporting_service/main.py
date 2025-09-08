@@ -45,15 +45,16 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure appropriately for production
+    allow_origins=settings.cors_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
 # Add trusted host middleware for security
+trusted_hosts = ["*"] if settings.debug else ["localhost", "127.0.0.1"]
 app.add_middleware(
-    TrustedHostMiddleware, allowed_hosts=["*"]  # Configure appropriately for production
+    TrustedHostMiddleware, allowed_hosts=trusted_hosts
 )
 
 
@@ -125,22 +126,30 @@ async def root():
 app.include_router(error_reports.router, prefix="/api/v1", tags=["error-reports"])
 app.include_router(speaker_profiles.router, tags=["speaker-profiles"])
 
-# Mock auth endpoint for development
+# Development auth endpoint (replace with real authentication in production)
 @app.get("/api/v1/auth/me")
 async def get_current_user():
-    """Mock auth endpoint for development"""
-    return {
-        "id": "dev-user-123",
-        "username": "dev-user",
-        "email": "dev@example.com",
-        "role": "QA_ANALYST",
-        "roles": ["QA_ANALYST", "USER"],  # Add roles array
-        "firstName": "Dev",
-        "lastName": "User",
-        "isActive": True,
-        "createdAt": datetime.utcnow().isoformat(),
-        "updatedAt": datetime.utcnow().isoformat()
-    }
+    """Development auth endpoint - replace with real authentication in production"""
+    if settings.debug:
+        # Return mock user for development
+        return {
+            "id": "dev-user-123",
+            "username": "dev-user",
+            "email": "dev@example.com",
+            "role": "QA_ANALYST",
+            "roles": ["QA_ANALYST", "USER"],
+            "firstName": "Dev",
+            "lastName": "User",
+            "isActive": True,
+            "createdAt": datetime.utcnow().isoformat(),
+            "updatedAt": datetime.utcnow().isoformat()
+        }
+    else:
+        # In production, this should validate JWT tokens
+        raise HTTPException(
+            status_code=501,
+            detail="Authentication not implemented for production. Please implement JWT validation."
+        )
 
 
 # Exception handlers
@@ -196,6 +205,33 @@ async def permission_error_handler(request: Request, exc: PermissionError):
 
 
 # Startup and shutdown events
+async def initialize_dependency_injection():
+    """Initialize dependency injection container"""
+    logger.info("Initializing dependency injection...")
+    try:
+        from shared.infrastructure.dependency_injection.container import initialize_container
+
+        # Build configuration for DI container
+        config = {
+            "database": {
+                "type": settings.database.type.value,
+                "host": settings.database.host,
+                "port": settings.database.port,
+                "database": settings.database.database,
+                "username": settings.database.username,
+                "password": settings.database.password
+            }
+        }
+
+        # Initialize container
+        container = await initialize_container(config)
+        app.state.di_container = container
+
+        logger.info("Dependency injection initialized successfully")
+    except Exception as e:
+        logger.error(f"Failed to initialize dependency injection: {e}")
+
+
 @app.on_event("startup")
 async def startup_event():
     """Application startup event"""
@@ -203,11 +239,19 @@ async def startup_event():
     logger.info(f"Debug mode: {settings.debug}")
     logger.info(f"Log level: {settings.log_level}")
 
+    # Initialize dependency injection
+    await initialize_dependency_injection()
+
 
 @app.on_event("shutdown")
 async def shutdown_event():
     """Application shutdown event"""
     logger.info("Error Reporting Service shutting down...")
+
+    # Dispose dependency injection container
+    if hasattr(app.state, 'di_container'):
+        await app.state.di_container.dispose()
+        logger.info("Dependency injection container disposed")
 
 
 if __name__ == "__main__":

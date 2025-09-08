@@ -97,10 +97,34 @@ class ErrorFiltersModel(BaseModel):
 # =====================================================
 
 async def get_submit_error_report_use_case() -> SubmitErrorReportUseCase:
-    """Get submit error report use case instance"""
-    # This would be properly injected in a real implementation
-    # For now, return a placeholder
-    raise HTTPException(status_code=501, detail="Use case not implemented")
+    """Basic DI wiring example for SubmitErrorReportUseCase.
+
+    Uses in-memory repository and mock event publisher for development.
+    """
+    from error_reporting_service.infrastructure.adapters.database.in_memory.error_report_repository import (
+        InMemoryErrorReportRepository,
+    )
+    from error_reporting_service.infrastructure.adapters.services.mock_event_publisher import (
+        MockEventPublisher,
+    )
+    from error_reporting_service.domain.services.validation_service import (
+        ErrorValidationService,
+    )
+    from error_reporting_service.domain.services.categorization_service import (
+        ErrorCategorizationService,
+    )
+
+    repo = InMemoryErrorReportRepository()
+    publisher = MockEventPublisher()
+    validation = ErrorValidationService()
+    categorization = ErrorCategorizationService()
+
+    return SubmitErrorReportUseCase(
+        repository=repo,
+        event_publisher=publisher,
+        validation_service=validation,
+        categorization_service=categorization,
+    )
 
 
 async def get_speaker_bucket_management_use_case() -> SpeakerBucketManagementUseCase:

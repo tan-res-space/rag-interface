@@ -7,7 +7,7 @@ Provides analytics and insights for the enhanced error reporting dashboard.
 from datetime import datetime, timedelta
 from typing import Dict, List
 
-from error_reporting_service.domain.ports.error_report_repository import (
+from error_reporting_service.application.ports.secondary.repository_port import (
     ErrorReportRepository,
 )
 from error_reporting_service.domain.ports.speaker_bucket_history_repository import (

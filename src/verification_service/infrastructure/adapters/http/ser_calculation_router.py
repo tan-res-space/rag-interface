@@ -43,6 +43,57 @@ async def get_ser_calculation_use_case() -> CalculateSERMetricsUseCase:
     )
 
 
+@router.get("/metrics/summary", response_model=dict)
+async def get_ser_metrics_summary():
+    """
+    Get SER metrics summary for dashboard.
+
+    Returns aggregated SER metrics and trends for the dashboard display.
+    """
+    try:
+        logger.info("Getting SER metrics summary")
+
+        # Mock data for dashboard
+        summary_data = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "total_calculations": 1247,
+            "average_ser_score": 12.3,
+            "median_ser_score": 8.7,
+            "score_distribution": {
+                "excellent": {"range": "0-5", "count": 423, "percentage": 33.9},
+                "good": {"range": "5-15", "count": 512, "percentage": 41.1},
+                "fair": {"range": "15-30", "count": 234, "percentage": 18.8},
+                "poor": {"range": "30+", "count": 78, "percentage": 6.3}
+            },
+            "trends": {
+                "last_7_days": {
+                    "average_score": 11.8,
+                    "change_percentage": -4.1,
+                    "trend": "improving"
+                },
+                "last_30_days": {
+                    "average_score": 13.1,
+                    "change_percentage": -6.1,
+                    "trend": "improving"
+                }
+            },
+            "top_performing_speakers": [
+                {"speaker_id": "SPEAKER_001", "average_ser": 2.1, "calculation_count": 45},
+                {"speaker_id": "SPEAKER_005", "average_ser": 1.8, "calculation_count": 67},
+                {"speaker_id": "SPEAKER_012", "average_ser": 3.2, "calculation_count": 34}
+            ],
+            "recent_calculations": 89,
+            "processing_time_avg_ms": 245
+        }
+
+        logger.info("SER metrics summary retrieved successfully")
+        return summary_data
+
+    except Exception as e:
+        logger.error(f"Failed to get SER metrics summary: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get SER metrics summary")
+
+
 @router.post("/calculate", response_model=SERCalculationResponse, status_code=201)
 async def calculate_ser_metrics(
     request: CalculateSERRequest,

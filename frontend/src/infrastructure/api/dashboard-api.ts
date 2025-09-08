@@ -27,71 +27,150 @@ export class DashboardApi extends BaseApi {
 
   /**
    * Get comprehensive dashboard overview
+   * Falls back to direct service calls if API Gateway is unavailable
    */
   async getDashboardOverview(filters?: DashboardFilters): Promise<DashboardMetrics> {
-    const params = new URLSearchParams();
-    
-    if (filters) {
-      if (filters.dateRange) {
-        params.append('start_date', filters.dateRange.start);
-        params.append('end_date', filters.dateRange.end);
-      }
-      if (filters.speakers?.length) {
-        params.append('speakers', filters.speakers.join(','));
-      }
-      if (filters.buckets?.length) {
-        params.append('buckets', filters.buckets.join(','));
-      }
-    }
+    try {
+      // Try API Gateway first
+      const params = new URLSearchParams();
 
-    return this.get<DashboardMetrics>(`${this.basePath}/overview?${params.toString()}`);
+      if (filters) {
+        if (filters.dateRange) {
+          params.append('start_date', filters.dateRange.start);
+          params.append('end_date', filters.dateRange.end);
+        }
+        if (filters.speakers?.length) {
+          params.append('speakers', filters.speakers.join(','));
+        }
+        if (filters.buckets?.length) {
+          params.append('buckets', filters.buckets.join(','));
+        }
+      }
+
+      return await this.get<DashboardMetrics>(`${this.basePath}/overview?${params.toString()}`);
+    } catch (error) {
+      // Fallback to direct service calls
+      console.warn('API Gateway unavailable, using direct service calls:', error);
+      return await this.getDashboardOverviewDirect(filters);
+    }
+  }
+
+  /**
+   * Get dashboard overview by calling services directly
+   */
+  private async getDashboardOverviewDirect(filters?: DashboardFilters): Promise<DashboardMetrics> {
+    try {
+      // Call services directly and aggregate the data
+      const [speakerStats, serMetrics, ragProcessing, mtValidation, transitionStats] = await Promise.allSettled([
+        this.getSpeakerBucketStats(filters),
+        this.getSERMetricsSummary(filters),
+        this.getRAGProcessingSummary(filters),
+        this.getMTValidationSummary(filters),
+        this.getTransitionStatistics(filters),
+      ]);
+
+      // Build dashboard metrics from individual service responses
+      const dashboardData: DashboardMetrics = {
+        timestamp: new Date().toISOString(),
+        speaker_statistics: speakerStats.status === 'fulfilled' ? speakerStats.value : null,
+        ser_metrics: serMetrics.status === 'fulfilled' ? serMetrics.value : null,
+        rag_processing: ragProcessing.status === 'fulfilled' ? ragProcessing.value : null,
+        mt_validation: mtValidation.status === 'fulfilled' ? mtValidation.value : null,
+        transition_statistics: transitionStats.status === 'fulfilled' ? transitionStats.value : null,
+        services_status: {
+          user_management: speakerStats.status === 'fulfilled' ? 'healthy' : 'error',
+          verification: serMetrics.status === 'fulfilled' ? 'healthy' : 'error',
+          rag_integration: ragProcessing.status === 'fulfilled' ? 'healthy' : 'error',
+          mt_validation: mtValidation.status === 'fulfilled' ? 'healthy' : 'error',
+        }
+      };
+
+      return dashboardData;
+    } catch (error) {
+      console.error('Failed to get dashboard overview from direct services:', error);
+      throw error;
+    }
   }
 
   /**
    * Get speaker bucket statistics
    */
   async getSpeakerBucketStats(filters?: DashboardFilters): Promise<SpeakerBucketStats> {
-    const params = this.buildFilterParams(filters);
-    return this.get<SpeakerBucketStats>(`${this.basePath}/speaker-statistics?${params.toString()}`);
+    try {
+      // Try API Gateway first
+      const params = this.buildFilterParams(filters);
+      return await this.get<SpeakerBucketStats>(`${this.basePath}/speaker-statistics?${params.toString()}`);
+    } catch (error) {
+      // Fallback to direct service call via proxy
+      return await this.get<SpeakerBucketStats>('/api/v1/speakers/statistics/buckets');
+    }
   }
 
   /**
    * Get SER metrics summary
    */
   async getSERMetricsSummary(filters?: DashboardFilters): Promise<SERMetricsSummary> {
-    const params = this.buildFilterParams(filters);
-    return this.get<SERMetricsSummary>(`${this.basePath}/ser-metrics?${params.toString()}`);
+    try {
+      // Try API Gateway first
+      const params = this.buildFilterParams(filters);
+      return await this.get<SERMetricsSummary>(`${this.basePath}/ser-metrics?${params.toString()}`);
+    } catch (error) {
+      // Fallback to direct service call via proxy (note the double prefix due to router configuration)
+      return await this.get<SERMetricsSummary>('/api/v1/api/v1/ser/metrics/summary');
+    }
   }
 
   /**
    * Get RAG processing summary
    */
   async getRAGProcessingSummary(filters?: DashboardFilters): Promise<RAGProcessingSummary> {
-    const params = this.buildFilterParams(filters);
-    return this.get<RAGProcessingSummary>(`${this.basePath}/rag-processing?${params.toString()}`);
+    try {
+      // Try API Gateway first
+      const params = this.buildFilterParams(filters);
+      return await this.get<RAGProcessingSummary>(`${this.basePath}/rag-processing?${params.toString()}`);
+    } catch (error) {
+      // Fallback to direct service call via proxy (note the double prefix due to router configuration)
+      return await this.get<RAGProcessingSummary>('/api/v1/api/v1/speaker-rag/statistics/summary');
+    }
   }
 
   /**
    * Get MT validation summary
    */
   async getMTValidationSummary(filters?: DashboardFilters): Promise<MTValidationSummary> {
-    const params = this.buildFilterParams(filters);
-    return this.get<MTValidationSummary>(`${this.basePath}/mt-validation?${params.toString()}`);
+    try {
+      // Try API Gateway first
+      const params = this.buildFilterParams(filters);
+      return await this.get<MTValidationSummary>(`${this.basePath}/mt-validation?${params.toString()}`);
+    } catch (error) {
+      // Fallback to direct service call via proxy (note the double prefix due to router configuration)
+      return await this.get<MTValidationSummary>('/api/v1/api/v1/mt-validation/statistics/summary');
+    }
   }
 
   /**
    * Get transition statistics
    */
   async getTransitionStatistics(filters?: DashboardFilters): Promise<TransitionStatisticsSummary> {
-    const params = this.buildFilterParams(filters);
-    return this.get<TransitionStatisticsSummary>(`${this.basePath}/transition-statistics?${params.toString()}`);
+    try {
+      // Try API Gateway first
+      const params = this.buildFilterParams(filters);
+      return await this.get<TransitionStatisticsSummary>(`${this.basePath}/transition-statistics?${params.toString()}`);
+    } catch (error) {
+      // Fallback to direct service call via proxy
+      return await this.get<TransitionStatisticsSummary>('/api/v1/bucket-transitions/statistics/summary');
+    }
   }
 
   /**
    * Get services health status
    */
   async getServicesHealth(): Promise<ServicesHealthStatus> {
-    return this.get<ServicesHealthStatus>(`${this.basePath}/health/comprehensive`);
+    // Align with backend router path in src/api_gateway/speaker_bucket_management_router.py
+    // The comprehensive health endpoint is exposed directly under
+    // /api/v1/speaker-bucket-management/health/comprehensive
+    const rootPath = '/api/v1/speaker-bucket-management';
+    return this.get<ServicesHealthStatus>(`${rootPath}/health/comprehensive`);
   }
 
   /**

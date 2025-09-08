@@ -220,7 +220,7 @@ services:
     working_dir: /app
     environment:
       - NODE_ENV=development
-      - VITE_API_BASE_URL=http://localhost:8010
+      - VITE_API_BASE_URL=http://localhost:${GATEWAY_PORT:-8000}
       - VITE_UMS_API_URL=http://localhost:8011
       - VITE_RIS_API_URL=http://localhost:8012
       - CHOKIDAR_USEPOLLING=true  # For hot-reload in containers

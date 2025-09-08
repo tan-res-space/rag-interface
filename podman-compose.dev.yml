@@ -62,6 +62,35 @@ services:
   # Backend Services (Development Mode)
   # =====================================================
 
+  api-gateway:
+    image: docker.io/library/python:3.11-slim
+    container_name: api-gateway-dev
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
+      - DEBUG=true
+      - PYTHONPATH=/app/src:/app
+      - WATCHFILES_FORCE_POLLING=true
+    volumes:
+      - .:/app:Z
+    ports:
+      - "${GATEWAY_PORT:-8000}:8000"
+      - "${GATEWAY_DEBUG_PORT:-5687}:5678"
+    networks:
+      - rag-dev-network
+    command: >
+      sh -c "
+        apt-get update && apt-get install -y gcc curl &&
+        python -m venv venv &&
+        . venv/bin/activate &&
+        pip install --upgrade pip &&
+        pip install fastapi uvicorn[standard] watchfiles debugpy httpx &&
+        pip install -r requirements.txt &&
+        cd /app/src &&
+        uvicorn api_gateway.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/api_gateway --log-level debug
+      "
+
   error-reporting-service:
     image: docker.io/library/python:3.11-slim
     container_name: rag-ers-dev
@@ -72,7 +101,7 @@ services:
       - REDIS_URL=redis://:${REDIS_PASSWORD:-dev_redis_2025}@redis:6379/0
       - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
       - DEBUG=true
-      - PYTHONPATH=/app
+      - PYTHONPATH=/app/src:/app
       - WATCHFILES_FORCE_POLLING=true  # For hot-reload in containers
     volumes:
       - .:/app:Z
@@ -95,7 +124,8 @@ services:
         pip install --upgrade pip &&
         pip install fastapi uvicorn[standard] watchfiles debugpy &&
         pip install -r requirements.txt &&
-        uvicorn src.error_reporting_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/error_reporting_service
+        cd /app/src &&
+        uvicorn error_reporting_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/error_reporting_service
       "
 
   user-management-service:
@@ -108,7 +138,7 @@ services:
       - REDIS_URL=redis://:${REDIS_PASSWORD:-dev_redis_2025}@redis:6379/1
       - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
       - DEBUG=true
-      - PYTHONPATH=/app
+      - PYTHONPATH=/app/src:/app
       - WATCHFILES_FORCE_POLLING=true  # For hot-reload in containers
     volumes:
       - .:/app:Z
@@ -131,7 +161,8 @@ services:
         pip install --upgrade pip &&
         pip install fastapi uvicorn[standard] watchfiles debugpy &&
         pip install -r requirements.txt &&
-        uvicorn src.user_management_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/user_management_service
+        cd /app/src &&
+        uvicorn user_management_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/user_management_service
       "
 
   rag-integration-service:
@@ -144,7 +175,7 @@ services:
       - REDIS_URL=redis://:${REDIS_PASSWORD:-dev_redis_2025}@redis:6379/2
       - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
       - DEBUG=true
-      - PYTHONPATH=/app
+      - PYTHONPATH=/app/src:/app
       - WATCHFILES_FORCE_POLLING=true  # For hot-reload in containers
     volumes:
       - .:/app:Z
@@ -167,7 +198,8 @@ services:
         pip install --upgrade pip &&
         pip install fastapi uvicorn[standard] watchfiles debugpy &&
         pip install -r requirements.txt &&
-        uvicorn src.rag_integration_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/rag_integration_service
+        cd /app/src &&
+        uvicorn rag_integration_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/rag_integration_service
       "
 
   correction-engine-service:
@@ -180,7 +212,7 @@ services:
       - REDIS_URL=redis://:${REDIS_PASSWORD:-dev_redis_2025}@redis:6379/3
       - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
       - DEBUG=true
-      - PYTHONPATH=/app
+      - PYTHONPATH=/app/src:/app
       - WATCHFILES_FORCE_POLLING=true  # For hot-reload in containers
     volumes:
       - .:/app:Z
@@ -203,7 +235,8 @@ services:
         pip install --upgrade pip &&
         pip install fastapi uvicorn[standard] watchfiles debugpy &&
         pip install -r requirements.txt &&
-        uvicorn src.correction_engine_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/correction_engine_service
+        cd /app/src &&
+        uvicorn correction_engine_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/correction_engine_service
       "
 
   verification-service:
@@ -216,7 +249,7 @@ services:
       - REDIS_URL=redis://:${REDIS_PASSWORD:-dev_redis_2025}@redis:6379/4
       - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
       - DEBUG=true
-      - PYTHONPATH=/app
+      - PYTHONPATH=/app/src:/app
       - WATCHFILES_FORCE_POLLING=true  # For hot-reload in containers
     volumes:
       - .:/app:Z
@@ -239,7 +272,8 @@ services:
         pip install --upgrade pip &&
         pip install fastapi uvicorn[standard] watchfiles debugpy &&
         pip install -r requirements.txt &&
-        uvicorn src.verification_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/verification_service
+        cd /app/src &&
+        uvicorn verification_service.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src/verification_service
       "
 
   # =====================================================
@@ -253,7 +287,7 @@ services:
     working_dir: /app
     environment:
       - NODE_ENV=development
-      - VITE_API_BASE_URL=http://localhost:8010
+      - VITE_API_BASE_URL=http://localhost:${GATEWAY_PORT:-8000}
       - VITE_UMS_API_URL=http://localhost:8011
       - VITE_RIS_API_URL=http://localhost:8012
       - CHOKIDAR_USEPOLLING=true  # For hot-reload in containers

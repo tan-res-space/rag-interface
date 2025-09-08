@@ -28,13 +28,24 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/bucket-transitions", tags=["Bucket Transitions"])
 
 
-# Dependency injection placeholder
+# Dependency injection - create use case with in-memory repository for development
 async def get_bucket_transition_use_case() -> ManageBucketTransitionsUseCase:
     """Get bucket transition management use case instance."""
-    # TODO: Implement proper dependency injection
-    raise HTTPException(
-        status_code=501, detail="Bucket transition use case not implemented"
-    )
+    try:
+        # Import the in-memory repository for development
+        from ....infrastructure.adapters.database.in_memory.speaker_repository import InMemorySpeakerRepository
+
+        # Create repository instance
+        speaker_repo = InMemorySpeakerRepository()
+
+        # Create and return use case
+        return ManageBucketTransitionsUseCase(speaker_repository=speaker_repo)
+
+    except Exception as e:
+        logger.error(f"Failed to create bucket transition use case: {e}")
+        raise HTTPException(
+            status_code=500, detail="Failed to initialize bucket transition service"
+        )
 
 
 @router.post("", response_model=BucketTransitionRequestResponse, status_code=201)

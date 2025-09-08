@@ -38,16 +38,28 @@ class DatabaseAdapterFactory:
             return PostgreSQLAdapter(connection_string)
 
         elif config.type == DatabaseType.MONGODB:
-            from .mongodb.adapter import MongoDBAdapter
+            try:
+                from .mongodb.adapter import MongoDBAdapter
 
-            connection_string = config.get_connection_string()
-            return MongoDBAdapter(connection_string, config.database)
+                connection_string = config.get_connection_string()
+                adapter = MongoDBAdapter(connection_string, config.database)
+                await adapter.connect()
+                return adapter
+            except ImportError as e:
+                logger.error(f"MongoDB adapter not available: {e}")
+                raise RuntimeError("MongoDB adapter not available. Install pymongo and motor packages.")
 
         elif config.type == DatabaseType.SQLSERVER:
-            from .sqlserver.adapter import SQLServerAdapter
+            try:
+                from .sqlserver.adapter import SQLServerAdapter
 
-            connection_string = config.get_connection_string()
-            return SQLServerAdapter(connection_string)
+                connection_string = config.get_connection_string()
+                adapter = SQLServerAdapter(connection_string)
+                await adapter.connect()
+                return adapter
+            except ImportError as e:
+                logger.error(f"SQL Server adapter not available: {e}")
+                raise RuntimeError("SQL Server adapter not available. Install aioodbc package.")
 
         else:
             # For testing and demonstration, use in-memory adapter

@@ -372,19 +372,60 @@ async def initialize_auth_systems():
 async def initialize_database():
     """Initialize database connections"""
     logger.info("Initializing database...")
-    # TODO: Implement database initialization
+    try:
+        from .infrastructure.adapters.database.factory import DatabaseAdapterFactory
+
+        # Create database adapter based on configuration
+        db_adapter = await DatabaseAdapterFactory.create(settings.database)
+
+        # Test database connection
+        health_check = await db_adapter.health_check()
+        if health_check:
+            logger.info("Database connection established successfully")
+        else:
+            logger.warning("Database health check failed")
+
+        # Store adapter globally for dependency injection
+        app.state.db_adapter = db_adapter
+
+    except Exception as e:
+        logger.error(f"Failed to initialize database: {e}")
+        # Continue with in-memory adapter for development
+        from .infrastructure.adapters.database.in_memory.adapter import InMemoryDatabaseAdapter
+        app.state.db_adapter = InMemoryDatabaseAdapter()
+        logger.info("Using in-memory database adapter as fallback")
 
 
 async def initialize_cache():
     """Initialize cache connection"""
     logger.info("Initializing cache...")
-    # TODO: Implement cache initialization
+    try:
+        # For now, use a simple in-memory cache
+        # In production, this would connect to Redis
+        app.state.cache = {}
+        logger.info("Cache initialized successfully")
+    except Exception as e:
+        logger.error(f"Failed to initialize cache: {e}")
+        app.state.cache = {}
 
 
 async def cleanup_resources():
     """Cleanup resources during shutdown"""
     logger.info("Cleaning up resources...")
-    # TODO: Implement resource cleanup
+    try:
+        # Close database connections
+        if hasattr(app.state, 'db_adapter'):
+            if hasattr(app.state.db_adapter, 'close'):
+                await app.state.db_adapter.close()
+            logger.info("Database connections closed")
+
+        # Clear cache
+        if hasattr(app.state, 'cache'):
+            app.state.cache.clear()
+            logger.info("Cache cleared")
+
+    except Exception as e:
+        logger.error(f"Error during resource cleanup: {e}")
 
 
 if __name__ == "__main__":

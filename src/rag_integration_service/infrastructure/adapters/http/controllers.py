@@ -5,7 +5,9 @@ FastAPI router for embedding and similarity search endpoints.
 Handles HTTP requests and responses for RAG integration operations.
 """
 
+import logging
 import uuid
+from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
@@ -17,6 +19,9 @@ from rag_integration_service.application.dto.requests import (
 
 # Create main router
 router = APIRouter()
+
+# Setup logging
+logger = logging.getLogger(__name__)
 
 # Include specialized routers
 try:
@@ -36,7 +41,8 @@ async def get_current_user():
 
 @router.post("/embeddings", status_code=status.HTTP_201_CREATED)
 async def generate_embedding(
-    request: EmbeddingRequest, current_user: dict = Depends(get_current_user)
+    request: EmbeddingRequest,
+    current_user: dict = Depends(get_current_user)
 ) -> dict:
     """
     Generate a vector embedding for text.
@@ -48,23 +54,52 @@ async def generate_embedding(
     Returns:
         Response with embedding data
     """
-    # Placeholder implementation
-    embedding_id = str(uuid.uuid4())
+    try:
+        import time
+        from rag_integration_service.main import app
 
-    return {
-        "id": embedding_id,
-        "text": request.text,
-        "embedding_type": request.embedding_type.value,
-        "vector": [0.1] * 1536,  # Placeholder vector
-        "model_info": {"name": "test-model", "version": "v1.0", "dimensions": 1536},
-        "processing_time": 0.1,
-        "status": "success",
-    }
+        start_time = time.time()
+
+        # Get ML adapter from application state
+        if not hasattr(app.state, 'ml_adapter'):
+            raise HTTPException(
+                status_code=503,
+                detail="ML model adapter not available"
+            )
+
+        ml_adapter = app.state.ml_adapter
+
+        # Generate embedding using the real adapter
+        vector = await ml_adapter.generate_embedding(request.text, request.embedding_type)
+
+        processing_time = time.time() - start_time
+        embedding_id = str(uuid.uuid4())
+
+        # Get model info
+        model_info = await ml_adapter.get_model_info()
+
+        return {
+            "id": embedding_id,
+            "text": request.text,
+            "embedding_type": request.embedding_type.value,
+            "vector": vector,
+            "model_info": model_info,
+            "processing_time": processing_time,
+            "status": "success",
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to generate embedding: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to generate embedding: {str(e)}"
+        )
 
 
 @router.post("/embeddings/batch", status_code=status.HTTP_201_CREATED)
 async def generate_batch_embeddings(
-    request: BatchEmbeddingRequest, current_user: dict = Depends(get_current_user)
+    request: BatchEmbeddingRequest,
+    current_user: dict = Depends(get_current_user)
 ) -> dict:
     """
     Generate vector embeddings for multiple texts.
@@ -76,29 +111,62 @@ async def generate_batch_embeddings(
     Returns:
         Response with batch embedding data
     """
-    # Placeholder implementation
-    embeddings = []
-    for i, text in enumerate(request.texts):
-        embeddings.append(
-            {
-                "id": str(uuid.uuid4()),
-                "text": text,
-                "embedding_type": request.embedding_type.value,
-                "vector": [0.1 + i * 0.01] * 1536,  # Slightly different vectors
-                "created_at": "2023-01-01T00:00:00Z",
-            }
+    try:
+        import time
+        from rag_integration_service.main import app
+
+        start_time = time.time()
+
+        # Get ML adapter from application state
+        if not hasattr(app.state, 'ml_adapter'):
+            raise HTTPException(
+                status_code=503,
+                detail="ML model adapter not available"
+            )
+
+        ml_adapter = app.state.ml_adapter
+
+        # Generate embeddings using the real adapter
+        vectors = await ml_adapter.generate_batch_embeddings(
+            request.texts,
+            request.embedding_type
         )
 
-    return {
-        "embeddings": embeddings,
-        "batch_size": len(request.texts),
-        "success_count": len(request.texts),
-        "failure_count": 0,
-        "failures": [],
-        "processing_time": 0.5,
-        "model_info": {"name": "test-model", "version": "v1.0", "dimensions": 1536},
-        "status": "success",
-    }
+        processing_time = time.time() - start_time
+
+        # Get model info
+        model_info = await ml_adapter.get_model_info()
+
+        # Create response embeddings
+        embeddings = []
+        for i, (text, vector) in enumerate(zip(request.texts, vectors)):
+            embeddings.append(
+                {
+                    "id": str(uuid.uuid4()),
+                    "text": text,
+                    "embedding_type": request.embedding_type.value,
+                    "vector": vector,
+                    "created_at": datetime.utcnow().isoformat() + "Z",
+                }
+            )
+
+        return {
+            "embeddings": embeddings,
+            "batch_size": len(request.texts),
+            "success_count": len(request.texts),
+            "failure_count": 0,
+            "failures": [],
+            "processing_time": processing_time,
+            "model_info": model_info,
+            "status": "success",
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to generate batch embeddings: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to generate batch embeddings: {str(e)}"
+        )
 
 
 @router.get("/embeddings/{embedding_id}")

@@ -20,12 +20,13 @@ import type {
 } from '@features/system-health/types/health-types';
 
 // Service configurations for all backend services
+// Updated to match actual container port mappings from podman-compose.dev.yml
 export const SERVICE_CONFIGS: Record<string, ServiceConfig> = {
   'error-reporting': {
     name: 'error-reporting',
     displayName: 'Error Reporting Service',
-    url: 'http://localhost:8000',
-    port: 8000,
+    url: 'http://localhost:8010',
+    port: 8010,
     healthEndpoint: '/health',
     timeout: 5000,
     expectedResponseTime: 200,
@@ -34,8 +35,8 @@ export const SERVICE_CONFIGS: Record<string, ServiceConfig> = {
   'user-management': {
     name: 'user-management',
     displayName: 'User Management Service',
-    url: 'http://localhost:8001',
-    port: 8001,
+    url: 'http://localhost:8011',
+    port: 8011,
     healthEndpoint: '/health',
     timeout: 5000,
     expectedResponseTime: 200,
@@ -44,8 +45,8 @@ export const SERVICE_CONFIGS: Record<string, ServiceConfig> = {
   'rag-integration': {
     name: 'rag-integration',
     displayName: 'RAG Integration Service',
-    url: 'http://localhost:8002',
-    port: 8002,
+    url: 'http://localhost:8012',
+    port: 8012,
     healthEndpoint: '/health',
     timeout: 5000,
     expectedResponseTime: 300,
@@ -54,8 +55,8 @@ export const SERVICE_CONFIGS: Record<string, ServiceConfig> = {
   'correction-engine': {
     name: 'correction-engine',
     displayName: 'Correction Engine Service',
-    url: 'http://localhost:8003',
-    port: 8003,
+    url: 'http://localhost:8013',
+    port: 8013,
     healthEndpoint: '/health',
     timeout: 5000,
     expectedResponseTime: 250,
@@ -64,12 +65,36 @@ export const SERVICE_CONFIGS: Record<string, ServiceConfig> = {
   'verification': {
     name: 'verification',
     displayName: 'Verification Service',
-    url: 'http://localhost:8004',
-    port: 8004,
+    url: 'http://localhost:8014',
+    port: 8014,
     healthEndpoint: '/health',
     timeout: 5000,
     expectedResponseTime: 200,
     criticalResponseTime: 1000,
+  },
+};
+
+// Infrastructure service configurations
+export const INFRASTRUCTURE_CONFIGS: Record<string, ServiceConfig> = {
+  'postgres': {
+    name: 'postgres',
+    displayName: 'PostgreSQL Database',
+    url: 'http://localhost:5433',
+    port: 5433,
+    healthEndpoint: '/health', // Note: This would need a custom health check
+    timeout: 3000,
+    expectedResponseTime: 100,
+    criticalResponseTime: 500,
+  },
+  'redis': {
+    name: 'redis',
+    displayName: 'Redis Cache',
+    url: 'http://localhost:6380',
+    port: 6380,
+    healthEndpoint: '/health', // Note: This would need a custom health check
+    timeout: 3000,
+    expectedResponseTime: 50,
+    criticalResponseTime: 200,
   },
 };
 

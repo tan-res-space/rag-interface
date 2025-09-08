@@ -8,8 +8,12 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional
 import logging
 
-from ..entities.speaker_profile import SpeakerProfile, BucketProgressionRecommendation, BucketProgressionDirection
-from ..value_objects.bucket_type import BucketType
+from ..entities.speaker_profile import (
+    SpeakerProfile,
+    BucketProgressionRecommendation,
+    BucketProgressionDirection,
+)
+from src.shared.domain.value_objects import BucketType
 from ..value_objects.speaker_metrics import SpeakerMetrics
 
 
@@ -286,12 +290,12 @@ class BucketProgressionService:
     def _get_error_rate_threshold(self, bucket: BucketType) -> float:
         """Get error rate threshold for bucket"""
         thresholds = {
-            BucketType.BEGINNER: self.criteria.beginner_max_error_rate,
-            BucketType.INTERMEDIATE: self.criteria.intermediate_max_error_rate,
-            BucketType.ADVANCED: self.criteria.advanced_max_error_rate,
-            BucketType.EXPERT: self.criteria.expert_max_error_rate
+            BucketType.HIGH_TOUCH: self.criteria.high_touch_max_error_rate,
+            BucketType.MEDIUM_TOUCH: self.criteria.medium_touch_max_error_rate,
+            BucketType.LOW_TOUCH: self.criteria.low_touch_max_error_rate,
+            BucketType.NO_TOUCH: self.criteria.no_touch_max_error_rate,
         }
-        return thresholds.get(bucket, 0.1)
+        return thresholds[bucket]
     
     def _get_accuracy_threshold(self, bucket: BucketType) -> float:
         """Get accuracy threshold for bucket"""

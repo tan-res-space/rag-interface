@@ -9,7 +9,7 @@ from typing import Optional, Dict, Any
 from enum import Enum
 import uuid
 
-from ..value_objects.bucket_type import BucketType
+from src.shared.domain.value_objects import BucketType
 from ..value_objects.speaker_metrics import SpeakerMetrics
 
 

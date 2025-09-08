@@ -76,7 +76,8 @@ export const baseApi = createApi({
 export const SERVICE_ENDPOINTS = {
   AUTH: '/api/v1/auth',
   USER_MANAGEMENT: '/api/v1/users',
-  ERROR_REPORTING: '/api/v1/error-reports',
+  // Align with backend implementation and API docs
+  ERROR_REPORTING: '/api/v1/errors',
   VERIFICATION: '/api/v1/verifications',
   ANALYTICS: '/api/v1/analytics',
 } as const;

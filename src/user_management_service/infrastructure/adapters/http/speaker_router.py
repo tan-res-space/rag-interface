@@ -31,14 +31,24 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/speakers", tags=["Speaker Management"])
 
 
-# Dependency injection placeholder - in real implementation, this would be properly injected
+# Dependency injection - create use case with in-memory repository for development
 async def get_speaker_use_case() -> ManageSpeakersUseCase:
     """Get speaker management use case instance."""
-    # TODO: Implement proper dependency injection
-    # For now, return a placeholder
-    raise HTTPException(
-        status_code=501, detail="Speaker management use case not implemented"
-    )
+    try:
+        # Import the in-memory repository for development
+        from ....infrastructure.adapters.database.in_memory.speaker_repository import InMemorySpeakerRepository
+
+        # Create repository instance
+        speaker_repo = InMemorySpeakerRepository()
+
+        # Create and return use case
+        return ManageSpeakersUseCase(speaker_repository=speaker_repo)
+
+    except Exception as e:
+        logger.error(f"Failed to create speaker use case: {e}")
+        raise HTTPException(
+            status_code=500, detail="Failed to initialize speaker management service"
+        )
 
 
 @router.post("", response_model=SpeakerResponse, status_code=201)

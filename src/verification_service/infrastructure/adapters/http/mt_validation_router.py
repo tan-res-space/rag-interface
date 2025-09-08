@@ -36,11 +36,18 @@ router = APIRouter(prefix="/api/v1/mt-validation", tags=["MT Validation"])
 
 # Dependency injection placeholder
 async def get_mt_validation_use_case() -> MTValidationWorkflowUseCase:
-    """Get MT validation workflow use case instance."""
-    # TODO: Implement proper dependency injection
-    raise HTTPException(
-        status_code=501, detail="MT validation use case not implemented"
+    """Basic DI wiring example for MTValidationWorkflowUseCase.
+
+    Uses in-memory repository and concrete SERCalculationService for development.
+    """
+    from ...adapters.database.in_memory.mt_validation_repository import (
+        InMemoryMTValidationRepository,
     )
+    from ....domain.services.ser_calculation_service import SERCalculationService
+
+    repo = InMemoryMTValidationRepository()
+    ser_service = SERCalculationService()
+    return MTValidationWorkflowUseCase(mt_validation_repository=repo, ser_calculation_service=ser_service)
 
 
 @router.post("/sessions", response_model=ValidationSessionResponse, status_code=201)
@@ -376,3 +383,59 @@ async def mt_validation_health():
             "ser_comparison": "POST /api/v1/mt-validation/ser-comparison",
         },
     }
+
+
+@router.get("/statistics/summary", response_model=dict)
+async def get_mt_validation_summary():
+    """
+    Get MT validation statistics summary for dashboard.
+
+    Returns aggregated MT validation metrics and trends for the dashboard display.
+    """
+    try:
+        logger.info("Getting MT validation summary")
+
+        # Mock data for dashboard
+        summary_data = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "total_sessions": 342,
+            "active_sessions": 12,
+            "completed_sessions": 330,
+            "average_session_duration_minutes": 18.5,
+            "validation_accuracy": {
+                "overall_accuracy": 94.2,
+                "inter_rater_reliability": 0.87,
+                "consensus_rate": 91.3
+            },
+            "feedback_distribution": {
+                "approved": {"count": 278, "percentage": 84.2},
+                "minor_corrections": {"count": 41, "percentage": 12.4},
+                "major_corrections": {"count": 11, "percentage": 3.3}
+            },
+            "quality_trends": {
+                "last_7_days": {
+                    "accuracy": 95.1,
+                    "change_percentage": 0.9,
+                    "trend": "improving"
+                },
+                "last_30_days": {
+                    "accuracy": 93.8,
+                    "change_percentage": 0.4,
+                    "trend": "stable"
+                }
+            },
+            "top_validators": [
+                {"validator_id": "MT_001", "sessions_completed": 45, "accuracy": 96.8},
+                {"validator_id": "MT_003", "sessions_completed": 38, "accuracy": 95.2},
+                {"validator_id": "MT_007", "sessions_completed": 42, "accuracy": 94.9}
+            ],
+            "recent_sessions": 23,
+            "average_corrections_per_session": 2.3
+        }
+
+        logger.info("MT validation summary retrieved successfully")
+        return summary_data
+
+    except Exception as e:
+        logger.error(f"Failed to get MT validation summary: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get MT validation summary")

@@ -63,8 +63,8 @@ export const errorReportApi = createApi({
     // Update error report
     updateErrorReport: builder.mutation<ErrorReport, UpdateErrorReportRequest>({
       query: ({ errorId, ...updateData }) => ({
-        url: `${SERVICE_ENDPOINTS.ERROR_REPORTING}/${errorId}`,
-        method: 'PATCH',
+        url: `/api/v1/errors/${errorId}`,
+        method: 'PUT',
         body: updateData,
       }),
       invalidatesTags: ['ErrorReport'],
@@ -73,7 +73,7 @@ export const errorReportApi = createApi({
     // Delete error report
     deleteErrorReport: builder.mutation<void, string>({
       query: (errorId) => ({
-        url: `${SERVICE_ENDPOINTS.ERROR_REPORTING}/${errorId}`,
+        url: `/api/v1/errors/${errorId}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['ErrorReport'],

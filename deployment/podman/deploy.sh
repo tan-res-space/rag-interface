@@ -3,7 +3,7 @@
 # =====================================================
 # RAG Interface System - Deployment Script
 # =====================================================
-# Automated deployment script for Podman/Docker Compose
+# Automated deployment script for Podman Compose (Podman only)
 # Author: RAG Interface Deployment Team
 # Version: 1.0
 # Date: 2025-01-20
@@ -63,31 +63,19 @@ print_usage() {
 check_prerequisites() {
     log_info "Checking prerequisites for $DEPLOYMENT_MODE deployment..."
 
-    # Check if podman or docker is available
-    if command -v podman &> /dev/null; then
-        CONTAINER_ENGINE="podman"
-        # Check for podman-compose first, then fall back to docker-compose
-        if command -v podman-compose &> /dev/null; then
-            COMPOSE_CMD="podman-compose"
-        elif command -v docker-compose &> /dev/null; then
-            COMPOSE_CMD="docker-compose"
-cd 
-        else
-            log_error "Neither podman-compose nor docker-compose is installed. Please install one of them."
-            exit 1
-        fi
-    elif command -v docker &> /dev/null; then
-        CONTAINER_ENGINE="docker"
-        if command -v docker-compose &> /dev/null; then
-            COMPOSE_CMD="docker-compose"
-        else
-            log_error "docker-compose is not installed. Please install it."
-            exit 1
-        fi
-    else
-        log_error "Neither Podman nor Docker is installed. Please install one of them."
+    # Podman-only requirement
+    if ! command -v podman &> /dev/null; then
+        log_error "Podman is not installed or not in PATH. Please install Podman."
         exit 1
     fi
+
+    if ! command -v podman-compose &> /dev/null; then
+        log_error "podman-compose is not installed or not in PATH. Please install podman-compose."
+        exit 1
+    fi
+
+    CONTAINER_ENGINE="podman"
+    COMPOSE_CMD="podman-compose"
 
     log_info "Using container engine: $CONTAINER_ENGINE"
     log_info "Using compose command: $COMPOSE_CMD"
